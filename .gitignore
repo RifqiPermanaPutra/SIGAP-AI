@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Data & database lokal (berisi sesi & data pelapor — jangan diunggah)
+data/
+
+# Environment — RAHASIA. Berisi API key. JANGAN pernah di-commit.
+.env
+.env.local
+.env.*.local
+
+# Log
+*.log
+npm-debug.log*
+
+# File scratch / uji coba
+_*.mjs
+_*.js
+_*.sh
+_*.log
+
+# Konfigurasi editor & alat bantu
+.vscode/
+.idea/
+.claude/
+.qodo/
+
+# OS
+.DS_Store
+Thumbs.db

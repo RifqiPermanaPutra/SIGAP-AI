@@ -1,0 +1,1246 @@
+/* ================================================
+   AI Helpdesk ICT — Pertamina EP Field Lirik
+   Tema terang, aksen tiga warna korporat
+   ================================================ */
+
+:root {
+  /* ── Warna korporat Pertamina ──────────────────────────────────────
+     Nilai murni diambil dari berkas logo resmi (public/logo-pertamina-ep.svg):
+     biru #006cb8, hijau #acc42a, merah #ed1b2f.
+
+     Kontras terhadap latar putih (WCAG, ambang teks = 4.5):
+       biru  #006cb8 → 5.47  aman untuk teks
+       merah #ed1b2f → 4.38  SEDIKIT KURANG untuk teks
+       hijau #acc42a → 1.97  JAUH kurang untuk teks
+
+     Karena itu warna murni dipakai untuk elemen dekoratif (pita, lencana,
+     bidang berwarna), sedangkan varian "-text" yang sudah digelapkan
+     dipakai bila warna tersebut menjadi tulisan. */
+  --pt-blue: #006cb8;
+  --pt-blue-dark: #00395e;
+  --pt-blue-mid: #005694;
+  --pt-blue-soft: #e6f1f9;
+  --pt-blue-text: #005694;   /* 7.61 di putih */
+
+  --pt-green: #acc42a;
+  --pt-green-soft: #f4f7e2;
+  --pt-green-text: #65730f;  /* 5.23 di putih */
+
+  --pt-red: #ed1b2f;
+  --pt-red-soft: #fdeaec;
+  --pt-red-text: #c41022;    /* 6.10 di putih */
+
+  /* Netral */
+  --ink: #101725;
+  --ink-2: #3d4a5c;
+  --ink-3: #6b7889;
+  --ink-4: #9aa5b4;
+  --line: #e4e9f0;
+  --line-2: #eff2f7;
+  --surface: #ffffff;
+  --canvas: #f7f9fc;
+
+  --wa: #25d366;
+  --wa-dark: #1da851;
+
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+  --r-full: 999px;
+
+  --sh-xs: 0 1px 2px rgba(16, 23, 37, 0.05);
+  --sh-sm: 0 2px 8px rgba(16, 23, 37, 0.06);
+  --sh-md: 0 10px 28px rgba(16, 23, 37, 0.08);
+  --sh-lg: 0 24px 60px rgba(16, 23, 37, 0.12);
+
+  --ease: 220ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--canvas);
+  min-height: 100vh;
+  min-height: 100dvh; /* mengikuti bilah alamat ponsel yang muncul-hilang */
+  -webkit-text-size-adjust: 100%;
+}
+body.mode-chat {
+  overflow: hidden;
+  overscroll-behavior: none; /* cegah pantulan/pull-to-refresh saat chat */
+}
+
+#root {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+a { color: inherit; text-decoration: none; }
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  /* Hilangkan kotak sorot abu-abu bawaan peramban ponsel saat disentuh */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation; /* cegah jeda 300ms & zoom ketuk-ganda */
+}
+
+/* Fokus keyboard terlihat jelas, tanpa mengganggu pengguna mouse */
+:focus-visible {
+  outline: 2px solid var(--pt-blue);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+:focus:not(:focus-visible) { outline: none; }
+
+/* Di atas latar biru, ring biru tidak terlihat — pakai putih */
+.lp-nav :focus-visible,
+.lp-nav-drawer :focus-visible {
+  outline-color: #fff;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d3dae4; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #b9c3d0; }
+
+/* Kata yang ditekankan pada judul. Sebelumnya memakai gradien biru→hijau;
+   diganti warna biru korporat solid agar identitasnya tegas dan teksnya
+   tetap terbaca (gradien pada teks kerap menurunkan kontras di tengah). */
+.accent-text { color: var(--pt-blue-text); }
+
+/* ================================================
+   Tombol
+   ================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 26px;
+  border-radius: var(--r-full);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
+  transition: transform var(--ease), box-shadow var(--ease), background var(--ease);
+  white-space: nowrap;
+}
+.btn-sm { padding: 9px 18px; font-size: 0.88rem; }
+.btn-lg { padding: 16px 32px; font-size: 1rem; }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--pt-blue) 0%, var(--pt-blue-dark) 100%);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(0, 108, 184, 0.28);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(0, 108, 184, 0.34); }
+.btn-primary:active { transform: translateY(0); }
+
+.btn-ghost {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  box-shadow: var(--sh-xs);
+}
+.btn-ghost:hover { border-color: #ccd6e2; transform: translateY(-2px); box-shadow: var(--sh-sm); }
+
+.btn-arrow { display: grid; place-items: center; transition: transform var(--ease); }
+.btn:hover .btn-arrow { transform: translateX(4px); }
+
+/* ================================================
+   Navigasi landing
+   ================================================ */
+.landing { width: 100%; }
+
+.lp-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 15px clamp(20px, 5vw, 64px);
+  background: linear-gradient(100deg, var(--pt-blue-dark) 0%, var(--pt-blue-mid) 55%, var(--pt-blue) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 2px 14px rgba(7, 63, 111, 0.22);
+}
+
+/* Pita tiga warna korporat sebagai garis dasar navbar */
+.lp-nav::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 3px;
+  background: linear-gradient(90deg,
+    var(--pt-blue) 0 33%,
+    var(--pt-green) 33% 66%,
+    var(--pt-red) 66% 100%);
+}
+
+.lp-brand { display: flex; align-items: center; gap: 14px; margin-right: auto; }
+
+/* PENTING — berkas logo ini adalah varian untuk LATAR GELAP: di dalamnya
+   wordmark "PERTAMINA" digambar dengan fill #ffffff (lihat komentar pada
+   public/logo-pertamina-ep.svg). Karena itu logo harus berada di atas latar
+   gelap. Menaruhnya di atas bidang putih membuat tulisan PERTAMINA lenyap,
+   menyisakan emblem dan "EP" saja. Jangan beri latar terang di belakangnya. */
+.lp-brand-logo {
+  height: 34px;
+  width: auto;
+  display: block;
+  flex-shrink: 0;
+}
+
+.lp-brand-divider {
+  width: 1px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
+}
+
+.lp-brand-text { display: flex; flex-direction: column; line-height: 1.3; }
+.lp-brand-text strong {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: #fff;
+}
+.lp-brand-text small {
+  font-size: 0.76rem;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+.lp-nav-links { display: flex; gap: 30px; }
+.lp-nav-links a {
+  font-size: 0.94rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.86);
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+  transition: color var(--ease), border-color var(--ease);
+}
+.lp-nav-links a:hover { color: #fff; border-bottom-color: var(--pt-green); }
+
+/* Tombol ajakan pada navbar dibalik warnanya agar menonjol di atas biru */
+.lp-nav-cta {
+  background: #fff;
+  color: var(--pt-blue-dark);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+.lp-nav-cta:hover { background: #eef5fb; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22); }
+
+/* Menu mobile */
+.lp-nav-toggle {
+  display: none;
+  place-items: center;
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+}
+.lp-nav-toggle:hover { background: rgba(255, 255, 255, 0.14); }
+
+.lp-nav-drawer {
+  /* Sengaja mengalir normal, bukan sticky: offset sticky harus dipatok angka
+     tetap padahal tinggi navbar berubah menurut lebar layar (teks merek dapat
+     membungkus), sehingga laci akan meleset dari navbar ketika digulir. */
+  position: relative;
+  z-index: 39;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px clamp(20px, 5vw, 64px) 20px;
+  background: var(--pt-blue-dark);
+  box-shadow: 0 10px 24px rgba(7, 63, 111, 0.28);
+  animation: rise 200ms ease both;
+}
+.lp-nav-drawer a {
+  padding: 13px 4px;
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+.lp-nav-drawer .btn {
+  margin-top: 14px;
+  background: #fff;
+  color: var(--pt-blue-dark);
+}
+
+/* ================================================
+   Hero
+   ================================================ */
+.lp-hero {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(32px, 6vw, 80px);
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(48px, 8vw, 96px) clamp(20px, 5vw, 64px) clamp(32px, 5vw, 56px);
+}
+
+.lp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 15px 7px 11px;
+  border-radius: var(--r-full);
+  background: var(--pt-green-soft);
+  color: var(--pt-green-text);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  margin-bottom: 26px;
+}
+.lp-badge-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--pt-green-text);
+  box-shadow: 0 0 0 3px rgba(101, 115, 15, 0.2);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+
+.lp-title {
+  font-size: clamp(2.3rem, 5.4vw, 3.9rem);
+  line-height: 1.08;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  margin-bottom: 22px;
+}
+
+.lp-sub {
+  font-size: clamp(1rem, 1.5vw, 1.1rem);
+  color: var(--ink-2);
+  max-width: 34em;
+  margin-bottom: 34px;
+}
+
+.lp-cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 22px; }
+
+.lp-note { font-size: 0.82rem; color: var(--ink-4); }
+
+/* Pratinjau percakapan */
+.lp-hero-visual { position: relative; }
+
+.lp-preview {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-lg);
+  overflow: hidden;
+}
+
+.lp-preview-top {
+  display: flex; align-items: center; gap: 12px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--line-2);
+  background: linear-gradient(180deg, #fbfcfe 0%, #ffffff 100%);
+}
+.lp-preview-avatar {
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--pt-blue), var(--pt-blue-dark));
+  color: #fff; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.04em;
+}
+.lp-preview-name { font-weight: 700; font-size: 0.94rem; }
+.lp-preview-status {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.76rem; color: var(--ink-3);
+}
+.dot-live {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--pt-green); animation: pulse 2s ease-in-out infinite;
+}
+
+.lp-preview-body { padding: 22px; display: flex; flex-direction: column; gap: 12px; }
+
+.lp-bubble {
+  max-width: 84%;
+  padding: 13px 17px;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  border-radius: 18px;
+}
+.lp-bubble.user {
+  align-self: flex-end;
+  background: linear-gradient(135deg, var(--pt-blue), var(--pt-blue-dark));
+  color: #fff;
+  border-bottom-right-radius: 6px;
+}
+.lp-bubble.ai {
+  align-self: flex-start;
+  background: var(--canvas);
+  border: 1px solid var(--line-2);
+  color: var(--ink-2);
+  border-bottom-left-radius: 6px;
+}
+.lp-bubble.typing { display: flex; gap: 5px; padding: 16px 18px; }
+.lp-bubble.typing span {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--ink-4);
+  animation: bounce 1.3s ease-in-out infinite;
+}
+.lp-bubble.typing span:nth-child(2) { animation-delay: 0.18s; }
+.lp-bubble.typing span:nth-child(3) { animation-delay: 0.36s; }
+@keyframes bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+  30% { transform: translateY(-5px); opacity: 1; }
+}
+
+/* Kartu mengambang */
+.lp-chip {
+  position: absolute;
+  display: flex; align-items: center; gap: 11px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  box-shadow: var(--sh-md);
+  animation: float 5.5s ease-in-out infinite;
+}
+.chip-a { top: -22px; left: -34px; }
+.chip-b { bottom: -26px; right: -18px; animation-delay: 1.6s; }
+.lp-chip .chip-ico {
+  display: grid; place-items: center;
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  background: var(--canvas);
+  color: var(--pt-blue);
+  flex-shrink: 0;
+}
+.chip-b .chip-ico { color: var(--pt-red-text); }
+.lp-chip b { display: block; font-size: 0.82rem; font-weight: 700; }
+.lp-chip em {
+  display: block; font-style: normal;
+  font-size: 0.7rem; color: var(--ink-3);
+}
+.chip-a em { color: var(--pt-green-text); }
+.chip-b em { color: var(--pt-red-text); }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+
+/* ================================================
+   Statistik
+   ================================================ */
+.lp-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 64px);
+}
+.lp-stats > * { padding: 26px 20px; text-align: center; border-right: 1px solid var(--line); }
+.lp-stats > *:last-child { border-right: none; }
+.lp-stat strong {
+  display: block;
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--pt-blue-dark);
+}
+.lp-stat strong i { font-style: normal; font-size: 0.95rem; color: var(--ink-3); margin-left: 2px; }
+.lp-stat span { font-size: 0.8rem; color: var(--ink-3); }
+
+/* ================================================
+   Bagian umum
+   ================================================ */
+.lp-section { padding: clamp(56px, 9vw, 104px) clamp(20px, 5vw, 64px); }
+.lp-section-alt { background: var(--surface); border-block: 1px solid var(--line-2); }
+
+.lp-section-head { max-width: 720px; margin: 0 auto clamp(36px, 5vw, 56px); text-align: center; }
+
+.lp-eyebrow {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--pt-blue);
+  padding: 6px 14px;
+  border: 1px solid var(--pt-blue-soft);
+  background: var(--pt-blue-soft);
+  border-radius: var(--r-full);
+  margin-bottom: 18px;
+}
+
+.lp-h2 {
+  font-size: clamp(1.7rem, 3.6vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+.lp-section-sub { margin-top: 14px; color: var(--ink-2); font-size: 1rem; }
+
+/* ================================================
+   Kartu layanan
+   ================================================ */
+.lp-service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(232px, 1fr));
+  gap: 16px;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.lp-service {
+  position: relative;
+  text-align: left;
+  padding: 24px 22px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-xs);
+  transition: transform var(--ease), box-shadow var(--ease), border-color var(--ease);
+  overflow: hidden;
+}
+.lp-service::before {
+  content: '';
+  position: absolute; inset: 0 auto 0 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--pt-blue), var(--pt-green));
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--ease);
+}
+.lp-service:hover {
+  transform: translateY(-4px);
+  border-color: #d5e0ec;
+  box-shadow: var(--sh-md);
+}
+.lp-service:hover::before { transform: scaleY(1); }
+
+.lp-service-ico {
+  display: grid; place-items: center;
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: var(--pt-blue-soft);
+  border: 1px solid #cfe3f4;
+  color: var(--pt-blue);
+  margin-bottom: 14px;
+}
+.lp-service:hover .lp-service-ico { background: var(--pt-blue); border-color: var(--pt-blue); color: #fff; }
+.lp-service-name { display: block; font-weight: 700; font-size: 1rem; margin-bottom: 5px; }
+.lp-service-desc { display: block; font-size: 0.84rem; color: var(--ink-3); line-height: 1.5; }
+.lp-service-go {
+  position: absolute; top: 26px; right: 22px;
+  display: grid; place-items: center;
+  color: var(--pt-blue);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity var(--ease), transform var(--ease);
+}
+.lp-service:hover .lp-service-go { opacity: 1; transform: translateX(0); }
+
+/* ================================================
+   Langkah
+   ================================================ */
+.lp-steps {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1020px;
+  margin: 0 auto;
+}
+.lp-steps-rail {
+  position: absolute;
+  top: 30px; left: 12%; right: 12%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--pt-blue), var(--pt-green) 50%, var(--pt-red));
+  opacity: 0.28;
+}
+
+.lp-step { position: relative; text-align: center; padding: 0 12px; }
+.lp-step-no {
+  display: grid; place-items: center;
+  width: 60px; height: 60px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #fff;
+  background: var(--pt-blue);
+  box-shadow: 0 0 0 8px var(--surface), 0 8px 20px rgba(16, 23, 37, 0.12);
+}
+/* Hijau korporat sangat terang, sehingga angka di atasnya memakai tinta
+   gelap (kontras 9.12) — angka putih hanya menghasilkan 1.97 dan tak terbaca.
+   Merah dipekatkan sedikit agar angka putih di atasnya lolos ambang AA. */
+.tone-green .lp-step-no { background: var(--pt-green); color: var(--ink); }
+.tone-red .lp-step-no { background: var(--pt-red-text); }
+
+.lp-step-title { font-size: 1.12rem; font-weight: 700; margin-bottom: 9px; letter-spacing: -0.02em; }
+.lp-step-desc { font-size: 0.9rem; color: var(--ink-3); line-height: 1.6; }
+
+/* ================================================
+   CTA
+   ================================================ */
+.lp-cta { padding: clamp(40px, 6vw, 72px) clamp(20px, 5vw, 64px); }
+.lp-cta-inner {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: clamp(32px, 5vw, 52px);
+  border-radius: var(--r-xl);
+  background: linear-gradient(120deg, var(--pt-blue-dark) 0%, var(--pt-blue) 62%, #0a7fb8 100%);
+  color: #fff;
+  overflow: hidden;
+}
+.lp-cta-inner::after {
+  content: '';
+  position: absolute;
+  top: -55%; right: -12%;
+  width: 420px; height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(172, 196, 42, 0.4) 0%, transparent 66%);
+  pointer-events: none;
+}
+.lp-cta-title { font-size: clamp(1.4rem, 2.8vw, 2rem); font-weight: 800; letter-spacing: -0.03em; }
+.lp-cta-sub { margin-top: 8px; color: rgba(255, 255, 255, 0.82); font-size: 0.96rem; }
+.lp-cta .btn-primary {
+  position: relative; z-index: 1;
+  background: #fff;
+  color: var(--pt-blue-dark);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+}
+.lp-cta .btn-primary:hover { background: #f2f7fc; }
+
+/* ================================================
+   Footer
+   ================================================ */
+.lp-footer { padding: 0 clamp(20px, 5vw, 64px) 44px; }
+.lp-footer-rule {
+  max-width: 1080px;
+  margin: 0 auto 20px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--pt-blue) 0 33%, var(--pt-green) 33% 66%, var(--pt-red) 66% 100%);
+}
+.lp-footer-text {
+  max-width: 1080px; margin: 0 auto;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-4);
+  line-height: 1.8;
+}
+
+/* ================================================
+   Aplikasi chat
+   ================================================ */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh; /* 100vh keliru di ponsel: bilah alamat menutupi input */
+  max-width: 980px;
+  margin: 0 auto;
+  width: 100%;
+  background: var(--surface);
+  border-inline: 1px solid var(--line-2);
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px clamp(16px, 3vw, 24px);
+  border-bottom: 1px solid var(--line);
+  /* Latar gelap wajib: wordmark PERTAMINA pada berkas logo berwarna putih
+     (lihat catatan pada .lp-brand-logo). Header terang membuatnya lenyap. */
+  background: linear-gradient(100deg, var(--pt-blue-dark) 0%, var(--pt-blue-mid) 55%, var(--pt-blue) 100%);
+  border-bottom: none;
+  position: relative;
+}
+.header::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--pt-blue) 0 33%, var(--pt-green) 33% 66%, var(--pt-red) 66% 100%);
+}
+
+.header-back {
+  display: grid; place-items: center;
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  color: #fff;
+  font-size: 1rem;
+  transition: background var(--ease), border-color var(--ease);
+  flex-shrink: 0;
+}
+.header-back:hover { background: rgba(255, 255, 255, 0.14); border-color: rgba(255, 255, 255, 0.5); }
+
+.header-logo-container { display: flex; align-items: center; flex-shrink: 0; }
+.pertamina-logo-img { height: 34px; width: auto; display: block; }
+
+.header-info { flex: 1; min-width: 0; }
+.header-title {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  font-size: 1.02rem; font-weight: 700; letter-spacing: -0.02em;
+  color: #fff;
+}
+.division-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 11px;
+  font-size: 0.74rem; font-weight: 600;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--r-full);
+}
+.header-subtitle {
+  font-size: 0.76rem; color: rgba(255, 255, 255, 0.8);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.header-status {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 6px 13px;
+  font-size: 0.76rem; font-weight: 600;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: var(--r-full);
+  flex-shrink: 0;
+}
+.status-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--pt-green);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.header-new-chat {
+  display: grid; place-items: center;
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--pt-blue-dark); font-size: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  transition: transform var(--ease);
+  flex-shrink: 0;
+}
+.header-new-chat:hover { transform: translateY(-2px) rotate(90deg); }
+
+/* Area chat */
+.chat-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 26px clamp(16px, 3vw, 28px);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: var(--canvas);
+}
+
+.empty-state { margin: auto; text-align: center; max-width: 380px; }
+.empty-state-icon {
+  display: grid; place-items: center;
+  width: 64px; height: 64px;
+  margin: 0 auto 16px;
+  border-radius: 18px;
+  background: var(--pt-blue-soft);
+  color: var(--pt-blue);
+}
+.empty-state-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
+.empty-state-desc { color: var(--ink-3); font-size: 0.92rem; }
+
+/* Pesan */
+.message-wrapper { display: flex; gap: 11px; align-items: flex-start; animation: rise 300ms ease both; }
+.message-wrapper.user { flex-direction: row-reverse; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.message-avatar {
+  display: grid; place-items: center;
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  font-size: 0.68rem; font-weight: 800; letter-spacing: 0.03em;
+  flex-shrink: 0;
+}
+.message-avatar.ai {
+  background: linear-gradient(135deg, var(--pt-blue), var(--pt-blue-dark));
+  color: #fff;
+}
+.message-avatar.user { background: var(--surface); border: 1px solid var(--line); color: var(--ink-2); }
+
+.message-bubble {
+  padding: 13px 17px;
+  border-radius: 16px;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  max-width: 100%;
+  box-shadow: var(--sh-xs);
+}
+.message-bubble.ai {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top-left-radius: 5px;
+}
+.message-bubble.user {
+  background: linear-gradient(135deg, var(--pt-blue), var(--pt-blue-dark));
+  color: #fff;
+  border-top-right-radius: 5px;
+}
+.message-wrapper.user > div { display: flex; flex-direction: column; align-items: flex-end; }
+
+.message-bubble p + p { margin-top: 9px; }
+.message-bubble ul, .message-bubble ol { margin: 9px 0 9px 20px; }
+.message-bubble li { margin-bottom: 5px; }
+.message-bubble h3 { font-size: 0.96rem; font-weight: 700; margin: 12px 0 6px; }
+.message-bubble strong { font-weight: 700; }
+.message-bubble code {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.85em;
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: var(--canvas);
+  border: 1px solid var(--line-2);
+}
+.message-bubble.user code { background: rgba(255, 255, 255, 0.18); border-color: transparent; }
+
+.message-time { font-size: 0.68rem; color: var(--ink-4); margin-top: 5px; padding-inline: 4px; }
+
+/* Saran keluhan cepat */
+.quick-replies {
+  margin-top: 4px;
+  padding-left: 45px;
+  animation: rise 320ms ease both;
+}
+.quick-replies-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: 9px;
+}
+.quick-replies-list { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.quick-reply {
+  padding: 9px 15px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--pt-blue-dark);
+  background: var(--surface);
+  border: 1px solid #c4dced;
+  border-radius: var(--r-full);
+  transition: background var(--ease), border-color var(--ease), transform var(--ease);
+}
+.quick-reply:hover:not(:disabled) {
+  background: var(--pt-blue-soft);
+  border-color: var(--pt-blue);
+  transform: translateY(-2px);
+}
+.quick-reply:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Tombol kembali ke pesan terbaru */
+.scroll-bottom-btn {
+  position: sticky;
+  bottom: 6px;
+  left: 100%;
+  display: grid;
+  place-items: center;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink-2);
+  box-shadow: var(--sh-md);
+  animation: rise 200ms ease both;
+  transition: transform var(--ease), color var(--ease);
+}
+.scroll-bottom-btn:hover { transform: translateY(-2px); color: var(--pt-blue); }
+
+/* Indikator mengetik */
+.typing-indicator { display: flex; gap: 11px; align-items: center; }
+.typing-bubble {
+  display: flex; gap: 5px;
+  padding: 15px 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  border-top-left-radius: 5px;
+}
+.typing-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--ink-4);
+  animation: bounce 1.3s ease-in-out infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.18s; }
+.typing-dot:nth-child(3) { animation-delay: 0.36s; }
+
+/* Tombol engineer */
+.engineer-btn-wrapper { display: flex; justify-content: center; padding: 6px 0 2px; }
+.engineer-btn {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 13px 26px;
+  border-radius: var(--r-full);
+  background: var(--wa);
+  color: #fff;
+  font-weight: 600; font-size: 0.92rem;
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.3);
+  transition: transform var(--ease), background var(--ease);
+}
+.engineer-btn:hover { background: var(--wa-dark); transform: translateY(-2px); }
+.engineer-btn-icon { display: grid; place-items: center; }
+
+/* Input */
+.chat-input-area {
+  padding: 14px clamp(16px, 3vw, 28px) 16px;
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+}
+.chat-input-container { display: flex; gap: 10px; align-items: flex-end; }
+
+.chat-input-wrapper {
+  flex: 1;
+  background: var(--canvas);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 10px 16px;
+  transition: border-color var(--ease), box-shadow var(--ease);
+}
+.chat-input-wrapper:focus-within {
+  border-color: var(--pt-blue);
+  background: var(--surface);
+  box-shadow: 0 0 0 4px rgba(0, 108, 184, 0.1);
+}
+
+.chat-input {
+  width: 100%;
+  border: none; outline: none; resize: none; background: transparent;
+  font: inherit; font-size: 0.92rem;
+  color: var(--ink);
+  max-height: 120px;
+  line-height: 1.55;
+}
+.chat-input::placeholder { color: var(--ink-4); }
+.chat-input:disabled { cursor: not-allowed; }
+
+.chat-send-btn {
+  display: grid; place-items: center;
+  width: 44px; height: 44px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--pt-blue), var(--pt-blue-dark));
+  color: #fff; font-size: 1rem;
+  box-shadow: 0 4px 14px rgba(0, 108, 184, 0.28);
+  transition: transform var(--ease), opacity var(--ease);
+  flex-shrink: 0;
+}
+.chat-send-btn:hover:not(:disabled) { transform: translateY(-2px); }
+.chat-send-btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+
+.send-spinner {
+  width: 17px; height: 17px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  animation: spin 700ms linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.chat-input-hint { margin-top: 9px; text-align: center; font-size: 0.7rem; color: var(--ink-4); }
+
+/* ================================================
+   Modal divisi
+   ================================================ */
+.division-overlay,
+.intake-overlay {
+  position: fixed; inset: 0; z-index: 90;
+  display: grid; place-items: center;
+  padding: 20px;
+  background: rgba(16, 23, 37, 0.42);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  animation: fade 200ms ease;
+}
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* Tombol silang (tutup) pada modal — dipakai formulir & pemilihan divisi */
+.modal-close {
+  position: absolute; top: 14px; right: 14px; z-index: 2;
+  display: grid; place-items: center;
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  color: var(--ink-3);
+  transition: background var(--ease), color var(--ease);
+}
+.modal-close:hover { background: var(--canvas); color: var(--ink); }
+
+/* ── Formulir pendataan pelapor ──────────────────── */
+.intake-modal {
+  position: relative;
+  width: 100%; max-width: 460px;
+  max-height: 90vh; overflow-y: auto;
+  padding: clamp(22px, 4vw, 32px);
+  background: var(--surface);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-lg);
+  animation: rise 280ms ease both;
+}
+.intake-head { margin-bottom: 20px; padding-right: 38px; }
+.intake-title { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; }
+.intake-sub { color: var(--ink-2); font-size: 0.9rem; margin-top: 6px; line-height: 1.5; }
+
+.intake-form { display: flex; flex-direction: column; gap: 16px; }
+.intake-field { display: flex; flex-direction: column; gap: 6px; }
+.intake-label {
+  font-size: 0.82rem; font-weight: 600; color: var(--ink-2);
+}
+.intake-label .req { color: var(--pt-red-text); }
+
+.intake-input-wrap { position: relative; display: flex; align-items: center; }
+.intake-input {
+  width: 100%;
+  padding: 12px 14px;
+  font: inherit; font-size: 16px; /* 16px: cegah zoom otomatis iOS */
+  color: var(--ink);
+  background: var(--canvas);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  transition: border-color var(--ease), box-shadow var(--ease), background var(--ease);
+}
+.intake-input::placeholder { color: var(--ink-4); }
+.intake-input:focus {
+  outline: none;
+  border-color: var(--pt-blue);
+  background: var(--surface);
+  box-shadow: 0 0 0 4px rgba(0, 108, 184, 0.1);
+}
+
+/* Umpan balik langsung: hijau saat terisi, merah saat kosong & sudah disentuh */
+.intake-input-wrap.is-valid .intake-input { padding-right: 40px; }
+.intake-input-wrap.is-valid .intake-input:not(:focus) { border-color: #b7cf5a; }
+.intake-input-wrap.has-error .intake-input {
+  border-color: var(--pt-red);
+  background: var(--pt-red-soft);
+}
+.intake-valid-icon {
+  position: absolute; right: 12px;
+  display: grid; place-items: center;
+  color: var(--pt-green-text);
+  pointer-events: none;
+}
+
+.intake-field-hint { font-size: 0.76rem; color: var(--ink-4); }
+.intake-field-error {
+  font-size: 0.78rem; font-weight: 500; color: var(--pt-red-text);
+  display: flex; align-items: center; gap: 5px;
+}
+
+.intake-submit { width: 100%; margin-top: 6px; }
+.intake-foot {
+  margin-top: 18px; text-align: center;
+  font-size: 0.72rem; color: var(--ink-4); letter-spacing: 0.03em;
+}
+
+/* ── Indikator langkah (dipakai formulir & pemilihan layanan) ─────── */
+.stepper {
+  display: flex; align-items: center; gap: 10px;
+  list-style: none; margin: 0 0 22px; padding: 0;
+}
+.step { display: flex; align-items: center; gap: 9px; }
+.step-dot {
+  display: grid; place-items: center;
+  width: 26px; height: 26px; flex-shrink: 0;
+  border-radius: 50%;
+  font-size: 0.8rem; font-weight: 700;
+  background: var(--line); color: var(--ink-3);
+  transition: background var(--ease), color var(--ease);
+}
+.step-label { font-size: 0.82rem; font-weight: 600; color: var(--ink-3); }
+.step.active .step-dot { background: var(--pt-blue); color: #fff; }
+.step.active .step-label { color: var(--ink); }
+.step.done .step-dot { background: var(--pt-green); color: var(--ink); }
+.step.done .step-label { color: var(--ink-2); }
+.step-bar {
+  flex: 1; height: 2px; min-width: 20px;
+  background: var(--line); border-radius: 1px;
+}
+
+/* Tombol "kembali ubah data" pada pemilihan layanan */
+.division-back {
+  display: inline-flex; align-items: center; gap: 7px;
+  margin-top: 18px; padding: 8px 4px;
+  font-size: 0.86rem; font-weight: 500; color: var(--ink-2);
+  transition: color var(--ease);
+}
+.division-back:hover { color: var(--pt-blue-text); }
+
+.division-modal {
+  position: relative;
+  width: 100%; max-width: 680px;
+  max-height: 86vh; overflow-y: auto;
+  padding: clamp(24px, 4vw, 34px);
+  background: var(--surface);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-lg);
+  animation: rise 280ms ease both;
+}
+.division-modal-title {
+  font-size: 1.4rem; font-weight: 800; letter-spacing: -0.03em;
+  text-align: center;
+}
+.division-modal-subtitle {
+  text-align: center; color: var(--ink-3);
+  font-size: 0.88rem; margin: 7px 0 24px;
+}
+
+.division-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 11px; }
+
+.division-card {
+  display: flex; align-items: center; gap: 13px;
+  text-align: left;
+  padding: 15px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  transition: transform var(--ease), border-color var(--ease), box-shadow var(--ease);
+}
+.division-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--pt-blue);
+  box-shadow: var(--sh-sm);
+}
+.division-icon {
+  display: grid; place-items: center;
+  width: 40px; height: 40px;
+  border-radius: 11px;
+  background: var(--pt-blue-soft);
+  border: 1px solid #cfe3f4;
+  color: var(--pt-blue);
+  flex-shrink: 0;
+}
+.division-name { font-weight: 700; font-size: 0.92rem; }
+.division-desc { font-size: 0.76rem; color: var(--ink-3); line-height: 1.45; }
+
+/* ================================================
+   Responsif
+   ================================================ */
+@media (max-width: 980px) {
+  .lp-hero { grid-template-columns: 1fr; }
+  .lp-hero-visual { max-width: 520px; }
+  .chip-a { left: -12px; }
+  .chip-b { right: -6px; }
+  .lp-steps { grid-template-columns: 1fr; gap: 34px; }
+  .lp-steps-rail { display: none; }
+}
+
+@media (max-width: 720px) {
+  .lp-nav-links { display: none; }
+  .lp-nav-cta { display: none; }
+  .lp-nav-toggle { display: grid; }
+  .lp-nav-drawer { display: flex; }
+  .quick-replies { padding-left: 0; }
+  .quick-replies-list { flex-direction: column; align-items: stretch; }
+  .quick-reply { text-align: left; padding: 13px 16px; }
+  .lp-stats { grid-template-columns: repeat(2, 1fr); }
+  .lp-stats > *:nth-child(2) { border-right: none; }
+  .lp-stats > *:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+  .lp-cta-inner { flex-direction: column; align-items: flex-start; }
+  .app-container { border-inline: none; }
+  .header-subtitle, .header-status { display: none; }
+  .message-bubble { font-size: 0.9rem; }
+  .lp-chip { display: none; }
+
+  /* Navbar lebih ringkas, tetapi panel logo tetap terbaca */
+  .lp-nav { gap: 12px; padding: 11px 16px; }
+  .lp-brand { gap: 10px; min-height: 44px; }
+  .lp-brand-logo { height: 27px; }
+  .lp-brand-text strong { font-size: 0.94rem; }
+  .lp-brand-text small { font-size: 0.68rem; letter-spacing: 0.08em; }
+
+  /* Tombol utama melebar penuh agar mudah dijangkau ibu jari */
+  .lp-cta-row { flex-direction: column; align-items: stretch; }
+  .lp-cta-row .btn { width: 100%; }
+  .lp-cta .btn-lg { width: 100%; }
+
+  /* Area sentuh minimal 44px sesuai panduan antarmuka sentuh */
+  .header-back,
+  .header-new-chat { width: 44px; height: 44px; }
+  .chat-send-btn { width: 48px; height: 48px; }
+  .lp-nav-toggle { width: 44px; height: 44px; }
+
+  /* iOS memperbesar halaman otomatis bila font kolom isian < 16px */
+  .chat-input { font-size: 16px; }
+
+  /* Hormati area aman perangkat berponi saat input menempel di bawah */
+  .chat-input-area {
+    padding-bottom: calc(14px + env(safe-area-inset-bottom));
+  }
+  .lp-footer { padding-bottom: calc(36px + env(safe-area-inset-bottom)); }
+
+  /* Modal divisi & formulir pendataan tampil sebagai lembar bawah di ponsel */
+  .division-overlay,
+  .intake-overlay { align-items: end; padding: 0; }
+  .division-modal,
+  .intake-modal {
+    max-width: 100%;
+    max-height: 90vh;
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
+    padding-bottom: calc(24px + env(safe-area-inset-bottom));
+  }
+  .division-grid { grid-template-columns: 1fr; }
+  .division-card { padding: 14px 15px; }
+}
+
+/* Layar ponsel kecil (mis. iPhone SE) */
+@media (max-width: 400px) {
+  .lp-title { font-size: 2rem; }
+  .lp-brand-text small { display: none; }
+  .lp-stats { grid-template-columns: 1fr 1fr; }
+  .lp-service { padding: 20px 18px; }
+  .division-modal-title { font-size: 1.2rem; }
+  .message-bubble { padding: 12px 15px; }
+}
+
+/* Pada perangkat sentuh tidak ada kursor, sehingga efek angkat saat hover
+   justru "menempel" setelah disentuh. Dinonaktifkan agar tidak mengganggu. */
+@media (hover: none) {
+  .btn:hover,
+  .btn-primary:hover,
+  .btn-ghost:hover,
+  .lp-service:hover,
+  .division-card:hover,
+  .quick-reply:hover:not(:disabled),
+  .engineer-btn:hover,
+  .chat-send-btn:hover:not(:disabled),
+  .header-new-chat:hover,
+  .scroll-bottom-btn:hover {
+    transform: none;
+  }
+  .header-new-chat:hover { transform: none; }
+  .lp-service:hover::before { transform: scaleY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
