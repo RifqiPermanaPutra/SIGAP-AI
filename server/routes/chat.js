@@ -3,7 +3,9 @@
  * Handles chat sessions, messages, and division selection
  */
 import { Router } from 'express';
-import { v4 as uuidv4 } from 'uuid';
+// Node menyediakan pembuat UUID bawaan sejak versi 14.17, sehingga paket
+// pihak ketiga tidak diperlukan lagi untuk keperluan ini.
+import { randomUUID } from 'crypto';
 import {
   createChatSession,
   getChatSession,
@@ -21,7 +23,7 @@ export const chatRouter = Router();
  */
 chatRouter.post('/new', (req, res) => {
   try {
-    const sessionId = uuidv4();
+    const sessionId = randomUUID();
     const session = createChatSession(sessionId);
 
     // Add welcome message
@@ -125,7 +127,7 @@ chatRouter.post('/division', (req, res) => {
     const namaDepan = session.reporter?.nama?.trim().split(/\s+/)[0];
     const sapaan = namaDepan ? `Baik, ${namaDepan}. ` : 'Baik. ';
 
-    const responseMsg = `${sapaan}Anda memilih layanan **${divisionNames[division]}**.\n\nSilakan ceritakan kendala yang Anda alami — sedetail mungkin akan lebih membantu. Saya siap memandu langkah demi langkah. 😊`;
+    const responseMsg = `${sapaan}Anda memilih layanan **${divisionNames[division]}**.\n\nSilakan uraikan kendala yang Anda alami. Semakin lengkap keterangannya, semakin cepat kami dapat membantu.`;
 
     addChatMessage(sessionId, 'assistant', responseMsg);
 

@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { IconArrowRight, IconClose, IconCheck } from './Icons.jsx';
 import Stepper from './Stepper.jsx';
+import { LOKASI_GROUPS } from '../data/lokasi.js';
+import { FUNGSI_LIST } from '../data/fungsi.js';
 
 /**
  * Formulir pendataan pelapor — langkah 1 dari 2, sebelum memilih layanan.
@@ -19,6 +21,7 @@ import Stepper from './Stepper.jsx';
 const FIELDS = [
   {
     key: 'nama',
+    type: 'text',
     label: 'Nama Pelapor',
     placeholder: 'Contoh: Budi Santoso',
     hint: 'Nama lengkap Anda',
@@ -27,19 +30,23 @@ const FIELDS = [
   },
   {
     key: 'fungsi',
+    type: 'select',
+    grouped: false,
+    options: FUNGSI_LIST,
     label: 'Fungsi / Divisi',
-    placeholder: 'Contoh: Produksi, HSSE, RAM, Keuangan',
+    placeholder: '— Pilih fungsi Anda —',
     hint: 'Fungsi tempat Anda bekerja',
-    autoComplete: 'off',
-    error: 'Fungsi atau divisi asal wajib diisi.'
+    error: 'Fungsi wajib dipilih.'
   },
   {
     key: 'lokasi',
+    type: 'select',
+    grouped: true,
+    options: LOKASI_GROUPS,
     label: 'Lokasi',
-    placeholder: 'Contoh: Kantor Lirik, Stasiun Pengumpul',
-    hint: 'Lokasi Anda saat ini di Field Lirik',
-    autoComplete: 'off',
-    error: 'Lokasi wajib diisi.'
+    placeholder: '— Pilih lokasi Anda —',
+    hint: 'Pilih lokasi Anda di Field Lirik',
+    error: 'Lokasi wajib dipilih.'
   }
 ];
 
@@ -103,10 +110,10 @@ export default function IntakeForm({ initial, onSubmit, onClose }) {
         <Stepper current={1} />
 
         <div className="intake-head">
-          <h2 className="intake-title">Selamat datang 👋</h2>
+          <h2 className="intake-title">Data Pelapor</h2>
           <p className="intake-sub">
-            Sebelum mulai, mohon lengkapi data Anda. Ini membantu engineer
-            mengenali dan menindaklanjuti laporan Anda dengan cepat.
+            Mohon lengkapi data berikut sebelum menyampaikan pengaduan. Data ini
+            membantu engineer mengenali dan menindaklanjuti laporan Anda.
           </p>
         </div>
 
@@ -121,24 +128,52 @@ export default function IntakeForm({ initial, onSubmit, onClose }) {
                   {f.label} <span className="req" aria-hidden="true">*</span>
                 </label>
                 <div className={`intake-input-wrap ${showError ? 'has-error' : ''} ${filled ? 'is-valid' : ''}`}>
-                  <input
-                    ref={i === 0 ? firstFieldRef : null}
-                    type="text"
-                    className="intake-input"
-                    value={values[f.key]}
-                    onChange={(e) => setField(f.key, e.target.value)}
-                    onBlur={() => markTouched(f.key)}
-                    placeholder={f.placeholder}
-                    autoComplete={f.autoComplete}
-                    id={`intake-${f.key}`}
-                    aria-required="true"
-                    aria-invalid={showError}
-                    aria-describedby={showError ? errId : undefined}
-                  />
-                  {filled && (
-                    <span className="intake-valid-icon" aria-hidden="true">
-                      <IconCheck size={16} />
-                    </span>
+                  {f.type === 'select' ? (
+                    <select
+                      className={`intake-select ${filled ? '' : 'is-placeholder'}`}
+                      value={values[f.key]}
+                      onChange={(e) => { setField(f.key, e.target.value); markTouched(f.key); }}
+                      onBlur={() => markTouched(f.key)}
+                      id={`intake-${f.key}`}
+                      aria-required="true"
+                      aria-invalid={showError}
+                      aria-describedby={showError ? errId : undefined}
+                    >
+                      <option value="">{f.placeholder}</option>
+                      {f.grouped
+                        ? f.options.map((group) => (
+                            <optgroup key={group.area} label={group.area}>
+                              {group.items.map((opt) => (
+                                <option key={opt} value={opt}>{opt}</option>
+                              ))}
+                            </optgroup>
+                          ))
+                        : f.options.map((opt) => (
+                            <option key={opt} value={opt}>{opt}</option>
+                          ))}
+                    </select>
+                  ) : (
+                    <>
+                      <input
+                        ref={i === 0 ? firstFieldRef : null}
+                        type="text"
+                        className="intake-input"
+                        value={values[f.key]}
+                        onChange={(e) => setField(f.key, e.target.value)}
+                        onBlur={() => markTouched(f.key)}
+                        placeholder={f.placeholder}
+                        autoComplete={f.autoComplete}
+                        id={`intake-${f.key}`}
+                        aria-required="true"
+                        aria-invalid={showError}
+                        aria-describedby={showError ? errId : undefined}
+                      />
+                      {filled && (
+                        <span className="intake-valid-icon" aria-hidden="true">
+                          <IconCheck size={16} />
+                        </span>
+                      )}
+                    </>
                   )}
                 </div>
                 {showError ? (

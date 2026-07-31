@@ -3,51 +3,78 @@
  * Orchestrates the Retrieval-Augmented Generation pipeline:
  * 1. Retrieve relevant knowledge chunks
  * 2. Construct system prompt with context
- * 3. Generate response via NVIDIA NIM (endpoint OpenAI-compatible)
+ * 3. Generate response — dua penyedia berlapis:
+ *      UTAMA    : layanan awan NVIDIA (cepat, mutu jawaban lebih baik)
+ *      CADANGAN : Ollama di komputer sendiri (dipakai bila internet atau
+ *                 layanan awan bermasalah, sehingga layanan tetap berjalan)
+ *
+ * Catatan penting: pencarian basis pengetahuan (embedding) TIDAK ikut
+ * berpindah penyedia. Vektor pada basis data dibuat oleh satu model tertentu,
+ * sehingga bila kueri di-embed memakai model berbeda, hasil pencariannya
+ * menjadi kacau tanpa memunculkan galat. Embedding tetap lokal — lihat
+ * embeddingService.js.
  */
 import OpenAI from 'openai';
 import { search } from './knowledgeBaseService.js';
 import { getChatMessages, addChatMessage } from '../database/init.js';
 
-const client = new OpenAI({
-  baseURL: process.env.NVIDIA_BASE_URL || 'https://integrate.api.nvidia.com/v1',
-  apiKey: process.env.NVIDIA_API_KEY
-});
+/** Penyedia utama: layanan awan */
+const PRIMARY = {
+  nama: 'NVIDIA',
+  model: process.env.PRIMARY_CHAT_MODEL || 'nvidia/nemotron-3-super-120b-a12b',
+  timeout: Number(process.env.PRIMARY_TIMEOUT_MS || 60000),
+  // Model bertipe reasoning memakai sebagian jatah token untuk menalar sebelum
+  // menulis jawaban. Bila jatahnya terlalu kecil, jatah itu habis di tahap
+  // penalaran dan yang terkirim ke pengguna justru catatan berpikir model
+  // dalam bahasa Inggris, bukan jawabannya. Karena itu jatahnya dilebihkan.
+  maxTokens: Number(process.env.PRIMARY_MAX_TOKENS || 3000),
+  client: new OpenAI({
+    baseURL: process.env.PRIMARY_BASE_URL || 'https://integrate.api.nvidia.com/v1',
+    apiKey: process.env.PRIMARY_API_KEY || 'kosong'
+  })
+};
 
-const CHAT_MODEL = process.env.NVIDIA_CHAT_MODEL || 'qwen/qwen3-next-80b-a3b-instruct';
+/** Penyedia cadangan: Ollama lokal */
+const FALLBACK = {
+  nama: 'Ollama lokal',
+  model: process.env.FALLBACK_CHAT_MODEL || 'qwen2.5:7b',
+  // Pemrosesan lokal, terutama bila model tidak muat penuh di memori kartu
+  // grafis, memerlukan waktu jauh lebih lama daripada layanan awan.
+  timeout: Number(process.env.FALLBACK_TIMEOUT_MS || 180000),
+  maxTokens: Number(process.env.FALLBACK_MAX_TOKENS || 1500),
+  client: new OpenAI({
+    baseURL: process.env.FALLBACK_BASE_URL || 'http://localhost:11434/v1',
+    // Ollama tidak memeriksa kunci, tetapi SDK OpenAI menolak nilai kosong.
+    apiKey: 'ollama'
+  })
+};
 
-// Model cadangan. Sebagian model di katalog NVIDIA — terutama varian 70B dense —
-// tidak pernah membalas pada tier gratis: koneksi digantung sampai timeout tanpa
-// pesan galat. Bila model utama diam, permintaan diulang ke model ini.
-const FALLBACK_MODEL = process.env.NVIDIA_FALLBACK_MODEL || 'meta/llama-3.1-8b-instruct';
-
-// Batas tunggu satu permintaan. Tanpa ini, permintaan yang digantung server
-// akan membuat indikator "sedang mengetik" di antarmuka berputar selamanya.
-const REQUEST_TIMEOUT_MS = Number(process.env.NVIDIA_TIMEOUT_MS || 45000);
+// Awalan khas catatan berpikir model yang bocor ke jawaban. Bila terdeteksi,
+// jawaban dianggap gagal agar penyedia cadangan yang menangani.
+const POLA_NALAR_BOCOR = /^\s*(okay|alright|let me|the user|first,|looking at|i need to|we need to|hmm)/i;
 
 /**
  * Kirim permintaan chat streaming dan kumpulkan seluruh token menjadi satu teks.
  *
- * Streaming dipakai bukan untuk efek ketik di layar, melainkan karena endpoint
- * gratis NVIDIA jauh lebih andal dengan stream=true; kontrak balikan ke frontend
- * tetap berupa satu respons utuh.
+ * Streaming dipakai agar batas waktu dapat dikenali lebih cepat; kontrak
+ * balikan ke frontend tetap berupa satu respons utuh.
  *
- * @param {string} model - Nama model NIM
+ * @param {object} penyedia - Salah satu dari PRIMARY atau FALLBACK
  * @param {Array<{role:string,content:string}>} messages - Riwayat percakapan
  * @returns {Promise<string>} - Teks jawaban lengkap
  */
-async function streamChat(model, messages) {
+async function streamChat(penyedia, messages) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  const timer = setTimeout(() => controller.abort(), penyedia.timeout);
 
   try {
-    const stream = await client.chat.completions.create(
+    const stream = await penyedia.client.chat.completions.create(
       {
-        model,
+        model: penyedia.model,
         messages,
         temperature: 0.3, // Low temperature for consistent, factual responses
         top_p: 0.9,
-        max_tokens: 1024,
+        max_tokens: penyedia.maxTokens,
         stream: true
       },
       { signal: controller.signal }
@@ -59,9 +86,14 @@ async function streamChat(model, messages) {
     }
 
     if (!text.trim()) {
-      // Model bertipe reasoning menaruh jawabannya di `reasoning_content`
-      // sehingga `delta.content` selalu kosong — perlakukan sebagai gagal.
-      throw new Error(`Model ${model} tidak mengembalikan teks pada delta.content`);
+      // Sebagian model menaruh jawabannya pada `reasoning_content` sehingga
+      // `delta.content` selalu kosong — perlakukan sebagai kegagalan.
+      throw new Error(`Model ${penyedia.model} tidak mengembalikan teks pada delta.content`);
+    }
+
+    if (POLA_NALAR_BOCOR.test(text)) {
+      // Jawaban berisi catatan berpikir model, bukan jawaban untuk pengguna.
+      throw new Error(`Model ${penyedia.model} membocorkan catatan penalaran ke jawaban`);
     }
 
     return text;
@@ -83,25 +115,85 @@ const DIVISION_LABELS = {
 };
 
 /**
+ * Cakupan tiap divisi, ditulis memakai istilah yang biasa dipakai pengguna.
+ *
+ * Tanpa penjelasan ini model menafsirkan nama divisi secara harfiah dan
+ * menolak keluhan yang sebenarnya termasuk cakupannya — misalnya menganggap
+ * "WiFi" bukan bagian dari "LAN" karena secara teknis WiFi adalah WLAN.
+ */
+const DIVISION_SCOPE = {
+  printer: 'printer, mesin cetak, hasil cetak, tinta, toner, kertas macet, antrian cetak, scanner',
+  cctv: 'kamera pengawas, CCTV, DVR, NVR, rekaman kamera, monitor pemantauan',
+  telepon: 'telepon kantor, pesawat telepon, extension, nada sambung, PABX',
+  radio: 'radio komunikasi, HT, handy talky, repeater, kanal radio',
+  windows: 'laptop, komputer, PC, sistem operasi Windows, aplikasi di komputer, login komputer, penyimpanan disk',
+  fttp: 'perangkat ONU atau ONT, jaringan fiber optik, lampu LOS, lampu PON, internet dari fiber',
+  lan: 'jaringan lokal kantor, kabel LAN, kabel UTP, port jaringan, switch, WiFi kantor, tidak ada internet, internet lambat',
+  wan: 'jaringan antar lokasi, koneksi antar site, VPN, akses ke kantor pusat'
+};
+
+/**
  * Build the system prompt for the AI Helpdesk
  * This encodes all business rules from the specification
  */
-function buildSystemPrompt(division, contextChunks = []) {
+function buildSystemPrompt(division, contextChunks = [], nomorSolusi = 1) {
   const divisionName = DIVISION_LABELS[division] || division;
+  const divisionScope = DIVISION_SCOPE[division] || '';
+
+  // Bila pengguna menyatakan solusi sebelumnya belum berhasil, asisten wajib
+  // menawarkan cara yang BERBEDA, bukan mengulang langkah yang sama.
+  const NAMA_SOLUSI = { 1: 'Solusi Pertama', 2: 'Solusi Kedua', 3: 'Solusi Ketiga' };
+  const solusiDiminta = NAMA_SOLUSI[nomorSolusi] || 'Solusi Ketiga';
+
+  const bagianSolusiLanjutan = nomorSolusi > 1
+    ? `
+
+## PENTING: BERIKAN TEPAT SATU BAGIAN, YAITU "${solusiDiminta}"
+Pengguna sudah mencoba ${nomorSolusi - 1} cara sebelumnya dan BELUM berhasil.
+
+- Cari bagian berjudul "${solusiDiminta}" pada KNOWLEDGE BASE di bawah.
+- Salin HANYA langkah-langkah dari bagian "${solusiDiminta}" tersebut.
+- DILARANG KERAS menyertakan langkah dari bagian solusi lain, baik sebelumnya
+  maupun sesudahnya. Jawaban harus memuat satu rangkaian langkah saja.
+- Awali jawaban dengan kalimat: "Baik, mari kita coba cara lain."
+- Setelah kalimat pembuka, tulis judul bagian tersebut, lalu langkah-langkahnya.
+- Bagian "Penyebab yang Mungkin Terjadi" TIDAK perlu diulang lagi.
+- Bila bagian "${solusiDiminta}" tidak ada pada KNOWLEDGE BASE, jawab dengan
+  format MASALAH BERAT dan arahkan pengguna menghubungi Engineer ICT.`
+    : '';
 
   const contextSection = contextChunks.length > 0
     ? `\n\n## KNOWLEDGE BASE (Gunakan HANYA informasi berikut untuk menjawab):\n\n${contextChunks.map((c, i) => `[Dokumen ${i + 1}]\n${c.content}`).join('\n\n---\n\n')}`
     : '';
 
-  return `Kamu adalah AI Helpdesk ICT Pertamina EP Asset 1 Regional 1 Field Lirik.
+  return `Kamu adalah SIGAP AI, asisten layanan ICT Pertamina EP Asset 1 Regional 1 Field Lirik.
+
+## GAYA BAHASA
+- Gunakan Bahasa Indonesia yang formal, sopan, dan jelas.
+- Selalu sapa pengguna dengan "Anda" (jangan gunakan "kamu").
+- Jangan gunakan emoji.
 
 ## IDENTITAS
 - Kamu BUKAN engineer, BUKAN customer service umum, BUKAN AI serba-bisa.
 - Kamu HANYA membantu permasalahan ICT pada divisi: ${divisionName}.
-- Jika pertanyaan di luar ICT atau di luar divisi ${divisionName}, jawab:
+
+## CAKUPAN DIVISI ${divisionName}
+Divisi ini mencakup: ${divisionScope}.
+
+Perlakukan seluruh istilah di atas sebagai bagian dari divisi ${divisionName},
+termasuk bila pengguna memakai bahasa sehari-hari atau singkatan.
+
+## KAPAN MENOLAK
+- TOLAK hanya bila pertanyaan benar-benar di luar urusan ICT, misalnya menanyakan
+  cuaca, resep masakan, hiburan, atau meminta dibuatkan puisi.
+- JANGAN menolak hanya karena istilah yang dipakai pengguna berbeda dengan nama divisi.
+- JANGAN menolak bila KNOWLEDGE BASE di bawah memuat informasi yang relevan.
+  Bila ada dokumen yang relevan, WAJIB dijawab memakai dokumen tersebut.
+- Kalimat penolakan (gunakan HANYA bila benar-benar di luar ICT):
   "Maaf, saya hanya dapat membantu permasalahan yang berkaitan dengan layanan ICT Pertamina EP Asset 1 Regional 1 Field Lirik."
 
 ## DIVISI SAAT INI: ${divisionName}
+${bagianSolusiLanjutan}
 ${contextSection}
 
 ## KLASIFIKASI MASALAH
@@ -140,8 +232,7 @@ Gunakan format berikut:
 1. [langkah 1]
 2. [langkah 2]
 3. [langkah 3]
-4. [langkah 4]
-5. [langkah 5]
+... (lanjutkan sesuai kebutuhan, sampai 10 langkah)
 
 Apakah permasalahan sudah berhasil diselesaikan?
 
@@ -150,8 +241,9 @@ Apakah permasalahan sudah berhasil diselesaikan?
 "Permasalahan ini termasuk kategori yang memerlukan penanganan langsung oleh Engineer ICT. Silakan tekan tombol **Hubungi Engineer** untuk menghubungi engineer melalui WhatsApp."
 
 ## ATURAN KETAT
-1. Maksimal 5 langkah penyelesaian untuk masalah ringan.
-2. Bahasa Indonesia yang sopan, singkat, mudah dipahami, TIDAK teknis.
+1. Tulis langkah selengkap yang dibutuhkan, maksimal 10 langkah. Jangan memampatkan
+   beberapa tindakan ke dalam satu nomor — satu nomor berisi satu tindakan saja.
+2. Bahasa Indonesia yang sopan, mudah dipahami, TIDAK teknis.
 3. DILARANG mengarang informasi yang tidak ada di Knowledge Base.
 4. DILARANG menebak penyebab tanpa dasar dari Knowledge Base.
 5. DILARANG memberikan solusi di luar Knowledge Base.
@@ -165,20 +257,52 @@ Apakah permasalahan sudah berhasil diselesaikan?
     "Maaf, saya belum memiliki informasi yang sesuai untuk permasalahan tersebut. Silakan tekan tombol **Hubungi Engineer** agar dapat dibantu lebih lanjut."
 13. Selalu akhiri jawaban masalah ringan dengan: "Apakah permasalahan sudah berhasil diselesaikan?"
 
+## SATU JAWABAN HANYA BERISI SATU SOLUSI (SANGAT PENTING)
+
+Dokumen pada KNOWLEDGE BASE dapat memuat beberapa bagian solusi, misalnya
+"Solusi Pertama", "Solusi Kedua", dan "Solusi Ketiga".
+
+- Pada jawaban pertama, berikan HANYA isi bagian "Solusi Pertama".
+- DILARANG menggabungkan dua bagian solusi ke dalam satu jawaban.
+- DILARANG menyalin seluruh isi dokumen sekaligus.
+- Bagian solusi berikutnya baru diberikan bila pengguna menyatakan cara
+  sebelumnya belum berhasil.
+- Bila dokumen tidak memiliki pembagian solusi, cukup berikan langkahnya sekali.
+
+## CARA MENULIS LANGKAH (SANGAT PENTING)
+
+Pengguna sistem ini adalah pekerja lapangan yang TIDAK memahami istilah teknologi.
+Mereka hanya terbiasa memakai perangkat, bukan mengaturnya. Tulis setiap langkah
+seolah sedang memandu orang yang baru pertama kali menyentuh komputer.
+
+Aturan wajib untuk setiap langkah:
+1. SEBUTKAN LETAKNYA. Jangan hanya menyebut nama menu, jelaskan posisinya di layar.
+   Buruk : "Buka pengaturan jaringan"
+   Baik  : "Lihat pojok kanan bawah layar, di sebelah jam. Klik ikon berbentuk
+            gelombang sinyal atau layar komputer kecil"
+2. JELASKAN BENTUKNYA. Sebutkan warna, bentuk, atau tulisan yang terlihat.
+   Contoh: "tombol berwarna biru bertuliskan Connect", "lampu kecil berwarna hijau"
+3. SEBUTKAN APA YANG AKAN TERJADI setelah langkah dilakukan, agar pengguna yakin
+   sudah benar. Contoh: "akan muncul daftar nama WiFi di sisi kanan layar"
+4. SATU LANGKAH SATU TINDAKAN. Jangan menggabungkan "buka lalu klik lalu pilih".
+5. HINDARI ISTILAH TEKNIS. Bila terpaksa dipakai, jelaskan dengan bahasa awam.
+   Contoh: "adaptor (kotak hitam kecil yang menyambung ke colokan listrik)"
+6. SEBUTKAN WAKTU TUNGGU bila ada. Contoh: "tunggu sekitar 30 detik"
+7. Untuk perangkat fisik, sebutkan bentuk dan letak fisiknya, bukan nama tekniknya.
+
 ## GAYA BAHASA
 - Sopan dan profesional
-- Singkat, tidak bertele-tele
-- Mudah dipahami, tidak terlalu teknis
-- Seperti membantu rekan kerja tanpa latar belakang IT`;
+- Jelas dan rinci, tetapi tidak berbelit
+- Seperti memandu rekan kerja lewat telepon yang tidak paham teknologi`;
 }
 
 /**
  * Build the greeting/welcome message
  */
 export function getWelcomeMessage() {
-  return `Selamat datang di **AI Helpdesk ICT** Pertamina EP Asset 1 Regional 1 Field Lirik.
+  return `Selamat datang di **SIGAP AI**, layanan bantuan ICT Pertamina EP Asset 1 Regional 1 Field Lirik.
 
-Saya siap membantu Anda menyelesaikan permasalahan ICT. Silakan pilih **divisi layanan** yang ingin Anda tanyakan terlebih dahulu.`;
+Saya siap membantu menyelesaikan kendala ICT Anda. Silakan pilih **layanan** yang ingin dilaporkan terlebih dahulu.`;
 }
 
 /**
@@ -229,6 +353,33 @@ const RESOLVED_SHORT = ['sudah', 'berhasil', 'beres', 'oke', 'ok', 'ya', 'mantap
 
 const CLOSING_QUESTION = 'apakah permasalahan sudah berhasil diselesaikan';
 const SHORT_REPLY_MAX_WORDS = 4;
+
+// Banyaknya solusi berbeda yang ditawarkan sebelum pengaduan diteruskan
+// ke engineer. Basis pengetahuan menyediakan sampai tiga solusi per masalah.
+const MAX_SOLUTION_ATTEMPTS = 3;
+
+/**
+ * Menghitung berapa kali asisten sudah memberikan langkah penyelesaian.
+ *
+ * Penanda yang dipakai adalah keberadaan daftar bernomor, bukan judul tertentu.
+ * Judul jawaban berbeda-beda: solusi pertama memakai "Langkah Penyelesaian",
+ * sedangkan solusi lanjutan diawali "Baik, mari kita coba cara lain". Bila
+ * penghitungan bergantung pada judul, solusi lanjutan tidak ikut terhitung dan
+ * sistem akan meminta solusi yang sama berulang kali.
+ */
+function countSolutionsGiven(sessionId) {
+  return getChatMessages(sessionId).filter((m) => {
+    if (m.role !== 'assistant') return false;
+    const isi = m.content || '';
+    return /^\s*1\./m.test(isi) && /^\s*2\./m.test(isi);
+  }).length;
+}
+
+/** Keluhan pertama pengguna pada sesi ini, dipakai sebagai kueri pencarian */
+function getFirstUserMessage(sessionId) {
+  const pesan = getChatMessages(sessionId).find((m) => m.role === 'user');
+  return pesan?.content?.trim() || null;
+}
 
 function containsPhrase(text, phrase) {
   const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -286,33 +437,49 @@ function isResolved(message, sessionId) {
  * @returns {Promise<{response: string, shouldEscalate: boolean, isResolved: boolean}>}
  */
 export async function chat(sessionId, division, userMessage) {
-  // Check if user is responding to "solved?" question
-  if (isUnresolved(userMessage, sessionId)) {
-    return {
-      response: `Permasalahan ini memerlukan penanganan lebih lanjut oleh Engineer ICT.\n\nSilakan tekan tombol **Hubungi Engineer** untuk menghubungi engineer melalui WhatsApp.`,
-      shouldEscalate: true,
-      isResolved: false
-    };
-  }
+  // Urutan solusi: bila solusi pertama belum berhasil, tawarkan solusi
+  // berikutnya lebih dulu. Eskalasi ke engineer hanya setelah seluruh
+  // solusi pada basis pengetahuan dicoba.
+  const percobaanSebelumnya = countSolutionsGiven(sessionId);
+  const belumBerhasil = isUnresolved(userMessage, sessionId);
 
-  if (isResolved(userMessage, sessionId)) {
+  // Pemeriksaan "belum berhasil" WAJIB didahulukan daripada "sudah berhasil".
+  // Kalimat seperti "belum berhasil" memuat kata "berhasil", sehingga bila
+  // urutannya dibalik, jawaban penolakan justru terbaca sebagai keberhasilan.
+  if (belumBerhasil) {
+    if (percobaanSebelumnya >= MAX_SOLUTION_ATTEMPTS) {
+      return {
+        response: `Seluruh langkah penyelesaian yang tersedia sudah dicoba, namun kendala Anda belum teratasi.\n\nPermasalahan ini memerlukan penanganan lebih lanjut oleh Engineer ICT. Silakan tekan tombol **Hubungi Engineer** untuk menghubungi engineer melalui WhatsApp.`,
+        shouldEscalate: true,
+        isResolved: false
+      };
+    }
+    // Belum mencapai batas: lanjut ke bawah untuk menawarkan solusi berikutnya.
+  } else if (isResolved(userMessage, sessionId)) {
     return {
-      response: `Senang mendengar permasalahan sudah berhasil diselesaikan.\n\nJika ada permasalahan lain, jangan ragu untuk menghubungi kami kembali. Terima kasih telah menggunakan **AI Helpdesk ICT** Pertamina EP.`,
+      response: `Terima kasih. Kami senang kendala Anda telah teratasi.\n\nApabila ada kendala lain di kemudian hari, jangan ragu untuk menghubungi kami kembali melalui **SIGAP AI**.`,
       shouldEscalate: false,
       isResolved: true
     };
   }
 
+  // Balasan "belum" tidak memuat kata kunci apa pun untuk dicari. Karena itu
+  // pencarian tetap memakai keluhan awal pengguna agar dokumen yang diambil
+  // tetap sesuai masalahnya.
+  const keluhanAwal = getFirstUserMessage(sessionId) || userMessage;
+  const kueriPencarian = belumBerhasil ? keluhanAwal : userMessage;
+
   // Step 1: Retrieve relevant knowledge chunks
   let contextChunks = [];
   try {
-    contextChunks = await search(userMessage, division, 3);
+    contextChunks = await search(kueriPencarian, division, 3);
   } catch (error) {
     console.warn('⚠️ Knowledge base search failed:', error.message);
   }
 
   // Step 2: Build system prompt with context
-  const systemPrompt = buildSystemPrompt(division, contextChunks);
+  const nomorSolusi = belumBerhasil ? percobaanSebelumnya + 1 : 1;
+  const systemPrompt = buildSystemPrompt(division, contextChunks, nomorSolusi);
 
   // Step 3: Get conversation history
   const history = getChatMessages(sessionId);
@@ -331,33 +498,42 @@ export async function chat(sessionId, division, userMessage) {
   // Add current user message
   messages.push({ role: 'user', content: userMessage });
 
-  // Step 4: Generate response via NVIDIA NIM
+  // Step 4: Hasilkan jawaban — coba penyedia utama dahulu, lalu cadangan
   try {
-    if (!process.env.NVIDIA_API_KEY) {
-      throw new Error('NVIDIA_API_KEY belum diisi di file .env');
-    }
-
     let aiResponse;
     try {
-      aiResponse = await streamChat(CHAT_MODEL, messages);
-    } catch (primaryError) {
-      console.warn(`⚠️ Model utama (${CHAT_MODEL}) gagal: ${primaryError.message}`);
-      console.warn(`   Mencoba model cadangan: ${FALLBACK_MODEL}`);
-      aiResponse = await streamChat(FALLBACK_MODEL, messages);
+      aiResponse = await streamChat(PRIMARY, messages);
+    } catch (galatUtama) {
+      console.warn(`⚠️ Penyedia utama (${PRIMARY.nama} · ${PRIMARY.model}) gagal: ${galatUtama.message}`);
+      console.warn(`   Beralih ke cadangan: ${FALLBACK.nama} · ${FALLBACK.model}`);
+      aiResponse = await streamChat(FALLBACK, messages);
+      console.warn('   Jawaban dihasilkan oleh penyedia cadangan.');
     }
 
-    // Check if the AI itself suggests escalation
-    const mentionsEngineer = aiResponse.toLowerCase().includes('hubungi engineer') ||
-      aiResponse.toLowerCase().includes('engineer ict') ||
-      aiResponse.toLowerCase().includes('masalah berat');
+    // Deteksi apakah jawaban ini benar-benar sebuah eskalasi.
+    //
+    // Sekadar menyebut "Engineer ICT" tidak cukup: hampir semua langkah
+    // penyelesaian masalah RINGAN diakhiri saran cadangan seperti "bila masih
+    // bermasalah, laporkan kepada Engineer ICT". Bila itu ikut dianggap
+    // eskalasi, tombol Hubungi Engineer muncul pada hampir setiap jawaban dan
+    // pengguna terdorong melewati langkah perbaikan yang sudah diberikan.
+    //
+    // Karena itu pencocokan dilakukan pada frasa khas jawaban kategori BERAT.
+    const lower = aiResponse.toLowerCase();
+    const isEscalation =
+      lower.includes('kategori berat') ||
+      lower.includes('masalah berat') ||
+      lower.includes('memerlukan penanganan langsung oleh engineer') ||
+      lower.includes('memerlukan penanganan lebih lanjut oleh engineer') ||
+      lower.includes('silakan tekan tombol');
 
     return {
       response: aiResponse,
-      shouldEscalate: mentionsEngineer,
+      shouldEscalate: isEscalation,
       isResolved: false
     };
   } catch (error) {
-    console.error('❌ NVIDIA chat error:', error.message);
+    console.error('❌ Ollama chat error:', error.message);
 
     // If the LLM is not available, try to give a basic response from KB
     if (contextChunks.length > 0) {

@@ -4,33 +4,33 @@ import { DivisionIcon, IconLan, IconCctv, IconArrowRight, IconMenu, IconClose } 
 const NAV_LINKS = [
   { href: '#layanan', label: 'Layanan' },
   { href: '#cara-kerja', label: 'Cara Kerja' },
-  { href: '#dukungan', label: 'Dukungan' }
+  { href: '#dukungan', label: 'Bantuan' }
 ];
 
 const STEPS = [
   {
     no: '01',
     tone: 'blue',
-    title: 'Pilih Divisi',
-    desc: 'Tentukan layanan ICT yang bermasalah — printer, jaringan, CCTV, radio, dan lainnya.'
+    title: 'Lengkapi Data & Pilih Layanan',
+    desc: 'Isi data pelapor, kemudian pilih divisi layanan ICT yang sedang mengalami kendala.'
   },
   {
     no: '02',
     tone: 'green',
-    title: 'Ceritakan Kendala',
-    desc: 'Tulis gejalanya dengan bahasa sehari-hari. AI membaca konteks dan basis pengetahuan internal.'
+    title: 'Sampaikan Kendala',
+    desc: 'Uraikan keluhan Anda. SIGAP AI menganalisis berdasarkan basis pengetahuan internal Field Lirik.'
   },
   {
     no: '03',
     tone: 'red',
-    title: 'Terapkan Solusi',
-    desc: 'Dapat langkah perbaikan runut. Belum tuntas? Eskalasi ke engineer lewat WhatsApp.'
+    title: 'Terima Solusi atau Eskalasi',
+    desc: 'Ikuti langkah penanganan yang diberikan. Bila belum tuntas, laporan diteruskan ke engineer terkait melalui WhatsApp.'
   }
 ];
 
 const PREVIEW = [
-  { role: 'user', text: 'Printer di ruang admin nyala tapi hasil cetaknya bergaris.' },
-  { role: 'ai', text: 'Indikasi head printer kotor atau cartridge menipis. Coba tiga langkah ini dulu…' }
+  { role: 'user', text: 'Printer di ruang admin menyala, tetapi hasil cetaknya bergaris.' },
+  { role: 'ai', text: 'Kemungkinan head printer kotor atau tinta menipis. Silakan coba tiga langkah berikut.' }
 ];
 
 export default function Landing({ divisions = [], onStart, onPickDivision }) {
@@ -50,7 +50,7 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
     <div className="landing" id="landing">
       {/* ── Navigasi ───────────────────────────────── */}
       <nav className="lp-nav">
-        <a className="lp-brand" href="#landing" aria-label="AI Helpdesk ICT Pertamina EP">
+        <a className="lp-brand" href="#landing" aria-label="SIGAP AI — Layanan ICT Pertamina EP Field Lirik">
           <img
             src="/logo-pertamina-ep.svg"
             alt="Pertamina EP"
@@ -58,8 +58,8 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
           />
           <span className="lp-brand-divider" aria-hidden="true" />
           <span className="lp-brand-text">
-            <strong>Helpdesk ICT</strong>
-            <small>FIELD LIRIK</small>
+            <strong>SIGAP AI</strong>
+            <small>LAYANAN ICT · FIELD LIRIK</small>
           </span>
         </a>
 
@@ -70,7 +70,7 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
         </div>
 
         <button className="btn btn-primary btn-sm lp-nav-cta" onClick={onStart} id="nav-start-btn">
-          Mulai Chat
+          Mulai Pengaduan
         </button>
 
         <button
@@ -103,31 +103,32 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
         <div className="lp-hero-copy">
           <span className="lp-badge">
             <i className="lp-badge-dot" />
-            Asisten AI · Aktif 24 jam
+            Siap Melayani 24 Jam
           </span>
 
           <h1 className="lp-title">
-            Kendala ICT beres
+            Penanganan Kendala ICT
             <br />
-            <span className="accent-text">tanpa antre tiket.</span>
+            <span className="accent-text">yang Sigap dan Tepat.</span>
           </h1>
 
           <p className="lp-sub">
-            Asisten berbasis AI untuk seluruh pekerja Pertamina EP Asset 1 Regional 1
-            Field Lirik. Jelaskan masalahnya, dapatkan panduan teknis bertahap, dan
-            eskalasi ke engineer hanya bila benar-benar perlu.
+            SIGAP AI membantu seluruh pekerja Pertamina EP Asset 1 Regional 1 Field
+            Lirik menyelesaikan kendala layanan ICT. Sampaikan keluhan Anda, ikuti
+            panduan penanganan bertahap, dan bila diperlukan, laporan diteruskan
+            langsung kepada engineer terkait.
           </p>
 
           <div className="lp-cta-row">
             <button className="btn btn-primary" onClick={onStart} id="hero-start-btn">
-              Mulai Percakapan
+              Mulai Pengaduan
               <span className="btn-arrow"><IconArrowRight size={17} /></span>
             </button>
             <a className="btn btn-ghost" href="#cara-kerja">Lihat Cara Kerja</a>
           </div>
 
           <p className="lp-note">
-            Tanpa instalasi · Riwayat percakapan tersimpan · Eskalasi WhatsApp sekali klik
+            Tanpa instalasi · Data laporan tercatat · Terhubung ke engineer melalui WhatsApp
           </p>
         </div>
 
@@ -137,9 +138,9 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
             <div className="lp-preview-top">
               <span className="lp-preview-avatar">AI</span>
               <div>
-                <div className="lp-preview-name">AI Helpdesk ICT</div>
+                <div className="lp-preview-name">SIGAP AI</div>
                 <div className="lp-preview-status">
-                  <i className="dot-live" /> membalas dalam hitungan detik
+                  <i className="dot-live" /> siap membantu Anda
                 </div>
               </div>
             </div>
@@ -158,7 +159,7 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
             <span className="chip-ico"><IconLan size={19} /></span>
             <div>
               <b>LAN Gedung B</b>
-              <em>terselesaikan · 4 langkah</em>
+              <em>selesai · 4 langkah</em>
             </div>
           </div>
 
@@ -166,7 +167,7 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
             <span className="chip-ico"><IconCctv size={19} /></span>
             <div>
               <b>CCTV Gate 2</b>
-              <em>dieskalasi ke engineer</em>
+              <em>diteruskan ke engineer</em>
             </div>
           </div>
         </div>
@@ -179,16 +180,16 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
           <span>Divisi layanan ICT</span>
         </div>
         <div className="lp-stat">
-          <strong>24/7</strong>
-          <span>Selalu siap merespons</span>
+          <strong>3</strong>
+          <span>Area operasi Field Lirik</span>
         </div>
         <div className="lp-stat">
-          <strong>&lt; 5<i>dtk</i></strong>
-          <span>Rata-rata waktu jawab</span>
+          <strong>24<i>jam</i></strong>
+          <span>Layanan setiap hari</span>
         </div>
         <div className="lp-stat">
           <strong>1<i>klik</i></strong>
-          <span>Eskalasi ke engineer</span>
+          <span>Terhubung ke engineer</span>
         </div>
       </section>
 
@@ -197,11 +198,11 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
         <div className="lp-section-head">
           <span className="lp-eyebrow">LAYANAN</span>
           <h2 className="lp-h2">
-            Delapan divisi, <span className="accent-text">satu pintu masuk.</span>
+            Delapan divisi ICT, <span className="accent-text">satu kanal layanan.</span>
           </h2>
           <p className="lp-section-sub">
-            Pilih kategori yang paling mendekati kendalamu — percakapan langsung
-            diarahkan ke basis pengetahuan divisi tersebut.
+            Pilih kategori yang paling sesuai dengan kendala Anda. Setiap laporan
+            langsung diarahkan ke basis pengetahuan divisi terkait.
           </p>
         </div>
 
@@ -227,7 +228,7 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
         <div className="lp-section-head">
           <span className="lp-eyebrow">CARA KERJA</span>
           <h2 className="lp-h2">
-            Dari keluhan ke solusi, <span className="accent-text">tiga langkah.</span>
+            Dari keluhan ke solusi, <span className="accent-text">dalam tiga langkah.</span>
           </h2>
         </div>
 
@@ -247,13 +248,14 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
       <section className="lp-cta" id="dukungan">
         <div className="lp-cta-inner">
           <div>
-            <h2 className="lp-cta-title">Ada kendala ICT sekarang?</h2>
+            <h2 className="lp-cta-title">Sedang mengalami kendala ICT?</h2>
             <p className="lp-cta-sub">
-              Mulai percakapan — engineer tetap siaga bila AI belum menemukan solusinya.
+              Sampaikan sekarang. Engineer kami siap membantu apabila diperlukan
+              penanganan lebih lanjut.
             </p>
           </div>
           <button className="btn btn-primary btn-lg" onClick={onStart} id="cta-start-btn">
-            Mulai Percakapan
+            Mulai Pengaduan
             <span className="btn-arrow"><IconArrowRight size={17} /></span>
           </button>
         </div>
@@ -263,7 +265,7 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
       <footer className="lp-footer">
         <div className="lp-footer-rule" aria-hidden="true" />
         <div className="lp-footer-text">
-          <p>AI HELPDESK ICT · PT PERTAMINA EP ASSET 1 REGIONAL 1 FIELD LIRIK</p>
+          <p>SIGAP AI · PT PERTAMINA EP ASSET 1 REGIONAL 1 FIELD LIRIK</p>
           <p>Fungsi ICT · Untuk penggunaan internal perusahaan</p>
         </div>
       </footer>

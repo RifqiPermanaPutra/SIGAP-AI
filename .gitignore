@@ -4,8 +4,10 @@ node_modules/
 # Build output
 dist/
 
-# Data & database lokal (berisi sesi & data pelapor — jangan diunggah)
-data/
+# Basis data lokal (berisi sesi & data pelapor — jangan diunggah).
+# Garis miring di depan membatasi pola ini pada folder data/ di akar proyek
+# saja. Tanpa itu, folder src/data/ yang berisi kode ikut terabaikan.
+/data/
 
 # Environment — RAHASIA. Berisi API key. JANGAN pernah di-commit.
 .env

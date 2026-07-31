@@ -1,8 +1,8 @@
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
+import Markdown from './Markdown.jsx';
 import { IconUser } from './Icons.jsx';
 
-export default function ChatMessage({ role, content, time }) {
+function ChatMessage({ role, content, time }) {
   const isUser = role === 'user';
 
   return (
@@ -13,30 +13,14 @@ export default function ChatMessage({ role, content, time }) {
 
       <div>
         <div className={`message-bubble ${isUser ? 'user' : 'ai'}`}>
-          {isUser ? (
-            <p>{content}</p>
-          ) : (
-            <ReactMarkdown
-              components={{
-                // Custom renderers for clean markdown output
-                p: ({ children }) => <p>{children}</p>,
-                strong: ({ children }) => <strong>{children}</strong>,
-                em: ({ children }) => <em>{children}</em>,
-                ul: ({ children }) => <ul>{children}</ul>,
-                ol: ({ children }) => <ol>{children}</ol>,
-                li: ({ children }) => <li>{children}</li>,
-                code: ({ children }) => <code>{children}</code>,
-                h1: ({ children }) => <h3>{children}</h3>,
-                h2: ({ children }) => <h3>{children}</h3>,
-                h3: ({ children }) => <h3>{children}</h3>,
-              }}
-            >
-              {content}
-            </ReactMarkdown>
-          )}
+          {isUser ? <p>{content}</p> : <Markdown>{content}</Markdown>}
         </div>
         {time && <div className="message-time">{time}</div>}
       </div>
     </div>
   );
 }
+
+// Isi pesan tidak pernah berubah setelah dikirim, sehingga penggambaran ulang
+// seluruh riwayat setiap ada pesan baru tidak diperlukan.
+export default React.memo(ChatMessage);

@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import compression from 'compression';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -14,11 +15,30 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
+//
+// Kompresi harus dipasang sebelum penyajian berkas statis. Tanpa ini, berkas
+// JavaScript terkirim utuh sekitar 440 KB meskipun peramban meminta gzip;
+// dengan kompresi, yang berpindah hanya sekitar 130 KB.
+app.use(compression());
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '1mb' }));
 
 // Serve static frontend files (after build)
-app.use(express.static(path.join(__dirname, 'dist')));
+//
+// Nama berkas hasil build memuat sidik jari isi (misalnya index-B8L8w8uq.js),
+// sehingga aman disimpan peramban dalam jangka panjang. Berkas index.html
+// tidak boleh ikut disimpan agar pengguna selalu memperoleh versi terbaru.
+app.use(
+  express.static(path.join(__dirname, 'dist'), {
+    maxAge: '1y',
+    etag: true,
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith('index.html')) {
+        res.setHeader('Cache-Control', 'no-cache');
+      }
+    }
+  })
+);
 
 // API Routes
 app.use('/api/chat', chatRouter);

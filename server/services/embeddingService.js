@@ -1,46 +1,38 @@
 /**
  * Embedding Service
- * Generates vector embeddings via NVIDIA NIM (OpenAI-compatible endpoint).
+ * Menghasilkan vektor embedding melalui Ollama yang berjalan di komputer lokal.
  *
- * CATATAN PENTING — input_type:
- * Model retrieval NVIDIA bersifat asimetris: dokumen yang disimpan harus
- * di-embed sebagai "passage", sedangkan pertanyaan pengguna sebagai "query".
- * Menyamakan keduanya tidak memunculkan error, tetapi menurunkan akurasi
- * pencarian secara diam-diam.
+ * Ollama menyediakan endpoint yang kompatibel dengan OpenAI di
+ * http://localhost:11434/v1, sehingga SDK OpenAI tetap dapat dipakai.
+ *
+ * Model yang dipakai: bge-m3 (multilingual, 1024 dimensi). Model ini dipilih
+ * karena kuat untuk Bahasa Indonesia — model embedding yang hanya baik untuk
+ * bahasa Inggris membuat pencarian SOP meleset tanpa memunculkan galat apa pun.
  */
 import OpenAI from 'openai';
 
-const BASE_URL = process.env.NVIDIA_BASE_URL || 'https://integrate.api.nvidia.com/v1';
-const EMBED_MODEL = process.env.NVIDIA_EMBED_MODEL || 'nvidia/nv-embedqa-e5-v5';
+const BASE_URL = process.env.OLLAMA_BASE_URL || 'http://localhost:11434/v1';
+const EMBED_MODEL = process.env.OLLAMA_EMBED_MODEL || 'bge-m3';
 
-// Batas aman jumlah teks per permintaan ke endpoint embedding
-const BATCH_SIZE = 32;
+// Batas aman jumlah teks per permintaan
+const BATCH_SIZE = 16;
 
 const client = new OpenAI({
   baseURL: BASE_URL,
-  apiKey: process.env.NVIDIA_API_KEY
+  // Ollama tidak memeriksa kunci, tetapi SDK OpenAI menolak nilai kosong.
+  apiKey: process.env.OLLAMA_API_KEY || 'ollama'
 });
 
 /**
- * Panggil endpoint embedding NVIDIA
+ * Kirim permintaan embedding ke Ollama
  * @param {string[]} input - Daftar teks
- * @param {'query'|'passage'} inputType - Peran teks dalam pencarian
  * @returns {Promise<number[][]>}
  */
-async function requestEmbeddings(input, inputType) {
-  if (!process.env.NVIDIA_API_KEY) {
-    throw new Error('NVIDIA_API_KEY belum diisi di file .env');
-  }
-
+async function requestEmbeddings(input) {
   const response = await client.embeddings.create({
     model: EMBED_MODEL,
     input,
-    encoding_format: 'float',
-    // Parameter khusus NIM di luar spesifikasi OpenAI. Pada SDK Node keduanya
-    // ditaruh langsung di sini — `extra_body` hanya berlaku untuk SDK Python
-    // dan akan ditolak endpoint dengan galat 400 extra_forbidden.
-    input_type: inputType,
-    truncate: 'END'
+    encoding_format: 'float'
   });
 
   return response.data.map((d) => d.embedding);
@@ -49,39 +41,37 @@ async function requestEmbeddings(input, inputType) {
 /**
  * Generate embedding untuk satu teks
  * @param {string} text - Teks yang di-embed
- * @param {'query'|'passage'} inputType - Default 'query' (pertanyaan pengguna)
  * @returns {Promise<number[]>} - Vektor embedding
  */
-export async function embed(text, inputType = 'query') {
+export async function embed(text) {
   try {
-    const [vector] = await requestEmbeddings([text], inputType);
+    const [vector] = await requestEmbeddings([text]);
     return vector;
   } catch (error) {
     console.error('❌ Embedding error:', error.message);
-    throw new Error(`Failed to generate embedding: ${error.message}`);
+    throw new Error(`Gagal membuat embedding: ${error.message}`);
   }
 }
 
 /**
  * Generate embedding untuk banyak teks sekaligus
  * @param {string[]} texts - Daftar teks
- * @param {'query'|'passage'} inputType - Default 'passage' (dokumen knowledge base)
  * @returns {Promise<number[][]>} - Daftar vektor embedding
  */
-export async function embedBatch(texts, inputType = 'passage') {
+export async function embedBatch(texts) {
   try {
     const results = [];
 
-    // Dipecah agar tidak melebihi batas permintaan endpoint
+    // Dipecah agar permintaan tidak terlalu besar untuk server lokal
     for (let i = 0; i < texts.length; i += BATCH_SIZE) {
       const slice = texts.slice(i, i + BATCH_SIZE);
-      results.push(...(await requestEmbeddings(slice, inputType)));
+      results.push(...(await requestEmbeddings(slice)));
     }
 
     return results;
   } catch (error) {
     console.error('❌ Batch embedding error:', error.message);
-    throw new Error(`Failed to generate batch embeddings: ${error.message}`);
+    throw new Error(`Gagal membuat embedding massal: ${error.message}`);
   }
 }
 

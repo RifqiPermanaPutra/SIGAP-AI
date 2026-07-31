@@ -43,8 +43,9 @@ async function main() {
     }
   } catch (error) {
     console.error('❌ Ingestion failed:', error.message);
-    console.log('\n💡 Tip: Pastikan NVIDIA_API_KEY sudah diisi di file .env');
-    console.log(`   Model embedding: ${process.env.NVIDIA_EMBED_MODEL || 'nvidia/nv-embedqa-e5-v5'}`);
+    console.log('\n💡 Tip: Pastikan Ollama sedang berjalan (jalankan: ollama serve)');
+    console.log(`   Model embedding: ${process.env.OLLAMA_EMBED_MODEL || 'bge-m3'}`);
+    console.log('   Bila model belum ada, jalankan: ollama pull bge-m3');
     console.log('\n   Knowledge base tersimpan tanpa embedding (pencarian kata kunci dipakai sebagai fallback).');
   }
 

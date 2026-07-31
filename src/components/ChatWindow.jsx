@@ -67,9 +67,9 @@ export default function ChatWindow({
       {messages.length === 0 ? (
         <div className="empty-state">
           <div className="empty-state-icon"><IconHeadset size={30} /></div>
-          <h2 className="empty-state-title">Selamat Datang</h2>
+          <h2 className="empty-state-title">SIGAP AI</h2>
           <p className="empty-state-desc">
-            AI Helpdesk ICT siap membantu Anda menyelesaikan permasalahan ICT.
+            Siap membantu Anda menyelesaikan kendala layanan ICT di Field Lirik.
           </p>
         </div>
       ) : (

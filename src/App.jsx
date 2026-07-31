@@ -70,7 +70,7 @@ export default function App() {
       setSessionId('local-' + Date.now());
       setMessages([{
         role: 'assistant',
-        content: `Selamat datang di **AI Helpdesk ICT** Pertamina EP Asset 1 Regional 1 Field Lirik.\n\nSaya siap membantu Anda menyelesaikan permasalahan ICT. Silakan pilih **divisi layanan** yang ingin Anda tanyakan terlebih dahulu.`,
+        content: `Selamat datang di **SIGAP AI**, layanan bantuan ICT Pertamina EP Asset 1 Regional 1 Field Lirik.\n\nSaya siap membantu menyelesaikan kendala ICT Anda. Silakan pilih **layanan** yang ingin dilaporkan terlebih dahulu.`,
         time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
       }]);
       setDivision(null);
@@ -115,7 +115,7 @@ export default function App() {
       const sapaan = namaDepan ? `Baik, ${namaDepan}. ` : 'Baik. ';
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: `${sapaan}Anda memilih layanan **${selectedDivision.name}**.\n\nSilakan ceritakan kendala yang Anda alami — sedetail mungkin akan lebih membantu. Saya siap memandu langkah demi langkah. 😊`,
+        content: `${sapaan}Anda memilih layanan **${selectedDivision.name}**.\n\nSilakan uraikan kendala yang Anda alami. Semakin lengkap keterangannya, semakin cepat kami dapat membantu.`,
         time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
       }]);
     }
@@ -297,7 +297,7 @@ export default function App() {
         `Layanan: ${division?.name || 'ICT'}`,
         keluhan ? `Keluhan: ${keluhan}` : null,
         '',
-        'Permasalahan ini belum dapat diselesaikan melalui AI Helpdesk ICT.'
+        'Kendala ini belum dapat diselesaikan melalui SIGAP AI.'
       // Hanya buang baris null (data kosong); string kosong sengaja
       // dipertahankan sebagai baris pemisah agar pesan mudah dibaca.
       ].filter((baris) => baris !== null).join('\n')
@@ -340,8 +340,8 @@ export default function App() {
         disabled={!division}
         placeholder={
           !division
-            ? 'Pilih divisi layanan terlebih dahulu...'
-            : 'Ketik permasalahan Anda di sini...'
+            ? 'Silakan pilih layanan terlebih dahulu…'
+            : 'Tuliskan kendala Anda di sini…'
         }
       />
 

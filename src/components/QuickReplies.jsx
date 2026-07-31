@@ -54,7 +54,7 @@ export default function QuickReplies({ divisionId, onPick, disabled }) {
 
   return (
     <div className="quick-replies" id="quick-replies">
-      <p className="quick-replies-label">Keluhan yang sering ditanyakan</p>
+      <p className="quick-replies-label">Kendala yang sering dilaporkan</p>
       <div className="quick-replies-list">
         {items.map((text) => (
           <button

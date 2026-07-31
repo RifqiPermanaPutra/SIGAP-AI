@@ -37,7 +37,16 @@ const DIVISIONS = {
  * @param {number} overlap - Overlap between chunks in characters
  * @returns {string[]} - Array of text chunks
  */
-function chunkText(text, chunkSize = 500, overlap = 50) {
+// Dokumen SOP sudah terbagi rapi per masalah menggunakan penanda "## ".
+// Batas 5000 karakter dipilih agar satu masalah tetap menjadi SATU potongan,
+// termasuk seluruh bagian Solusi Pertama sampai Solusi Ketiga. Blok terbesar
+// saat ini sekitar 3300 karakter, sehingga masih tersedia ruang bila engineer
+// menambahkan solusi baru.
+//
+// Batas yang terlalu kecil membuat "Solusi Ketiga" terlempar ke potongan
+// terpisah yang tidak lagi memuat judul masalahnya, sehingga saat pengguna
+// menyatakan cara sebelumnya gagal, solusi lanjutannya tidak dapat ditemukan.
+function chunkText(text, chunkSize = 5000, overlap = 50) {
   const chunks = [];
   const sections = text.split(/\n## /);
 
@@ -107,8 +116,7 @@ export async function ingestDocument(division, filePath) {
   // Generate embeddings in batch
   let embeddings;
   try {
-    // Dokumen KB di-embed sebagai 'passage' (lihat catatan di embeddingService)
-    embeddings = await embedBatch(chunks, 'passage');
+    embeddings = await embedBatch(chunks);
   } catch (error) {
     console.warn(`   ⚠️ Embedding gagal: ${error.message}. Disimpan tanpa embedding.`);
     embeddings = chunks.map(() => []);
@@ -206,8 +214,7 @@ export async function search(query, division, topK = 3) {
   }
 
   try {
-    // Pertanyaan pengguna di-embed sebagai 'query', bukan 'passage'
-    const queryEmbedding = await embed(query, 'query');
+    const queryEmbedding = await embed(query);
 
     // Calculate similarities
     const scored = chunks

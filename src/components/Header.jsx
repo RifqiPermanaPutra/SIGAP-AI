@@ -25,7 +25,7 @@ export default function Header({ division, reporter, onNewChat, onBack }) {
 
       <div className="header-info">
         <h1 className="header-title">
-          AI Helpdesk ICT
+          SIGAP AI
           {division && (
             <span className="division-badge">
               <DivisionIcon id={division.id} size={14} />

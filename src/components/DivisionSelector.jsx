@@ -30,9 +30,9 @@ export default function DivisionSelector({ divisions, onSelect, onBack, onClose 
 
         <Stepper current={2} />
 
-        <h2 className="division-modal-title">Layanan apa yang bermasalah?</h2>
+        <h2 className="division-modal-title">Pilih Layanan yang Bermasalah</h2>
         <p className="division-modal-subtitle">
-          Pilih satu kategori yang paling mendekati kendala Anda.
+          Pilih satu kategori yang paling sesuai dengan kendala Anda.
         </p>
 
         <div className="division-grid" id="division-grid">
@@ -56,7 +56,7 @@ export default function DivisionSelector({ divisions, onSelect, onBack, onClose 
         {onBack && (
           <button type="button" className="division-back" onClick={onBack} id="division-back">
             <IconArrowLeft size={16} />
-            Kembali ubah data
+            Kembali ke data pelapor
           </button>
         )}
       </div>
