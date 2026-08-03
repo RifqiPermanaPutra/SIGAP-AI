@@ -1,13 +1,11 @@
 import React from 'react';
-import { DivisionIcon, IconClose, IconArrowLeft } from './Icons.jsx';
-import Stepper from './Stepper.jsx';
+import { DivisionIcon, IconClose } from './Icons.jsx';
 
 /**
- * Pemilihan layanan ICT — langkah 2 dari 2.
- *  - onBack  : kembali mengubah data pelapor (kontrol & kebebasan pengguna)
+ * Pemilihan layanan ICT — langkah pertama sebelum menyampaikan kendala.
  *  - onClose : keluar ke beranda
  */
-export default function DivisionSelector({ divisions, onSelect, onBack, onClose }) {
+export default function DivisionSelector({ divisions, onSelect, onClose }) {
   return (
     <div className="division-overlay" onClick={onClose} id="division-overlay">
       <div
@@ -28,7 +26,6 @@ export default function DivisionSelector({ divisions, onSelect, onBack, onClose 
           </button>
         )}
 
-        <Stepper current={2} />
 
         <h2 className="division-modal-title">Pilih Layanan yang Bermasalah</h2>
         <p className="division-modal-subtitle">
@@ -53,12 +50,6 @@ export default function DivisionSelector({ divisions, onSelect, onBack, onClose 
           ))}
         </div>
 
-        {onBack && (
-          <button type="button" className="division-back" onClick={onBack} id="division-back">
-            <IconArrowLeft size={16} />
-            Kembali ke data pelapor
-          </button>
-        )}
       </div>
     </div>
   );

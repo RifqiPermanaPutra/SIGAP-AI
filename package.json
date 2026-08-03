@@ -1,7 +1,7 @@
 {
   "name": "ai-helpdesk-ict",
   "version": "1.0.0",
-  "description": "AI Helpdesk ICT - Pertamina EP Asset 1 Regional 1 Field Lirik",
+  "description": "SIGAP AI - Layanan bantuan ICT Pertamina EP Field Lirik (berbasis data SOP, tanpa AI)",
   "type": "module",
   "scripts": {
     "dev": "node server.js",
@@ -9,23 +9,26 @@
     "build": "vite build",
     "preview": "vite preview",
     "start": "node server.js",
-    "ingest": "node scripts/ingest.js"
+    "build:kb": "node scripts/build-kb.js",
+    "akun": "node scripts/akun.js",
+    "test": "node tests/jalankan.mjs"
   },
   "keywords": [
     "helpdesk",
     "ict",
     "pertamina",
-    "ai",
-    "rag"
+    "sop"
   ],
   "author": "Pertamina EP Asset 1 Regional 1 Field Lirik",
   "license": "ISC",
+  "engines": {
+    "node": ">=22.5.0"
+  },
   "dependencies": {
     "compression": "^1.8.1",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "openai": "^6.48.0"
+    "express": "^5.2.1"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.0.3",

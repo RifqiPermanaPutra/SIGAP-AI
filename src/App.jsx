@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Header from './components/Header.jsx';
 import ChatWindow from './components/ChatWindow.jsx';
 import ChatInput from './components/ChatInput.jsx';
@@ -20,9 +20,6 @@ export default function App() {
   const [showEngineerBtn, setShowEngineerBtn] = useState(false);
   const [config, setConfig] = useState(null);
 
-  // Divisi yang dipilih dari kartu landing sebelum data pelapor terisi;
-  // diterapkan setelah formulir pendataan dikirim.
-  const pendingDivisionRef = useRef(null);
 
   // Load config on mount
   useEffect(() => {
@@ -34,14 +31,14 @@ export default function App() {
         setConfig({
           whatsappNumber: '6281234567890',
           divisions: [
-            { id: 'printer', name: 'Printer', description: 'Masalah printer, cetak dokumen' },
-            { id: 'cctv', name: 'CCTV', description: 'Kamera pengawas, DVR/NVR' },
-            { id: 'telepon', name: 'Telepon', description: 'Telepon kantor, extension' },
-            { id: 'radio', name: 'Radio Komunikasi', description: 'Radio HT, repeater' },
-            { id: 'windows', name: 'Windows', description: 'Laptop, PC, sistem operasi' },
-            { id: 'fttp', name: 'FTTP', description: 'Fiber to the premise, ONU' },
-            { id: 'lan', name: 'LAN', description: 'Jaringan lokal, kabel LAN' },
-            { id: 'wan', name: 'WAN', description: 'Jaringan luas, koneksi antar site' }
+            { id: 'printer', name: 'Printer', description: 'Masalah printer, cetak dokumen', mode: 'swalayan' },
+            { id: 'windows', name: 'Windows', description: 'Laptop, PC, sistem operasi', mode: 'swalayan' },
+            { id: 'cctv', name: 'CCTV', description: 'Kamera pengawas, DVR/NVR', mode: 'engineer' },
+            { id: 'telepon', name: 'Telepon', description: 'Telepon kantor, extension', mode: 'engineer' },
+            { id: 'radio', name: 'Radio Komunikasi', description: 'Radio HT, repeater', mode: 'engineer' },
+            { id: 'fttp', name: 'FTTP', description: 'Fiber to the premise, ONU', mode: 'engineer' },
+            { id: 'lan', name: 'LAN', description: 'Jaringan lokal, kabel LAN', mode: 'engineer' },
+            { id: 'wan', name: 'WAN', description: 'Jaringan luas, koneksi antar site', mode: 'engineer' }
           ]
         });
       });
@@ -121,30 +118,21 @@ export default function App() {
     }
   };
 
-  // Masuk ke tampilan chat dari landing.
-  // Data pelapor didahulukan; pemilihan divisi baru terbuka setelahnya.
+  // Masuk ke tampilan chat dari landing, langsung ke pemilihan layanan.
+  // Data pelapor tidak diminta di sini, melainkan nanti saat kendala benar-benar
+  // perlu diteruskan ke engineer.
   const handleStart = () => {
     setView('chat');
-    if (!reporter) {
-      setShowIntake(true);
-    } else if (!division) {
-      setShowDivisionSelector(true);
-    }
+    if (!division) setShowDivisionSelector(true);
   };
 
-  // Pilih divisi langsung dari kartu layanan di landing.
-  // Bila data pelapor belum ada, tahan pilihan itu sampai formulir terisi.
+  // Pilih layanan langsung dari kartu di landing
   const handleLandingDivision = (selectedDivision) => {
     setView('chat');
-    if (!reporter) {
-      pendingDivisionRef.current = selectedDivision;
-      setShowIntake(true);
-    } else {
-      handleDivisionSelect(selectedDivision);
-    }
+    handleDivisionSelect(selectedDivision);
   };
 
-  // Kirim data pelapor dari formulir pendataan
+  // Kirim formulir pelaporan, lalu buka WhatsApp engineer
   const handleIntakeSubmit = async (data) => {
     setReporter(data);
     setShowIntake(false);
@@ -157,39 +145,30 @@ export default function App() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ sessionId, reporter: data })
         });
+        await fetch(`${API_BASE}/chat/escalate`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId })
+        });
       } catch (e) {
-        // Silent fail — data pelapor tetap tersimpan di sisi klien
+        // Silent fail — pengaduan tetap dapat diteruskan lewat WhatsApp
       }
     }
 
-    const pending = pendingDivisionRef.current;
-    pendingDivisionRef.current = null;
-
-    if (pending) {
-      handleDivisionSelect(pending);
-    } else {
-      setShowDivisionSelector(true);
-    }
+    bukaWhatsApp(data);
   };
 
-  // Tutup formulir pendataan (tombol silang) → batal, kembali ke beranda
+  // Batalkan pelaporan — kembali ke percakapan, bukan ke beranda,
+  // agar pengguna tidak kehilangan riwayat percakapannya.
   const handleIntakeClose = () => {
     setShowIntake(false);
-    pendingDivisionRef.current = null;
-    setView('landing');
   };
 
-  // Tutup pemilihan divisi (tombol silang). Bila belum ada divisi terpilih,
-  // keluar ke beranda; bila sudah ada, cukup menutup dan tetap di percakapan.
+  // Tutup pemilihan layanan. Bila belum ada layanan terpilih, keluar ke beranda;
+  // bila sudah ada, cukup menutup dan tetap di percakapan.
   const handleDivisionClose = () => {
     setShowDivisionSelector(false);
     if (!division) setView('landing');
-  };
-
-  // Kembali dari pemilihan layanan ke formulir data (untuk mengoreksi isian)
-  const handleDivisionBack = () => {
-    setShowDivisionSelector(false);
-    setShowIntake(true);
   };
 
   // Send message
@@ -256,20 +235,17 @@ export default function App() {
     startNewSession();
   };
 
-  // Handle engineer contact
-  const handleEngineerContact = async () => {
-    if (sessionId) {
-      try {
-        await fetch(`${API_BASE}/chat/escalate`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ sessionId })
-        });
-      } catch (e) {
-        // Silent fail
-      }
-    }
+  // Tombol "Hubungi Engineer" kini membuka formulir pelaporan terlebih dahulu.
+  // Data pelapor baru diminta pada titik ini, saat memang dibutuhkan engineer.
+  const handleEngineerContact = () => {
+    setShowIntake(true);
+  };
 
+  /**
+   * Susun pesan WhatsApp dan buka aplikasinya.
+   * @param {{nama:string, fungsi:string, lokasi:string, urgensi:string}} data
+   */
+  const bukaWhatsApp = (data) => {
     // Setiap divisi punya engineer sendiri. Nomor divisi diutamakan; nomor
     // umum hanya dipakai bila divisi tersebut belum didaftarkan nomornya.
     const waNumber = division?.whatsappNumber || config?.whatsappNumber;
@@ -277,7 +253,7 @@ export default function App() {
     if (!waNumber) {
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: 'Maaf, nomor WhatsApp engineer untuk divisi ini belum terdaftar. Silakan laporkan ke Fungsi ICT agar nomor engineer divisi ditambahkan.',
+        content: 'Maaf, nomor WhatsApp engineer untuk layanan ini belum terdaftar. Silakan laporkan ke Fungsi ICT agar nomor engineer ditambahkan.',
         time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
       }]);
       return;
@@ -291,10 +267,11 @@ export default function App() {
       [
         `Halo Engineer ${division?.name || 'ICT'}, saya membutuhkan bantuan lanjutan.`,
         '',
-        reporter?.nama ? `Nama: ${reporter.nama}` : null,
-        reporter?.fungsi ? `Fungsi/Divisi: ${reporter.fungsi}` : null,
-        reporter?.lokasi ? `Lokasi: ${reporter.lokasi}` : null,
+        data?.nama ? `Nama: ${data.nama}` : null,
+        data?.fungsi ? `Fungsi/Divisi: ${data.fungsi}` : null,
+        data?.lokasi ? `Lokasi: ${data.lokasi}` : null,
         `Layanan: ${division?.name || 'ICT'}`,
+        data?.urgensi ? `Tingkat Urgensi: ${data.urgensi}` : null,
         keluhan ? `Keluhan: ${keluhan}` : null,
         '',
         'Kendala ini belum dapat diselesaikan melalui SIGAP AI.'
@@ -357,7 +334,6 @@ export default function App() {
         <DivisionSelector
           divisions={config.divisions}
           onSelect={handleDivisionSelect}
-          onBack={reporter ? handleDivisionBack : undefined}
           onClose={handleDivisionClose}
         />
       )}

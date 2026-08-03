@@ -56,6 +56,14 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
             alt="Pertamina EP"
             className="lp-brand-logo"
           />
+          {/* Logo unit SATU-IT SIGAP. Bila berkasnya belum tersedia, elemen
+              disembunyikan agar tidak memunculkan ikon gambar rusak. */}
+          <img
+            src="/logo-satu-it-sigap.png"
+            alt="SATU-IT SIGAP"
+            className="lp-brand-logo-unit"
+            onError={(e) => { e.currentTarget.style.display = 'none'; }}
+          />
           <span className="lp-brand-divider" aria-hidden="true" />
           <span className="lp-brand-text">
             <strong>SIGAP AI</strong>

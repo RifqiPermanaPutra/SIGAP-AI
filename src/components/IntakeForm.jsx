@@ -1,22 +1,27 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { IconArrowRight, IconClose, IconCheck } from './Icons.jsx';
-import Stepper from './Stepper.jsx';
+import { IconArrowRight, IconClose, IconCheck, IconWhatsapp } from './Icons.jsx';
 import { LOKASI_GROUPS } from '../data/lokasi.js';
 import { FUNGSI_LIST } from '../data/fungsi.js';
+import { URGENSI_LIST } from '../data/urgensi.js';
 
 /**
- * Formulir pendataan pelapor — langkah 1 dari 2, sebelum memilih layanan.
+ * Formulir pendataan pelapor — ditampilkan saat kendala akan diteruskan
+ * kepada Engineer ICT, bukan di awal percakapan.
+ *
+ * Alasan penempatan: sebagian besar kendala selesai di percakapan. Meminta
+ * data di awal membebani semua pengguna demi sebagian kecil yang benar-benar
+ * memerlukan engineer. Data baru diminta ketika memang dibutuhkan.
  *
  * Prinsip IMK yang diterapkan:
- *  - Pencegahan galat  : validasi per-kolom, tombol lanjut terkunci
+ *  - Pencegahan galat  : validasi per-kolom, tombol kirim terkunci
  *  - Pemulihan galat    : pesan spesifik di kolom yang kosong
  *  - Recognition        : contoh isian pada placeholder + tanda centang saat valid
- *  - Efisiensi          : fokus otomatis, tekan Enter untuk lanjut
- *  - Kontrol pengguna   : dapat ditutup (kembali ke beranda)
+ *  - Efisiensi          : fokus otomatis
+ *  - Kontrol pengguna   : dapat dibatalkan, kembali ke percakapan
  *
- * @param {object}   props.initial  Nilai awal (untuk mengedit data yang sudah ada)
- * @param {function} props.onSubmit Dipanggil dengan { nama, fungsi, lokasi }
- * @param {function} props.onClose  Menutup formulir
+ * @param {object}   props.initial  Nilai awal (bila pengguna mengoreksi isian)
+ * @param {function} props.onSubmit Dipanggil dengan { nama, fungsi, lokasi, urgensi }
+ * @param {function} props.onClose  Menutup formulir dan kembali ke percakapan
  */
 const FIELDS = [
   {
@@ -47,6 +52,13 @@ const FIELDS = [
     placeholder: '— Pilih lokasi Anda —',
     hint: 'Pilih lokasi Anda di Field Lirik',
     error: 'Lokasi wajib dipilih.'
+  },
+  {
+    key: 'urgensi',
+    type: 'urgensi',
+    label: 'Tingkat Urgensi Kendala',
+    hint: 'Pilih sesuai dampak kendala terhadap pekerjaan Anda',
+    error: 'Tingkat urgensi wajib dipilih.'
   }
 ];
 
@@ -54,7 +66,8 @@ export default function IntakeForm({ initial, onSubmit, onClose }) {
   const [values, setValues] = useState({
     nama: initial?.nama || '',
     fungsi: initial?.fungsi || '',
-    lokasi: initial?.lokasi || ''
+    lokasi: initial?.lokasi || '',
+    urgensi: initial?.urgensi || ''
   });
   const [touched, setTouched] = useState({});
   const firstFieldRef = useRef(null);
@@ -75,16 +88,16 @@ export default function IntakeForm({ initial, onSubmit, onClose }) {
     if (!allValid) {
       // Tandai semua kolom agar galat yang tersisa langsung terlihat,
       // lalu arahkan fokus ke kolom kosong pertama (pemulihan galat).
-      setTouched({ nama: true, fungsi: true, lokasi: true });
+      // Daftar kolom diturunkan dari FIELDS agar tidak tertinggal saat ada
+      // kolom baru ditambahkan.
+      setTouched(Object.fromEntries(FIELDS.map((f) => [f.key, true])));
       const firstEmpty = FIELDS.find((f) => !isFilled(f.key));
       if (firstEmpty) document.getElementById(`intake-${firstEmpty.key}`)?.focus();
       return;
     }
-    onSubmit({
-      nama: values.nama.trim(),
-      fungsi: values.fungsi.trim(),
-      lokasi: values.lokasi.trim()
-    });
+    // Nilai dikumpulkan dari FIELDS, bukan disebut satu per satu, supaya
+    // kolom baru otomatis ikut terkirim.
+    onSubmit(Object.fromEntries(FIELDS.map((f) => [f.key, values[f.key].trim()])));
   };
 
   return (
@@ -100,20 +113,18 @@ export default function IntakeForm({ initial, onSubmit, onClose }) {
             type="button"
             className="modal-close"
             onClick={onClose}
-            aria-label="Tutup dan kembali ke beranda"
+            aria-label="Batalkan dan kembali ke percakapan"
             id="intake-close"
           >
             <IconClose size={18} />
           </button>
         )}
 
-        <Stepper current={1} />
-
         <div className="intake-head">
-          <h2 className="intake-title">Data Pelapor</h2>
+          <h2 className="intake-title">Data Pelaporan ke Engineer</h2>
           <p className="intake-sub">
-            Mohon lengkapi data berikut sebelum menyampaikan pengaduan. Data ini
-            membantu engineer mengenali dan menindaklanjuti laporan Anda.
+            Kendala Anda akan diteruskan kepada Engineer ICT. Mohon lengkapi
+            data berikut agar engineer dapat menindaklanjuti dengan tepat.
           </p>
         </div>
 
@@ -128,7 +139,38 @@ export default function IntakeForm({ initial, onSubmit, onClose }) {
                   {f.label} <span className="req" aria-hidden="true">*</span>
                 </label>
                 <div className={`intake-input-wrap ${showError ? 'has-error' : ''} ${filled ? 'is-valid' : ''}`}>
-                  {f.type === 'select' ? (
+                  {f.type === 'urgensi' ? (
+                    // Ditampilkan sebagai pilihan berkartu, bukan dropdown, agar
+                    // keterangan tiap tingkat terbaca langsung. Tanpa keterangan,
+                    // pelapor cenderung selalu memilih tingkat tertinggi.
+                    <div
+                      className="urgensi-grid"
+                      role="radiogroup"
+                      aria-label={f.label}
+                      id={`intake-${f.key}`}
+                    >
+                      {URGENSI_LIST.map((u) => {
+                        const dipilih = values[f.key] === u.nilai;
+                        return (
+                          <button
+                            type="button"
+                            key={u.nilai}
+                            role="radio"
+                            aria-checked={dipilih}
+                            className={`urgensi-opsi tingkat-${u.nilai.toLowerCase()} ${dipilih ? 'terpilih' : ''}`}
+                            onClick={() => { setField(f.key, u.nilai); markTouched(f.key); }}
+                            id={`urgensi-${u.nilai.toLowerCase()}`}
+                          >
+                            <span className="urgensi-titik" aria-hidden="true" />
+                            <span className="urgensi-teks">
+                              <span className="urgensi-nama">{u.nilai}</span>
+                              <span className="urgensi-ket">{u.keterangan}</span>
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ) : f.type === 'select' ? (
                     <select
                       className={`intake-select ${filled ? '' : 'is-placeholder'}`}
                       value={values[f.key]}
@@ -187,17 +229,18 @@ export default function IntakeForm({ initial, onSubmit, onClose }) {
 
           <button
             type="submit"
-            className="btn btn-primary intake-submit"
+            className="btn intake-submit intake-kirim-wa"
             disabled={!allValid}
             id="intake-submit"
           >
-            Lanjut Pilih Layanan
+            <IconWhatsapp size={18} />
+            Kirim ke Engineer
             <span className="btn-arrow"><IconArrowRight size={17} /></span>
           </button>
         </form>
 
         <p className="intake-foot">
-          Pertamina EP Asset 1 Regional 1 · Field Lirik
+          Setelah dikirim, aplikasi WhatsApp akan terbuka berisi data dan keluhan Anda.
         </p>
       </div>
     </div>

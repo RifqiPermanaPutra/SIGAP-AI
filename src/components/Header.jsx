@@ -19,8 +19,15 @@ export default function Header({ division, reporter, onNewChat, onBack }) {
         <IconArrowLeft size={18} />
       </button>
 
-      <div className="header-logo-container" id="logo-container" aria-label="Pertamina EP Logo">
-        <img src="/logo-pertamina-ep.svg" alt="Pertamina EP Logo" className="pertamina-logo-img" />
+      <div className="header-logo-container" id="logo-container" aria-label="Pertamina EP dan SATU-IT SIGAP">
+        <img src="/logo-pertamina-ep.svg" alt="Pertamina EP" className="pertamina-logo-img" />
+        {/* Disembunyikan otomatis bila berkas logonya belum tersedia */}
+        <img
+          src="/logo-satu-it-sigap.png"
+          alt="SATU-IT SIGAP"
+          className="satu-it-logo-img"
+          onError={(e) => { e.currentTarget.style.display = 'none'; }}
+        />
       </div>
 
       <div className="header-info">

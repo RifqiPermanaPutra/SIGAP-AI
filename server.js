@@ -6,13 +6,20 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { chatRouter } from './server/routes/chat.js';
 import { kbRouter } from './server/routes/knowledgebase.js';
-import { initDatabase } from './server/database/init.js';
+import { authRouter } from './server/routes/auth.js';
+import { rekapRouter } from './server/routes/rekap.js';
+import { initDatabase, tandaiSesiTerbengkalai } from './server/database/init.js';
+import { siapkanAkunAwal } from './server/services/authService.js';
+import { DIVISIONS, nomorEngineer } from './server/config/divisi.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Batas diam sebelum sebuah sesi dianggap ditinggalkan penggunanya.
+const MENIT_SESI_TERBENGKALAI = Number(process.env.MENIT_SESI_TERBENGKALAI || 30);
 
 // Middleware
 //
@@ -43,6 +50,8 @@ app.use(
 // API Routes
 app.use('/api/chat', chatRouter);
 app.use('/api/kb', kbRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/rekap', rekapRouter);
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -53,49 +62,15 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Daftar divisi layanan ICT.
-// Setiap divisi punya engineer penanggung jawab sendiri, sehingga nomor
-// WhatsApp-nya diambil dari variabel lingkungan masing-masing. Bila belum
-// diisi, eskalasi jatuh ke WHATSAPP_DEFAULT agar pengaduan tidak buntu.
-const DIVISIONS = [
-  { id: 'printer', name: 'Printer', description: 'Masalah printer, cetak dokumen', env: 'WHATSAPP_PRINTER' },
-  { id: 'cctv', name: 'CCTV', description: 'Kamera pengawas, DVR/NVR', env: 'WHATSAPP_CCTV' },
-  { id: 'telepon', name: 'Telepon', description: 'Telepon kantor, extension', env: 'WHATSAPP_TELEPON' },
-  { id: 'radio', name: 'Radio Komunikasi', description: 'Radio HT, repeater', env: 'WHATSAPP_RADIO' },
-  { id: 'windows', name: 'Windows', description: 'Laptop, PC, sistem operasi', env: 'WHATSAPP_WINDOWS' },
-  { id: 'fttp', name: 'FTTP', description: 'Fiber to the premise, ONU', env: 'WHATSAPP_FTTP' },
-  { id: 'lan', name: 'LAN', description: 'Jaringan lokal, kabel LAN', env: 'WHATSAPP_LAN' },
-  { id: 'wan', name: 'WAN', description: 'Jaringan luas, koneksi antar site', env: 'WHATSAPP_WAN' }
-];
-
-/**
- * Normalkan nomor telepon ke format yang diterima wa.me.
- *
- * wa.me menuntut kode negara tanpa '+', sedangkan di lapangan nomor lazim
- * ditulis '0812-3456-789' atau '+62 812 3456 789'. Tanpa penyeragaman ini,
- * awalan '0' akan terkirim apa adanya dan tautan WhatsApp gagal dibuka.
- */
-function normalkanNomor(input) {
-  const digit = String(input || '').replace(/[^0-9]/g, '');
-  if (!digit) return '';
-  if (digit.startsWith('62')) return digit;      // sudah berkode negara
-  if (digit.startsWith('0')) return '62' + digit.slice(1); // 08xx → 628xx
-  if (digit.startsWith('8')) return '62' + digit;          // 8xx  → 628xx
-  return digit;                                   // nomor luar negeri
-}
-
-/** Nomor WhatsApp engineer untuk sebuah divisi, dengan cadangan nomor umum */
-function nomorEngineer(envKey) {
-  const fallback = process.env.WHATSAPP_DEFAULT || process.env.WHATSAPP_NUMBER || '';
-  return normalkanNomor((process.env[envKey] || '').trim() || fallback);
-}
-
 // Config endpoint (safe public config for frontend)
 app.get('/api/config', (req, res) => {
-  const divisions = DIVISIONS.map(({ id, name, description, env }) => ({
+  const divisions = DIVISIONS.map(({ id, name, description, env, mode }) => ({
     id,
     name,
     description,
+    // Menentukan alur di antarmuka: 'swalayan' melewati langkah SOP lebih
+    // dulu, 'engineer' langsung menuju formulir pelapor.
+    mode,
     whatsappNumber: nomorEngineer(env),
     // Menandai divisi yang belum punya nomor sendiri, berguna untuk audit
     usingFallback: !(process.env[env] || '').trim()
@@ -119,6 +94,18 @@ async function start() {
   try {
     await initDatabase();
     console.log('✅ Database initialized');
+
+    await siapkanAkunAwal();
+
+    // Sesi yang ditinggalkan pengguna di tengah jalan tidak akan pernah
+    // menutup dirinya sendiri. Tanpa penyapuan berkala, statusnya bertahan
+    // 'aktif' selamanya dan seluruh perhitungan rekap ikut salah.
+    const sapuSesi = () => {
+      const jumlah = tandaiSesiTerbengkalai(MENIT_SESI_TERBENGKALAI);
+      if (jumlah > 0) console.log(`🧹 ${jumlah} sesi ditandai ditinggalkan`);
+    };
+    sapuSesi();
+    setInterval(sapuSesi, 5 * 60 * 1000).unref();
 
     app.listen(PORT, () => {
       console.log(`

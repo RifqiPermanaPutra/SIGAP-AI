@@ -9,6 +9,12 @@ dist/
 # saja. Tanpa itu, folder src/data/ yang berisi kode ikut terabaikan.
 /data/
 
+# Berkas SQLite beserta berkas pendampingnya (-wal, -shm), berjaga-jaga bila
+# DB_PATH diarahkan ke luar folder data/. Isinya nama pegawai asli.
+*.db
+*.db-wal
+*.db-shm
+
 # Environment — RAHASIA. Berisi API key. JANGAN pernah di-commit.
 .env
 .env.local

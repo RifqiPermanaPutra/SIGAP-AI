@@ -169,8 +169,8 @@ button {
   z-index: 40;
   display: flex;
   align-items: center;
-  gap: 32px;
-  padding: 15px clamp(20px, 5vw, 64px);
+  gap: 12px;
+  padding: 11px 16px;
   background: linear-gradient(100deg, var(--pt-blue-dark) 0%, var(--pt-blue-mid) 55%, var(--pt-blue) 100%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 2px 14px rgba(7, 63, 111, 0.22);
@@ -188,7 +188,7 @@ button {
     var(--pt-red) 66% 100%);
 }
 
-.lp-brand { display: flex; align-items: center; gap: 14px; margin-right: auto; }
+.lp-brand { display: flex; align-items: center; gap: 10px; min-height: 44px; margin-right: auto; }
 
 /* PENTING — berkas logo ini adalah varian untuk LATAR GELAP: di dalamnya
    wordmark "PERTAMINA" digambar dengan fill #ffffff (lihat komentar pada
@@ -196,10 +196,22 @@ button {
    gelap. Menaruhnya di atas bidang putih membuat tulisan PERTAMINA lenyap,
    menyisakan emblem dan "EP" saja. Jangan beri latar terang di belakangnya. */
 .lp-brand-logo {
-  height: 34px;
+  height: 27px;
   width: auto;
   display: block;
   flex-shrink: 0;
+}
+
+/* Logo unit SATU-IT SIGAP, diletakkan berdampingan dengan logo Pertamina EP.
+   Berlatar terang, sehingga diberi alas putih agar terbaca di navbar biru. */
+.lp-brand-logo-unit {
+  height: 30px;
+  width: auto;
+  display: block;
+  flex-shrink: 0;
+  padding: 3px 7px;
+  background: #fff;
+  border-radius: 7px;
 }
 
 .lp-brand-divider {
@@ -211,19 +223,22 @@ button {
 
 .lp-brand-text { display: flex; flex-direction: column; line-height: 1.3; }
 .lp-brand-text strong {
-  font-size: 1.05rem;
+  font-size: 0.94rem;
   font-weight: 700;
   letter-spacing: -0.015em;
   color: #fff;
 }
+/* Pada layar tersempit keterangan merek disembunyikan agar navbar tidak
+   membungkus jadi dua baris; dimunculkan kembali mulai 401px. */
 .lp-brand-text small {
-  font-size: 0.76rem;
+  display: none;
+  font-size: 0.68rem;
   color: rgba(255, 255, 255, 0.85);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   font-weight: 600;
 }
 
-.lp-nav-links { display: flex; gap: 30px; }
+.lp-nav-links { display: none; gap: 30px; }
 .lp-nav-links a {
   font-size: 0.94rem;
   font-weight: 500;
@@ -236,6 +251,7 @@ button {
 
 /* Tombol ajakan pada navbar dibalik warnanya agar menonjol di atas biru */
 .lp-nav-cta {
+  display: none;
   background: #fff;
   color: var(--pt-blue-dark);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
@@ -244,9 +260,10 @@ button {
 
 /* Menu mobile */
 .lp-nav-toggle {
-  display: none;
+  display: grid;
   place-items: center;
-  width: 40px; height: 40px;
+  /* 44px — sasaran sentuh minimum menurut panduan antarmuka sentuh */
+  width: 44px; height: 44px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.35);
   color: #fff;
@@ -259,7 +276,7 @@ button {
      membungkus), sehingga laci akan meleset dari navbar ketika digulir. */
   position: relative;
   z-index: 39;
-  display: none;
+  display: flex;
   flex-direction: column;
   gap: 2px;
   padding: 10px clamp(20px, 5vw, 64px) 20px;
@@ -285,7 +302,7 @@ button {
    ================================================ */
 .lp-hero {
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
+  grid-template-columns: 1fr;
   gap: clamp(32px, 6vw, 80px);
   align-items: center;
   max-width: 1200px;
@@ -315,7 +332,7 @@ button {
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
 
 .lp-title {
-  font-size: clamp(2.3rem, 5.4vw, 3.9rem);
+  font-size: 2rem;
   line-height: 1.08;
   font-weight: 800;
   letter-spacing: -0.035em;
@@ -329,12 +346,23 @@ button {
   margin-bottom: 34px;
 }
 
-.lp-cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 22px; }
+/* Tombol utama melebar penuh di ponsel agar mudah dijangkau ibu jari */
+.lp-cta-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.lp-cta-row .btn { width: 100%; }
 
 .lp-note { font-size: 0.82rem; color: var(--ink-4); }
 
 /* Pratinjau percakapan */
-.lp-hero-visual { position: relative; }
+/* Dibatasi lebarnya selama pratinjau masih ditumpuk di bawah teks hero;
+   batas dilepas begitu tata letak menjadi dua kolom. */
+.lp-hero-visual { position: relative; max-width: 520px; }
 
 .lp-preview {
   background: var(--surface);
@@ -403,9 +431,11 @@ button {
 }
 
 /* Kartu mengambang */
+/* Lencana melayang di sekitar pratinjau. Disembunyikan di ponsel karena
+   posisinya absolut di luar tepi kartu — di layar sempit ia menimpa isi. */
 .lp-chip {
   position: absolute;
-  display: flex; align-items: center; gap: 11px;
+  display: none; align-items: center; gap: 11px;
   padding: 12px 16px;
   background: var(--surface);
   border: 1px solid var(--line);
@@ -413,8 +443,8 @@ button {
   box-shadow: var(--sh-md);
   animation: float 5.5s ease-in-out infinite;
 }
-.chip-a { top: -22px; left: -34px; }
-.chip-b { bottom: -26px; right: -18px; animation-delay: 1.6s; }
+.chip-a { top: -22px; left: -12px; }
+.chip-b { bottom: -26px; right: -6px; animation-delay: 1.6s; }
 .lp-chip .chip-ico {
   display: grid; place-items: center;
   width: 32px; height: 32px;
@@ -442,13 +472,16 @@ button {
    ================================================ */
 .lp-stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   max-width: 1000px;
   margin: 0 auto;
   padding: 0 clamp(20px, 5vw, 64px);
 }
 .lp-stats > * { padding: 26px 20px; text-align: center; border-right: 1px solid var(--line); }
 .lp-stats > *:last-child { border-right: none; }
+/* Susunan 2×2: kolom kanan tidak bergaris tepi, baris atas bergaris bawah */
+.lp-stats > *:nth-child(2) { border-right: none; }
+.lp-stats > *:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
 .lp-stat strong {
   display: block;
   font-size: 1.85rem;
@@ -502,7 +535,7 @@ button {
 .lp-service {
   position: relative;
   text-align: left;
-  padding: 24px 22px;
+  padding: 20px 18px;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
@@ -554,12 +587,15 @@ button {
 .lp-steps {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: 1fr;
+  gap: 34px;
   max-width: 1020px;
   margin: 0 auto;
 }
+/* Garis penghubung antar langkah hanya bermakna saat langkahnya berjajar
+   mendatar; saat menumpuk ke bawah, garis ini justru melintang asal. */
 .lp-steps-rail {
+  display: none;
   position: absolute;
   top: 30px; left: 12%; right: 12%;
   height: 2px;
@@ -595,8 +631,9 @@ button {
 .lp-cta-inner {
   position: relative;
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 28px;
   max-width: 1080px;
@@ -616,6 +653,7 @@ button {
   background: radial-gradient(circle, rgba(172, 196, 42, 0.4) 0%, transparent 66%);
   pointer-events: none;
 }
+.lp-cta .btn-lg { width: 100%; }
 .lp-cta-title { font-size: clamp(1.4rem, 2.8vw, 2rem); font-weight: 800; letter-spacing: -0.03em; }
 .lp-cta-sub { margin-top: 8px; color: rgba(255, 255, 255, 0.82); font-size: 0.96rem; }
 .lp-cta .btn-primary {
@@ -629,7 +667,9 @@ button {
 /* ================================================
    Footer
    ================================================ */
-.lp-footer { padding: 0 clamp(20px, 5vw, 64px) 44px; }
+/* env(safe-area-inset-bottom) menjaga isi tidak tertutup bilah gestur
+   pada perangkat berponi */
+.lp-footer { padding: 0 clamp(20px, 5vw, 64px) calc(36px + env(safe-area-inset-bottom)); }
 .lp-footer-rule {
   max-width: 1080px;
   margin: 0 auto 20px;
@@ -657,7 +697,8 @@ button {
   margin: 0 auto;
   width: 100%;
   background: var(--surface);
-  border-inline: 1px solid var(--line-2);
+  /* Garis tepi hanya bermakna saat wadah lebih sempit dari layar */
+  border-inline: none;
 }
 
 /* Header */
@@ -682,7 +723,7 @@ button {
 
 .header-back {
   display: grid; place-items: center;
-  width: 38px; height: 38px;
+  width: 44px; height: 44px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.32);
   color: #fff;
@@ -692,8 +733,12 @@ button {
 }
 .header-back:hover { background: rgba(255, 255, 255, 0.14); border-color: rgba(255, 255, 255, 0.5); }
 
-.header-logo-container { display: flex; align-items: center; flex-shrink: 0; }
+.header-logo-container { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
 .pertamina-logo-img { height: 34px; width: auto; display: block; }
+.satu-it-logo-img {
+  height: 28px; width: auto; display: block;
+  padding: 3px 6px; background: #fff; border-radius: 6px;
+}
 
 .header-info { flex: 1; min-width: 0; }
 .header-title {
@@ -710,13 +755,16 @@ button {
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: var(--r-full);
 }
+/* Keterangan tambahan pada kepala percakapan disembunyikan di ponsel —
+   ruangnya diperlukan untuk nama layanan dan tombol. */
 .header-subtitle {
+  display: none;
   font-size: 0.76rem; color: rgba(255, 255, 255, 0.8);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
 .header-status {
-  display: inline-flex; align-items: center; gap: 7px;
+  display: none; align-items: center; gap: 7px;
   padding: 6px 13px;
   font-size: 0.76rem; font-weight: 600;
   color: #fff;
@@ -732,7 +780,7 @@ button {
 
 .header-new-chat {
   display: grid; place-items: center;
-  width: 38px; height: 38px;
+  width: 44px; height: 44px;
   border-radius: 10px;
   background: #fff;
   color: var(--pt-blue-dark); font-size: 1rem;
@@ -788,9 +836,9 @@ button {
 .message-avatar.user { background: var(--surface); border: 1px solid var(--line); color: var(--ink-2); }
 
 .message-bubble {
-  padding: 13px 17px;
+  padding: 12px 15px;
   border-radius: 16px;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   line-height: 1.6;
   max-width: 100%;
   box-shadow: var(--sh-xs);
@@ -827,7 +875,8 @@ button {
 /* Saran keluhan cepat */
 .quick-replies {
   margin-top: 4px;
-  padding-left: 45px;
+  /* Di ponsel tidak ada ruang untuk menjajarkan dengan awal gelembung */
+  padding-left: 0;
   animation: rise 320ms ease both;
 }
 .quick-replies-label {
@@ -838,10 +887,11 @@ button {
   color: var(--ink-4);
   margin-bottom: 9px;
 }
-.quick-replies-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.quick-replies-list { display: flex; flex-direction: column; align-items: stretch; flex-wrap: wrap; gap: 8px; }
 
 .quick-reply {
-  padding: 9px 15px;
+  text-align: left;
+  padding: 13px 16px;
   font-size: 0.85rem;
   font-weight: 500;
   color: var(--pt-blue-dark);
@@ -910,7 +960,8 @@ button {
 
 /* Input */
 .chat-input-area {
-  padding: 14px clamp(16px, 3vw, 28px) 16px;
+  /* Area sentuh input menempel di bawah layar — hormati area aman perangkat */
+  padding: 14px clamp(16px, 3vw, 28px) calc(14px + env(safe-area-inset-bottom));
   border-top: 1px solid var(--line);
   background: var(--surface);
 }
@@ -933,7 +984,9 @@ button {
 .chat-input {
   width: 100%;
   border: none; outline: none; resize: none; background: transparent;
-  font: inherit; font-size: 0.92rem;
+  /* 16px wajib: iOS memperbesar halaman otomatis bila font kolom isian
+     lebih kecil dari itu, dan halaman tidak pernah kembali ke skala semula */
+  font: inherit; font-size: 16px;
   color: var(--ink);
   max-height: 120px;
   line-height: 1.55;
@@ -943,7 +996,7 @@ button {
 
 .chat-send-btn {
   display: grid; place-items: center;
-  width: 44px; height: 44px;
+  width: 48px; height: 48px;
   border-radius: 14px;
   background: linear-gradient(135deg, var(--pt-blue), var(--pt-blue-dark));
   color: #fff; font-size: 1rem;
@@ -971,8 +1024,10 @@ button {
 .division-overlay,
 .intake-overlay {
   position: fixed; inset: 0; z-index: 90;
-  display: grid; place-items: center;
-  padding: 20px;
+  /* Di ponsel modal tampil sebagai lembar bawah — lebih dekat ke ibu jari
+     dan tidak terdorong papan ketik saat kolom isian disentuh. */
+  display: grid; place-items: end center;
+  padding: 0;
   background: rgba(16, 23, 37, 0.42);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
@@ -994,11 +1049,12 @@ button {
 /* ── Formulir pendataan pelapor ──────────────────── */
 .intake-modal {
   position: relative;
-  width: 100%; max-width: 460px;
+  width: 100%; max-width: 100%;
   max-height: 90vh; overflow-y: auto;
   padding: clamp(22px, 4vw, 32px);
+  padding-bottom: calc(24px + env(safe-area-inset-bottom));
   background: var(--surface);
-  border-radius: var(--r-xl);
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
   box-shadow: var(--sh-lg);
   animation: rise 280ms ease both;
 }
@@ -1073,6 +1129,63 @@ button {
   pointer-events: none;
 }
 
+/* ── Pilihan tingkat urgensi ─────────────────────────────────────── */
+.urgensi-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  width: 100%;
+}
+
+.urgensi-opsi {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 11px 13px;
+  text-align: left;
+  background: var(--canvas);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  transition: border-color var(--ease), background var(--ease);
+}
+.urgensi-opsi:hover { border-color: #c4dced; }
+
+.urgensi-titik {
+  width: 13px; height: 13px;
+  margin-top: 3px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid var(--ink-4);
+  transition: border-color var(--ease), background var(--ease);
+}
+
+.urgensi-teks { display: flex; flex-direction: column; gap: 2px; }
+.urgensi-nama { font-size: 0.88rem; font-weight: 700; color: var(--ink); }
+.urgensi-ket { font-size: 0.76rem; color: var(--ink-3); line-height: 1.45; }
+
+/* Warna penanda mengikuti tingkat dampaknya, memakai palet korporat */
+.tingkat-rendah.terpilih  { border-color: var(--pt-green-text); background: var(--pt-green-soft); }
+.tingkat-rendah.terpilih  .urgensi-titik { border-color: var(--pt-green-text); background: var(--pt-green-text); }
+.tingkat-sedang.terpilih  { border-color: var(--pt-blue); background: var(--pt-blue-soft); }
+.tingkat-sedang.terpilih  .urgensi-titik { border-color: var(--pt-blue); background: var(--pt-blue); }
+.tingkat-tinggi.terpilih  { border-color: #b8860b; background: #fdf6e3; }
+.tingkat-tinggi.terpilih  .urgensi-titik { border-color: #b8860b; background: #b8860b; }
+.tingkat-kritis.terpilih  { border-color: var(--pt-red-text); background: var(--pt-red-soft); }
+.tingkat-kritis.terpilih  .urgensi-titik { border-color: var(--pt-red-text); background: var(--pt-red-text); }
+
+/* Kolom urgensi memakai kartu, bukan kotak isian, sehingga bingkai galat
+   dan tanda centang bawaan kolom biasa tidak berlaku di sini. */
+.intake-input-wrap:has(.urgensi-grid) { display: block; }
+
+/* Tombol kirim memakai warna WhatsApp karena tujuannya membuka WhatsApp */
+.intake-kirim-wa {
+  background: var(--wa);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.3);
+}
+.intake-kirim-wa:hover:not(:disabled) { background: var(--wa-dark); }
+.intake-kirim-wa:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+
 .intake-field-hint { font-size: 0.76rem; color: var(--ink-4); }
 .intake-field-error {
   font-size: 0.78rem; font-weight: 500; color: var(--pt-red-text);
@@ -1120,16 +1233,17 @@ button {
 
 .division-modal {
   position: relative;
-  width: 100%; max-width: 680px;
-  max-height: 86vh; overflow-y: auto;
+  width: 100%; max-width: 100%;
+  max-height: 90vh; overflow-y: auto;
   padding: clamp(24px, 4vw, 34px);
+  padding-bottom: calc(24px + env(safe-area-inset-bottom));
   background: var(--surface);
-  border-radius: var(--r-xl);
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
   box-shadow: var(--sh-lg);
   animation: rise 280ms ease both;
 }
 .division-modal-title {
-  font-size: 1.4rem; font-weight: 800; letter-spacing: -0.03em;
+  font-size: 1.2rem; font-weight: 800; letter-spacing: -0.03em;
   text-align: center;
 }
 .division-modal-subtitle {
@@ -1137,12 +1251,12 @@ button {
   font-size: 0.88rem; margin: 7px 0 24px;
 }
 
-.division-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 11px; }
+.division-grid { display: grid; grid-template-columns: 1fr; gap: 11px; }
 
 .division-card {
   display: flex; align-items: center; gap: 13px;
   text-align: left;
-  padding: 15px 16px;
+  padding: 14px 15px;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--r-md);
@@ -1166,83 +1280,101 @@ button {
 .division-desc { font-size: 0.76rem; color: var(--ink-3); line-height: 1.45; }
 
 /* ================================================
-   Responsif
+   Responsif — MOBILE-FIRST
+
+   Seluruh aturan di atas ditulis untuk layar ponsel lebih dulu. Blok di
+   bawah ini hanya MENAMBAH ketika layar melebar; tidak ada satu pun
+   `max-width` di berkas ini.
+
+   Alasannya bukan selera. Dengan `min-width`, membaca nilai yang berlaku
+   cukup dengan menelusuri ke bawah dari aturan dasar. Dengan `max-width`,
+   nilai desktop ditulis lebih dulu lalu dianulir satu per satu di layar
+   kecil, sehingga penelusurannya harus mundur melewati beberapa blok.
+
+   Titik henti:
+     dasar        ponsel sempit  (< 401px)
+     >= 401px     ponsel biasa
+     >= 721px     tablet ke atas
+     >= 981px     desktop
    ================================================ */
-@media (max-width: 980px) {
-  .lp-hero { grid-template-columns: 1fr; }
-  .lp-hero-visual { max-width: 520px; }
-  .chip-a { left: -12px; }
-  .chip-b { right: -6px; }
-  .lp-steps { grid-template-columns: 1fr; gap: 34px; }
-  .lp-steps-rail { display: none; }
+
+/* ── >= 401px — ponsel biasa ───────────────────────────────────── */
+@media (min-width: 401px) {
+  .lp-title { font-size: clamp(2.3rem, 5.4vw, 3.9rem); }
+  .lp-brand-text small { display: block; }
+  .lp-service { padding: 24px 22px; }
+  .division-modal-title { font-size: 1.4rem; }
+  .message-bubble { padding: 13px 17px; }
 }
 
-@media (max-width: 720px) {
-  .lp-nav-links { display: none; }
-  .lp-nav-cta { display: none; }
-  .lp-nav-toggle { display: grid; }
-  .lp-nav-drawer { display: flex; }
-  .quick-replies { padding-left: 0; }
-  .quick-replies-list { flex-direction: column; align-items: stretch; }
-  .quick-reply { text-align: left; padding: 13px 16px; }
-  .lp-stats { grid-template-columns: repeat(2, 1fr); }
-  .lp-stats > *:nth-child(2) { border-right: none; }
-  .lp-stats > *:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
-  .lp-cta-inner { flex-direction: column; align-items: flex-start; }
-  .app-container { border-inline: none; }
-  .header-subtitle, .header-status { display: none; }
-  .message-bubble { font-size: 0.9rem; }
-  .lp-chip { display: none; }
+/* ── >= 721px — tablet ke atas ─────────────────────────────────── */
+@media (min-width: 721px) {
+  /* Navbar penuh: tautan tampil, tombol menu laci disembunyikan */
+  .lp-nav { gap: 32px; padding: 15px clamp(20px, 5vw, 64px); }
+  .lp-nav-links { display: flex; }
+  .lp-nav-cta { display: flex; }
+  .lp-nav-toggle { display: none; width: 40px; height: 40px; }
+  .lp-nav-drawer { display: none; }
+  .lp-brand { gap: 14px; min-height: auto; }
+  .lp-brand-logo { height: 34px; }
+  .lp-brand-text strong { font-size: 1.05rem; }
+  .lp-brand-text small { font-size: 0.76rem; letter-spacing: 0.1em; }
 
-  /* Navbar lebih ringkas, tetapi panel logo tetap terbaca */
-  .lp-nav { gap: 12px; padding: 11px 16px; }
-  .lp-brand { gap: 10px; min-height: 44px; }
-  .lp-brand-logo { height: 27px; }
-  .lp-brand-text strong { font-size: 0.94rem; }
-  .lp-brand-text small { font-size: 0.68rem; letter-spacing: 0.08em; }
+  /* Lencana melayang punya ruang untuk keluar dari tepi kartu */
+  .lp-chip { display: flex; }
 
-  /* Tombol utama melebar penuh agar mudah dijangkau ibu jari */
-  .lp-cta-row { flex-direction: column; align-items: stretch; }
-  .lp-cta-row .btn { width: 100%; }
-  .lp-cta .btn-lg { width: 100%; }
+  /* Angka statistik berjajar empat, garis pemisah kembali mendatar saja */
+  .lp-stats { grid-template-columns: repeat(4, 1fr); }
+  .lp-stats > *:nth-child(2) { border-right: 1px solid var(--line); }
+  .lp-stats > *:nth-child(-n+2) { border-bottom: none; }
 
-  /* Area sentuh minimal 44px sesuai panduan antarmuka sentuh */
+  .lp-cta-inner { flex-direction: row; align-items: center; }
+  .lp-cta-row { flex-direction: row; align-items: normal; }
+  .lp-cta-row .btn { width: auto; }
+  .lp-cta .btn-lg { width: auto; }
+  .lp-footer { padding-bottom: 44px; }
+
+  /* Wadah percakapan menyempit dari layar, sehingga garis tepinya bermakna */
+  .app-container { border-inline: 1px solid var(--line-2); }
+  .header-subtitle { display: block; }
+  .header-status { display: inline-flex; }
   .header-back,
-  .header-new-chat { width: 44px; height: 44px; }
-  .chat-send-btn { width: 48px; height: 48px; }
-  .lp-nav-toggle { width: 44px; height: 44px; }
+  .header-new-chat { width: 38px; height: 38px; }
+  .chat-send-btn { width: 44px; height: 44px; }
+  .chat-input { font-size: 0.92rem; }
+  .chat-input-area { padding-bottom: 16px; }
+  .message-bubble { font-size: 0.92rem; }
 
-  /* iOS memperbesar halaman otomatis bila font kolom isian < 16px */
-  .chat-input { font-size: 16px; }
+  .quick-replies { padding-left: 45px; }
+  .quick-replies-list { flex-direction: row; align-items: normal; }
+  .quick-reply { text-align: center; padding: 9px 15px; }
 
-  /* Hormati area aman perangkat berponi saat input menempel di bawah */
-  .chat-input-area {
-    padding-bottom: calc(14px + env(safe-area-inset-bottom));
-  }
-  .lp-footer { padding-bottom: calc(36px + env(safe-area-inset-bottom)); }
-
-  /* Modal divisi & formulir pendataan tampil sebagai lembar bawah di ponsel */
+  /* Modal kembali melayang di tengah, bukan lembar bawah */
   .division-overlay,
-  .intake-overlay { align-items: end; padding: 0; }
-  .division-modal,
-  .intake-modal {
-    max-width: 100%;
-    max-height: 90vh;
-    border-radius: var(--r-xl) var(--r-xl) 0 0;
-    padding-bottom: calc(24px + env(safe-area-inset-bottom));
+  .intake-overlay { place-items: center; padding: 20px; }
+  .division-modal {
+    max-width: 680px;
+    max-height: 86vh;
+    border-radius: var(--r-xl);
+    padding-bottom: clamp(24px, 4vw, 34px);
   }
-  .division-grid { grid-template-columns: 1fr; }
-  .division-card { padding: 14px 15px; }
+  .intake-modal {
+    max-width: 460px;
+    border-radius: var(--r-xl);
+    padding-bottom: clamp(22px, 4vw, 32px);
+  }
+  .division-grid { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+  .division-card { padding: 15px 16px; }
 }
 
-/* Layar ponsel kecil (mis. iPhone SE) */
-@media (max-width: 400px) {
-  .lp-title { font-size: 2rem; }
-  .lp-brand-text small { display: none; }
-  .lp-stats { grid-template-columns: 1fr 1fr; }
-  .lp-service { padding: 20px 18px; }
-  .division-modal-title { font-size: 1.2rem; }
-  .message-bubble { padding: 12px 15px; }
+/* ── >= 981px — desktop ────────────────────────────────────────── */
+@media (min-width: 981px) {
+  .lp-hero { grid-template-columns: 1.05fr 0.95fr; }
+  .lp-hero-visual { max-width: none; }
+  .chip-a { left: -34px; }
+  .chip-b { right: -18px; }
+  .lp-steps { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .lp-steps-rail { display: block; }
 }
 
 /* Pada perangkat sentuh tidak ada kursor, sehingga efek angkat saat hover
