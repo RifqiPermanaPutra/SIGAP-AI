@@ -125,18 +125,55 @@ kelima engineer.
 
 ## 7. Lapis 4 — Penanganan Engineer *(opsional)*
 
-Diisi engineer melalui tombol **"Tandai Selesai"** di halaman rekap.
+Diisi engineer melalui halaman **`/tugas`**, dalam **dua tahap**.
 
 | Kolom | Tipe | Keterangan |
 |---|---|---|
+| `mulai_dikerjakan_pada` | timestamp | Saat engineer mengambil tiket |
+| `dikerjakan_oleh` | teks | Akun engineer yang memegangnya sekarang |
 | `ditangani_pada` | timestamp | Saat engineer menandai tiket tuntas |
 | `ditangani_oleh` | teks | Akun engineer yang menandai |
-| `waktu_tanggap` | angka | Selisih dari `diteruskan_pada` |
+| `waktu_respons` | angka | `diteruskan_pada` → `mulai_dikerjakan_pada` |
+| `lama_kerja` | angka | `mulai_dikerjakan_pada` → `ditangani_pada` |
+| `waktu_tanggap` | angka | `diteruskan_pada` → `ditangani_pada` |
 | `catatan` | teks | Tindakan yang dilakukan (bebas, boleh kosong) |
 
-**Wajib bersifat opsional.** Bila engineer lupa menandai, tiket tetap tercatat
-`diteruskan` dan seluruh rekap tetap benar — hanya `waktu_tanggap` yang kosong.
-Sistem tidak boleh bergantung pada kedisiplinan pengisian.
+### Mengapa dua tahap
+
+Antara laporan berpindah tangan dan kendalanya beres ada jeda nyata: engineer
+membaca WhatsApp, berangkat, memeriksa. Dengan satu tahap, sepanjang jeda itu
+tiketnya terlihat **persis sama** dengan tiket yang belum disentuh siapa pun.
+Akibatnya dua engineer dapat berangkat ke lokasi yang sama, atau justru tidak
+seorang pun berangkat karena masing-masing mengira yang lain sudah jalan.
+
+Pemisahan ini juga memperbaiki angka yang selama ini menyesatkan.
+`waktu_tanggap` mencampur dua hal yang dinilai dengan cara berbeda — seberapa
+sigap engineer **merespons**, dan seberapa sulit **pengerjaannya**. Digabung,
+keduanya tidak terbaca; terpisah, keduanya dapat ditindaklanjuti.
+
+### Aturan kepemilikan
+
+| Keadaan | Yang boleh menutup |
+|---|---|
+| Belum dipegang siapa pun | siapa pun yang berwenang atas layanannya |
+| Dipegang diri sendiri | dirinya sendiri |
+| Dipegang engineer lain | admin, atau siapa pun **setelah mengambil alih** |
+
+Pembatasan per divisi saja tidak cukup: satu divisi tetap berisi beberapa
+engineer, dan yang berangkat ke lokasi hanya satu. Pengambilalihan diizinkan —
+engineer yang dijadwalkan bisa berhalangan, dan tiket yang terkunci pada akun
+yang sedang cuti lebih buruk daripada tiket yang berpindah tangan — tetapi harus
+disengaja. Melepaskan tugas kembali ke antrean selalu tersedia bagi pemegangnya.
+
+Pada pengambilalihan, `mulai_dikerjakan_pada` **tidak** disetel ulang: kolom itu
+mengukur berapa lama laporan menunggu sampai ada engineer pertama yang bergerak.
+
+**Wajib bersifat opsional, dan tahap pertama tidak diwajibkan.** Bila engineer
+lupa menandai, tiket tetap tercatat `diteruskan` dan seluruh rekap tetap benar —
+hanya kolom waktunya yang kosong. Kendala yang beres dalam dua menit pun boleh
+langsung ditandai selesai tanpa melewati tahap pertama; memaksakan dua ketukan
+justru membuat orang berhenti menandai sama sekali. Sistem tidak boleh
+bergantung pada kedisiplinan pengisian.
 
 `waktu_tanggap` adalah satu-satunya ukuran kecepatan penanganan yang sebenarnya,
 dan biasanya yang paling dicari dalam laporan helpdesk.
@@ -150,6 +187,15 @@ dan biasanya yang paling dicari dalam laporan helpdesk.
 | `selesai` | Pengguna menekan "sudah berhasil" | Dilaporkan sendiri oleh pengguna |
 | `diteruskan` | Formulir diisi, tombol WhatsApp ditekan | Terekam sistem |
 | `ditinggalkan` | Tidak ada aktivitas selama 30 menit | Ditetapkan otomatis |
+
+Nilainya tetap **empat** — `aktif`, `selesai`, `diteruskan`, `ditinggalkan`.
+
+**"Sedang dikerjakan" sengaja BUKAN nilai `status` kelima.** Keadaan itu cukup
+diketahui dari terisinya `mulai_dikerjakan_pada` (§7). Menambahkannya ke dalam
+`status` akan mengubah arti `persen_mandiri`, seluruh deret grafik, dan setiap
+saringan status secara diam-diam — semuanya menghitung `diteruskan`, dan tiket
+yang berpindah ke nilai baru akan menghilang dari hitungan tanpa ada yang
+menyadarinya.
 
 ### Dua batasan yang harus dipahami pembaca laporan
 

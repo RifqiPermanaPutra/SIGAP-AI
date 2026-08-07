@@ -137,6 +137,9 @@
 .tk-hasil.tuntas       { border-left-color: var(--pt-green); }
 .tk-hasil.selesai      { border-left-color: var(--pt-green); }
 .tk-hasil.diteruskan   { border-left-color: #eb6834; }
+/* Sudah dipegang engineer tetapi belum ditutup — biru, bukan oranye:
+   keadaan ini kabar baik bagi pelapor, bukan peringatan. */
+.tk-hasil.dikerjakan   { border-left-color: var(--pt-blue); }
 .tk-hasil.aktif        { border-left-color: var(--pt-blue); }
 .tk-hasil.ditinggalkan { border-left-color: var(--ink-4); }
 
@@ -154,6 +157,7 @@
 .tk-hasil.tuntas .tk-lencana,
 .tk-hasil.selesai .tk-lencana { color: var(--pt-green-text); }
 .tk-hasil.diteruskan .tk-lencana { color: #a8410f; }
+.tk-hasil.dikerjakan .tk-lencana { color: var(--pt-blue-text); }
 
 .tk-arti { font-size: 0.86rem; color: var(--ink-2); line-height: 1.6; margin: 0 0 14px; }
 

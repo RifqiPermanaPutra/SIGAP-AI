@@ -2,10 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { DivisionIcon, IconCctv, IconArrowRight, IconMenu, IconClose, IconHeadset } from './Icons.jsx';
 import { LAYANAN_OTOMATIS } from '../data/layananOtomatis.js';
 
+// Tiga tautan pertama menggulir di halaman ini; 'Cek Status' berpindah halaman.
+// Perlu ada di sini karena pelapor yang sudah menutup percakapannya tidak punya
+// jalan lain menuju /tiket selain mengetik alamatnya sendiri.
 const NAV_LINKS = [
   { href: '#layanan', label: 'Layanan' },
   { href: '#cara-kerja', label: 'Cara Kerja' },
-  { href: '#dukungan', label: 'Bantuan' }
+  { href: '#dukungan', label: 'Bantuan' },
+  { href: '/tiket', label: 'Cek Status' }
 ];
 
 // Keterangan langkah harus sesuai alur yang sebenarnya. Sebelumnya langkah 01

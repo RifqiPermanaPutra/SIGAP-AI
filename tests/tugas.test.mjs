@@ -419,6 +419,172 @@ cek('nomor berbentuk salah ditolak sebelum menyentuh basis data',
 cek('nomor yang tidak ada menghasilkan 404',
   (await fetch(`${API}/tiket/SGP-19990101-0001`)).status === 404, 'bukan 404');
 
+bagian('6f. Tahap "sedang dikerjakan"');
+
+// Sebelum tahap ini ada, tiket melompat dari 'diteruskan' langsung ke
+// 'ditangani'. Sepanjang engineer membaca WhatsApp, berangkat, dan memeriksa
+// di lokasi, tiketnya terlihat persis sama dengan tiket yang belum disentuh
+// siapa pun — sehingga dua engineer dapat berangkat ke tempat yang sama, atau
+// tidak seorang pun berangkat karena masing-masing mengira yang lain sudah
+// jalan.
+
+/** Buat satu tiket yang benar-benar sudah berpindah tangan ke engineer */
+async function tiketBaru(divisi, keluhan) {
+  const s = await post('/chat/new', {});
+  await post('/chat/division', { sessionId: s.sessionId, division: divisi });
+  await post('/chat', { sessionId: s.sessionId, message: keluhan });
+  await post('/chat/reporter', {
+    sessionId: s.sessionId,
+    reporter: { nama: 'Uji Tahap', fungsi: 'FM (Field Manager)', lokasi: 'Klinik UKUI', urgensi: 'Sedang' }
+  });
+  await post('/chat/escalate', { sessionId: s.sessionId });
+  return s.nomorTiket;
+}
+
+const cariTugas = async (kuki, nomor) =>
+  (await json('/tugas', kuki)).tugas.find((t) => t.nomor_tiket === nomor);
+
+const T1 = await tiketBaru('printer', 'kertas nyangkut di printer');
+
+cek('tanpa masuk tidak dapat mengambil tugas',
+  (await fetch(`${API}/tugas/mulai`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ nomorTiket: T1 })
+  })).status === 401, 'bukan 401');
+
+const mulai = await kirim('/tugas/mulai', budi, { nomorTiket: T1 });
+cek('engineer dapat menyatakan tiket sedang dikerjakan', mulai.status === 200, mulai.status);
+
+const t1Budi = await cariTugas(budi, T1);
+cek('tiket TETAP ada di daftar tugas — belum selesai, hanya sudah dipegang',
+  Boolean(t1Budi), 'tiket hilang dari daftar');
+cek('pemegangnya tercatat', t1Budi.dikerjakan_oleh === 'budi', t1Budi.dikerjakan_oleh);
+cek('nama pemegang ikut diterjemahkan',
+  t1Budi.dikerjakan_oleh_nama === 'Budi Santoso', t1Budi.dikerjakan_oleh_nama);
+cek('jam mulai dikerjakan tersimpan',
+  Boolean(t1Budi.mulai_dikerjakan_pada), t1Budi.mulai_dikerjakan_pada);
+
+// Status TIDAK berubah. Menambah nilai kelima pada `status` akan mengubah arti
+// persen_mandiri, deretWaktu, dan seluruh saringan status secara diam-diam.
+const t1Sesi = (await json('/rekap?dari=2020-01-01', adm)).laporan.find((l) => l.nomor_tiket === T1);
+cek('status tetap "diteruskan", bukan nilai kelima yang baru',
+  t1Sesi.status === 'diteruskan', t1Sesi.status);
+catatan('keadaan "sedang dikerjakan" diketahui dari kolomnya, bukan dari nilai status baru');
+
+cek('mengambil tiket yang sama dua kali ditolak',
+  (await kirim('/tugas/mulai', budi, { nomorTiket: T1 })).status === 400, 'diterima dua kali');
+
+// ── Inilah celah yang paling halus: pembatasan per divisi tidak menolong,
+//    karena satu divisi tetap berisi beberapa engineer.
+const rebut = await kirim('/tugas/mulai', eng, { nomorTiket: T1 });
+const rebutIsi = await rebut.json();
+cek('engineer lain tidak dapat mengambil diam-diam', rebut.status === 409, rebut.status);
+cek('pemegangnya disebutkan agar dapat ditanyakan lebih dulu',
+  rebutIsi.pemegang === 'Budi Santoso', rebutIsi.pemegang);
+
+const rebutSelesai = await kirim('/tugas/selesai', eng, { nomorTiket: T1 });
+const rebutSelesaiIsi = await rebutSelesai.json();
+cek('engineer lain tidak dapat MENUTUP tugas yang sedang dipegang',
+  rebutSelesai.status === 409, rebutSelesai.status);
+cek('penolakannya menyebutkan jalan keluarnya',
+  /ambil alih/i.test(rebutSelesaiIsi.error || ''), rebutSelesaiIsi.error);
+catatan('menutup tiket orang yang sedang di lapangan menghapusnya dari daftar orang itu tanpa ia tahu');
+
+cek('yang bukan pemegang tidak dapat melepaskannya',
+  (await kirim('/tugas/lepas', eng, { nomorTiket: T1 })).status === 403, 'diterima');
+
+// Pengambilalihan tetap mungkin — engineer yang dijadwalkan bisa berhalangan —
+// tetapi harus disengaja.
+const mulaiSemula = t1Budi.mulai_dikerjakan_pada;
+const alih = await kirim('/tugas/mulai', eng, { nomorTiket: T1, ambilAlih: true });
+cek('pengambilalihan yang disengaja diterima', alih.status === 200, alih.status);
+
+const t1Eka = await cariTugas(eng, T1);
+cek('pemegangnya berpindah', t1Eka.dikerjakan_oleh === 'eka', t1Eka.dikerjakan_oleh);
+cek('jam mulai TIDAK disetel ulang saat berpindah tangan',
+  t1Eka.mulai_dikerjakan_pada === mulaiSemula, [t1Eka.mulai_dikerjakan_pada, mulaiSemula]);
+catatan('menyetelnya ulang membuat tiket terlantar tampak direspons seketika');
+
+cek('tiket yang sudah berpindah hilang dari daftar tugas pemegang lama',
+  (await cariTugas(budi, T1))?.dikerjakan_oleh === 'eka', 'pemegang lama masih tercatat');
+
+// Jalan mundur. Tanpa ini, satu ketukan keliru mengunci tiket atas nama
+// seseorang sampai ada admin yang membetulkan — dan engineer yang mengetahui
+// itu akan memilih tidak menandai sama sekali.
+const lepas = await kirim('/tugas/lepas', eng, { nomorTiket: T1 });
+cek('pemegang dapat melepaskan tugasnya', lepas.status === 200, lepas.status);
+
+const t1Lepas = await cariTugas(eng, T1);
+cek('kedua kolom benar-benar dikosongkan',
+  !t1Lepas.dikerjakan_oleh && !t1Lepas.mulai_dikerjakan_pada, t1Lepas);
+cek('melepaskan tiket yang tidak dipegang siapa pun ditolak',
+  (await kirim('/tugas/lepas', eng, { nomorTiket: T1 })).status === 400, 'diterima');
+
+// Wewenang divisi tetap berlaku pada tahap baru ini — bila hanya penandaan
+// selesai yang dijaga, tahap pertama menjadi pintu belakang.
+cek('mengambil tugas di luar wewenang ditolak 403',
+  (await kirim('/tugas/mulai', budi, { nomorTiket: tiketCctv.nomor_tiket })).status === 403, 'diterima');
+
+// Melewati tahap pertama TIDAK diwajibkan. Kendala yang beres dalam dua menit
+// tidak pantas menuntut dua ketukan; memaksakannya membuat orang berhenti
+// menandai sama sekali — persis penyakit yang hendak disembuhkan halaman ini.
+const T2 = await tiketBaru('printer', 'hasil cetakan bergaris garis');
+cek('tiket boleh langsung ditandai selesai tanpa melewati tahap pertama',
+  (await kirim('/tugas/selesai', budi, { nomorTiket: T2 })).status === 200, 'ditolak');
+
+// Admin memang bertugas menutup tiket saat engineernya berhalangan.
+const T3 = await tiketBaru('printer', 'printer gabisa ngeprint sama sekali');
+await kirim('/tugas/mulai', budi, { nomorTiket: T3 });
+cek('admin dapat menutup tiket yang dipegang engineer tanpa mengambil alih',
+  (await kirim('/tugas/selesai', adm, { nomorTiket: T3 })).status === 200, 'ditolak');
+
+// Urutan: yang belum dipegang siapa pun didahulukan, karena itulah pekerjaan
+// yang benar-benar menunggu diambil.
+const T4 = await tiketBaru('printer', 'printer warnanya jadi ungu semua');
+await kirim('/tugas/mulai', budi, { nomorTiket: T1 });
+const urut = (await json('/tugas', budi)).tugas;
+const indeksDipegang = urut.findIndex((t) => t.dikerjakan_oleh);
+cek('yang belum dipegang berada di atas',
+  indeksDipegang === -1 || urut.slice(indeksDipegang).every((t) => t.dikerjakan_oleh),
+  urut.map((t) => (t.dikerjakan_oleh ? 'dipegang' : 'kosong')));
+cek('tiket baru ikut masuk daftar', urut.some((t) => t.nomor_tiket === T4), T4);
+
+// Yang paling ingin diketahui pelapor: laporannya sudah dipegang orang atau
+// masih menganggur. Sebelumnya kedua keadaan itu terlihat persis sama.
+const pantau = await fetch(`${API}/tiket/${T1}`).then((r) => r.json());
+cek('pelapor melihat laporannya sedang dikerjakan',
+  pantau.tiket.sedangDikerjakan === true, pantau.tiket);
+cek('jam mulai dikerjakan ikut diberitahukan',
+  Boolean(pantau.tiket.mulaiDikerjakanPada), pantau.tiket.mulaiDikerjakanPada);
+cek('SIAPA yang mengerjakan tidak ikut keluar',
+  !JSON.stringify(pantau.tiket).includes('budi') &&
+  !['dikerjakanOleh', 'dikerjakan_oleh'].some((k) => k in pantau.tiket),
+  Object.keys(pantau.tiket));
+catatan('halaman itu terbuka tanpa masuk — nama engineer di sana memetakan jadwal kerja seluruh tim');
+
+const ringKerja = (await json('/rekap?dari=2020-01-01', adm)).ringkasan;
+cek('ringkasan menghitung yang sedang dikerjakan',
+  ringKerja.sedang_dikerjakan >= 1, ringKerja.sedang_dikerjakan);
+cek('tidak melebihi jumlah yang diteruskan',
+  ringKerja.sedang_dikerjakan <= ringKerja.diteruskan,
+  [ringKerja.sedang_dikerjakan, ringKerja.diteruskan]);
+
+const t3Selesai = (await json('/rekap?dari=2020-01-01', adm)).laporan.find((l) => l.nomor_tiket === T3);
+cek('waktu tanggap terpecah menjadi respons dan lama pengerjaan',
+  typeof t3Selesai.waktu_respons === 'number' && typeof t3Selesai.lama_kerja === 'number',
+  { respons: t3Selesai.waktu_respons, kerja: t3Selesai.lama_kerja });
+// Ketiganya dibulatkan ke detik penuh secara terpisah, sehingga jumlahnya
+// boleh meleset satu detik — yang tidak boleh adalah meleset lebih dari itu.
+cek('keduanya berjumlah waktu tanggap',
+  Math.abs((t3Selesai.waktu_respons + t3Selesai.lama_kerja) - t3Selesai.waktu_tanggap) <= 1,
+  [t3Selesai.waktu_respons, t3Selesai.lama_kerja, t3Selesai.waktu_tanggap]);
+
+const jejakKerja = await json('/rekap/akses', adm);
+const tindakanKerja = new Set(jejakKerja.akses.map((a) => a.tindakan));
+cek('pengambilan, pengambilalihan, dan pelepasan tercatat',
+  ['mulai-kerjakan', 'ambil-alih', 'lepas-tugas'].every((t) => tindakanKerja.has(t)),
+  [...tindakanKerja]);
+
 bagian('7. Token tidak berlaku lagi setelah akunnya dicabut');
 
 // Token bertanda tangan HMAC tidak disimpan di server, sehingga tidak ada

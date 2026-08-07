@@ -10,6 +10,7 @@ import React from 'react';
  *   **tebal**        judul bagian, misalnya **Langkah Penyelesaian**
  *   *miring*         penekanan sesekali
  *   `kode`           nama menu atau tombol
+ *   [teks](tujuan)   tautan, misalnya ke halaman cek status tiket
  *   - butir          daftar penyebab
  *   1. butir         langkah penyelesaian
  *   ### judul        judul kecil
@@ -18,8 +19,29 @@ import React from 'react';
  * dari model tidak mungkin dieksekusi sebagai skrip.
  */
 
-// Pemenggal penanda dalam satu baris: **tebal**, `kode`, lalu *miring*
-const POLA_INLINE = /(\*\*[^*]+\*\*|`[^`]+`|\*[^*\n]+\*)/g;
+// Pemenggal penanda dalam satu baris. Tautan diperiksa lebih dulu agar teks di
+// dalamnya — yang boleh memuat **tebal** — tidak terpenggal lebih awal.
+const POLA_INLINE = /(\[[^\]\n]+\]\([^)\s]+\)|\*\*[^*]+\*\*|`[^`]+`|\*[^*\n]+\*)/g;
+const POLA_TAUTAN = /^\[([^\]\n]+)\]\(([^)\s]+)\)$/;
+
+/**
+ * Loloskan hanya tujuan tautan yang aman.
+ *
+ * Isi jawaban berasal dari berkas SOP yang dapat disunting lewat peramban,
+ * sehingga tujuan tautan adalah masukan yang harus diperlakukan sebagai tidak
+ * tepercaya. Tanpa penyaringan ini, `javascript:` pada href berarti satu baris
+ * SOP dapat menjalankan skrip di halaman pelapor.
+ *
+ * @returns {string|null} tujuan yang boleh dipakai, atau null bila ditolak
+ */
+function tujuanAman(tujuan) {
+  // Jalur di dalam aplikasi sendiri, misalnya '/tiket?nomor=SGP-…'.
+  // '//host' sengaja ditolak: bentuknya mirip jalur, tujuannya situs lain.
+  if (tujuan.startsWith('/') && !tujuan.startsWith('//')) return tujuan;
+  if (/^https?:\/\//i.test(tujuan)) return tujuan;
+  if (/^(mailto|tel):/i.test(tujuan)) return tujuan;
+  return null;
+}
 
 /** Ubah satu baris teks menjadi rangkaian elemen React */
 function renderInline(teks, kunci = 'i') {
@@ -27,6 +49,23 @@ function renderInline(teks, kunci = 'i') {
 
   return bagian.map((potongan, i) => {
     const k = `${kunci}-${i}`;
+
+    const tautan = potongan.match(POLA_TAUTAN);
+    if (tautan) {
+      const tujuan = tujuanAman(tautan[2]);
+      // Teks tautan tidak boleh memuat ']', sehingga tidak mungkin memuat
+      // tautan lain — rekursi di sini pasti berhenti satu tingkat.
+      const isi = renderInline(tautan[1], `${k}-t`);
+      if (!tujuan) return <React.Fragment key={k}>{isi}</React.Fragment>;
+      return (
+        // Selalu tab baru, termasuk untuk jalur di dalam aplikasi. Percakapan
+        // hanya hidup di memori peramban: berpindah halaman pada tab yang sama
+        // membuangnya, dan pelapor yang kembali akan memperoleh sesi baru
+        // dengan nomor tiket yang berbeda dari nomor yang baru saja ia buka.
+        <a key={k} href={tujuan} target="_blank" rel="noopener noreferrer">{isi}</a>
+      );
+    }
+
     if (potongan.startsWith('**') && potongan.endsWith('**')) {
       return <strong key={k}>{potongan.slice(2, -2)}</strong>;
     }

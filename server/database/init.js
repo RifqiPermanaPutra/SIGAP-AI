@@ -105,6 +105,15 @@ CREATE TABLE IF NOT EXISTS sesi (
   diteruskan_pada   TEXT,
 
   -- Lapis 4 · penanganan engineer                                      (Tahap 6)
+  --
+  -- Dua tahap, bukan satu. Sebelumnya tiket melompat dari 'diteruskan'
+  -- langsung ke 'ditangani', padahal di antaranya ada jeda nyata: engineer
+  -- membaca WhatsApp, berangkat, memeriksa. Selama jeda itu tidak ada yang
+  -- tahu tiketnya sudah dipegang seseorang atau masih menganggur — sehingga
+  -- dua engineer dapat berangkat ke lokasi yang sama, atau tidak seorang pun
+  -- berangkat karena masing-masing mengira yang lain sudah jalan.
+  mulai_dikerjakan_pada TEXT,
+  dikerjakan_oleh       TEXT,
   ditangani_pada    TEXT,
   ditangani_oleh    TEXT,
   catatan           TEXT
@@ -141,7 +150,9 @@ CREATE TABLE IF NOT EXISTS pengguna (
 CREATE TABLE IF NOT EXISTS log_akses (
   id           INTEGER PRIMARY KEY AUTOINCREMENT,
   nama_akun    TEXT NOT NULL,
-  tindakan     TEXT NOT NULL,                  -- masuk | lihat | unduh-excel | cetak | tandai-selesai
+  tindakan     TEXT NOT NULL,                  -- masuk | lihat | unduh-excel | cetak
+                                               -- | mulai-kerjakan | ambil-alih | lepas-tugas
+                                               -- | tandai-selesai | batal-tandai-selesai
   keterangan   TEXT,
   dibuat_pada  TEXT NOT NULL
 );
@@ -171,7 +182,13 @@ const KOLOM_TAMBAHAN = [
   // akun yang sudah ada sebelum kolom ini lahir tidak boleh mendadak
   // kehilangan seluruh wewenangnya hanya karena servernya dimutakhirkan.
   // Pembatasan diberlakukan saat admin memang menetapkannya.
-  ['pengguna', 'divisi', 'TEXT']
+  ['pengguna', 'divisi', 'TEXT'],
+  // Tahap "sedang dikerjakan". Kosong pada seluruh baris lama, dan memang
+  // begitu adanya: tiket yang sudah ditandai selesai sebelum kolom ini lahir
+  // tidak diketahui kapan mulai dikerjakannya, dan menebaknya lebih buruk
+  // daripada mengaku tidak tahu.
+  ['sesi', 'mulai_dikerjakan_pada', 'TEXT'],
+  ['sesi', 'dikerjakan_oleh', 'TEXT']
 ];
 
 function terapkanMigrasi() {
@@ -264,6 +281,7 @@ const KOLOM_BOLEH_UBAH = new Set([
   'eskalasi_ditawarkan_pada',
   'nama', 'fungsi', 'lokasi', 'area', 'urgensi',
   'engineer_tujuan', 'diteruskan_pada',
+  'mulai_dikerjakan_pada', 'dikerjakan_oleh',
   'ditangani_pada', 'ditangani_oleh', 'catatan',
   'berakhir_pada'
 ]);

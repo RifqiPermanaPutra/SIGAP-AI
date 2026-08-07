@@ -12,7 +12,10 @@
  */
 import { Router } from 'express';
 import { wajibMasuk, catatAkses } from '../services/authService.js';
-import { daftarTugas, tandaiDitangani, batalkanPenandaan } from '../services/rekapService.js';
+import {
+  daftarTugas, tandaiDitangani, batalkanPenandaan,
+  mulaiMengerjakan, lepaskanTugas
+} from '../services/rekapService.js';
 import { DIVISI_ID, DIVISIONS, namaDivisi } from '../config/divisi.js';
 
 export const tugasRouter = Router();
@@ -69,6 +72,82 @@ tugasRouter.get('/', (req, res) => {
 });
 
 /**
+ * POST /api/tugas/mulai
+ * Engineer menyatakan tiket ini sedang ia kerjakan.
+ *
+ * `ambilAlih` wajib disertakan bila tiketnya sudah dipegang orang lain.
+ * Tanpa itu permintaan dijawab 409 beserta nama pemegangnya, sehingga
+ * antarmuka dapat menanyakannya lebih dulu alih-alih memindahkan tiket
+ * seseorang diam-diam.
+ */
+tugasRouter.post('/mulai', (req, res) => {
+  const { nomorTiket, ambilAlih } = req.body || {};
+
+  if (!nomorTiket) {
+    return res.status(400).json({ success: false, error: 'nomorTiket wajib diisi' });
+  }
+
+  const hasil = mulaiMengerjakan(nomorTiket, req.pengguna.akun, {
+    divisiDiizinkan: req.pengguna.divisi,
+    ambilAlih: ambilAlih === true
+  });
+
+  if (!hasil.ok) {
+    return res.status(hasil.status || 400).json({
+      success: false,
+      error: hasil.alasan,
+      // Antarmuka memerlukannya untuk menyusun pertanyaan pengambilalihan
+      pemegang: hasil.pemegangNama || null
+    });
+  }
+
+  catatAkses(
+    req.pengguna.akun,
+    hasil.diambilAlihDari ? 'ambil-alih' : 'mulai-kerjakan',
+    hasil.diambilAlihDari ? `${nomorTiket} (dari ${hasil.diambilAlihDari})` : nomorTiket
+  );
+
+  res.json({
+    success: true,
+    message: hasil.diambilAlihDari
+      ? `Tiket ${nomorTiket} diambil alih dari ${hasil.diambilAlihDariNama}`
+      : `Tiket ${nomorTiket} ditandai sedang Anda kerjakan`,
+    mulaiPada: hasil.mulaiPada
+  });
+});
+
+/**
+ * POST /api/tugas/lepas
+ * Kembalikan tiket ke antrean tanpa menandainya selesai.
+ *
+ * Kesediaan menandai bergantung pada adanya jalan mundur: engineer yang tahu
+ * satu ketukan keliru mengunci tiket atas namanya sampai ada admin yang
+ * membetulkan, akan memilih tidak menandai sama sekali.
+ */
+tugasRouter.post('/lepas', (req, res) => {
+  const nomorTiket = String(req.body?.nomorTiket || '').trim();
+
+  if (!nomorTiket) {
+    return res.status(400).json({ success: false, error: 'nomorTiket wajib diisi' });
+  }
+
+  const hasil = lepaskanTugas(nomorTiket, req.pengguna.akun, {
+    divisiDiizinkan: req.pengguna.divisi,
+    // Admin dapat melepaskan tiket engineer yang berhalangan. Tanpa itu, satu
+    // orang yang cuti berarti tiketnya terkunci sampai ia kembali.
+    paksa: req.pengguna.peran === 'admin'
+  });
+
+  if (!hasil.ok) {
+    return res.status(hasil.status || 400).json({ success: false, error: hasil.alasan });
+  }
+
+  catatAkses(req.pengguna.akun, 'lepas-tugas', `${nomorTiket} (sebelumnya ${hasil.sebelumnya})`);
+
+  res.json({ success: true, message: `Tiket ${nomorTiket} kembali ke daftar tugas` });
+});
+
+/**
  * POST /api/tugas/selesai
  * Tandai satu tiket sudah ditangani.
  *
@@ -85,11 +164,18 @@ tugasRouter.post('/selesai', (req, res) => {
   const hasil = tandaiDitangani(nomorTiket, req.pengguna.akun, {
     catatan: (catatan || '').trim() || null,
     selesaiPada: selesaiPada || null,
-    divisiDiizinkan: req.pengguna.divisi
+    divisiDiizinkan: req.pengguna.divisi,
+    // Admin memang bertugas menutup tiket saat engineernya berhalangan,
+    // sehingga tidak perlu mengambil alih lebih dulu.
+    abaikanPemegang: req.pengguna.peran === 'admin'
   });
 
   if (!hasil.ok) {
-    return res.status(hasil.status || 400).json({ success: false, error: hasil.alasan });
+    return res.status(hasil.status || 400).json({
+      success: false,
+      error: hasil.alasan,
+      pemegang: hasil.pemegangNama || null
+    });
   }
 
   catatAkses(req.pengguna.akun, 'tandai-selesai', nomorTiket);

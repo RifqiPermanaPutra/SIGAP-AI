@@ -186,6 +186,40 @@ for (const divisi of ['printer', 'windows']) {
 }
 catatan('divisi mode engineer sengaja tidak dituntut lengkap — datanya menunggu engineer');
 
+bagian('8c. Setiap jalan menuju engineer membawa tautan cek status');
+// Ada tiga jalan menuju engineer, dan sebelumnya hanya satu — jalur SOP habis —
+// yang menyebut halaman cek status. Enam layanan mode engineer tidak pernah
+// memberitahu pelapornya bahwa laporan itu dapat dipantau sama sekali.
+const POLA_TAUTAN_TIKET = /\[Cek Status Laporan\]\(\/tiket\?nomor=SGP-\d{8}-\d{4}\)/;
+
+cek('mode engineer menautkan halaman cek status',
+  POLA_TAUTAN_TIKET.test(jwbA.response), jwbA.response?.slice(-160));
+cek('nomor pada tautan adalah nomor sesi itu sendiri',
+  jwbA.response.includes(`/tiket?nomor=${sesiA.nomorTiket}`), sesiA.nomorTiket);
+
+cek('jalur SOP habis menautkan halaman cek status',
+  POLA_TAUTAN_TIKET.test(j4.response), j4.response?.slice(-160));
+
+// Keluhan yang tidak terkenali sama sekali oleh penentu layanan otomatis
+const sesiAuto = await post('/chat/new', {});
+await post('/chat/division', { sessionId: sesiAuto.sessionId, division: 'auto' });
+const jwbAuto = await post('/chat', { sessionId: sesiAuto.sessionId, message: 'qwrtyp zxcvbn asdfgh' });
+cek('keluhan tak dikenali tetap dieskalasi', jwbAuto.shouldEscalate === true, jwbAuto.response?.slice(0, 120));
+cek('jalur tak dikenali menautkan halaman cek status',
+  POLA_TAUTAN_TIKET.test(jwbAuto.response), jwbAuto.response?.slice(-160));
+
+// Selama masih ada langkah untuk dicoba, penutup itu justru mengganggu:
+// pelapor diminta memantau laporan yang belum diteruskan ke siapa pun.
+cek('jawaban yang masih menawarkan solusi tidak memuat tautan',
+  !POLA_TAUTAN_TIKET.test(j1.response) && !POLA_TAUTAN_TIKET.test(j2.response),
+  'tautan muncul terlalu awal');
+
+// Tanpa penyaringan tujuan di Markdown.jsx, satu baris SOP dapat menjalankan
+// skrip di halaman pelapor. Penjagaan sebenarnya ada di antarmuka; ini menjaga
+// agar server tidak pernah menjadi sumbernya.
+cek('server tidak pernah memancarkan tautan berskema skrip',
+  ![jwbA, j4, jwbAuto].some((j) => /\]\(\s*(javascript|data|vbscript):/i.test(j.response)), 'ada skema berbahaya');
+
 await post('/chat/reporter', {
   sessionId: sesiB.sessionId,
   reporter: { nama: 'Uji Coba', fungsi: 'FM (Field Manager)', lokasi: 'Pumper UKUI', urgensi: 'Tinggi' }
