@@ -8,7 +8,10 @@ function ChatMessage({ role, content, time }) {
   return (
     <div className={`message-wrapper ${isUser ? 'user' : 'assistant'}`}>
       <div className={`message-avatar ${isUser ? 'user' : 'ai'}`}>
-        {isUser ? <IconUser size={18} /> : 'AI'}
+        {/* Lencana ini muncul di sebelah SETIAP jawaban. Sebelumnya bertuliskan
+            "AI" — penanda paling sering terlihat di seluruh aplikasi, untuk
+            sesuatu yang tidak ada di dalamnya. */}
+        {isUser ? <IconUser size={18} /> : 'SG'}
       </div>
 
       <div>

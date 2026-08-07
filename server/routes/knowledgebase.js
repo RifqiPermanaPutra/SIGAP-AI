@@ -8,13 +8,9 @@
  */
 import { Router } from 'express';
 import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { muatBasisPengetahuan, daftarMasalahDivisi } from '../services/answerService.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const KB_FILE = path.join(__dirname, '..', 'data', 'knowledge-base.json');
+import { wajibMasuk } from '../services/authService.js';
+import { KB_FILE } from '../config/jalur.js';
 
 export const kbRouter = Router();
 
@@ -78,7 +74,9 @@ kbRouter.get('/masalah/:divisi', (req, res) => {
  * Muat ulang berkas basis pengetahuan tanpa perlu menghidupkan ulang server.
  * Dipakai setelah menjalankan `npm run build:kb`.
  */
-kbRouter.post('/reload', (req, res) => {
+// Mengubah keadaan server, sehingga dibatasi untuk admin. Sebelumnya siapa pun
+// di jaringan dapat memicunya berulang kali.
+kbRouter.post('/reload', wajibMasuk('admin'), (req, res) => {
   try {
     const jumlah = muatBasisPengetahuan();
     res.json({

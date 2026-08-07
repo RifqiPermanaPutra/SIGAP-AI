@@ -6,17 +6,10 @@
    lalu diperkaya ke atas lewat `min-width`. Tidak ada satu pun
    `max-width` di berkas ini.
 
-   Alasannya bukan selera. Dengan `min-width`, setiap aturan hanya
-   MENAMBAH — tidak pernah membatalkan aturan sebelumnya. Dengan
-   `max-width`, aturan desktop ditulis lebih dulu lalu dianulir satu
-   per satu di layar kecil, sehingga nilai yang berlaku harus
-   ditelusuri mundur melewati beberapa blok.
-
    Titik henti:
      dasar        ponsel        (< 600px)
      >= 600px     tablet
      >= 960px     desktop
-     >= 1280px    layar lebar
    ================================================ */
 
 /* ────────────────────────────────────────────────────────────────
@@ -26,8 +19,15 @@
 /* `#root` diberi `display: flex` oleh index.css demi tata letak percakapan.
    Sebagai anak flex, halaman ini tidak boleh memakai lebar isinya sebagai
    lebar dasar: `min-width: 0` mengizinkannya menyusut, dan `width: 100%`
-   mengunci lebarnya pada wadah — bukan pada tabel terlebar di dalamnya.
-   Tanpa keduanya, seluruh halaman ikut bergulir mendatar mengikuti tabel. */
+   mengunci lebarnya pada wadah — bukan pada tabel terlebar di dalamnya. */
+.rk-halaman {
+  width: 100%;
+  min-width: 0;
+  background: var(--canvas);
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
 .rk {
   width: 100%;
   min-width: 0;
@@ -37,74 +37,135 @@
   color: var(--ink);
 }
 
-.rk-masuk-latar,
-.rk-tunggu { width: 100%; min-width: 0; }
-
 .rk-tunggu {
-  padding: 40px 16px;
+  width: 100%;
+  padding: 48px 16px;
   text-align: center;
   color: var(--ink-3);
 }
 
-/* ── Kepala ───────────────────────────────────────────────────── */
+/* ── Merek ────────────────────────────────────────────────────── */
 
-.rk-atas {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid var(--pt-blue);
-  margin-bottom: 16px;
+/* PENTING — logo Pertamina EP adalah varian untuk LATAR GELAP: wordmark
+   "PERTAMINA" digambar putih. Bidang di belakangnya wajib biru; di atas
+   putih tulisannya lenyap dan hanya menyisakan emblem. */
+.rk-merek { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.rk-merek-logo { height: 26px; width: auto; display: block; flex-shrink: 0; }
+.rk-merek-logo-unit {
+  height: 24px; width: auto; display: block; flex-shrink: 0;
+  padding: 3px 6px; background: #fff; border-radius: 6px;
+}
+.rk-merek-garis {
+  width: 1px; height: 26px; flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.3);
+}
+.rk-merek-teks { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.rk-merek-teks strong {
+  font-size: 0.92rem; font-weight: 700; color: #fff; letter-spacing: -0.015em;
+}
+.rk-merek-teks small {
+  font-size: 0.6rem; letter-spacing: 0.08em; font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
-.rk-atas h1 { font-size: 1.2rem; margin: 0; color: var(--pt-blue-text); }
-.rk-atas p  { margin: 2px 0 0; font-size: .78rem; color: var(--ink-3); }
+/* ── Navbar ───────────────────────────────────────────────────── */
 
-.rk-atas-kanan {
+.rk-navbar {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  padding: 11px 12px;
+  background: linear-gradient(100deg,
+    var(--pt-blue-dark) 0%, var(--pt-blue-mid) 55%, var(--pt-blue) 100%);
 }
-.rk-pengguna { font-size: .8rem; color: var(--ink-2); }
-.rk-pengguna em { font-style: normal; color: var(--ink-3); text-transform: capitalize; }
+
+/* Pita tiga warna korporat, sama seperti navbar halaman pelapor */
+.rk-navbar::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 3px;
+  background: linear-gradient(90deg,
+    var(--pt-blue) 0 33%, var(--pt-green) 33% 66%, var(--pt-red) 66% 100%);
+}
+
+.rk-navbar-kanan { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+.rk-pengguna { display: none; flex-direction: column; line-height: 1.25; text-align: right; }
+.rk-pengguna strong { font-size: 0.82rem; color: #fff; font-weight: 600; }
+.rk-pengguna em {
+  font-style: normal; font-size: 0.68rem; text-transform: capitalize;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.rk-tombol-navbar {
+  display: inline-flex; align-items: center; gap: 6px;
+  font: inherit; font-size: 0.82rem; font-weight: 600;
+  padding: 8px 12px;
+  min-height: 40px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: background var(--ease);
+}
+.rk-tombol-navbar:hover { background: rgba(255, 255, 255, 0.24); }
+
+/* ── Label kecil di atas judul ────────────────────────────────── */
+
+.rk-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.66rem; font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--pt-blue-text);
+  margin-bottom: 6px;
+}
 
 /* ── Tombol ───────────────────────────────────────────────────── */
 
 .rk-tombol-utama,
 .rk-tombol-samar,
 .rk-tombol-kecil {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
   font: inherit;
   border-radius: var(--r-sm);
   cursor: pointer;
-  transition: background .15s, border-color .15s;
-  /* Sasaran sentuh minimum di ponsel */
-  min-height: 40px;
+  transition: background var(--ease), border-color var(--ease), transform var(--ease);
+  min-height: 42px;
 }
 
 .rk-tombol-utama {
   background: var(--pt-blue);
   color: #fff;
   border: 1px solid var(--pt-blue);
-  padding: 9px 16px;
+  padding: 10px 16px;
   font-weight: 600;
+  box-shadow: 0 3px 10px rgba(0, 108, 184, 0.22);
 }
-.rk-tombol-utama:hover { background: var(--pt-blue-mid); }
+.rk-tombol-utama:hover { background: var(--pt-blue-mid); transform: translateY(-1px); }
 
 .rk-tombol-samar {
   background: var(--surface);
   color: var(--ink-2);
   border: 1px solid var(--line);
-  padding: 9px 16px;
+  padding: 10px 16px;
 }
-.rk-tombol-samar:hover { border-color: var(--ink-4); }
+.rk-tombol-samar:hover { border-color: var(--pt-blue); color: var(--pt-blue-text); }
 
 .rk-tombol-kecil {
   background: var(--pt-blue-soft);
   color: var(--pt-blue-text);
   border: 1px solid transparent;
-  padding: 5px 10px;
-  font-size: .78rem;
+  padding: 5px 11px;
+  font-size: 0.76rem;
+  font-weight: 600;
   white-space: nowrap;
   min-height: 32px;
 }
@@ -116,12 +177,12 @@
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--r-md);
+  box-shadow: var(--sh-xs);
   padding: 12px;
-  margin-bottom: 16px;
+  margin: 16px 0;
 }
 
-/* Di ponsel, tombol pintasan periode digulir mendatar dalam satu baris —
-   lebih ringkas daripada membungkus jadi tiga baris tombol. */
+/* Di ponsel pintasan periode digulir mendatar dalam satu baris */
 .rk-preset {
   display: flex;
   gap: 8px;
@@ -134,7 +195,8 @@
 
 .rk-preset button {
   font: inherit;
-  font-size: .82rem;
+  font-size: 0.82rem;
+  font-weight: 500;
   padding: 7px 14px;
   border: 1px solid var(--line);
   background: var(--canvas);
@@ -142,8 +204,15 @@
   cursor: pointer;
   white-space: nowrap;
   flex: none;
+  transition: background var(--ease), border-color var(--ease), color var(--ease);
 }
 .rk-preset button:hover { border-color: var(--pt-blue); color: var(--pt-blue-text); }
+.rk-preset button.aktif {
+  background: var(--pt-blue);
+  border-color: var(--pt-blue);
+  color: #fff;
+  font-weight: 600;
+}
 
 .rk-kolom-saringan {
   display: grid;
@@ -152,10 +221,8 @@
 }
 
 .rk-kolom-saringan label {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-size: .76rem;
+  display: flex; flex-direction: column; gap: 4px;
+  font-size: 0.74rem; font-weight: 600;
   color: var(--ink-3);
   min-width: 0;
 }
@@ -165,7 +232,8 @@
   font: inherit;
   /* 16px mencegah iOS Safari memperbesar halaman saat kolom disentuh */
   font-size: 16px;
-  padding: 8px 9px;
+  font-weight: 400;
+  padding: 9px;
   border: 1px solid var(--line);
   border-radius: var(--r-sm);
   background: var(--surface);
@@ -178,12 +246,7 @@
 
 .rk-cari { grid-column: 1 / -1; }
 
-.rk-aksi {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 12px;
-}
+.rk-aksi { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
 .rk-aksi button { width: 100%; }
 
 /* ── Kotak angka ──────────────────────────────────────────────── */
@@ -196,22 +259,63 @@
 }
 
 .rk-kotak {
+  position: relative;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--r-md);
-  padding: 12px;
+  box-shadow: var(--sh-xs);
+  padding: 13px;
   display: flex;
   flex-direction: column;
   gap: 3px;
   min-width: 0;
+  overflow: hidden;
+  transition: transform var(--ease), box-shadow var(--ease);
 }
-.rk-kotak.sorot { border-color: var(--pt-blue); background: var(--pt-blue-soft); }
+.rk-kotak:hover { transform: translateY(-2px); box-shadow: var(--sh-md); }
 
-.rk-kotak-label { font-size: .74rem; color: var(--ink-3); }
-.rk-kotak-nilai { font-size: 1.45rem; font-weight: 700; line-height: 1.1; color: var(--ink); }
-.rk-kotak-nilai small { font-size: .95rem; font-weight: 600; margin-left: 2px; }
+/* Pita warna tipis di tepi kiri — penanda jenis angka tanpa mewarnai teks */
+.rk-kotak::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--line);
+}
+.rk-kotak.sorot::before { background: var(--pt-blue); }
+.rk-kotak.jingga::before { background: #eb6834; }
+
+.rk-kotak-ikon {
+  display: grid; place-items: center;
+  width: 30px; height: 30px;
+  border-radius: 9px;
+  background: var(--canvas);
+  color: var(--ink-3);
+  margin-bottom: 4px;
+}
+.rk-kotak.sorot { background: var(--pt-blue-soft); border-color: #bcdcf2; }
+.rk-kotak.sorot .rk-kotak-ikon { background: #fff; color: var(--pt-blue); }
+
+.rk-kotak-label { font-size: 0.73rem; color: var(--ink-3); font-weight: 600; }
+.rk-kotak-nilai {
+  font-size: 1.5rem; font-weight: 800; line-height: 1.1;
+  color: var(--ink); letter-spacing: -0.02em;
+}
+.rk-kotak-nilai small { font-size: 0.95rem; font-weight: 700; margin-left: 2px; }
 .rk-kotak.sorot .rk-kotak-nilai { color: var(--pt-blue-text); }
-.rk-kotak-ket { font-size: .7rem; color: var(--ink-4); line-height: 1.35; }
+.rk-kotak-ket { font-size: 0.69rem; color: var(--ink-4); line-height: 1.4; }
+
+/* Rangka abu selagi dimuat */
+.rk-rangka {
+  border-radius: var(--r-md);
+  background: linear-gradient(100deg, var(--line-2) 30%, #f6f8fb 50%, var(--line-2) 70%);
+  background-size: 300% 100%;
+  animation: rk-kilau 1.4s ease-in-out infinite;
+}
+@keyframes rk-kilau {
+  from { background-position: 130% 0; }
+  to { background-position: -30% 0; }
+}
 
 /* ── Panel ────────────────────────────────────────────────────── */
 
@@ -219,44 +323,44 @@
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--r-md);
-  padding: 12px;
+  box-shadow: var(--sh-xs);
+  padding: 14px;
   margin-bottom: 16px;
-  /* Tabel lebar tidak boleh mendorong lebar halaman */
   min-width: 0;
 }
 
-.rk-panel h2 { font-size: .95rem; margin: 0 0 10px; color: var(--ink); }
-.rk-panel-ket { font-size: .76rem; color: var(--ink-3); margin: 0 0 10px; line-height: 1.45; }
+.rk-panel h2 {
+  font-size: 1rem; margin: 0 0 10px;
+  color: var(--ink); letter-spacing: -0.015em;
+}
+.rk-panel-ket { font-size: 0.76rem; color: var(--ink-3); margin: 0 0 10px; line-height: 1.45; }
 
 .rk-panel-atas {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
+  display: flex; flex-direction: column;
+  align-items: flex-start; gap: 8px;
 }
-.rk-panel-atas h2 { margin-bottom: 4px; }
-.rk-panel-atas .rk-panel-ket { margin-bottom: 8px; }
+.rk-panel-atas h2 { margin-bottom: 6px; }
 
-.rk-kisi {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-}
+.rk-kisi { display: grid; grid-template-columns: 1fr; gap: 12px; }
 .rk-kisi .rk-panel { margin-bottom: 0; }
 
 .rk-satuan { display: flex; gap: 4px; }
 .rk-satuan button {
-  font: inherit;
-  font-size: .78rem;
+  font: inherit; font-size: 0.78rem; font-weight: 500;
   text-transform: capitalize;
   padding: 6px 14px;
+  min-height: 34px;
   border: 1px solid var(--line);
   background: var(--surface);
-  cursor: pointer;
   border-radius: var(--r-full);
-  min-height: 32px;
+  cursor: pointer;
+  transition: background var(--ease), border-color var(--ease);
 }
-.rk-satuan button.aktif { background: var(--pt-blue); color: #fff; border-color: var(--pt-blue); }
+.rk-satuan button:hover { border-color: var(--pt-blue); }
+.rk-satuan button.aktif {
+  background: var(--pt-blue); color: #fff;
+  border-color: var(--pt-blue); font-weight: 600;
+}
 
 /* ── Grafik ───────────────────────────────────────────────────── */
 
@@ -265,12 +369,9 @@
 .rk-sumbu { font-size: 11px; fill: var(--ink-4); }
 
 .rk-legenda {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 14px;
+  display: flex; flex-wrap: wrap; gap: 8px 14px;
   margin-top: 10px;
-  font-size: .76rem;
-  color: var(--ink-2);
+  font-size: 0.76rem; color: var(--ink-2);
 }
 .rk-legenda i, .rk-tooltip i {
   display: inline-block;
@@ -280,8 +381,8 @@
   vertical-align: middle;
 }
 
-/* Di ponsel keterangan sentuh ditaruh menempel di bawah grafik, bukan
-   melayang di atasnya — jari pengguna menutupi sudut kanan atas. */
+/* Di ponsel keterangan sentuh ditaruh menempel di bawah grafik — jari
+   pengguna menutupi sudut kanan atas. */
 .rk-tooltip {
   position: static;
   margin-top: 10px;
@@ -289,30 +390,54 @@
   color: #fff;
   border-radius: var(--r-sm);
   padding: 8px 12px;
-  font-size: .78rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 14px;
+  font-size: 0.78rem;
+  display: flex; flex-wrap: wrap; gap: 4px 14px;
   pointer-events: none;
 }
-.rk-tooltip strong { font-size: .82rem; }
+.rk-tooltip strong { font-size: 0.82rem; }
 
-.rk-kosong { color: var(--ink-4); font-size: .84rem; padding: 20px 0; text-align: center; }
+.rk-kosong { color: var(--ink-4); font-size: 0.84rem; padding: 20px 0; text-align: center; }
 
 /* ── Batang sebaran ───────────────────────────────────────────── */
 
-.rk-batang { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
-.rk-batang li {
+.rk-batang { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+.rk-batang li { border-radius: var(--r-sm); }
+
+.rk-batang li > *,
+.rk-batang li > button {
   display: grid;
   grid-template-columns: minmax(72px, 38%) 1fr auto;
   align-items: center;
   gap: 8px;
-  font-size: .82rem;
+  width: 100%;
+  font: inherit;
+  font-size: 0.82rem;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 4px 6px;
+  border-radius: var(--r-sm);
 }
+
+.rk-batang.dapat-diklik li > button { cursor: pointer; transition: background var(--ease); }
+.rk-batang.dapat-diklik li > button:hover { background: var(--canvas); }
+.rk-batang li.aktif > button { background: var(--pt-blue-soft); }
+.rk-batang li.aktif .rk-batang-label { color: var(--pt-blue-text); font-weight: 700; }
+
 .rk-batang-label { color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.rk-batang-jalur { background: var(--line-2); border-radius: var(--r-full); height: 10px; overflow: hidden; min-width: 0; }
-.rk-batang-isi { display: block; height: 100%; background: var(--pt-blue); border-radius: var(--r-full); }
-.rk-batang-nilai { font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 600; min-width: 24px; text-align: right; }
+.rk-batang-jalur { background: var(--line-2); border-radius: var(--r-full); height: 9px; overflow: hidden; min-width: 0; }
+.rk-batang-isi {
+  display: block; height: 100%;
+  background: var(--pt-blue);
+  border-radius: var(--r-full);
+  transition: width var(--ease);
+}
+.rk-batang li.aktif .rk-batang-isi { background: var(--pt-blue-dark); }
+.rk-batang-nilai {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink); font-weight: 700;
+  min-width: 24px; text-align: right;
+}
 
 /* ── Tabel ────────────────────────────────────────────────────── */
 
@@ -320,15 +445,14 @@
    boleh bergulir mendatar. */
 .rk-gulir {
   overflow-x: auto;
-  /* Tepi negatif agar tabel memakai lebar penuh panel di ponsel */
-  margin: 0 -12px;
-  padding: 0 12px;
+  margin: 0 -14px;
+  padding: 0 14px;
   -webkit-overflow-scrolling: touch;
 }
 
-.rk-tabel { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.rk-tabel { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
 .rk-tabel th, .rk-tabel td {
-  padding: 8px 10px;
+  padding: 9px 10px;
   text-align: left;
   border-bottom: 1px solid var(--line-2);
   vertical-align: top;
@@ -338,109 +462,210 @@
   position: sticky; top: 0;
   background: var(--canvas);
   color: var(--ink-3);
-  font-weight: 600;
-  font-size: .72rem;
+  font-weight: 700;
+  font-size: 0.68rem;
   text-transform: uppercase;
-  letter-spacing: .03em;
+  letter-spacing: 0.04em;
+  z-index: 1;
 }
 .rk-tabel tbody tr:hover { background: var(--canvas); }
 
-.rk-tiket { font-variant-numeric: tabular-nums; color: var(--pt-blue-text); font-weight: 600; }
+.rk-tabel-klik tbody tr { cursor: pointer; }
+.rk-tabel-klik tbody tr.terbuka { background: var(--pt-blue-soft); }
+.rk-sel-buka { color: var(--ink-4); width: 26px; }
+.rk-tabel-klik tbody tr.terbuka .rk-sel-buka { color: var(--pt-blue); transform: rotate(180deg); }
+
+.rk-tiket { font-variant-numeric: tabular-nums; color: var(--pt-blue-text); font-weight: 700; }
 .rk-angka { font-variant-numeric: tabular-nums; text-align: right; }
 .rk-keluhan { white-space: normal; min-width: 180px; max-width: 260px; color: var(--ink-2); }
-.rk-selesai-oleh { color: var(--pt-green-text); font-size: .76rem; }
+.rk-layanan { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-2); }
+.rk-selesai-oleh {
+  display: inline-flex; align-items: center; gap: 4px;
+  color: var(--pt-green-text); font-size: 0.76rem; font-weight: 600;
+}
 
-.rk-status {
+.rk-status, .rk-urgensi, .rk-skor {
   display: inline-block;
   padding: 2px 9px;
   border-radius: var(--r-full);
-  font-size: .7rem;
-  font-weight: 600;
+  font-size: 0.7rem;
+  font-weight: 700;
 }
 .rk-status-selesai      { background: var(--pt-green-soft); color: var(--pt-green-text); }
 .rk-status-diteruskan   { background: #fdf0e8; color: #a8410f; }
 .rk-status-ditinggalkan { background: var(--line-2); color: var(--ink-3); }
 .rk-status-aktif        { background: var(--pt-blue-soft); color: var(--pt-blue-text); }
 
+.rk-urgensi.u-rendah { background: var(--line-2); color: var(--ink-3); }
+.rk-urgensi.u-sedang { background: var(--pt-blue-soft); color: var(--pt-blue-text); }
+.rk-urgensi.u-tinggi { background: #fdf0e8; color: #a8410f; }
+.rk-urgensi.u-kritis { background: var(--pt-red-soft); color: var(--pt-red-text); }
+
+.rk-skor { background: var(--line-2); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+/* Skor mendekati ambang berarti nyaris dikenali — paling murah diperbaiki */
+.rk-skor.dekat { background: var(--pt-green-soft); color: var(--pt-green-text); }
+
+/* Penanggung jawab layanan pada tiket yang masih menunggu — sengaja samar,
+   ini keterangan pendamping tombol, bukan tindakan tersendiri. */
+.rk-penanggung {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.68rem;
+  color: var(--ink-4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 130px;
+}
+
+/* ── Jejak akses ──────────────────────────────────────────────── */
+
+.rk-jejak-buka {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  font: inherit; text-align: left;
+  background: none; border: none; padding: 0;
+  color: var(--ink);
+  cursor: pointer;
+}
+.rk-jejak-buka h2 { margin: 0; }
+.rk-jejak-buka svg { color: var(--ink-4); flex-shrink: 0; transition: transform var(--ease); }
+.rk-jejak-buka svg.terbuka { transform: rotate(180deg); }
+
+/* ── Corong keefektifan solusi ────────────────────────────────── */
+
+.rk-corong {
+  list-style: none; margin: 0 0 4px; padding: 0;
+  display: flex; flex-direction: column; gap: 9px;
+}
+.rk-corong li {
+  display: grid;
+  grid-template-columns: minmax(84px, 30%) 1fr auto;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.82rem;
+}
+.rk-corong-label { color: var(--ink-2); font-weight: 600; white-space: nowrap; }
+.rk-corong-nilai { text-align: right; white-space: nowrap; color: var(--ink-3); }
+.rk-corong-nilai strong {
+  color: var(--ink); font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.rk-corong-nilai em { font-style: normal; font-size: 0.74rem; color: var(--ink-4); }
+
+.rk-sub {
+  font-size: 0.88rem; margin: 18px 0 6px;
+  color: var(--ink); letter-spacing: -0.01em;
+}
+
+/* Tombol pembatalan sengaja dibuat samar — ini tindakan pemulihan yang
+   jarang dipakai, bukan tindakan sehari-hari yang perlu menonjol. */
+.rk-batal {
+  font: inherit; font-size: 0.68rem; font-weight: 600;
+  margin-left: 7px;
+  padding: 2px 7px;
+  min-height: 26px;
+  color: var(--ink-4);
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: var(--r-full);
+  cursor: pointer;
+  transition: border-color var(--ease), color var(--ease);
+}
+.rk-batal:hover { border-color: var(--pt-red); color: var(--pt-red-text); }
+
+/* ── Rincian satu laporan ─────────────────────────────────────── */
+
+.rk-baris-rincian td { background: var(--canvas); padding: 0; white-space: normal; }
+
+.rk-rincian { display: flex; flex-direction: column; gap: 14px; padding: 14px; }
+
+.rk-rincian-ringkas {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+.rk-rincian-ringkas > div {
+  display: flex; flex-direction: column; gap: 1px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 8px 10px;
+}
+.rk-rincian-ringkas span { font-size: 0.68rem; color: var(--ink-4); font-weight: 600; }
+.rk-rincian-ringkas strong { font-size: 0.82rem; color: var(--ink-2); font-weight: 600; }
+
+.rk-rincian-percakapan { display: flex; flex-direction: column; gap: 8px; }
+
+.rk-pesan {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 9px 12px;
+  max-width: 100%;
+}
+.rk-pesan.user { background: var(--pt-blue-soft); border-color: #bcdcf2; }
+.rk-pesan.system { background: var(--line-2); border-color: var(--line); }
+.rk-pesan-peran {
+  display: block;
+  font-size: 0.64rem; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: 3px;
+}
+.rk-pesan p {
+  margin: 0 0 6px;
+  font-size: 0.8rem; line-height: 1.55; color: var(--ink-2);
+  white-space: pre-wrap;
+}
+.rk-pesan p:last-child { margin-bottom: 0; }
+.rk-pesan.user p { color: var(--pt-blue-dark); white-space: pre-wrap; }
+
+/* Jawaban SIGAP dirender sebagai Markdown — daftar langkah dan judul tebal */
+.rk-pesan ol, .rk-pesan ul { margin: 4px 0 6px; padding-left: 20px; }
+.rk-pesan li { font-size: 0.8rem; line-height: 1.55; color: var(--ink-2); margin-bottom: 3px; }
+.rk-pesan strong { color: var(--ink); font-weight: 700; }
+.rk-pesan h3 { font-size: 0.84rem; margin: 6px 0 4px; color: var(--ink); }
+.rk-pesan code {
+  background: var(--line-2); padding: 1px 5px;
+  border-radius: 4px; font-size: 0.76rem;
+}
+
 /* ── Galat & kaki ─────────────────────────────────────────────── */
 
 .rk-galat {
   background: var(--pt-red-soft);
   color: var(--pt-red-text);
+  border: 1px solid #f7c4ca;
   border-radius: var(--r-sm);
   padding: 10px 14px;
-  font-size: .84rem;
+  font-size: 0.84rem;
   margin: 0 0 14px;
 }
 
 .rk-kaki {
-  font-size: .74rem;
+  font-size: 0.74rem;
   color: var(--ink-4);
   border-top: 1px solid var(--line);
   padding-top: 12px;
   line-height: 1.6;
 }
 
-.rk-periode-cetak { display: none; }
+.rk-judul-cetak { display: none; }
 
-/* ── Halaman masuk ────────────────────────────────────────────── */
-
-.rk-masuk-latar {
-  min-height: 100vh;
-  /* Satuan dinamis: bilah alamat peramban ponsel tidak memotong isi */
-  min-height: 100dvh;
-  display: grid;
-  place-items: center;
-  background: var(--canvas);
-  padding: 16px;
-}
-
-.rk-masuk {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  padding: 24px 20px;
-  width: min(100%, 380px);
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  box-shadow: 0 8px 30px rgba(16, 23, 37, .07);
-}
-.rk-masuk h1 { font-size: 1.15rem; margin: 0; color: var(--pt-blue-text); }
-.rk-masuk-sub { font-size: .8rem; color: var(--ink-3); margin: 4px 0 12px; line-height: 1.5; }
-.rk-masuk label { font-size: .78rem; color: var(--ink-3); margin-top: 10px; }
-.rk-masuk input {
-  font: inherit;
-  font-size: 16px;                 /* cegah zoom otomatis iOS */
-  padding: 11px 12px;
-  border: 1px solid var(--line);
-  border-radius: var(--r-sm);
-  background: var(--surface);
-  color: var(--ink);
-}
-.rk-masuk input:focus { outline: 2px solid var(--pt-blue); outline-offset: 1px; }
-.rk-masuk button {
-  margin-top: 18px;
-  font: inherit;
-  font-weight: 600;
-  padding: 12px;
-  min-height: 44px;
-  border: none;
-  border-radius: var(--r-sm);
-  background: var(--pt-blue);
-  color: #fff;
-  cursor: pointer;
-}
-.rk-masuk button:disabled { background: var(--ink-4); cursor: not-allowed; }
+/* Layar masuknya berada di src/components/Masuk.jsx (kelas `sg-`), dipakai
+   bersama dengan halaman penyunting SOP. */
 
 /* ── Dialog ───────────────────────────────────────────────────── */
 
 .rk-dialog-latar {
   position: fixed; inset: 0;
   background: rgba(16, 23, 37, .45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   display: grid;
-  /* Di ponsel dialog menempel ke bawah — lebih dekat ke ibu jari */
-  align-items: end;
+  align-items: end;          /* di ponsel menempel ke bawah, dekat ibu jari */
   padding: 0;
   z-index: 50;
 }
@@ -456,13 +681,14 @@
   gap: 6px;
 }
 .rk-dialog h3 { margin: 0; font-size: 1rem; }
-.rk-dialog-tiket { font-size: .78rem; color: var(--pt-blue-text); font-weight: 600; margin: 2px 0 0; }
+.rk-dialog-tiket { font-size: 0.78rem; color: var(--pt-blue-text); font-weight: 700; margin: 2px 0 0; }
 .rk-dialog-keluhan {
-  font-size: .82rem; color: var(--ink-2); margin: 6px 0 12px;
-  background: var(--canvas); padding: 10px 12px; border-radius: var(--r-sm); line-height: 1.5;
+  font-size: 0.82rem; color: var(--ink-2); margin: 8px 0 12px;
+  background: var(--canvas); padding: 10px 12px;
+  border-radius: var(--r-sm); line-height: 1.5;
 }
-.rk-dialog label { font-size: .78rem; color: var(--ink-3); }
-.rk-dialog label small { color: var(--ink-4); }
+.rk-dialog label { font-size: 0.78rem; font-weight: 600; color: var(--ink-3); }
+.rk-dialog label small { color: var(--ink-4); font-weight: 400; }
 .rk-dialog textarea {
   font: inherit;
   font-size: 16px;                 /* cegah zoom otomatis iOS */
@@ -475,7 +701,7 @@
 .rk-dialog textarea:focus { outline: 2px solid var(--pt-blue); outline-offset: 1px; }
 .rk-dialog-aksi {
   display: flex;
-  flex-direction: column-reverse;   /* tindakan utama paling bawah, dekat ibu jari */
+  flex-direction: column-reverse;   /* tindakan utama paling bawah */
   gap: 8px;
   margin-top: 14px;
 }
@@ -487,16 +713,17 @@
 
 @media (min-width: 600px) {
   .rk { padding: 20px 16px 56px; }
+  .rk-navbar { padding: 12px 20px; }
 
-  .rk-atas {
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-  }
-  .rk-atas h1 { font-size: 1.35rem; }
-  .rk-atas-kanan { justify-content: flex-end; }
+  .rk-merek-logo { height: 30px; }
+  .rk-merek-logo-unit { height: 27px; }
+  .rk-merek-garis { height: 30px; }
+  .rk-merek-teks strong { font-size: 1rem; }
+  .rk-merek-teks small { font-size: 0.65rem; }
 
-  .rk-saringan, .rk-panel { padding: 14px; }
+  .rk-pengguna { display: flex; }
+
+  .rk-saringan, .rk-panel { padding: 16px; }
   .rk-preset { flex-wrap: wrap; overflow-x: visible; }
 
   .rk-kolom-saringan { grid-template-columns: repeat(3, 1fr); }
@@ -506,33 +733,29 @@
   .rk-aksi button { width: auto; }
 
   .rk-kotak-baris { grid-template-columns: repeat(3, 1fr); }
-  .rk-kotak { padding: 13px 14px; }
-  .rk-kotak-nilai { font-size: 1.55rem; }
+  .rk-kotak { padding: 14px 16px; }
+  .rk-kotak-nilai { font-size: 1.6rem; }
 
   .rk-kisi { grid-template-columns: repeat(2, 1fr); }
 
-  .rk-panel-atas {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .rk-panel-atas h2 { margin-bottom: 10px; }
+  .rk-panel-atas { flex-direction: row; align-items: flex-start; justify-content: space-between; }
 
   .rk-gulir { margin: 0; padding: 0; }
   .rk-keluhan { min-width: 200px; max-width: 300px; }
 
+  .rk-rincian-ringkas { grid-template-columns: repeat(3, 1fr); }
+  .rk-rincian { padding: 16px; }
+  .rk-pesan { max-width: 82%; }
+  .rk-pesan.user { margin-left: auto; }
+
   .rk-dialog-latar { place-items: center; padding: 20px; }
   .rk-dialog {
-    width: min(100%, 460px);
+    width: min(100%, 470px);
     border-radius: var(--r-lg);
     padding: 24px;
     max-height: 85dvh;
   }
-  .rk-dialog-aksi {
-    flex-direction: row;
-    justify-content: flex-end;
-    margin-top: 16px;
-  }
+  .rk-dialog-aksi { flex-direction: row; justify-content: flex-end; margin-top: 16px; }
   .rk-dialog-aksi button { width: auto; }
 }
 
@@ -542,30 +765,21 @@
 
 @media (min-width: 960px) {
   .rk { padding: 24px 20px 60px; }
+  .rk-navbar { padding: 13px clamp(20px, 4vw, 40px); }
 
-  .rk-atas h1 { font-size: 1.5rem; }
-  .rk-atas p  { font-size: .85rem; }
-
-  .rk-saringan, .rk-panel { padding: 16px; }
-
-  /* Ruang sudah cukup — kolom saringan menyesuaikan diri sendiri */
   .rk-kolom-saringan {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 12px;
   }
-  .rk-kolom-saringan input,
-  .rk-kolom-saringan select { font-size: .88rem; }
 
-  .rk-kotak-baris { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
-  .rk-kotak { padding: 14px 16px; }
-  .rk-kotak-nilai { font-size: 1.7rem; }
-  .rk-kotak-label { font-size: .78rem; }
-  .rk-kotak-ket { font-size: .74rem; }
+  .rk-kotak-baris { grid-template-columns: repeat(auto-fit, minmax(178px, 1fr)); gap: 12px; }
+  .rk-kotak-nilai { font-size: 1.75rem; }
+  .rk-kotak-label { font-size: 0.76rem; }
+  .rk-kotak-ket { font-size: 0.72rem; }
 
   .rk-kisi { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
 
-  .rk-panel h2 { font-size: 1rem; }
-  .rk-tabel { font-size: .8rem; }
+  .rk-tabel { font-size: 0.8rem; }
   .rk-keluhan { min-width: 220px; max-width: 340px; }
 
   /* Cukup ruang untuk keterangan melayang, dan tidak ada jari yang menutupinya */
@@ -579,16 +793,20 @@
     box-shadow: 0 4px 14px rgba(16, 23, 37, .25);
   }
 
-  .rk-batang li { grid-template-columns: minmax(80px, 34%) 1fr auto; gap: 10px; font-size: .84rem; }
+  .rk-batang li > *,
+  .rk-batang li > button { grid-template-columns: minmax(80px, 34%) 1fr auto; gap: 10px; font-size: 0.84rem; }
+
+  .rk-rincian-ringkas { grid-template-columns: repeat(6, 1fr); }
 }
 
-/* ────────────────────────────────────────────────────────────────
-   >= 1280px — layar lebar
-   ──────────────────────────────────────────────────────────────── */
-
-@media (min-width: 1280px) {
-  .rk-masuk { padding: 32px; }
-  .rk-masuk h1 { font-size: 1.25rem; }
+/* Saringan boleh memakai font lebih kecil HANYA pada perangkat berkursor.
+   Lebar layar saja bukan penanda yang benar: tablet melewati 960px dan tetap
+   layar sentuh, dan di sana kolom isian berfont di bawah 16px membuat iOS
+   memperbesar halaman begitu kolom disentuh — persis yang dicegah oleh
+   `font-size: 16px` pada aturan dasarnya. */
+@media (min-width: 960px) and (pointer: fine) {
+  .rk-kolom-saringan input,
+  .rk-kolom-saringan select { font-size: 0.88rem; }
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -598,25 +816,44 @@
 @media print {
   @page { size: A4 landscape; margin: 12mm; }
 
-  body { background: #fff; }
+  body, .rk-halaman { background: #fff; }
+
+  /* `min-height: 100vh` berarti "setinggi satu halaman" saat dicetak. Bila isi
+     laporan berakhir sedikit melewati batas halaman, sisa tinggi paksaan itu
+     menambah satu halaman kosong di akhir berkas PDF. */
+  .rk-halaman { min-height: auto; }
 
   /* Kendali antarmuka tidak ada gunanya di atas kertas */
   .rk-sembunyi-cetak { display: none !important; }
 
+  /* Dialog "Tandai Selesai" berposisi `fixed`. Bila kebetulan terbuka saat
+     pencetakan dimulai, isinya menindih halaman pertama — dan pada sebagian
+     peramban ikut terulang di tiap halaman. */
+  .rk-dialog-latar { display: none !important; }
+
   .rk { max-width: none; padding: 0; }
-  .rk-periode-cetak {
-    display: block;
-    font-size: 10pt;
-    color: #333;
-    margin: 0 0 10pt;
-  }
+
+  .rk-judul-cetak { display: block; margin-bottom: 10pt; break-after: avoid; }
+  .rk-judul-cetak h1 { font-size: 15pt; margin: 0 0 2pt; }
+  .rk-judul-cetak p { font-size: 9pt; color: #333; margin: 0; }
 
   .rk-panel, .rk-kotak, .rk-saringan {
     border: 1px solid #ccc;
     box-shadow: none;
-    /* Panel tidak boleh terpotong di tengah antar halaman */
-    break-inside: avoid;
   }
+
+  /* `break-inside: avoid` HANYA untuk blok yang memang muat dalam satu
+     halaman. Memasangnya pada seluruh `.rk-panel` ikut mengenai panel
+     "Daftar laporan" yang isinya tabel berhalaman-halaman: peramban tidak
+     dapat menuruti permintaan itu, lalu mendorong seluruh panel ke halaman
+     baru — meninggalkan halaman kosong dan memotong tabelnya. */
+  .rk-kotak,
+  .rk-kisi > .rk-panel,
+  .rk-grafik-bungkus,
+  .rk-kaki { break-inside: avoid; }
+
+  .rk-kotak::before { display: none; }
+  .rk-kotak:hover { transform: none; }
 
   .rk-kotak-baris { grid-template-columns: repeat(3, 1fr); }
   .rk-kisi { grid-template-columns: repeat(2, 1fr); }
@@ -624,13 +861,35 @@
   /* Seluruh baris tabel ikut tercetak, bukan hanya yang terlihat di layar */
   .rk-gulir { overflow: visible; margin: 0; padding: 0; }
   .rk-tabel { font-size: 7.5pt; }
-  .rk-tabel th { position: static; background: #f0f0f0; }
   .rk-tabel th, .rk-tabel td { padding: 3pt 4pt; }
+
+  /* Kepala tabel diulang di tiap halaman. Tanpa ini, halaman kedua dan
+     seterusnya berisi angka tanpa nama kolom. `position: sticky` dilepas
+     karena di atas kertas tidak ada yang bergulir. */
+  .rk-tabel thead { display: table-header-group; }
+  .rk-tabel th { position: static; background: #f0f0f0; }
+
+  /* Satu baris laporan tidak boleh terbelah di batas halaman */
+  .rk-tabel tr { break-inside: avoid; }
+
+  /* Di layar tiap sel `nowrap` karena tabelnya bergulir mendatar. Di atas
+     kertas tidak ada yang bisa digulir: lebar A4 mendatar itu tetap, dan 13
+     kolom yang menolak membungkus akan terpotong di tepi kanan — kolom Status
+     hilang tanpa jejak. Karena itu isinya dibiarkan membungkus. */
+  .rk-tabel th, .rk-tabel td { white-space: normal; overflow-wrap: break-word; }
   .rk-keluhan { max-width: 200pt; }
 
-  .rk-tooltip { display: none; }
-  .rk-kaki { break-inside: avoid; font-size: 8pt; color: #333; }
+  .rk-tooltip, .rk-rangka { display: none; }
+  .rk-kaki { font-size: 8pt; color: #333; }
 
-  /* Warna batang grafik wajib ikut tercetak, bukan dihilangkan peramban */
-  .rk-batang-isi, .rk-legenda i, .rk-svg rect { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  /* Peramban membuang seluruh warna latar saat mencetak, kecuali diminta
+     sebaliknya. Tanpa ini kotak ringkasan yang disorot, kepala tabel, dan
+     lencana status/urgensi tercetak putih polos — padahal lencana urgensi
+     itulah yang membuat baris "Kritis" langsung terlihat di atas kertas. */
+  .rk-batang-isi, .rk-legenda i, .rk-svg rect,
+  .rk-kotak, .rk-kotak-ikon, .rk-tabel th,
+  .rk-status, .rk-urgensi, .rk-skor {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
 }

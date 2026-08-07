@@ -10,12 +10,19 @@
  * sebelum berkas ini dimuat.
  */
 import { initDatabase, wajibSiap, tutupDatabase, tanggalWIB } from '../server/database/init.js';
-import { buatPengguna, cariPengguna } from '../server/services/authService.js';
+import { buatPengguna, cariPengguna, aturDivisi } from '../server/services/authService.js';
 import { areaDariLokasi } from '../server/config/divisi.js';
+import { FUNGSI_LIST } from '../src/data/fungsi.js';
 
 export const AKUN_UJI = {
   admin: { namaAkun: 'admin', sandi: 'ujicoba123' },
-  engineer: { namaAkun: 'eka', sandi: 'ujicoba123' }
+  // Engineer yang SENGAJA dibuka atas seluruh layanan. Penandanya eksplisit
+  // ('*'), bukan kolom kosong — kolom kosong berarti "belum diberi apa-apa".
+  engineer: { namaAkun: 'eka', sandi: 'ujicoba123', divisi: ['*'] },
+  // Engineer yang hanya menangani dua layanan. Dipakai memastikan
+  // pembatasannya benar-benar berlaku di sisi server, bukan sekadar
+  // menyembunyikan baris di antarmuka.
+  engineerPrinter: { namaAkun: 'budi', sandi: 'ujicoba123', divisi: ['printer', 'windows'] }
 };
 
 const KELUHAN = {
@@ -41,7 +48,12 @@ const KELUHAN = {
 
 const NAMA = ['Budi Santoso', 'Siti Rahayu', 'Ahmad Fauzi', 'Dewi Lestari', 'Rudi Hartono',
   'Nur Aisyah', 'Rina Marlina', 'Agus Salim', 'Fitri Handayani'];
-const FUNGSI = ['FM', 'HC & Plan Eval', 'PE & WO/WS', 'Finance', 'R.A.M', 'Legal & Relation', 'PO'];
+// Diambil dari daftar sungguhannya, bukan disalin dengan tangan. Salinan yang
+// ditulis ulang sempat memakai 'FM' dan 'PO' — dua nilai yang tidak pernah ada
+// pada dropdown ('FM (Field Manager)' dan 'PO (Production Operation)'), dan
+// karena itu data contohnya menguji sebaran fungsi yang tidak mungkin muncul
+// di lapangan.
+const FUNGSI = FUNGSI_LIST;
 const LOKASI = ['Produksi Lirik', 'WS Lirik', 'Finance Lirik', 'HC Lirik', 'RAM', 'IT', 'Fire',
   'Bengkel Listrik', 'Kantor Besar Buatan', 'Pumper UKUI', 'Klinik UKUI', 'SP 2, 3, 4'];
 const URGENSI = ['Rendah', 'Sedang', 'Tinggi', 'Kritis'];
@@ -59,15 +71,22 @@ export async function isiDataContoh(hari = 44) {
   await initDatabase();
   const db = wajibSiap();
 
-  for (const [peran, akun] of Object.entries(AKUN_UJI)) {
+  const NAMA_LENGKAP = {
+    admin: 'Administrator',
+    engineer: 'Eka Maulana',
+    engineerPrinter: 'Budi Santoso'
+  };
+
+  for (const [kunci, akun] of Object.entries(AKUN_UJI)) {
     if (!cariPengguna(akun.namaAkun)) {
       buatPengguna({
         namaAkun: akun.namaAkun,
-        nama: peran === 'admin' ? 'Administrator' : 'Eka Maulana',
-        peran,
+        nama: NAMA_LENGKAP[kunci],
+        peran: kunci === 'admin' ? 'admin' : 'engineer',
         sandi: akun.sandi
       });
     }
+    if (akun.divisi) aturDivisi(akun.namaAkun, akun.divisi);
   }
 
   // Pembangkit acak berbenih tetap — hasil uji harus dapat diulang

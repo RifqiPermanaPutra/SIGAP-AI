@@ -8,9 +8,11 @@
 import { Router } from 'express';
 import {
   cariLaporan, jumlahLaporan, ringkasan, deretWaktu, sebaran,
-  keluhanTakDikenali, nilaiUnik, tandaiDitangani
+  keluhanTakDikenali, nilaiUnik, tandaiDitangani, keefektifanSolusi
 } from '../services/rekapService.js';
-import { wajibMasuk, catatAkses, daftarAkses } from '../services/authService.js';
+import {
+  wajibMasuk, catatAkses, daftarAkses, daftarPengguna, divisiAkun
+} from '../services/authService.js';
 import { buatXlsx } from '../services/xlsxUtil.js';
 import { DIVISIONS } from '../config/divisi.js';
 
@@ -19,6 +21,33 @@ export const rekapRouter = Router();
 /* ────────────────────────────────────────────────────────────────
    Penyaji nilai
    ──────────────────────────────────────────────────────────────── */
+
+/**
+ * Peta akun → nama, dan layanan → penanggung jawabnya.
+ *
+ * Disusun di sini, bukan lewat JOIN pada kueri laporan: tabel `sesi` dan
+ * `pengguna` sama-sama memiliki kolom `nama`, sehingga menyambungkan keduanya
+ * membuat penyaring pencarian menjadi ambigu. Akunnya hanya enam dan sudah
+ * berada di memori, jadi menerjemahkannya di sini jauh lebih murah daripada
+ * merumitkan kueri yang dipakai bersama.
+ */
+function petaEngineer() {
+  const akun = daftarPengguna();
+
+  const nama = {};
+  const perDivisi = {};
+
+  for (const p of akun) {
+    nama[p.nama_akun] = p.nama;
+    if (p.peran !== 'engineer') continue;
+
+    for (const d of divisiAkun(p) || DIVISIONS.map((x) => x.id)) {
+      (perDivisi[d] ||= []).push({ akun: p.nama_akun, nama: p.nama });
+    }
+  }
+
+  return { nama, perDivisi };
+}
 
 const WIB_MS = 7 * 60 * 60 * 1000;
 
@@ -83,8 +112,14 @@ rekapRouter.get('/', wajibMasuk(), (req, res) => {
       sebaranArea: sebaran(f, 'area'),
       sebaranFungsi: sebaran(f, 'fungsi'),
       takDikenali: keluhanTakDikenali(f, 30),
+      keefektifan: keefektifanSolusi(f),
       laporan: cariLaporan(f, 500),
       jumlah: jumlahLaporan(f),
+      // Siapa yang menangani apa. Dipakai halaman rekap untuk dua hal:
+      // menerjemahkan nama akun penanda menjadi nama lengkap, dan menyebutkan
+      // penanggung jawab pada tiket yang masih menunggu — supaya "siapa yang
+      // harus ditagih" tidak perlu diingat sendiri oleh admin.
+      engineer: petaEngineer(),
       pilihan: {
         divisi: DIVISIONS.map(({ id, name }) => ({ id, name })),
         area: nilaiUnik('area'),
@@ -167,11 +202,18 @@ rekapRouter.post('/tandai-selesai', wajibMasuk('admin', 'engineer'), (req, res) 
       return res.status(400).json({ success: false, error: 'Nomor tiket wajib diisi' });
     }
 
-    const hasil = tandaiDitangani(nomorTiket, req.pengguna.akun, catatan);
-    if (!hasil.ok) return res.status(400).json({ success: false, error: hasil.alasan });
+    // `selesaiPada` boleh dikosongkan — artinya sekarang, sama seperti sebelumnya.
+    // Batas wewenang per divisi diberlakukan sama seperti pada halaman tugas;
+    // bila hanya salah satunya dijaga, yang lain menjadi pintu belakang.
+    const hasil = tandaiDitangani(nomorTiket, req.pengguna.akun, {
+      catatan,
+      selesaiPada: req.body?.selesaiPada || null,
+      divisiDiizinkan: req.pengguna.divisi
+    });
+    if (!hasil.ok) return res.status(hasil.status || 400).json({ success: false, error: hasil.alasan });
 
     catatAkses(req.pengguna.akun, 'tandai-selesai', nomorTiket);
-    res.json({ success: true });
+    res.json({ success: true, ditanganiPada: hasil.ditanganiPada });
   } catch (error) {
     console.error('Error tandai selesai:', error);
     res.status(500).json({ success: false, error: 'Gagal menandai tiket' });

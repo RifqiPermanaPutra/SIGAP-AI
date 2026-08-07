@@ -1,0 +1,375 @@
+/* ================================================
+   Tugas Engineer
+
+   Dirancang untuk PONSEL lebih dulu, dan bukan sekadar karena tren:
+   halaman ini dibuka engineer di lapangan, sambil berdiri, kerap dengan
+   satu tangan. Karena itu berbentuk kartu — bukan tabel — dan tombolnya
+   sengaja besar.
+
+   Titik henti:
+     dasar        ponsel   (< 700px)
+     >= 700px     tablet ke atas
+   ================================================ */
+
+.tg-halaman {
+  width: 100%;
+  min-width: 0;
+  background: var(--canvas);
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.tg {
+  width: 100%;
+  min-width: 0;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 16px 12px calc(48px + env(safe-area-inset-bottom));
+  color: var(--ink);
+}
+
+.tg-tunggu { width: 100%; padding: 48px 16px; text-align: center; color: var(--ink-3); }
+
+/* ── Navbar ───────────────────────────────────────────────────── */
+
+/* Logo Pertamina EP varian latar gelap — bidangnya wajib biru */
+.tg-navbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 12px;
+  background: linear-gradient(100deg,
+    var(--pt-blue-dark) 0%, var(--pt-blue-mid) 55%, var(--pt-blue) 100%);
+}
+.tg-navbar::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 3px;
+  background: linear-gradient(90deg,
+    var(--pt-blue) 0 33%, var(--pt-green) 33% 66%, var(--pt-red) 66% 100%);
+}
+
+.tg-merek { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.tg-merek-logo { height: 26px; width: auto; display: block; flex-shrink: 0; }
+.tg-merek-garis { width: 1px; height: 26px; flex-shrink: 0; background: rgba(255, 255, 255, 0.3); }
+.tg-merek-teks { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.tg-merek-teks strong { font-size: 0.92rem; font-weight: 700; color: #fff; letter-spacing: -0.015em; }
+.tg-merek-teks small {
+  font-size: 0.6rem; letter-spacing: 0.08em; font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.tg-navbar-kanan { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+.tg-tombol-navbar {
+  display: inline-flex; align-items: center; gap: 6px;
+  font: inherit; font-size: 0.8rem; font-weight: 600;
+  padding: 8px 12px;
+  min-height: 40px;
+  color: #fff;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: background var(--ease);
+}
+.tg-tombol-navbar:hover { background: rgba(255, 255, 255, 0.24); }
+
+/* ── Judul ────────────────────────────────────────────────────── */
+
+.tg-judul { margin: 16px 0; }
+.tg-judul h1 { font-size: 1.3rem; margin: 0 0 6px; letter-spacing: -0.02em; }
+
+/* Peringatan tiket menganggur — kuning/oranye, bukan merah: ini bukan galat,
+   melainkan pekerjaan yang tertinggal. */
+.tg-peringatan {
+  display: flex; align-items: center; gap: 8px;
+  background: #fdf6e8; color: #8a5a00; border: 1px solid #f2dfb4;
+  border-radius: var(--r-sm);
+  padding: 10px 13px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+.tg-peringatan svg { flex-shrink: 0; }
+
+/* ── Saringan layanan ─────────────────────────────────────────── */
+
+/* Di ponsel digulir mendatar dalam satu baris — sama seperti pintasan periode
+   pada halaman rekap dan pemilih divisi pada penyunting SOP. */
+.tg-saringan {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+.tg-saringan::-webkit-scrollbar { display: none; }
+
+.tg-saringan button {
+  display: inline-flex; align-items: center; gap: 6px;
+  font: inherit; font-size: 0.82rem; font-weight: 500;
+  padding: 8px 14px;
+  min-height: 40px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: var(--r-full);
+  cursor: pointer;
+  white-space: nowrap;
+  flex: none;
+  transition: background var(--ease), border-color var(--ease), color var(--ease);
+}
+.tg-saringan button:hover { border-color: var(--pt-blue); color: var(--pt-blue-text); }
+.tg-saringan button.aktif {
+  background: var(--pt-blue); border-color: var(--pt-blue); color: #fff; font-weight: 600;
+}
+
+.tg-jumlah:not(:empty) {
+  font-size: 0.7rem; font-weight: 700;
+  background: rgba(255, 255, 255, 0.25);
+  padding: 1px 7px; border-radius: var(--r-full);
+}
+.tg-ket { font-size: 0.78rem; color: var(--ink-3); margin: 0; line-height: 1.5; }
+
+.tg-hitung {
+  font-size: 0.76rem; font-weight: 600; color: var(--ink-4);
+  margin: 0 0 10px;
+}
+
+/* ── Kartu tiket ──────────────────────────────────────────────── */
+
+.tg-daftar { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+
+.tg-kartu {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--line);
+  border-radius: var(--r-md);
+  box-shadow: var(--sh-xs);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Semakin lama menganggur, semakin jelas terlihat. Warna bukan satu-satunya
+   penanda — lamanya juga tertulis di kaki kartu. */
+.tg-kartu.sedang { border-left-color: #eb9834; }
+.tg-kartu.lama { border-left-color: var(--pt-red); }
+
+.tg-kartu-atas { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+
+.tg-tiket {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700; font-size: 0.86rem;
+  color: var(--pt-blue-text);
+}
+
+.tg-urgensi {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: var(--r-full);
+  font-size: 0.68rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.tg-urgensi.u-rendah { background: var(--line-2); color: var(--ink-3); }
+.tg-urgensi.u-sedang { background: var(--pt-blue-soft); color: var(--pt-blue-text); }
+.tg-urgensi.u-tinggi { background: #fdf0e8; color: #a8410f; }
+.tg-urgensi.u-kritis { background: var(--pt-red-soft); color: var(--pt-red-text); }
+
+.tg-keluhan {
+  margin: 0;
+  font-size: 0.9rem; line-height: 1.55; color: var(--ink);
+}
+
+.tg-rinci {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+  margin: 0;
+}
+.tg-rinci > div { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.tg-rinci dt { font-size: 0.66rem; color: var(--ink-4); font-weight: 600; }
+.tg-rinci dd {
+  margin: 0;
+  font-size: 0.8rem; color: var(--ink-2); font-weight: 600;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.tg-layanan { display: inline-flex; align-items: center; gap: 5px; }
+
+.tg-kartu-bawah {
+  display: flex; flex-direction: column; gap: 10px;
+  border-top: 1px solid var(--line-2);
+  padding-top: 10px;
+}
+
+.tg-menunggu {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 0.74rem; color: var(--ink-4); font-weight: 600;
+}
+.tg-kartu.lama .tg-menunggu { color: var(--pt-red-text); }
+
+/* ── Tombol ───────────────────────────────────────────────────── */
+
+.tg-tombol-utama,
+.tg-tombol-samar {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  font: inherit; font-size: 0.88rem; font-weight: 600;
+  padding: 12px 18px;
+  /* Sasaran sentuh besar: ditekan sambil berdiri, kerap dengan satu tangan */
+  min-height: 48px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: background var(--ease), border-color var(--ease);
+}
+.tg-tombol-utama {
+  background: var(--pt-green, #1baf7a); color: #fff;
+  border: 1px solid var(--pt-green, #1baf7a);
+  box-shadow: 0 3px 10px rgba(27, 175, 122, 0.25);
+}
+.tg-tombol-utama:hover:not(:disabled) { filter: brightness(0.94); }
+.tg-tombol-utama:disabled { background: var(--ink-4); border-color: var(--ink-4); box-shadow: none; cursor: not-allowed; }
+
+.tg-tombol-samar {
+  background: var(--surface); color: var(--ink-2); border: 1px solid var(--line);
+}
+.tg-tombol-samar:hover { border-color: var(--pt-blue); color: var(--pt-blue-text); }
+
+/* ── Pesan ────────────────────────────────────────────────────── */
+
+.tg-galat, .tg-kabar {
+  display: flex; align-items: flex-start; gap: 7px;
+  border-radius: var(--r-sm);
+  padding: 10px 13px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+.tg-galat { background: var(--pt-red-soft); color: var(--pt-red-text); border: 1px solid #f7c4ca; }
+.tg-kabar { background: var(--pt-green-soft); color: var(--pt-green-text); border: 1px solid #b6e7d2; }
+
+.tg-kosong {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--ink-4);
+}
+.tg-kosong h2 { font-size: 1.05rem; color: var(--ink-2); margin: 12px 0 6px; }
+.tg-kosong p { font-size: 0.84rem; margin: 0; }
+
+/* ── Dialog ───────────────────────────────────────────────────── */
+
+.tg-dialog-latar {
+  position: fixed; inset: 0;
+  background: rgba(16, 23, 37, .45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: grid;
+  align-items: end;          /* menempel ke bawah, dekat ibu jari */
+  z-index: 50;
+}
+.tg-dialog {
+  background: var(--surface);
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
+  width: 100%;
+  max-height: 92dvh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tg-dialog h3 { margin: 0; font-size: 1rem; }
+.tg-dialog-tiket {
+  font-size: 0.78rem; color: var(--pt-blue-text); font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  margin: 2px 0 0;
+}
+.tg-dialog-keluhan {
+  font-size: 0.84rem; color: var(--ink-2); margin: 8px 0 12px;
+  background: var(--canvas); padding: 10px 12px;
+  border-radius: var(--r-sm); line-height: 1.5;
+}
+.tg-dialog label { font-size: 0.78rem; font-weight: 600; color: var(--ink-3); margin-top: 8px; }
+.tg-dialog label small { color: var(--ink-4); font-weight: 400; }
+
+.tg-dialog input,
+.tg-dialog textarea {
+  font: inherit;
+  /* 16px mencegah iOS memperbesar halaman saat kolom disentuh */
+  font-size: 16px;
+  padding: 11px;
+  margin-top: 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--ink);
+  width: 100%;
+  min-width: 0;
+  resize: vertical;
+}
+.tg-dialog input:focus,
+.tg-dialog textarea:focus { outline: 2px solid var(--pt-blue); outline-offset: 1px; }
+
+.tg-pintasan { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.tg-pintasan button {
+  font: inherit; font-size: 0.76rem; font-weight: 600;
+  padding: 7px 12px;
+  min-height: 36px;
+  border: 1px solid var(--line);
+  background: var(--canvas);
+  color: var(--ink-2);
+  border-radius: var(--r-full);
+  cursor: pointer;
+  transition: border-color var(--ease), color var(--ease);
+}
+.tg-pintasan button:hover { border-color: var(--pt-blue); color: var(--pt-blue-text); }
+
+.tg-dialog .tg-galat { margin: 10px 0 0; }
+
+.tg-dialog-aksi {
+  display: flex;
+  flex-direction: column-reverse;   /* tindakan utama paling bawah */
+  gap: 8px;
+  margin-top: 14px;
+}
+.tg-dialog-aksi button { width: 100%; }
+
+/* ────────────────────────────────────────────────────────────────
+   >= 700px — tablet ke atas
+   ──────────────────────────────────────────────────────────────── */
+
+@media (min-width: 700px) {
+  .tg { padding: 20px 16px 56px; }
+  .tg-navbar { padding: 12px 20px; }
+
+  .tg-merek-logo { height: 30px; }
+  .tg-merek-garis { height: 30px; }
+  .tg-merek-teks strong { font-size: 1rem; }
+  .tg-merek-teks small { font-size: 0.65rem; }
+
+  .tg-judul h1 { font-size: 1.5rem; }
+  .tg-saringan { flex-wrap: wrap; overflow-x: visible; }
+
+  .tg-kartu { padding: 16px 18px; }
+  .tg-rinci { grid-template-columns: repeat(4, 1fr); }
+
+  .tg-kartu-bawah { flex-direction: row; align-items: center; justify-content: space-between; }
+  .tg-kartu-bawah .tg-tombol-utama { min-width: 160px; }
+
+  .tg-dialog-latar { place-items: center; padding: 20px; }
+  .tg-dialog {
+    width: min(100%, 480px);
+    border-radius: var(--r-lg);
+    padding: 24px;
+    max-height: 86dvh;
+  }
+  .tg-dialog-aksi { flex-direction: row; justify-content: flex-end; }
+  .tg-dialog-aksi button { width: auto; }
+}

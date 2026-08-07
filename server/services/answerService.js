@@ -10,15 +10,9 @@
  *   - waktu jawab di bawah sepersepuluh detik
  */
 import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { tokenisasi } from './teksUtil.js';
 import { getChatMessages } from '../database/init.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const KB_FILE = path.join(__dirname, '..', 'data', 'knowledge-base.json');
+import { KB_FILE } from '../config/jalur.js';
 
 /** @type {{masalah: Array<object>}} */
 let KB = { masalah: [] };
@@ -89,7 +83,9 @@ const DIVISION_LABELS = {
 // Ambang ini sengaja dipasang agak tinggi. Bagi layanan pengaduan, menjawab
 // "belum dikenali" lalu menawarkan bantuan engineer jauh lebih baik daripada
 // memberi langkah perbaikan untuk masalah yang keliru.
-const AMBANG_COCOK = 0.4;
+// Diekspor agar penyunting SOP dapat menampilkan ambang yang sama dengan yang
+// benar-benar dipakai menjawab, bukan angka yang ditulis ulang di sisi lain.
+export const AMBANG_COCOK = 0.4;
 
 // Kekhasan minimum yang harus dimiliki setidaknya satu kata yang cocok.
 // Nilainya menyesuaikan divisi terkecil (6 masalah), di mana kata yang muncul
@@ -205,6 +201,93 @@ export function saranTerdekat(keluhan, divisi, maks = 3) {
     .filter((k) => k.skor >= AMBANG_SARAN)
     .sort((a, b) => b.skor - a.skor)
     .slice(0, maks);
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Penebak divisi
+   ──────────────────────────────────────────────────────────────── */
+
+/**
+ * Peringkat divisi yang paling mungkin sesuai dengan sebuah keluhan.
+ *
+ * Pekerja berpikir dalam **gejala**, sedangkan antarmuka meminta mereka
+ * memilih **kategori**. "Internet saya mati" itu LAN, FTTP, WAN, atau
+ * Windows? Salah pilih berarti laporannya masuk ke WhatsApp engineer yang
+ * keliru — engineer CCTV menerima keluhan printer.
+ *
+ * Penebakan memakai mesin skor yang sama dengan pencocokan biasa, hanya
+ * dijalankan lintas divisi lalu diambil skor terbaik pada tiap divisi.
+ *
+ * @returns {Array<{divisi: string, masalah: object, skor: number}>} urut menurun
+ */
+export function tebakDivisi(keluhan) {
+  const kata = tokenisasi(keluhan);
+  if (kata.length === 0) return [];
+
+  const terbaik = new Map();
+  for (const m of KB.masalah) {
+    const skor = hitungSkor(kata, m);
+    const kini = terbaik.get(m.divisi);
+    if (!kini || skor > kini.skor) terbaik.set(m.divisi, { masalah: m, skor });
+  }
+
+  return [...terbaik.entries()]
+    .map(([divisi, v]) => ({ divisi, ...v }))
+    .filter((x) => x.skor > 0)
+    .sort((a, b) => b.skor - a.skor);
+}
+
+/**
+ * Ambang untuk penebakan LINTAS divisi — sengaja lebih ketat daripada
+ * AMBANG_COCOK yang dipakai di dalam satu divisi.
+ *
+ * Alasannya bukan kehati-hatian belaka. Skor tertinggi di sini diambil dari
+ * delapan divisi sekaligus, dan mengambil nilai maksimum dari banyak kandidat
+ * menaikkan puncaknya secara semu — semakin banyak yang dibandingkan, semakin
+ * besar peluang salah satunya kebetulan tinggi. Terbukti nyata: keluhan
+ * *"kursi kantor saya rusak"* — yang sama sekali bukan urusan ICT — mencapai
+ * 0,391 pada divisi CCTV maupun Printer, nyaris menembus ambang 0,4.
+ *
+ * Ditambah lagi, akibat salah tebak di sini lebih mahal: laporan sampai ke
+ * WhatsApp engineer yang keliru. Di dalam satu divisi, salah cocok hanya
+ * berarti langkah yang tidak tepat, dan pengguna dapat menjawab
+ * "belum berhasil".
+ */
+const AMBANG_DIVISI_PASTI = 0.5;
+const AMBANG_DIVISI_RAGU = 0.4;
+
+/** Jarak minimum dari kandidat kedua sebelum sebuah divisi diputuskan sendiri */
+const JARAK_MEYAKINKAN = 0.12;
+
+/**
+ * Putuskan divisi dari sebuah keluhan.
+ *
+ * @returns {{hasil: 'pasti'|'ragu'|'tidak-dikenali', divisi?: string,
+ *            skor?: number, pilihan: Array<{divisi: string, skor: number}>}}
+ */
+export function pilihDivisiOtomatis(keluhan) {
+  const peringkat = tebakDivisi(keluhan);
+  if (peringkat.length === 0) return { hasil: 'tidak-dikenali', pilihan: [] };
+
+  const teratas = peringkat[0];
+  const kedua = peringkat[1]?.skor ?? 0;
+
+  // Diputuskan sendiri hanya bila skornya tinggi DAN unggul jelas dari
+  // kandidat berikutnya. Dua divisi berskor setara berarti keluhannya memang
+  // bermakna ganda — melempar koin di situ sama saja menebak engineer.
+  if (teratas.skor >= AMBANG_DIVISI_PASTI && teratas.skor - kedua >= JARAK_MEYAKINKAN) {
+    return { hasil: 'pasti', divisi: teratas.divisi, skor: teratas.skor, pilihan: [] };
+  }
+
+  const dekat = peringkat.filter((p) => p.skor >= AMBANG_DIVISI_RAGU).slice(0, 3);
+  if (dekat.length > 0) {
+    return {
+      hasil: 'ragu',
+      pilihan: dekat.map((p) => ({ divisi: p.divisi, skor: Number(p.skor.toFixed(3)) }))
+    };
+  }
+
+  return { hasil: 'tidak-dikenali', pilihan: [] };
 }
 
 /** Beberapa masalah teratas pada satu divisi — dipakai untuk saran pilihan */
@@ -398,7 +481,7 @@ export async function chat(sessionId, divisi, pesanPengguna) {
     return {
       response:
         'Terima kasih. Kami senang kendala Anda telah teratasi.\n\n' +
-        'Apabila ada kendala lain di kemudian hari, jangan ragu menghubungi kami kembali melalui **SIGAP AI**.',
+        'Apabila ada kendala lain di kemudian hari, jangan ragu menghubungi kami kembali melalui **SIGAP**.',
       shouldEscalate: false,
       isResolved: true,
       solusiTerakhir: sudahDiberikan
@@ -450,14 +533,19 @@ export async function chat(sessionId, divisi, pesanPengguna) {
     shouldEscalate: false,
     isResolved: false,
     ...telemetri,
-    solusiTerakhir: nomorSolusi
+    solusiTerakhir: nomorSolusi,
+    // Jawaban ini diakhiri PERTANYAAN_PENUTUP, sehingga antarmuka dapat
+    // menawarkan tombol "Sudah / Belum berhasil". Penandanya dikirim dari sini
+    // alih-alih dicari ulang dari isi teks di sisi antarmuka — mencocokkan
+    // kalimat di dua tempat berarti dua tempat yang bisa bergeser sendiri.
+    menungguKonfirmasi: true
   };
 }
 
 /** Pesan sambutan */
 export function getWelcomeMessage() {
   return (
-    'Selamat datang di **SIGAP AI**, layanan bantuan ICT Pertamina EP Asset 1 Regional 1 Field Lirik.\n\n' +
+    'Selamat datang di **SIGAP**, layanan bantuan ICT Pertamina EP Asset 1 Regional 1 Field Lirik.\n\n' +
     'Saya siap membantu menyelesaikan kendala ICT Anda. Silakan pilih **layanan** yang ingin dilaporkan terlebih dahulu.'
   );
 }

@@ -150,6 +150,66 @@ export const IconAlert = (p) => (
   </Svg>
 );
 
+/* ── Halaman laporan rekap ──────────────────────── */
+
+export const IconChart = (p) => (
+  <Svg {...p}>
+    <path d="M3 3v16a2 2 0 0 0 2 2h16" />
+    <path d="M7 15v-3" />
+    <path d="M12 15V7" />
+    <path d="M17 15v-6" />
+  </Svg>
+);
+
+export const IconDownload = (p) => (
+  <Svg {...p}>
+    <path d="M12 3v12" />
+    <path d="m7.5 10.5 4.5 4.5 4.5-4.5" />
+    <path d="M4 20h16" />
+  </Svg>
+);
+
+export const IconPrint = (p) => (
+  <Svg {...p}>
+    <path d="M7 8V3h10v5" />
+    <rect x="3" y="8" width="18" height="8" rx="2" />
+    <path d="M7 14h10v7H7z" />
+  </Svg>
+);
+
+export const IconLogout = (p) => (
+  <Svg {...p}>
+    <path d="M14 20H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h8" />
+    <path d="m16 15 4-3-4-3" />
+    <path d="M20 12H10" />
+  </Svg>
+);
+
+export const IconClock = (p) => (
+  <Svg {...p}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 7v5.5l3.5 2" />
+  </Svg>
+);
+
+export const IconInbox = (p) => (
+  <Svg {...p}>
+    <path d="M3 13h4.5l1.5 3h6l1.5-3H21" />
+    <path d="M5.4 5.5 3 13v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5l-2.4-7.5A2 2 0 0 0 16.7 4H7.3a2 2 0 0 0-1.9 1.5z" />
+  </Svg>
+);
+
+export const IconChevronDown = (p) => (
+  <Svg {...p}><path d="m6 9.5 6 6 6-6" /></Svg>
+);
+
+export const IconLock = (p) => (
+  <Svg {...p}>
+    <rect x="4" y="10" width="16" height="11" rx="2" />
+    <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+  </Svg>
+);
+
 /* WhatsApp memakai glyph resmi (solid), bukan garis */
 export const IconWhatsapp = ({ size = 24, ...rest }) => (
   <svg

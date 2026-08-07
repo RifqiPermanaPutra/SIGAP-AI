@@ -8,8 +8,12 @@ import { chatRouter } from './server/routes/chat.js';
 import { kbRouter } from './server/routes/knowledgebase.js';
 import { authRouter } from './server/routes/auth.js';
 import { rekapRouter } from './server/routes/rekap.js';
-import { initDatabase, tandaiSesiTerbengkalai } from './server/database/init.js';
+import { sopRouter } from './server/routes/sop.js';
+import { tiketRouter } from './server/routes/tiket.js';
+import { tugasRouter } from './server/routes/tugas.js';
+import { initDatabase } from './server/database/init.js';
 import { siapkanAkunAwal } from './server/services/authService.js';
+import { mulaiPemeliharaan } from './server/services/pemeliharaan.js';
 import { DIVISIONS, nomorEngineer } from './server/config/divisi.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -18,23 +22,16 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Batas diam sebelum sebuah sesi dianggap ditinggalkan penggunanya.
-const MENIT_SESI_TERBENGKALAI = Number(process.env.MENIT_SESI_TERBENGKALAI || 30);
+// Bila aplikasi disajikan di belakang reverse proxy (nginx, IIS), alamat asli
+// pengunjung berada pada header X-Forwarded-For. Tanpa pengaturan ini seluruh
+// permintaan tampak berasal dari alamat proxy, sehingga pembatas laju akan
+// menahan semua orang sekaligus begitu satu pengguna melampaui batas.
+if (process.env.TRUST_PROXY === '1') app.set('trust proxy', 1);
 
-// Middleware
-//
-// Kompresi harus dipasang sebelum penyajian berkas statis. Tanpa ini, berkas
-// JavaScript terkirim utuh sekitar 440 KB meskipun peramban meminta gzip;
-// dengan kompresi, yang berpindah hanya sekitar 130 KB.
 app.use(compression());
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
 
-// Serve static frontend files (after build)
-//
-// Nama berkas hasil build memuat sidik jari isi (misalnya index-B8L8w8uq.js),
-// sehingga aman disimpan peramban dalam jangka panjang. Berkas index.html
-// tidak boleh ikut disimpan agar pengguna selalu memperoleh versi terbaru.
 app.use(
   express.static(path.join(__dirname, 'dist'), {
     maxAge: '1y',
@@ -52,12 +49,16 @@ app.use('/api/chat', chatRouter);
 app.use('/api/kb', kbRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/rekap', rekapRouter);
+app.use('/api/sop', sopRouter);
+// Terbuka tanpa masuk — isinya sengaja tanpa data pribadi, lihat routes/tiket.js
+app.use('/api/tiket', tiketRouter);
+app.use('/api/tugas', tugasRouter);
 
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
-    service: 'AI Helpdesk ICT - Pertamina EP',
+    service: 'SIGAP — Layanan Bantuan ICT Pertamina EP',
     timestamp: new Date().toISOString()
   });
 });
@@ -78,6 +79,12 @@ app.get('/api/config', (req, res) => {
 
   res.json({
     whatsappNumber: nomorEngineer('WHATSAPP_DEFAULT'),
+    // Alamat yang dapat dibuka dari LUAR mesin ini. Dipakai menyusun tautan
+    // "Tandai Selesai" di dalam pesan WhatsApp: engineer membukanya dari
+    // ponsel, dan di sana `localhost` menunjuk ke ponselnya sendiri.
+    // Dikosongkan bila belum diatur — tautannya cukup tidak disertakan,
+    // daripada mengirim tautan yang pasti gagal dibuka.
+    alamatPublik: (process.env.ALAMAT_PUBLIK || '').trim().replace(/\/+$/, ''),
     divisions
   });
 });
@@ -97,21 +104,15 @@ async function start() {
 
     await siapkanAkunAwal();
 
-    // Sesi yang ditinggalkan pengguna di tengah jalan tidak akan pernah
-    // menutup dirinya sendiri. Tanpa penyapuan berkala, statusnya bertahan
-    // 'aktif' selamanya dan seluruh perhitungan rekap ikut salah.
-    const sapuSesi = () => {
-      const jumlah = tandaiSesiTerbengkalai(MENIT_SESI_TERBENGKALAI);
-      if (jumlah > 0) console.log(`🧹 ${jumlah} sesi ditandai ditinggalkan`);
-    };
-    sapuSesi();
-    setInterval(sapuSesi, 5 * 60 * 1000).unref();
+    // Pencadangan harian, retensi data, penyapuan sesi yang ditinggalkan, dan
+    // pembersihan berkas lama — seluruhnya di server/services/pemeliharaan.js
+    mulaiPemeliharaan();
 
     app.listen(PORT, () => {
       console.log(`
 ╔══════════════════════════════════════════════════╗
-║   AI Helpdesk ICT — Pertamina EP                ║
-║   Asset 1 Regional 1 Field Lirik                ║
+║   SIGAP — Layanan Bantuan ICT                    ║
+║   Pertamina EP Asset 1 Regional 1 Field Lirik    ║
 ║                                                  ║
 ║   Server: http://localhost:${PORT}                  ║
 ║   Status: Running ✅                             ║

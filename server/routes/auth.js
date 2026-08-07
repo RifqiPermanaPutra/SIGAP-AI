@@ -8,8 +8,10 @@
 import { Router } from 'express';
 import {
   cariPengguna, periksaSandi, buatToken, bacaToken,
-  pasangKuki, hapusKuki, catatMasuk, catatAkses
+  pasangKuki, hapusKuki, catatMasuk, catatAkses, divisiAkun
 } from '../services/authService.js';
+import { buatPenghitungMasuk } from '../services/pembatasLaju.js';
+import { info, peringatan } from '../services/logUtil.js';
 
 export const authRouter = Router();
 
@@ -17,34 +19,11 @@ export const authRouter = Router();
    Pembatas percobaan masuk
    ──────────────────────────────────────────────────────────────── */
 
-const MAKS_PERCOBAAN = 5;
-const JEDA_MENIT = 15;
-
-/**
- * Penghitung percobaan gagal per nama akun.
- *
- * Disimpan di memori, bukan di basis data: setelah server dijalankan ulang
- * penghitungnya wajar dimulai dari nol, dan menuliskannya ke disk setiap
- * percobaan gagal justru membuka jalan pembengkakan berkas.
- */
-const percobaan = new Map();
-
-function terkunci(akun) {
-  const catatan = percobaan.get(akun);
-  if (!catatan) return 0;
-  if (Date.now() > catatan.sampai) {
-    percobaan.delete(akun);
-    return 0;
-  }
-  return catatan.gagal >= MAKS_PERCOBAAN ? Math.ceil((catatan.sampai - Date.now()) / 60000) : 0;
-}
-
-function catatGagal(akun) {
-  const catatan = percobaan.get(akun) || { gagal: 0, sampai: 0 };
-  catatan.gagal += 1;
-  catatan.sampai = Date.now() + JEDA_MENIT * 60 * 1000;
-  percobaan.set(akun, catatan);
-}
+const penghitung = buatPenghitungMasuk({
+  maksPerAkun: 5,      // per pasangan akun + alamat
+  maksPerAlamat: 15,   // lapis kedua: satu alamat, akun mana pun
+  jedaMenit: 15
+});
 
 /* ────────────────────────────────────────────────────────────────
    Rute
@@ -60,8 +39,11 @@ authRouter.post('/masuk', (req, res) => {
       return res.status(400).json({ success: false, error: 'Nama akun dan kata sandi wajib diisi' });
     }
 
-    const sisaMenit = terkunci(namaAkun);
+    const alamat = req.ip || req.socket?.remoteAddress || 'tidak-diketahui';
+
+    const sisaMenit = penghitung.terkunci(namaAkun, alamat);
     if (sisaMenit > 0) {
+      peringatan('masuk-terkunci', { akun: namaAkun, alamat, sisaMenit });
       return res.status(429).json({
         success: false,
         error: `Terlalu banyak percobaan gagal. Coba lagi dalam ${sisaMenit} menit.`
@@ -73,14 +55,18 @@ authRouter.post('/masuk', (req, res) => {
     // Pesan galat sengaja sama untuk akun tidak dikenal maupun sandi keliru,
     // agar tidak dapat dipakai menebak nama akun mana yang benar-benar ada.
     if (!pengguna || !periksaSandi(sandi, pengguna.sandi_hash)) {
-      catatGagal(namaAkun);
+      penghitung.catatGagal(namaAkun, alamat);
+      peringatan('masuk-gagal', { akun: namaAkun, alamat });
       return res.status(401).json({ success: false, error: 'Nama akun atau kata sandi salah' });
     }
 
-    percobaan.delete(namaAkun);
+    const ingatSaya = req.body?.ingatSaya === true;
+
+    penghitung.hapus(namaAkun, alamat);
+    info('masuk-berhasil', { akun: namaAkun, peran: pengguna.peran, alamat, ingatSaya });
     catatMasuk(namaAkun);
-    catatAkses(namaAkun, 'masuk');
-    pasangKuki(res, buatToken(pengguna));
+    catatAkses(namaAkun, 'masuk', ingatSaya ? 'sesi panjang' : null);
+    pasangKuki(res, buatToken(pengguna, ingatSaya), ingatSaya);
 
     res.json({
       success: true,
@@ -117,6 +103,13 @@ authRouter.get('/saya', (req, res) => {
 
   res.json({
     success: true,
-    pengguna: { namaAkun: pengguna.nama_akun, nama: pengguna.nama, peran: pengguna.peran }
+    pengguna: {
+      namaAkun: pengguna.nama_akun,
+      nama: pengguna.nama,
+      peran: pengguna.peran,
+      // Dipakai antarmuka untuk menjelaskan cakupan wewenang. Bukan penjaga:
+      // pembatasan sesungguhnya berlaku di sisi server pada setiap permintaan.
+      divisi: divisiAkun(pengguna)
+    }
   });
 });

@@ -5,12 +5,18 @@ import ChatInput from './components/ChatInput.jsx';
 import DivisionSelector from './components/DivisionSelector.jsx';
 import IntakeForm from './components/IntakeForm.jsx';
 import Landing from './components/Landing.jsx';
+import { DIVISI_CADANGAN } from './data/divisiCadangan.js';
 
 const API_BASE = '/api';
 
 export default function App() {
   const [view, setView] = useState('landing');
   const [sessionId, setSessionId] = useState(null);
+  // Nomor tiket dikirim server sejak sesi dibuat, tetapi sebelumnya dibuang
+  // begitu saja. Akibatnya pesan WhatsApp ke engineer tidak memuat rujukan apa
+  // pun, sehingga engineer tidak dapat menemukan tiketnya untuk ditandai
+  // selesai — dan kolom waktu tanggap pada rekap tidak pernah terisi.
+  const [nomorTiket, setNomorTiket] = useState(null);
   const [messages, setMessages] = useState([]);
   const [division, setDivision] = useState(null);
   const [reporter, setReporter] = useState(null);
@@ -18,6 +24,13 @@ export default function App() {
   const [showDivisionSelector, setShowDivisionSelector] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showEngineerBtn, setShowEngineerBtn] = useState(false);
+  // Benar bila jawaban terakhir diakhiri pertanyaan "sudah teratasi?", sehingga
+  // tombol Sudah/Belum berhasil layak ditawarkan. Ditentukan server, bukan
+  // ditebak dari isi teks di sini.
+  const [menungguKonfirmasi, setMenungguKonfirmasi] = useState(false);
+  // Berisi pilihan layanan bila penentuan otomatis belum cukup meyakinkan.
+  // Menebak di antaranya berisiko mengirim laporan ke engineer yang salah.
+  const [saranDivisi, setSaranDivisi] = useState(null);
   const [config, setConfig] = useState(null);
 
 
@@ -27,52 +40,90 @@ export default function App() {
       .then(res => res.json())
       .then(data => setConfig(data))
       .catch(() => {
-        // Fallback config
-        setConfig({
-          whatsappNumber: '6281234567890',
-          divisions: [
-            { id: 'printer', name: 'Printer', description: 'Masalah printer, cetak dokumen', mode: 'swalayan' },
-            { id: 'windows', name: 'Windows', description: 'Laptop, PC, sistem operasi', mode: 'swalayan' },
-            { id: 'cctv', name: 'CCTV', description: 'Kamera pengawas, DVR/NVR', mode: 'engineer' },
-            { id: 'telepon', name: 'Telepon', description: 'Telepon kantor, extension', mode: 'engineer' },
-            { id: 'radio', name: 'Radio Komunikasi', description: 'Radio HT, repeater', mode: 'engineer' },
-            { id: 'fttp', name: 'FTTP', description: 'Fiber to the premise, ONU', mode: 'engineer' },
-            { id: 'lan', name: 'LAN', description: 'Jaringan lokal, kabel LAN', mode: 'engineer' },
-            { id: 'wan', name: 'WAN', description: 'Jaringan luas, koneksi antar site', mode: 'engineer' }
-          ]
-        });
+        // Server tidak terjangkau. Nomor WhatsApp sengaja dikosongkan, bukan
+        // diisi contoh: mengirim pelapor ke nomor yang tidak dikenal lebih
+        // buruk daripada mengatakan terus terang bahwa nomornya belum ada.
+        setConfig({ whatsappNumber: '', divisions: DIVISI_CADANGAN });
       });
   }, []);
 
-  // Start a new chat session
-  const startNewSession = useCallback(async () => {
+  const jam = () =>
+    new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+  /**
+   * Alamat yang dapat dibuka dari ponsel engineer.
+   *
+   * Pelapor sudah membuka halaman ini dari suatu alamat, dan bila ia berada di
+   * jaringan kantor maka alamat itu justru sudah tepat — engineer berada di
+   * jaringan yang sama. Karena itu `ALAMAT_PUBLIK` di `.env` hanya perlu diisi
+   * bila alamatnya memang berbeda, misalnya di belakang reverse proxy.
+   *
+   * Kecuali localhost: bila pelapornya kebetulan duduk di komputer server,
+   * `localhost` menunjuk ke ponsel engineer itu sendiri. Lebih baik tidak
+   * mengirim tautan sama sekali daripada mengirim tautan yang pasti gagal.
+   */
+  const alamatUntukEngineer = () => {
+    if (config?.alamatPublik) return config.alamatPublik;
+    const { origin, hostname } = window.location;
+    const lokal = ['localhost', '127.0.0.1', '::1', '[::1]'].includes(hostname);
+    return lokal ? null : origin;
+  };
+
+  const SAMBUTAN_LOKAL =
+    'Selamat datang di **SIGAP**, layanan bantuan ICT Pertamina EP Asset 1 Regional 1 Field Lirik.\n\n' +
+    'Saya siap membantu menyelesaikan kendala ICT Anda. Silakan pilih **layanan** yang ingin dilaporkan terlebih dahulu.';
+
+  /**
+   * Buka sesi percakapan baru.
+   *
+   * Mengembalikan id sesinya, bukan sekadar menyimpannya ke state: pemanggil
+   * kerap memerlukan id itu pada baris berikutnya, sedangkan pembaruan state
+   * React belum terlihat sampai penggambaran ulang.
+   *
+   * @param {boolean} [bukaPemilih=true] Tampilkan pemilihan layanan setelahnya.
+   *   Diisi false bila pemanggil sudah menentukan layanannya sendiri.
+   * @returns {Promise<string|null>} id sesi, atau null bila server menolak
+   */
+  const startNewSession = useCallback(async (bukaPemilih = true) => {
+    const mulaiLokal = () => {
+      setMessages([{ role: 'assistant', content: SAMBUTAN_LOKAL, time: jam() }]);
+      setDivision(null);
+      setShowEngineerBtn(false);
+      setMenungguKonfirmasi(false);
+      if (bukaPemilih) setShowDivisionSelector(true);
+    };
+
     try {
       const res = await fetch(`${API_BASE}/chat/new`, { method: 'POST' });
       const data = await res.json();
 
-      if (data.success) {
-        setSessionId(data.sessionId);
-        setMessages([{
-          role: 'assistant',
-          content: data.message,
-          time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
-        }]);
-        setDivision(null);
-        setShowEngineerBtn(false);
-        setShowDivisionSelector(true);
+      // Server menjawab tetapi menolak. Sebelumnya cabang ini tidak menangani
+      // apa pun, sehingga layar diam tanpa sambutan maupun penjelasan.
+      if (!data.success) {
+        console.error('Server menolak pembuatan sesi:', data.error);
+        setSessionId(null);
+        setNomorTiket(null);
+        mulaiLokal();
+        return null;
       }
-    } catch (error) {
-      console.error('Failed to start session:', error);
-      // Offline mode - create local session
-      setSessionId('local-' + Date.now());
-      setMessages([{
-        role: 'assistant',
-        content: `Selamat datang di **SIGAP AI**, layanan bantuan ICT Pertamina EP Asset 1 Regional 1 Field Lirik.\n\nSaya siap membantu menyelesaikan kendala ICT Anda. Silakan pilih **layanan** yang ingin dilaporkan terlebih dahulu.`,
-        time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
-      }]);
+
+      setSessionId(data.sessionId);
+      setNomorTiket(data.nomorTiket || null);
+      setMessages([{ role: 'assistant', content: data.message, time: jam() }]);
       setDivision(null);
       setShowEngineerBtn(false);
-      setShowDivisionSelector(true);
+      setMenungguKonfirmasi(false);
+      if (bukaPemilih) setShowDivisionSelector(true);
+      return data.sessionId;
+    } catch (error) {
+      console.error('Failed to start session:', error);
+      // Luring: sambutan tetap ditampilkan agar layar tidak kosong, tetapi
+      // TIDAK dibuatkan id palsu. Id palsu membuat setiap permintaan
+      // berikutnya ditolak server dengan galat yang membingungkan.
+      setSessionId(null);
+      setNomorTiket(null);
+      mulaiLokal();
+      return null;
     }
   }, []);
 
@@ -90,12 +141,38 @@ export default function App() {
   const handleDivisionSelect = async (selectedDivision) => {
     setShowDivisionSelector(false);
     setDivision(selectedDivision);
+    setShowEngineerBtn(false);
+    setMenungguKonfirmasi(false);
+
+    // Cadangan bila server tidak dapat dihubungi. Sengaja tidak menjanjikan
+    // panduan bertahap untuk layanan mode engineer, karena memang tidak ada.
+    const sapaLokal = () => {
+      const namaDepan = reporter?.nama?.trim().split(/\s+/)[0];
+      const sapaan = namaDepan ? `Baik, ${namaDepan}. ` : 'Baik. ';
+      const lanjutan = selectedDivision.mode === 'engineer'
+        ? 'Kendala pada layanan ini memerlukan pemeriksaan langsung oleh Engineer ICT. Silakan uraikan kendala Anda terlebih dahulu.'
+        : 'Silakan uraikan kendala yang Anda alami. Semakin lengkap keterangannya, semakin cepat kami dapat membantu.';
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: `${sapaan}Anda memilih layanan **${selectedDivision.name}**.\n\n${lanjutan}`,
+        time: jam()
+      }]);
+    };
+
+    // Layanan dapat dipilih langsung dari kartu di beranda, kadang sebelum
+    // sesi selesai dibuat. Tanpa sesi, permintaan ditolak server dan layar
+    // diam tanpa penjelasan apa pun.
+    const sid = sessionId || (await startNewSession(false));
+    if (!sid) {
+      sapaLokal();
+      return;
+    }
 
     try {
       const res = await fetch(`${API_BASE}/chat/division`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId, division: selectedDivision.id })
+        body: JSON.stringify({ sessionId: sid, division: selectedDivision.id })
       });
       const data = await res.json();
 
@@ -103,18 +180,16 @@ export default function App() {
         setMessages(prev => [...prev, {
           role: 'assistant',
           content: data.message,
-          time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+          time: jam()
         }]);
+      } else {
+        // Server menjawab tetapi menolak — sebelumnya cabang ini kosong,
+        // sehingga pengguna memilih layanan lalu tidak terjadi apa-apa.
+        console.error('Server menolak pemilihan layanan:', data.error);
+        sapaLokal();
       }
     } catch (error) {
-      // Fallback offline — tetap ramah dan personal
-      const namaDepan = reporter?.nama?.trim().split(/\s+/)[0];
-      const sapaan = namaDepan ? `Baik, ${namaDepan}. ` : 'Baik. ';
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: `${sapaan}Anda memilih layanan **${selectedDivision.name}**.\n\nSilakan uraikan kendala yang Anda alami. Semakin lengkap keterangannya, semakin cepat kami dapat membantu.`,
-        time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
-      }]);
+      sapaLokal();
     }
   };
 
@@ -189,12 +264,30 @@ export default function App() {
 
     setMessages(prev => [...prev, userMsg]);
     setIsLoading(true);
+    // Pertanyaan sebelumnya sudah dijawab — tombolnya disembunyikan sampai
+    // jawaban berikutnya menentukan apakah perlu ditawarkan lagi.
+    setMenungguKonfirmasi(false);
+    setSaranDivisi(null);
 
     try {
+      // Sesi bisa saja belum terbentuk bila server sempat tidak terjangkau
+      // saat halaman dibuka. Dicoba sekali lagi di sini alih-alih membalas
+      // dengan galat yang tidak menjelaskan apa pun.
+      const sid = sessionId || (await startNewSession(false));
+      if (!sid) {
+        setMessages(prev => [...prev, {
+          role: 'assistant',
+          content: 'Maaf, sambungan ke server belum tersedia sehingga kendala Anda belum dapat diproses.\n\nSilakan coba lagi sebentar, atau tekan tombol **Hubungi Engineer** untuk melaporkan langsung.',
+          time: jam()
+        }]);
+        setShowEngineerBtn(true);
+        return;
+      }
+
       const res = await fetch(`${API_BASE}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId, message })
+        body: JSON.stringify({ sessionId: sid, message })
       });
       const data = await res.json();
 
@@ -205,6 +298,17 @@ export default function App() {
           time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
         }]);
 
+        setMenungguKonfirmasi(data.menungguKonfirmasi === true);
+        setSaranDivisi(data.saranDivisi?.length ? data.saranDivisi : null);
+
+        // Layanan dapat baru ditentukan server pada balasan ini (pilihan
+        // "Saya tidak yakin"). Keadaan di sini disamakan supaya kepala
+        // percakapan dan nomor WhatsApp tujuan ikut benar.
+        if (data.division && data.division !== division?.id) {
+          const cocok = config?.divisions?.find((d) => d.id === data.division);
+          if (cocok) setDivision(cocok);
+        }
+
         if (data.shouldEscalate) {
           setShowEngineerBtn(true);
         }
@@ -213,18 +317,24 @@ export default function App() {
           setShowEngineerBtn(false);
         }
       } else {
+        // Kegagalan sistem tidak boleh menutup jalan ke engineer. Tanpa tombol
+        // ini pengguna terjebak pada pesan galat tanpa cara melanjutkan —
+        // padahal kendala ICT-nya masih ada dan justru itu tujuannya datang.
+        console.error('Server menolak pesan:', data.error);
         setMessages(prev => [...prev, {
           role: 'assistant',
-          content: 'Maaf, terjadi kesalahan saat memproses pesan Anda. Silakan coba lagi.',
-          time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+          content: 'Maaf, kendala Anda belum dapat diproses saat ini.\n\nSilakan coba kirim ulang, atau tekan tombol **Hubungi Engineer** agar laporan Anda diteruskan langsung.',
+          time: jam()
         }]);
+        setShowEngineerBtn(true);
       }
     } catch (error) {
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: 'Maaf, tidak dapat terhubung ke server. Pastikan server backend sedang berjalan.',
-        time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+        content: 'Maaf, sambungan ke server terputus sehingga kendala Anda belum dapat diproses.\n\nSilakan coba lagi, atau tekan tombol **Hubungi Engineer** untuk melaporkan langsung melalui WhatsApp.',
+        time: jam()
       }]);
+      setShowEngineerBtn(true);
     } finally {
       setIsLoading(false);
     }
@@ -263,10 +373,22 @@ export default function App() {
     // konteksnya tanpa perlu menanyakan ulang dari awal.
     const keluhan = messages.find(m => m.role === 'user')?.content?.trim();
 
+    // Tautan langsung ke tiket ini pada halaman tugas engineer. Tanpa tautan,
+    // menandai tiket selesai berarti membuka halaman rekap di ponsel lalu
+    // mencari satu baris di dalam tabel enam belas kolom — hambatan yang
+    // terbukti cukup untuk membuat pekerjaan itu tidak pernah dilakukan.
+    const alamat = alamatUntukEngineer();
+    const tautanSelesai = alamat && nomorTiket
+      ? `${alamat}/tugas?tiket=${encodeURIComponent(nomorTiket)}`
+      : null;
+
     const waMessage = encodeURIComponent(
       [
         `Halo Engineer ${division?.name || 'ICT'}, saya membutuhkan bantuan lanjutan.`,
         '',
+        // Nomor tiket paling atas: inilah rujukan bersama pelapor dan engineer,
+        // dan satu-satunya cara engineer menemukan laporan ini pada rekap.
+        nomorTiket ? `Nomor Tiket: ${nomorTiket}` : null,
         data?.nama ? `Nama: ${data.nama}` : null,
         data?.fungsi ? `Fungsi/Divisi: ${data.fungsi}` : null,
         data?.lokasi ? `Lokasi: ${data.lokasi}` : null,
@@ -274,7 +396,9 @@ export default function App() {
         data?.urgensi ? `Tingkat Urgensi: ${data.urgensi}` : null,
         keluhan ? `Keluhan: ${keluhan}` : null,
         '',
-        'Kendala ini belum dapat diselesaikan melalui SIGAP AI.'
+        'Kendala ini belum dapat diselesaikan melalui SIGAP.',
+        tautanSelesai ? '' : null,
+        tautanSelesai ? `Engineer: tandai selesai di ${tautanSelesai}` : null
       // Hanya buang baris null (data kosong); string kosong sengaja
       // dipertahankan sebagai baris pemisah agar pesan mudah dibaca.
       ].filter((baris) => baris !== null).join('\n')
@@ -309,6 +433,12 @@ export default function App() {
         onEngineerContact={handleEngineerContact}
         division={division}
         onQuickReply={handleSendMessage}
+        menungguKonfirmasi={menungguKonfirmasi}
+        saranDivisi={saranDivisi}
+        onPilihDivisi={(id) => {
+          const cocok = config?.divisions?.find((d) => d.id === id);
+          if (cocok) { setSaranDivisi(null); handleDivisionSelect(cocok); }
+        }}
       />
 
       <ChatInput

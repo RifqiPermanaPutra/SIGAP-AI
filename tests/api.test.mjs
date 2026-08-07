@@ -107,6 +107,17 @@ cek('kegiatan masuk tercatat', tindakan.has('masuk'), [...tindakan]);
 cek('pengunduhan tercatat', tindakan.has('unduh-excel'), [...tindakan]);
 cek('penandaan tercatat', tindakan.has('tandai-selesai'), [...tindakan]);
 
+bagian('6b. Daftar layanan cadangan tidak boleh menyimpang');
+// Daftar di src/data/divisiCadangan.js adalah salinan, dipakai saat /api/config
+// tidak terjawab. Salinan yang menyimpang baru ketahuan justru ketika server
+// sedang bermasalah — saat pengguna paling tidak punya cara lain.
+const { DIVISI_CADANGAN } = await import('../src/data/divisiCadangan.js');
+const cfg = await fetch(`${API}/config`).then((r) => r.json());
+const ringkas = (d) => `${d.id}|${d.name}|${d.mode}`;
+cek('id, nama, dan mode layanan cadangan sama dengan server',
+  DIVISI_CADANGAN.map(ringkas).join(' · ') === cfg.divisions.map(ringkas).join(' · '),
+  { cadangan: DIVISI_CADANGAN.map((d) => d.id), server: cfg.divisions.map((d) => d.id) });
+
 bagian('7. Percakapan — divisi mode engineer');
 const sesiA = await post('/chat/new', {});
 cek('sesi baru membawa nomor tiket', /^SGP-\d{8}-\d{4}$/.test(sesiA.nomorTiket), sesiA.nomorTiket);
@@ -135,18 +146,78 @@ cek('"belum berhasil" memberi solusi berikutnya', j2.response !== j1.response, '
 cek('"belum berhasil" TIDAK dianggap selesai', j2.isResolved !== true, j2.isResolved);
 catatan('kalimat "belum berhasil" memuat kata "berhasil" — urutan pemeriksaan tidak boleh dibalik');
 
+// Antarmuka menjanjikan tiga percobaan sebelum menyerah ke engineer. Janji itu
+// hanya dapat ditepati bila datanya memang memuat tiga solusi — pernah tidak,
+// sehingga sistem menyerah setelah percobaan pertama.
+const j3 = await post('/chat', { sessionId: sesiB.sessionId, message: 'masih belum bisa' });
+cek('solusi ketiga tersedia', j3.response !== j2.response && j3.response !== j1.response, 'jawaban berulang');
+cek('belum menyerah pada percobaan kedua', j3.shouldEscalate === false, j3.shouldEscalate);
+cek('ketiga jawaban memuat langkah bernomor',
+  [j1, j2, j3].every((j) => /^\s*1\./m.test(j.response) && /^\s*2\./m.test(j.response)), 'ada yang tanpa langkah');
+
+const j4 = await post('/chat', { sessionId: sesiB.sessionId, message: 'tetap tidak bisa' });
+cek('menyerah setelah tiga solusi habis', j4.shouldEscalate === true, j4.shouldEscalate);
+catatan('tiga solusi ditawarkan, baru kemudian diteruskan ke engineer');
+
+// Penanda ini yang memunculkan tombol "Sudah / Belum berhasil" di antarmuka
+cek('tiap solusi menandai sedang menunggu konfirmasi',
+  [j1, j2, j3].every((j) => j.menungguKonfirmasi === true),
+  [j1, j2, j3].map((j) => j.menungguKonfirmasi));
+cek('tidak menunggu konfirmasi setelah menyerah', j4.menungguKonfirmasi === false, j4.menungguKonfirmasi);
+cek('divisi mode engineer tidak menunggu konfirmasi', jwbA.menungguKonfirmasi === false, jwbA.menungguKonfirmasi);
+
+// Tombol mengirim frasa yang sama persis dengan yang dikenali pengenal jawaban
+const sesiC = await post('/chat/new', {});
+await post('/chat/division', { sessionId: sesiC.sessionId, division: 'printer' });
+await post('/chat', { sessionId: sesiC.sessionId, message: 'kertas nyangkut di printer' });
+const tombolBerhasil = await post('/chat', { sessionId: sesiC.sessionId, message: 'sudah berhasil' });
+cek('tombol "sudah berhasil" menutup percakapan', tombolBerhasil.isResolved === true, tombolBerhasil.isResolved);
+cek('tombol "sudah berhasil" tidak mengeskalasi', tombolBerhasil.shouldEscalate === false, tombolBerhasil.shouldEscalate);
+catatan('frasa tombol harus tetap cocok dengan FRASA_SUDAH / FRASA_BELUM di answerService');
+
+bagian('8b. Kelengkapan data divisi swalayan');
+const { readFileSync } = await import('fs');
+const kb = JSON.parse(readFileSync('server/data/knowledge-base.json', 'utf8'));
+for (const divisi of ['printer', 'windows']) {
+  const ringan = kb.masalah.filter((m) => m.divisi === divisi && m.kategori !== 'berat');
+  const kurang = ringan.filter((m) => (m.solusi || []).length < 3);
+  cek(`${divisi}: semua masalah ringan punya 3 solusi`,
+    ringan.length > 0 && kurang.length === 0, kurang.map((m) => `${m.judul} (${m.solusi.length})`));
+}
+catatan('divisi mode engineer sengaja tidak dituntut lengkap — datanya menunggu engineer');
+
 await post('/chat/reporter', {
   sessionId: sesiB.sessionId,
-  reporter: { nama: 'Uji Coba', fungsi: 'FM', lokasi: 'Pumper UKUI', urgensi: 'Tinggi' }
+  reporter: { nama: 'Uji Coba', fungsi: 'FM (Field Manager)', lokasi: 'Pumper UKUI', urgensi: 'Tinggi' }
 });
 const repSalah = await post('/chat/reporter', {
   sessionId: sesiB.sessionId,
-  reporter: { nama: 'A', fungsi: 'FM', lokasi: 'Pumper UKUI', urgensi: 'Darurat' }
+  reporter: { nama: 'A', fungsi: 'FM (Field Manager)', lokasi: 'Pumper UKUI', urgensi: 'Darurat' }
 });
 cek('tingkat urgensi di luar daftar ditolak', repSalah.success === false, repSalah);
 
+// Pilihan saringan pada halaman rekap disusun dari nilai DISTINCT yang
+// tersimpan, sehingga satu kiriman ngawur menetap selamanya di dropdown admin.
+// Memeriksanya hanya di antarmuka berarti tidak memeriksanya sama sekali.
+const sah = { nama: 'Uji Coba', fungsi: 'FM (Field Manager)', lokasi: 'Pumper UKUI', urgensi: 'Tinggi' };
+const kirimPelapor = (ubah) =>
+  post('/chat/reporter', { sessionId: sesiB.sessionId, reporter: { ...sah, ...ubah } });
+
+cek('fungsi di luar daftar ditolak',
+  (await kirimPelapor({ fungsi: 'Fungsi Karangan' })).success === false, 'diterima');
+cek('lokasi di luar daftar ditolak',
+  (await kirimPelapor({ lokasi: 'Kantor Antah Berantah' })).success === false, 'diterima');
+cek('nama terlalu panjang ditolak',
+  (await kirimPelapor({ nama: 'a'.repeat(200) })).success === false, 'diterima');
+cek('kiriman yang sah tetap diterima', (await kirimPelapor({})).success === true, 'ditolak');
+
 await post('/chat/escalate', { sessionId: sesiB.sessionId });
-const riwayat = await (await fetch(`${API}/chat/history/${sesiB.sessionId}`)).json();
+
+// Riwayat memuat data pelapor, sehingga tidak boleh terbuka bebas
+cek('riwayat sesi ditolak tanpa masuk',
+  (await fetch(`${API}/chat/history/${sesiB.sessionId}`)).status === 401, 'bukan 401');
+
+const riwayat = await json(`/chat/history/${sesiB.sessionId}`, adm.kuki);
 cek('keluhan pertama tercatat utuh', riwayat.session.keluhan === 'kertas nyangkut di printer', riwayat.session.keluhan);
 cek('masalah cocok tercatat', Boolean(riwayat.session.masalah_cocok), riwayat.session.masalah_cocok);
 cek('skor cocok tercatat', riwayat.session.skor_cocok > 0, riwayat.session.skor_cocok);
@@ -154,5 +225,42 @@ cek('solusi terakhir tercatat', riwayat.session.solusi_terakhir >= 1, riwayat.se
 cek('area diturunkan dari lokasi', riwayat.session.area === 'Ukui', riwayat.session.area);
 cek('engineer tujuan tercatat', Boolean(riwayat.session.engineer_tujuan), riwayat.session.engineer_tujuan);
 cek('mode divisi tercatat', riwayat.session.mode_divisi === 'swalayan', riwayat.session.mode_divisi);
+
+bagian('9. Rute yang mengubah keadaan wajib berwenang');
+cek('muat ulang basis pengetahuan ditolak tanpa masuk',
+  (await fetch(`${API}/kb/reload`, { method: 'POST' })).status === 401, 'bukan 401');
+cek('muat ulang ditolak untuk engineer',
+  (await ambil('/kb/reload', eng.kuki, { method: 'POST' })).status === 403, 'bukan 403');
+cek('muat ulang diizinkan untuk admin',
+  (await ambil('/kb/reload', adm.kuki, { method: 'POST' })).status === 200, 'bukan 200');
+
+bagian('10. Sesi yang ditinggalkan lalu dilanjutkan');
+// Basis data yang sama dibuka dari proses uji — SQLite mode WAL mengizinkannya.
+const dbUji = await import('../server/database/init.js');
+await dbUji.initDatabase();
+
+const sesiD = await post('/chat/new', {});
+await post('/chat/division', { sessionId: sesiD.sessionId, division: 'printer' });
+await post('/chat', { sessionId: sesiD.sessionId, message: 'kertas nyangkut di printer' });
+
+// Paksa sesi tampak ditinggalkan 45 menit, lalu jalankan penyapunya
+dbUji.wajibSiap().prepare('UPDATE sesi SET diperbarui_pada = ? WHERE id = ?')
+  .run(new Date(Date.now() - 45 * 60 * 1000).toISOString(), sesiD.sessionId);
+cek('penyapu menandai sesi yang diam', dbUji.tandaiSesiTerbengkalai(30) >= 1, 'tidak tersapu');
+cek('status menjadi ditinggalkan',
+  dbUji.getChatSession(sesiD.sessionId).status === 'ditinggalkan',
+  dbUji.getChatSession(sesiD.sessionId).status);
+
+// Pengguna kembali dan melanjutkan
+await post('/chat', { sessionId: sesiD.sessionId, message: 'sudah berhasil' });
+const sesiHidup = dbUji.getChatSession(sesiD.sessionId);
+cek('sesi hidup kembali dan tercatat selesai', sesiHidup.status === 'selesai', sesiHidup.status);
+
+const selisihMenit = (Date.now() - new Date(sesiHidup.berakhir_pada).getTime()) / 60000;
+cek('berakhir_pada memakai waktu penyelesaian, bukan waktu ditinggalkan',
+  selisihMenit < 5, `tertinggal ${Math.round(selisihMenit)} menit`);
+catatan('tanpa ini durasi pada laporan terpotong sepanjang waktu pengguna pergi');
+
+dbUji.tutupDatabase();
 
 selesai('api');

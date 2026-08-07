@@ -1,4 +1,4 @@
-# Rancangan Data & Laporan Rekap — SIGAP AI
+# Rancangan Data & Laporan Rekap — SIGAP
 
 > Dokumen rancangan, **belum diimplementasikan**. Disusun untuk disetujui
 > pembimbing lapangan sebelum pengodean dimulai.
