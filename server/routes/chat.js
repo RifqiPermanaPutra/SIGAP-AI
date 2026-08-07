@@ -56,6 +56,29 @@ const batasPesan = batasiLaju({
 });
 
 /**
+ * Penutup baku untuk setiap jawaban yang mengarahkan pengguna ke engineer.
+ *
+ * Dijadikan satu fungsi karena ada tiga jalan menuju engineer — layanan mode
+ * engineer, keluhan yang tidak dikenali penentu layanan otomatis, dan langkah
+ * SOP yang sudah habis — dan sebelumnya hanya jalur SOP yang menyebut halaman
+ * cek status. Akibatnya pelapor Printer dan Windows tahu laporannya dapat
+ * dipantau, sedangkan pelapor CCTV, LAN, dan lima layanan lainnya tidak.
+ *
+ * Alamatnya ditulis sebagai tautan Markdown, bukan sekadar disebut sebagai
+ * teks '/tiket': yang disebut hanya dapat dibaca, yang ditautkan dapat ditekan.
+ * Nomornya ikut dibawa pada alamat sehingga halaman tujuan langsung mencarinya
+ * tanpa perlu diketik ulang dari layar sebelumnya.
+ */
+function penutupTiket(nomorTiket) {
+  if (!nomorTiket) return '';
+  return (
+    `\n\nNomor tiket Anda: **${nomorTiket}**. Sebutkan nomor ini saat menghubungi engineer.` +
+    `\n\nStatus laporan dapat diperiksa kapan saja di halaman ` +
+    `[Cek Status Laporan](/tiket?nomor=${encodeURIComponent(nomorTiket)}).`
+  );
+}
+
+/**
  * POST /api/chat/new
  * Create a new chat session
  */
@@ -351,9 +374,10 @@ chatRouter.post('/', batasPesan, async (req, res) => {
         // belum berubah, karena pengguna belum tentu menerimanya.
         updateChatSession(sessionId, { eskalasi_ditawarkan_pada: new Date().toISOString() });
         const balasan =
-          `Terima kasih, keterangan Anda sudah kami catat dengan nomor tiket **${sesi.nomor_tiket}**.\n\n` +
+          'Terima kasih, keterangan Anda sudah kami catat.\n\n' +
           'Kendala Anda belum dapat kami kenali secara otomatis, sehingga akan diteruskan kepada Engineer ICT untuk ditinjau langsung.\n\n' +
-          'Silakan tekan tombol **Hubungi Engineer** dan lengkapi data pelaporan.';
+          'Silakan tekan tombol **Hubungi Engineer** dan lengkapi data pelaporan.' +
+          penutupTiket(sesi.nomor_tiket);
 
         addChatMessage(sessionId, 'assistant', balasan);
 
@@ -375,9 +399,10 @@ chatRouter.post('/', batasPesan, async (req, res) => {
       }
 
       const balasan = pembuka +
-        `Terima kasih, keterangan Anda sudah kami catat dengan nomor tiket **${sesi.nomor_tiket}**.\n\n` +
+        'Terima kasih, keterangan Anda sudah kami catat.\n\n' +
         `Kendala **${namaDivisi(sesi.divisi_id)}** memerlukan penanganan langsung oleh Engineer ICT.\n\n` +
-        'Silakan tekan tombol **Hubungi Engineer** dan lengkapi data pelaporan agar engineer dapat menindaklanjuti.';
+        'Silakan tekan tombol **Hubungi Engineer** dan lengkapi data pelaporan agar engineer dapat menindaklanjuti.' +
+        penutupTiket(sesi.nomor_tiket);
 
       addChatMessage(sessionId, 'assistant', balasan);
 
@@ -401,16 +426,8 @@ chatRouter.post('/', batasPesan, async (req, res) => {
 
     // Save response. `pembuka` terisi bila layanannya barusan ditentukan
     // otomatis — pengguna diberi tahu ke mana kendalanya diarahkan.
-    //
-    // Nomor tiket disebutkan pada jawaban yang mengarahkan ke engineer. Jalur
-    // mode engineer sudah menyebutkannya sejak awal, sehingga tanpa ini justru
-    // pengguna Printer dan Windows — satu-satunya yang dipandu SOP — tidak
-    // pernah melihat nomor tiketnya sendiri.
-    const penutupTiket = result.shouldEscalate
-      ? `\n\nNomor tiket Anda: **${sesi.nomor_tiket}**. Sebutkan nomor ini saat menghubungi engineer.` +
-        `\n\nStatus laporan dapat diperiksa kapan saja di halaman **/tiket**.`
-      : '';
-    const balasanAkhir = pembuka + result.response + penutupTiket;
+    const balasanAkhir = pembuka + result.response +
+      (result.shouldEscalate ? penutupTiket(sesi.nomor_tiket) : '');
     addChatMessage(sessionId, 'assistant', balasanAkhir);
 
     // Hasil pencocokan disimpan untuk rekap. Nilai `undefined` dilewati oleh

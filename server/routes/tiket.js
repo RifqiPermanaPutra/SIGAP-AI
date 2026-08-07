@@ -72,9 +72,14 @@ tiketRouter.get('/:nomor', batasCek, (req, res) => {
     });
   }
 
+  // `dikerjakan_oleh` sengaja TIDAK diambil. Bahwa laporannya sudah dipegang
+  // seseorang adalah kabar baik yang berhak diketahui pelapor; siapa orangnya
+  // bukan urusan halaman yang terbuka tanpa masuk — dan menyebut namanya
+  // berarti nomor tiket yang mudah ditebak menjadi cara memetakan jadwal kerja
+  // seluruh engineer.
   const sesi = wajibSiap().prepare(`
     SELECT nomor_tiket, tanggal_wib, divisi_id, status,
-           dibuat_pada, diteruskan_pada, ditangani_pada
+           dibuat_pada, diteruskan_pada, mulai_dikerjakan_pada, ditangani_pada
     FROM sesi WHERE nomor_tiket = ?
   `).get(nomor);
 
@@ -98,6 +103,12 @@ tiketRouter.get('/:nomor', batasCek, (req, res) => {
       arti: penjelasan.arti,
       dibuatPada: sesi.dibuat_pada,
       diteruskanPada: sesi.diteruskan_pada,
+      // Tahap antara: laporannya bukan lagi sekadar masuk antrean, sudah ada
+      // engineer yang memegangnya. Bagi pelapor inilah beda antara "belum
+      // ditangani" yang membuat gelisah dan "sedang dikerjakan" yang membuat
+      // tenang — dua keadaan yang sebelumnya terlihat persis sama.
+      mulaiDikerjakanPada: sesi.mulai_dikerjakan_pada,
+      sedangDikerjakan: Boolean(sesi.mulai_dikerjakan_pada) && !sesi.ditangani_pada,
       // Inilah yang paling ingin diketahui pelapor, dan satu-satunya alasan
       // halaman ini ada: kendalanya sudah ditangani atau belum.
       ditanganiPada: sesi.ditangani_pada,

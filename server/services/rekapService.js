@@ -12,6 +12,10 @@
  */
 import { wajibSiap } from '../database/init.js';
 import { namaDivisi } from '../config/divisi.js';
+// Hanya untuk menerjemahkan nama akun pemegang tiket menjadi nama orang di
+// dalam pesan galat. Aman dari lingkar impor: authService tidak pernah memakai
+// berkas ini — ia hanya mengenal crypto dan basis data.
+import { cariPengguna } from './authService.js';
 
 /** Satuan pengelompokan yang diakui pada grafik */
 export const SATUAN = {
@@ -72,7 +76,18 @@ const KOLOM_TURUNAN = `
   END AS durasi_detik,
   CASE WHEN ditangani_pada >= diteruskan_pada
        THEN CAST((julianday(ditangani_pada) - julianday(diteruskan_pada)) * 86400 AS INTEGER)
-  END AS waktu_tanggap
+  END AS waktu_tanggap,
+  -- Sejak tiket melewati tahap "sedang dikerjakan", waktu_tanggap dapat
+  -- dipecah menjadi dua hal yang selama ini tercampur di dalamnya: berapa lama
+  -- engineer MERESPONS, dan berapa lama PENGERJAANNYA. Keduanya dinilai dengan
+  -- cara yang sangat berbeda — yang pertama soal kesigapan, yang kedua soal
+  -- sulitnya kendala — sehingga menggabungkannya membuat keduanya tak terbaca.
+  CASE WHEN mulai_dikerjakan_pada >= diteruskan_pada
+       THEN CAST((julianday(mulai_dikerjakan_pada) - julianday(diteruskan_pada)) * 86400 AS INTEGER)
+  END AS waktu_respons,
+  CASE WHEN ditangani_pada >= mulai_dikerjakan_pada
+       THEN CAST((julianday(ditangani_pada) - julianday(mulai_dikerjakan_pada)) * 86400 AS INTEGER)
+  END AS lama_kerja
 `;
 
 /**
@@ -126,6 +141,12 @@ export function ringkasan(f = {}) {
       SUM(CASE WHEN status = 'ditinggalkan' THEN 1 ELSE 0 END)         AS ditinggalkan,
       SUM(CASE WHEN status = 'aktif'        THEN 1 ELSE 0 END)         AS aktif,
       SUM(CASE WHEN ditangani_pada IS NOT NULL THEN 1 ELSE 0 END)      AS ditangani,
+      -- Sudah dipegang engineer tetapi belum ditutup. Keadaan ini yang paling
+      -- perlu diawasi: tiket yang tampak sedang ditangani padahal mungkin
+      -- sudah terlupakan sejak minggu lalu — dan justru karena tampak sedang
+      -- ditangani, tidak ada yang menanyakannya.
+      SUM(CASE WHEN mulai_dikerjakan_pada IS NOT NULL AND ditangani_pada IS NULL
+          THEN 1 ELSE 0 END)                                           AS sedang_dikerjakan,
       -- Ditawari bantuan engineer, lalu pergi tanpa mengambilnya. Inilah
       -- kelompok yang paling tidak terlihat: sistem gagal menolong mereka DAN
       -- mereka tidak melapor ke siapa pun, sehingga kendalanya tidak muncul di
@@ -148,6 +169,7 @@ export function ringkasan(f = {}) {
     ditinggalkan: r.ditinggalkan || 0,
     aktif: r.aktif || 0,
     ditangani: r.ditangani || 0,
+    sedang_dikerjakan: r.sedang_dikerjakan || 0,
     ditawari_pergi: r.ditawari_pergi || 0,
     persen_mandiri: tuntas > 0 ? Math.round(((r.selesai || 0) / tuntas) * 100) : 0,
     rata_durasi: Math.round(r.rata_durasi || 0),
@@ -225,28 +247,26 @@ export function nilaiUnik(kolom) {
     .all().map((r) => r.nilai);
 }
 
-/**
- * Tandai sebuah tiket sudah ditangani engineer (Lapis 4).
- *
- * Bersifat opsional: bila engineer tidak pernah menandai, rekap tetap benar
- * dan hanya kolom waktu tanggap yang kosong. Sistem tidak boleh bergantung
- * pada kedisiplinan pengisian.
- *
- * @param {string} nomorTiket
- * @param {string} namaAkun
- * @param {{catatan?: string|null, selesaiPada?: string|null,
- *          divisiDiizinkan?: string[]|null}} [opsi]
- *   `divisiDiizinkan` berisi daftar divisi yang boleh ditangani pemanggil;
- *   `null` berarti tanpa batas. Pemeriksaannya diletakkan DI SINI, bukan di
- *   rute, karena ada dua jalan menuju penandaan selesai — halaman tugas dan
- *   halaman rekap. Menaruhnya di salah satu rute berarti pembatasannya dapat
- *   dilewati hanya dengan berpindah halaman.
- */
-export function tandaiDitangani(nomorTiket, namaAkun, opsi = {}) {
-  const { catatan = null, selesaiPada = null, divisiDiizinkan = null } = opsi;
+/** Nama orang di balik sebuah nama akun, dengan cadangan nama akunnya sendiri */
+function namaOrang(namaAkun) {
+  if (!namaAkun) return null;
+  return cariPengguna(namaAkun)?.nama || namaAkun;
+}
 
+/**
+ * Ambil satu tiket sekaligus periksa apakah pemanggil berwenang atasnya.
+ *
+ * Dipakai bersama oleh ketiga tindakan engineer — mulai, lepas, selesai —
+ * supaya batas wewenangnya mustahil berbeda di antara ketiganya. Pemeriksaan
+ * diletakkan di lapisan layanan, bukan di rute, karena ada dua halaman yang
+ * menuju tindakan yang sama; menaruhnya di salah satu rute berarti
+ * pembatasannya dapat dilewati hanya dengan berpindah halaman.
+ *
+ * @returns {{ok:true, sesi:object} | {ok:false, status:number, alasan:string}}
+ */
+function tiketDalamWewenang(nomorTiket, divisiDiizinkan) {
   const sesi = wajibSiap().prepare('SELECT * FROM sesi WHERE nomor_tiket = ?').get(nomorTiket);
-  if (!sesi) return { ok: false, alasan: 'Tiket tidak ditemukan' };
+  if (!sesi) return { ok: false, status: 404, alasan: 'Tiket tidak ditemukan' };
 
   if (divisiDiizinkan && !divisiDiizinkan.includes(String(sesi.divisi_id || '').toLowerCase())) {
     return {
@@ -256,10 +276,172 @@ export function tandaiDitangani(nomorTiket, namaAkun, opsi = {}) {
     };
   }
 
+  return { ok: true, sesi };
+}
+
+/**
+ * Engineer menyatakan tiket ini sedang ia kerjakan (Lapis 4, tahap pertama).
+ *
+ * Tanpa tahap ini tiket melompat dari 'diteruskan' langsung ke 'ditangani',
+ * sehingga sepanjang engineer membaca WhatsApp, berangkat, dan memeriksa di
+ * lokasi, tiketnya terlihat persis sama dengan tiket yang belum disentuh
+ * siapa pun. Dua engineer dapat berangkat ke tempat yang sama, atau tidak
+ * seorang pun berangkat karena masing-masing mengira yang lain sudah jalan.
+ *
+ * TIDAK mengubah `status`. Nilai status tetap empat sebagaimana
+ * RANCANGAN-DATA.md §8 — menambah nilai kelima berarti `persen_mandiri`,
+ * `deretWaktu`, dan seluruh saringan status ikut berubah arti diam-diam.
+ * Keadaan "sedang dikerjakan" cukup diketahui dari terisinya kolom ini.
+ *
+ * @param {string} nomorTiket
+ * @param {string} namaAkun
+ * @param {{divisiDiizinkan?: string[]|null, ambilAlih?: boolean}} [opsi]
+ */
+export function mulaiMengerjakan(nomorTiket, namaAkun, opsi = {}) {
+  const { divisiDiizinkan = null, ambilAlih = false } = opsi;
+
+  const dapat = tiketDalamWewenang(nomorTiket, divisiDiizinkan);
+  if (!dapat.ok) return dapat;
+  const { sesi } = dapat;
+
+  if (sesi.status !== 'diteruskan') {
+    return { ok: false, alasan: 'Hanya tiket yang sudah diteruskan ke engineer yang dapat dikerjakan' };
+  }
+  if (sesi.ditangani_pada) {
+    return { ok: false, alasan: 'Tiket ini sudah ditandai selesai' };
+  }
+  if (sesi.dikerjakan_oleh === namaAkun) {
+    return { ok: false, alasan: 'Anda sudah menandai tiket ini sedang dikerjakan' };
+  }
+
+  // Sudah dipegang orang lain. Pengambilalihan diizinkan — engineer yang
+  // dijadwalkan bisa berhalangan, dan tiket yang terkunci pada akun yang
+  // sedang cuti lebih buruk daripada tiket yang berpindah tangan — tetapi
+  // harus disengaja, bukan terjadi diam-diam karena dua orang menekan tombol
+  // yang sama.
+  if (sesi.dikerjakan_oleh && !ambilAlih) {
+    return {
+      ok: false,
+      status: 409,
+      alasan: `Tiket ini sedang dikerjakan oleh ${namaOrang(sesi.dikerjakan_oleh)}`,
+      pemegang: sesi.dikerjakan_oleh,
+      pemegangNama: namaOrang(sesi.dikerjakan_oleh)
+    };
+  }
+
+  // Pada pengambilalihan, `mulai_dikerjakan_pada` SENGAJA dipertahankan.
+  // Yang diukur kolom itu adalah berapa lama laporan menunggu sampai ada
+  // engineer pertama yang bergerak; menyetelnya ulang membuat tiket yang
+  // terlantar tiga jam lalu berpindah tangan tampak direspons seketika.
+  const waktu = sesi.mulai_dikerjakan_pada || new Date().toISOString();
+
+  wajibSiap().prepare(`
+    UPDATE sesi SET mulai_dikerjakan_pada = ?, dikerjakan_oleh = ? WHERE nomor_tiket = ?
+  `).run(waktu, namaAkun, nomorTiket);
+
+  return {
+    ok: true,
+    mulaiPada: waktu,
+    diambilAlihDari: sesi.dikerjakan_oleh || null,
+    diambilAlihDariNama: namaOrang(sesi.dikerjakan_oleh)
+  };
+}
+
+/**
+ * Lepaskan tiket yang sedang dikerjakan, kembali ke antrean.
+ *
+ * Diperlukan karena kesediaan menandai bergantung pada adanya jalan mundur.
+ * Engineer yang tahu satu ketukan keliru mengunci tiket atas namanya sampai
+ * ada admin yang membetulkan, akan memilih tidak menandai sama sekali — dan
+ * itu persis kebiasaan yang hendak diubah tahap ini.
+ *
+ * Hanya pemegangnya sendiri, atau admin (`paksa`).
+ */
+export function lepaskanTugas(nomorTiket, namaAkun, opsi = {}) {
+  const { divisiDiizinkan = null, paksa = false } = opsi;
+
+  const dapat = tiketDalamWewenang(nomorTiket, divisiDiizinkan);
+  if (!dapat.ok) return dapat;
+  const { sesi } = dapat;
+
+  if (!sesi.dikerjakan_oleh) {
+    return { ok: false, alasan: 'Tiket ini memang tidak sedang dikerjakan siapa pun' };
+  }
+  if (sesi.ditangani_pada) {
+    return { ok: false, alasan: 'Tiket ini sudah ditandai selesai' };
+  }
+  if (sesi.dikerjakan_oleh !== namaAkun && !paksa) {
+    return {
+      ok: false,
+      status: 403,
+      alasan: `Tiket ini dipegang ${namaOrang(sesi.dikerjakan_oleh)}, bukan Anda`
+    };
+  }
+
+  // Keduanya dikosongkan sekaligus. Menyisakan `mulai_dikerjakan_pada` berarti
+  // tiket yang sudah dilepas tetap terhitung "sedang dikerjakan" pada ringkasan
+  // selamanya, tanpa ada nama yang dapat ditanya.
+  wajibSiap().prepare(`
+    UPDATE sesi SET mulai_dikerjakan_pada = NULL, dikerjakan_oleh = NULL WHERE nomor_tiket = ?
+  `).run(nomorTiket);
+
+  return { ok: true, sebelumnya: sesi.dikerjakan_oleh };
+}
+
+/**
+ * Tandai sebuah tiket sudah ditangani engineer (Lapis 4, tahap kedua).
+ *
+ * Bersifat opsional: bila engineer tidak pernah menandai, rekap tetap benar
+ * dan hanya kolom waktu tanggap yang kosong. Sistem tidak boleh bergantung
+ * pada kedisiplinan pengisian.
+ *
+ * Melewati tahap "sedang dikerjakan" TIDAK diwajibkan. Kendala yang beres
+ * dalam dua menit tidak pantas menuntut dua ketukan; memaksakannya justru
+ * membuat orang berhenti menandai sama sekali — penyakit yang baru saja
+ * disembuhkan halaman ini.
+ *
+ * @param {string} nomorTiket
+ * @param {string} namaAkun
+ * @param {{catatan?: string|null, selesaiPada?: string|null,
+ *          divisiDiizinkan?: string[]|null, abaikanPemegang?: boolean}} [opsi]
+ *   `divisiDiizinkan` berisi daftar divisi yang boleh ditangani pemanggil;
+ *   `null` berarti tanpa batas.
+ */
+export function tandaiDitangani(nomorTiket, namaAkun, opsi = {}) {
+  const {
+    catatan = null, selesaiPada = null,
+    divisiDiizinkan = null, abaikanPemegang = false
+  } = opsi;
+
+  const dapat = tiketDalamWewenang(nomorTiket, divisiDiizinkan);
+  if (!dapat.ok) {
+    // Tiket yang tidak ada tetap dijawab 400 seperti sebelumnya: membedakan
+    // "tidak ada" dari "bukan wewenang Anda" pada nomor yang mudah ditebak
+    // sama saja dengan memberitahu nomor mana yang terpakai.
+    return { ...dapat, status: dapat.status === 404 ? 400 : dapat.status };
+  }
+  const { sesi } = dapat;
+
   if (sesi.status !== 'diteruskan') {
     return { ok: false, alasan: 'Hanya tiket berstatus "diteruskan" yang dapat ditandai selesai' };
   }
   if (sesi.ditangani_pada) return { ok: false, alasan: 'Tiket ini sudah ditandai selesai sebelumnya' };
+
+  // Menyelesaikan tiket yang sedang dipegang orang lain dihalangi, meski
+  // layanannya memang wewenang pemanggil. Pembatasan per divisi saja tidak
+  // cukup: dalam satu divisi masih ada beberapa engineer, dan yang berangkat
+  // ke lokasi hanya satu. Menutup pekerjaan orang yang sedang di lapangan —
+  // entah keliru tekan atau tidak — menghapus tiketnya dari daftar tugas orang
+  // itu tanpa ia tahu. Pengambilalihan tetap mungkin, hanya harus disengaja.
+  if (sesi.dikerjakan_oleh && sesi.dikerjakan_oleh !== namaAkun && !abaikanPemegang) {
+    return {
+      ok: false,
+      status: 409,
+      alasan: `Tiket ini sedang dikerjakan ${namaOrang(sesi.dikerjakan_oleh)}. Ambil alih dahulu bila Anda yang menyelesaikannya.`,
+      pemegang: sesi.dikerjakan_oleh,
+      pemegangNama: namaOrang(sesi.dikerjakan_oleh)
+    };
+  }
 
   // Waktu selesai boleh disebutkan sendiri oleh engineer.
   //
@@ -333,11 +515,19 @@ export function daftarTugas(divisi = null, divisiDiizinkan = null) {
 
   return wajibSiap().prepare(`
     SELECT nomor_tiket, tanggal_wib, dibuat_pada, diteruskan_pada, divisi_id,
-           keluhan, nama, fungsi, lokasi, area, urgensi, masalah_cocok, solusi_terakhir
+           keluhan, nama, fungsi, lokasi, area, urgensi, masalah_cocok, solusi_terakhir,
+           mulai_dikerjakan_pada, dikerjakan_oleh
     FROM sesi
     WHERE status = 'diteruskan' AND ditangani_pada IS NULL ${where}
-    ORDER BY diteruskan_pada ASC
-  `).all(...nilai).map((r) => ({ ...r, divisi_nama: namaDivisi(r.divisi_id) }));
+    -- Yang belum dipegang siapa pun didahulukan: tiket yang sudah ada
+    -- engineernya bukan lagi pekerjaan yang menunggu diambil, dan menaruhnya
+    -- bercampur di antara yang menganggur membuat antrean sebenarnya kabur.
+    ORDER BY (dikerjakan_oleh IS NOT NULL) ASC, diteruskan_pada ASC
+  `).all(...nilai).map((r) => ({
+    ...r,
+    divisi_nama: namaDivisi(r.divisi_id),
+    dikerjakan_oleh_nama: namaOrang(r.dikerjakan_oleh)
+  }));
 }
 
 /**

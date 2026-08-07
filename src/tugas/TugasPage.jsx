@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { DivisionIcon, IconCheck, IconLogout, IconChart, IconClock, IconInbox, IconAlert } from '../components/Icons.jsx';
+import {
+  DivisionIcon, IconCheck, IconLogout, IconChart, IconClock, IconInbox,
+  IconAlert, IconWrench, IconUndo, IconUser
+} from '../components/Icons.jsx';
 import Masuk from '../components/Masuk.jsx';
 import './tugas.css';
 
@@ -40,9 +43,19 @@ function keISO(nilaiLokal) {
   return new Date(new Date(`${nilaiLokal}:00Z`).getTime() - WIB_MS).toISOString();
 }
 
-/** Tiket yang menganggur terlalu lama perlu terlihat berbeda */
-function tingkatTunggu(diteruskanPada, sekarang) {
-  const jam = (new Date(sekarang) - new Date(diteruskanPada)) / 3600000;
+/**
+ * Tingkat perhatian sebuah kartu.
+ *
+ * Tiket yang sudah dipegang engineer diukur dari kapan ia MULAI dikerjakan,
+ * bukan dari kapan diteruskan. Bila diukur dari diteruskan, tiket yang baru
+ * saja diambil tetap tampil merah hanya karena laporannya masuk kemarin —
+ * padahal justru itu tiket yang sedang ditangani dengan benar. Sebaliknya,
+ * tiket yang dipegang lalu didiamkan berhari-hari adalah keadaan terburuk:
+ * terlihat sedang ditangani padahal tidak.
+ */
+function tingkatTunggu(tugas, sekarang) {
+  const acuan = tugas.mulai_dikerjakan_pada || tugas.diteruskan_pada;
+  const jam = (new Date(sekarang) - new Date(acuan)) / 3600000;
   if (jam >= 48) return 'lama';
   if (jam >= 8) return 'sedang';
   return '';
@@ -131,6 +144,11 @@ export default function TugasPage() {
   const [sibuk, setSibuk] = useState(false);
   const [galatDialog, setGalatDialog] = useState('');
   const [divisi, setDivisi] = useState('');
+  // Nomor tiket yang tombolnya sedang menunggu jawaban server — supaya ketukan
+  // kedua pada tombol yang sama tidak mengirim permintaan kembar.
+  const [sedangKirim, setSedangKirim] = useState('');
+  // Terisi bila tiket yang hendak diambil ternyata sudah dipegang orang lain.
+  const [ambilAlih, setAmbilAlih] = useState(null);
 
   // Tautan dari WhatsApp membawa nomor tiketnya, sehingga engineer tidak perlu
   // mencari apa pun — dialognya langsung terbuka pada tiket yang dimaksud.
@@ -178,6 +196,64 @@ export default function TugasPage() {
     setData(null);
   };
 
+  /**
+   * Tindakan satu ketukan pada sebuah kartu — mulai mengerjakan, mengambil
+   * alih, atau melepaskan. Ketiganya berbagi penanganan yang sama karena
+   * ketiganya sama-sama satu permintaan tanpa formulir.
+   */
+  const tindakan = async (jalur, tugas, tambahan = {}) => {
+    setSedangKirim(tugas.nomor_tiket);
+    setGalat('');
+    setKabar('');
+    try {
+      const r = await fetch(`${API}/tugas/${jalur}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nomorTiket: tugas.nomor_tiket, ...tambahan })
+      });
+      const d = await r.json();
+
+      // 409 = tiketnya sudah dipegang orang lain. Bukan kegagalan, melainkan
+      // pertanyaan: yakin hendak mengambilnya? Karena itu ditampilkan sebagai
+      // dialog, bukan sebagai galat merah.
+      if (r.status === 409 && d.pemegang) {
+        setAmbilAlih({ tugas, pemegang: d.pemegang });
+        return false;
+      }
+
+      if (d.success) {
+        setKabar(d.message);
+        await ambil();
+        return true;
+      }
+      setGalat(d.error || 'Tindakan gagal');
+      return false;
+    } catch {
+      setGalat('Tidak dapat terhubung ke server.');
+      return false;
+    } finally {
+      setSedangKirim('');
+    }
+  };
+
+  /**
+   * Pengambilalihan yang sudah dijawab "ya".
+   *
+   * Bila permintaan yang tertahan tadi sebenarnya "tandai selesai", dialog
+   * penyelesaiannya dibuka kembali setelah tiketnya berpindah tangan —
+   * engineer tidak perlu mencari kartunya lagi dan menekan tombol yang sama
+   * untuk kedua kalinya.
+   */
+  const konfirmasiAmbilAlih = async () => {
+    const { tugas, lanjutSelesai } = ambilAlih;
+    setAmbilAlih(null);
+    const berhasil = await tindakan('mulai', tugas, { ambilAlih: true });
+    if (berhasil && lanjutSelesai) {
+      setGalatDialog('');
+      setDipilih(tugas);
+    }
+  };
+
   const kirimSelesai = async ({ selesaiPada, catatan }) => {
     setSibuk(true);
     setGalatDialog('');
@@ -188,6 +264,17 @@ export default function TugasPage() {
         body: JSON.stringify({ nomorTiket: dipilih.nomor_tiket, selesaiPada, catatan })
       });
       const d = await r.json();
+
+      // Tiket ini ternyata sedang dipegang engineer lain. Pertanyaannya
+      // dipindahkan ke dialog pengambilalihan, dan bila dijawab "ya" dialog
+      // penyelesaian ini terbuka kembali dengan sendirinya.
+      if (r.status === 409 && d.pemegang) {
+        const tugas = dipilih;
+        setDipilih(null);
+        setAmbilAlih({ tugas, pemegang: d.pemegang, lanjutSelesai: true });
+        return;
+      }
+
       if (d.success) {
         setKabar(d.message);
         setDipilih(null);
@@ -240,7 +327,7 @@ export default function TugasPage() {
           <h1>Menunggu ditangani</h1>
           <p className="tg-ket">
             Laporan yang sudah diteruskan kepada engineer dan belum ditandai
-            selesai. Terlama berada di atas.
+            selesai. Yang belum dipegang siapa pun berada di atas.
             {data && !data.seluruhDivisi && (
               <> Hanya layanan yang Anda tangani yang ditampilkan.</>
             )}
@@ -274,15 +361,30 @@ export default function TugasPage() {
             menggulir sampai bawah untuk menyadari ada empat lainnya yang sudah
             menunggu dua hari. */}
         {data && (() => {
-          const lama = data.tugas.filter(
-            (t) => tingkatTunggu(t.diteruskan_pada, data.sekarang) === 'lama'
-          ).length;
-          return lama > 0 ? (
+          const lama = data.tugas.filter((t) => tingkatTunggu(t, data.sekarang) === 'lama');
+          if (lama.length === 0) return null;
+
+          // Dua kelompok yang terlihat sama pada daftar tetapi sangat berbeda
+          // artinya. Tiket yang belum diambil siapa pun masih jujur mengaku
+          // menganggur; tiket yang dipegang lalu didiamkan dua hari terlihat
+          // seperti sedang ditangani, dan justru karena itu tidak ada yang
+          // menanyakannya.
+          const mandek = lama.filter((t) => t.dikerjakan_oleh).length;
+          const nganggur = lama.length - mandek;
+
+          return (
             <p className="tg-peringatan" role="status">
               <IconClock size={15} />
-              <span><strong>{lama} tiket</strong> sudah menunggu lebih dari dua hari.</span>
+              <span>
+                {nganggur > 0 && (
+                  <><strong>{nganggur} tiket</strong> sudah menunggu lebih dari dua hari.{' '}</>
+                )}
+                {mandek > 0 && (
+                  <><strong>{mandek} tiket</strong> sudah dipegang lebih dari dua hari tanpa ditutup.</>
+                )}
+              </span>
             </p>
-          ) : null;
+          );
         })()}
 
         {galat && <p className="tg-galat" role="alert">{galat}</p>}
@@ -323,18 +425,46 @@ export default function TugasPage() {
 
         {data && data.tugas.length > 0 && (
           <>
-            <p className="tg-hitung">{data.jumlah} tiket menunggu</p>
+            {(() => {
+              const dikerjakan = data.tugas.filter((t) => t.dikerjakan_oleh).length;
+              return (
+                <p className="tg-hitung">
+                  {data.jumlah - dikerjakan} belum dipegang
+                  {dikerjakan > 0 && <> · {dikerjakan} sedang dikerjakan</>}
+                </p>
+              );
+            })()}
 
             <ul className="tg-daftar">
-              {data.tugas.map((t) => (
+              {data.tugas.map((t) => {
+                const saya = t.dikerjakan_oleh === pengguna.namaAkun;
+                const orangLain = Boolean(t.dikerjakan_oleh) && !saya;
+                const menunggu = sedangKirim === t.nomor_tiket;
+
+                return (
                 <li key={t.nomor_tiket}
-                    className={`tg-kartu ${tingkatTunggu(t.diteruskan_pada, data.sekarang)}`}>
+                    className={`tg-kartu ${tingkatTunggu(t, data.sekarang)}${t.dikerjakan_oleh ? ' dikerjakan' : ''}`}>
                   <div className="tg-kartu-atas">
                     <span className="tg-tiket">{t.nomor_tiket}</span>
                     {t.urgensi && (
                       <span className={`tg-urgensi u-${t.urgensi.toLowerCase()}`}>{t.urgensi}</span>
                     )}
                   </div>
+
+                  {/* Siapa yang sedang memegang tiket ini. Inilah keterangan
+                      yang membuat dua engineer tidak berangkat ke lokasi yang
+                      sama — dan yang membuat tiket terlantar dapat dikenali,
+                      karena "dikerjakan sejak dua hari lalu" terbaca berbeda
+                      dari "menunggu dua hari". */}
+                  {t.dikerjakan_oleh && (
+                    <p className={`tg-pemegang${saya ? ' saya' : ''}`}>
+                      <IconWrench size={14} />
+                      <span>
+                        {saya ? 'Anda kerjakan' : `Dikerjakan ${t.dikerjakan_oleh_nama}`}
+                        {' · sejak '}{sejak(t.mulai_dikerjakan_pada, data.sekarang)}
+                      </span>
+                    </p>
+                  )}
 
                   <p className="tg-keluhan">{t.keluhan || '—'}</p>
 
@@ -355,13 +485,46 @@ export default function TugasPage() {
                     <span className="tg-menunggu">
                       <IconClock size={13} /> diteruskan {sejak(t.diteruskan_pada, data.sekarang)}
                     </span>
-                    <button type="button" className="tg-tombol-utama"
-                            onClick={() => { setGalatDialog(''); setDipilih(t); }}>
-                      <IconCheck size={16} /> Selesai
-                    </button>
+
+                    {/* Dua tahap, tetapi tahap pertama TIDAK diwajibkan.
+                        Kendala yang beres dalam dua menit tidak pantas menuntut
+                        dua ketukan; memaksakannya justru membuat orang berhenti
+                        menandai sama sekali — penyakit yang baru saja
+                        disembuhkan halaman ini. */}
+                    <div className="tg-aksi">
+                      {orangLain ? (
+                        <button type="button" className="tg-tombol-samar" disabled={menunggu}
+                                onClick={() => setAmbilAlih({ tugas: t, pemegang: t.dikerjakan_oleh_nama })}>
+                          <IconUser size={15} /> Ambil alih
+                        </button>
+                      ) : saya ? (
+                        <button type="button" className="tg-tombol-samar" disabled={menunggu}
+                                onClick={() => tindakan('lepas', t)}>
+                          <IconUndo size={15} /> Lepas
+                        </button>
+                      ) : (
+                        <button type="button" className="tg-tombol-samar" disabled={menunggu}
+                                onClick={() => tindakan('mulai', t)}>
+                          <IconWrench size={15} /> Saya kerjakan
+                        </button>
+                      )}
+
+                      {/* Menyelesaikan tiket yang dipegang orang lain ditolak
+                          server. Tombolnya disembunyikan agar penolakan itu
+                          tidak perlu dialami dulu untuk diketahui — kecuali
+                          bagi admin, yang memang bertugas menutup tiket saat
+                          engineernya berhalangan. */}
+                      {(!orangLain || pengguna.peran === 'admin') && (
+                        <button type="button" className="tg-tombol-utama" disabled={menunggu}
+                                onClick={() => { setGalatDialog(''); setDipilih(t); }}>
+                          <IconCheck size={16} /> Selesai
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           </>
         )}
@@ -376,6 +539,39 @@ export default function TugasPage() {
           onBatal={() => setDipilih(null)}
           onKirim={kirimSelesai}
         />
+      )}
+
+      {/* Pengambilalihan diizinkan — engineer yang dijadwalkan bisa
+          berhalangan, dan tiket yang terkunci pada akun yang sedang cuti lebih
+          buruk daripada tiket yang berpindah tangan. Tetapi harus disengaja:
+          memindahkan pekerjaan seseorang diam-diam menghapus tiketnya dari
+          daftar tugas orang itu tanpa ia tahu. */}
+      {ambilAlih && (
+        <div className="tg-dialog-latar" onClick={() => setAmbilAlih(null)}>
+          <div className="tg-dialog" role="dialog" aria-modal="true"
+               aria-label="Ambil alih tugas"
+               onClick={(e) => e.stopPropagation()}>
+            <h3>Ambil alih tugas ini?</h3>
+            <p className="tg-dialog-tiket">
+              {ambilAlih.tugas.nomor_tiket} · {ambilAlih.tugas.divisi_nama}
+            </p>
+            <p className="tg-dialog-keluhan">
+              Tiket ini sedang dikerjakan <strong>{ambilAlih.pemegang}</strong>.
+              Bila Anda mengambilnya, tiket berpindah ke daftar tugas Anda dan
+              hilang dari daftar {ambilAlih.pemegang}. Sebaiknya beri tahu yang
+              bersangkutan lebih dahulu.
+            </p>
+
+            <div className="tg-dialog-aksi">
+              <button type="button" className="tg-tombol-samar"
+                      onClick={() => setAmbilAlih(null)}>Batal</button>
+              <button type="button" className="tg-tombol-utama"
+                      onClick={konfirmasiAmbilAlih}>
+                <IconUser size={16} /> Ya, ambil alih
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

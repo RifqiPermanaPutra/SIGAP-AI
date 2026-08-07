@@ -208,9 +208,14 @@ rekapRouter.post('/tandai-selesai', wajibMasuk('admin', 'engineer'), (req, res) 
     const hasil = tandaiDitangani(nomorTiket, req.pengguna.akun, {
       catatan,
       selesaiPada: req.body?.selesaiPada || null,
-      divisiDiizinkan: req.pengguna.divisi
+      divisiDiizinkan: req.pengguna.divisi,
+      abaikanPemegang: req.pengguna.peran === 'admin'
     });
-    if (!hasil.ok) return res.status(hasil.status || 400).json({ success: false, error: hasil.alasan });
+    if (!hasil.ok) {
+      return res.status(hasil.status || 400).json({
+        success: false, error: hasil.alasan, pemegang: hasil.pemegangNama || null
+      });
+    }
 
     catatAkses(req.pengguna.akun, 'tandai-selesai', nomorTiket);
     res.json({ success: true, ditanganiPada: hasil.ditanganiPada });

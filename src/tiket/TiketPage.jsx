@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IconCheck, IconClock, IconAlert, IconArrowLeft } from '../components/Icons.jsx';
+import { IconCheck, IconClock, IconAlert, IconArrowLeft, IconWrench } from '../components/Icons.jsx';
 import './tiket.css';
 
 /**
@@ -107,19 +107,32 @@ export default function TiketPage() {
         )}
 
         {hasil && (
-          <section className={`tk-hasil ${hasil.sudahDitangani ? 'tuntas' : hasil.status}`}>
+          <section className={`tk-hasil ${
+            hasil.sudahDitangani ? 'tuntas' : hasil.sedangDikerjakan ? 'dikerjakan' : hasil.status
+          }`}>
             <span className="tk-nomor">{hasil.nomor}</span>
 
             <div className="tk-lencana">
-              {hasil.sudahDitangani ? <IconCheck size={17} /> : <IconClock size={17} />}
+              {hasil.sudahDitangani ? <IconCheck size={17} />
+                : hasil.sedangDikerjakan ? <IconWrench size={17} />
+                : <IconClock size={17} />}
               <strong>
-                {hasil.sudahDitangani ? 'Sudah ditangani engineer' : hasil.statusLabel}
+                {hasil.sudahDitangani ? 'Sudah ditangani engineer'
+                  : hasil.sedangDikerjakan ? 'Sedang dikerjakan engineer'
+                  : hasil.statusLabel}
               </strong>
             </div>
 
+            {/* Tiga keadaan, bukan dua. Sebelumnya laporan yang sudah dipegang
+                engineer terlihat persis sama dengan yang belum disentuh siapa
+                pun, sehingga pelapor yang memeriksa dua hari berturut-turut
+                melihat kalimat yang tidak berubah dan menyimpulkan tidak ada
+                yang mengerjakannya. */}
             <p className="tk-arti">
               {hasil.sudahDitangani
                 ? 'Engineer ICT sudah menandai kendala Anda selesai ditangani.'
+                : hasil.sedangDikerjakan
+                ? 'Engineer ICT sudah mengambil laporan Anda dan sedang menanganinya.'
                 : hasil.arti}
             </p>
 
@@ -130,6 +143,9 @@ export default function TiketPage() {
               <div><dt>Dilaporkan</dt><dd>{waktuWIB(hasil.dibuatPada)}</dd></div>
               {hasil.diteruskanPada && (
                 <div><dt>Diteruskan ke engineer</dt><dd>{waktuWIB(hasil.diteruskanPada)}</dd></div>
+              )}
+              {hasil.mulaiDikerjakanPada && (
+                <div><dt>Mulai dikerjakan</dt><dd>{waktuWIB(hasil.mulaiDikerjakanPada)}</dd></div>
               )}
               {hasil.ditanganiPada && (
                 <div><dt>Selesai ditangani</dt><dd>{waktuWIB(hasil.ditanganiPada)}</dd></div>

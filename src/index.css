@@ -238,7 +238,10 @@ button {
   font-weight: 600;
 }
 
-.lp-nav-links { display: none; gap: 30px; }
+/* Jarak menyusut pada layar sempit: sejak 'Cek Status' ikut masuk, empat
+   tautan ditambah merek dan tombol ajakan tidak lagi muat pada 721px — titik
+   di mana navbar penuh mulai ditampilkan. */
+.lp-nav-links { display: none; gap: clamp(18px, 2.4vw, 30px); }
 .lp-nav-links a {
   font-size: 0.94rem;
   font-weight: 500;
@@ -891,6 +894,22 @@ button {
   border: 1px solid var(--line-2);
 }
 .message-bubble.user code { background: rgba(255, 255, 255, 0.18); border-color: transparent; }
+
+/* Tautan di dalam jawaban — dibuat jelas terlihat dapat ditekan. Sebelumnya
+   halaman seperti /tiket hanya disebut sebagai teks, sehingga pelapor menekannya
+   dan tidak terjadi apa-apa. Sasaran sentuh sengaja tidak dikecilkan: ini
+   dipakai dari ponsel di lapangan. */
+.message-bubble a {
+  color: var(--pt-blue);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1.5px;
+  border-radius: 4px;
+}
+.message-bubble a:hover { color: var(--pt-blue-dark); }
+.message-bubble a:focus-visible { outline: 2px solid var(--pt-blue); outline-offset: 2px; }
+.message-bubble.user a { color: #fff; }
 
 .message-time { font-size: 0.68rem; color: var(--ink-4); margin-top: 5px; padding-inline: 4px; }
 

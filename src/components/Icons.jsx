@@ -203,6 +203,21 @@ export const IconChevronDown = (p) => (
   <Svg {...p}><path d="m6 9.5 6 6 6-6" /></Svg>
 );
 
+/* Kunci pas — "sedang dikerjakan", tahap sebelum tiket ditandai selesai */
+export const IconWrench = (p) => (
+  <Svg {...p}>
+    <path d="M15.2 5.2a4.5 4.5 0 0 0 5.6 5.9L11 21a2.1 2.1 0 0 1-3-3l9.9-9.8a4.5 4.5 0 0 0-2.7-3z" />
+  </Svg>
+);
+
+/* Melepaskan tugas — kembali ke antrean */
+export const IconUndo = (p) => (
+  <Svg {...p}>
+    <path d="M4 9h11a5 5 0 0 1 0 10h-5" />
+    <path d="m8 5-4 4 4 4" />
+  </Svg>
+);
+
 export const IconLock = (p) => (
   <Svg {...p}>
     <rect x="4" y="10" width="16" height="11" rx="2" />

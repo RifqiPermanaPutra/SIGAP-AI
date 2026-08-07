@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { GrafikPeriode, BatangSebaran } from './Grafik.jsx';
 import {
   DivisionIcon, IconChart, IconDownload, IconPrint, IconLogout, IconAlert,
-  IconClock, IconInbox, IconChevronDown, IconCheck, IconWhatsapp
+  IconClock, IconInbox, IconChevronDown, IconCheck, IconWhatsapp, IconWrench
 } from '../components/Icons.jsx';
 import Markdown from '../components/Markdown.jsx';
 import Masuk from '../components/Masuk.jsx';
@@ -426,6 +426,16 @@ export default function RekapPage() {
                   ? `${r.ditangani} sudah ditandai selesai`
                   : 'belum ada yang ditandai selesai'}
               />
+              {/* Sudah dipegang engineer tetapi belum ditutup. Keadaan inilah
+                  yang paling perlu diawasi: tiket yang tampak sedang ditangani
+                  padahal mungkin sudah terlupakan sejak minggu lalu — dan
+                  justru karena tampak sedang ditangani, tidak ada yang
+                  menanyakannya. */}
+              <Kotak
+                ikon={<IconWrench size={17} />}
+                label="Sedang dikerjakan" nilai={r.sedang_dikerjakan}
+                keterangan="sudah dipegang engineer, belum ditutup"
+              />
               <Kotak
                 ikon={<IconChart size={17} />}
                 label="Ditinggalkan" nilai={r.ditinggalkan}
@@ -768,6 +778,9 @@ const LABEL_TINDAKAN = {
   lihat: 'Membuka rekap',
   'unduh-excel': 'Mengunduh Excel',
   cetak: 'Mencetak PDF',
+  'mulai-kerjakan': 'Mulai mengerjakan',
+  'ambil-alih': 'Mengambil alih tugas',
+  'lepas-tugas': 'Melepas tugas',
   'tandai-selesai': 'Menandai selesai',
   'batal-tandai-selesai': 'Membatalkan penandaan',
   'sop-dibuka': 'Membuka SOP',
@@ -869,6 +882,11 @@ function RincianLaporan({ laporan, pesan }) {
           ['Solusi diberikan', laporan.solusi_terakhir ? `sampai ke-${laporan.solusi_terakhir}` : '—'],
           ['Mode layanan', laporan.mode_divisi || '—'],
           ['Engineer tujuan', laporan.engineer_tujuan || '—'],
+          // Dua tahap penanganan, dan keduanya ditampilkan terpisah. Jarak
+          // "diteruskan → mulai dikerjakan" mengukur kesigapan merespons,
+          // sedangkan "mulai dikerjakan → ditangani" mengukur sulitnya
+          // kendala. Digabung menjadi satu waktu tanggap, keduanya tak terbaca.
+          ['Mulai dikerjakan', tanggalJamWIB(laporan.mulai_dikerjakan_pada)],
           // Untuk tiket yang diteruskan, INILAH jam kendalanya benar-benar
           // beres. Kolom "Berakhir" pada tabel berarti jam laporan berpindah
           // tangan ke engineer, bukan jam masalahnya selesai

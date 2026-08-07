@@ -163,6 +163,29 @@
 .tg-kartu.sedang { border-left-color: #eb9834; }
 .tg-kartu.lama { border-left-color: var(--pt-red); }
 
+/* Sudah dipegang engineer. Latarnya sedikit surut supaya kartu yang BELUM
+   diambil siapa pun tetap menjadi yang paling menonjol — itulah pekerjaan
+   yang benar-benar menunggu diambil. */
+.tg-kartu.dikerjakan { background: var(--canvas); }
+
+.tg-pemegang {
+  display: flex; align-items: center; gap: 6px;
+  margin: 0;
+  font-size: 0.76rem; font-weight: 600;
+  color: #8a5a00;
+  background: #fdf6e8;
+  border: 1px solid #f2dfb4;
+  border-radius: var(--r-sm);
+  padding: 7px 10px;
+}
+.tg-pemegang svg { flex-shrink: 0; }
+/* Tugas sendiri berwarna biru, bukan kuning: ini keterangan, bukan peringatan */
+.tg-pemegang.saya {
+  color: var(--pt-blue-text);
+  background: var(--pt-blue-soft);
+  border-color: #c3ddf2;
+}
+
 .tg-kartu-atas { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 
 .tg-tiket {
@@ -215,6 +238,12 @@
   font-size: 0.74rem; color: var(--ink-4); font-weight: 600;
 }
 .tg-kartu.lama .tg-menunggu { color: var(--pt-red-text); }
+
+/* Dua tombol berdampingan. Di ponsel keduanya melebar penuh dan bertumpuk,
+   dengan tindakan utama di bawah — paling dekat ibu jari. */
+.tg-aksi { display: flex; flex-direction: column-reverse; gap: 8px; }
+.tg-aksi button { width: 100%; }
+.tg-tombol-samar:disabled { opacity: 0.55; cursor: not-allowed; }
 
 /* ── Tombol ───────────────────────────────────────────────────── */
 
@@ -361,7 +390,9 @@
   .tg-rinci { grid-template-columns: repeat(4, 1fr); }
 
   .tg-kartu-bawah { flex-direction: row; align-items: center; justify-content: space-between; }
-  .tg-kartu-bawah .tg-tombol-utama { min-width: 160px; }
+  .tg-aksi { flex-direction: row; flex-shrink: 0; }
+  .tg-aksi button { width: auto; }
+  .tg-kartu-bawah .tg-tombol-utama { min-width: 150px; }
 
   .tg-dialog-latar { place-items: center; padding: 20px; }
   .tg-dialog {
