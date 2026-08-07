@@ -209,20 +209,15 @@ button {
   flex-shrink: 0;
 }
 
-/* Logo unit SATU-IT SIGAP, diletakkan berdampingan dengan logo Pertamina EP.
-   Asetnya transparan. Alas putih kecil di sini merupakan bidang aksesibilitas
-   agar detail hitam tetap terbaca di navbar biru, bukan latar gambar bawaan. */
+/* Varian logo untuk header gelap sudah memiliki alpha transparan dan elemen
+   monokrom putih, sehingga tidak memerlukan panel, border, maupun padding. */
 .lp-brand-logo-unit {
-  height: 22px;
+  height: 24px;
   width: auto;
   display: block;
   flex-shrink: 0;
-  padding: 3px 5px;
   object-fit: contain;
-  background: rgba(255, 255, 255, 0.97);
-  border: 1px solid rgba(255, 255, 255, 0.72);
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(7, 44, 77, 0.2);
+  filter: brightness(1.12) contrast(1.06) drop-shadow(0 1px 2px rgba(0, 27, 48, 0.35));
 }
 
 .lp-brand-divider {
@@ -784,12 +779,9 @@ button {
 }
 .pertamina-logo-img { height: 24px; width: auto; display: block; flex-shrink: 0; }
 .satu-it-logo-img {
-  height: 24px; width: auto; display: block; flex-shrink: 0;
-  padding: 3px 6px; object-fit: contain;
-  background: rgba(255, 255, 255, 0.97);
-  border: 1px solid rgba(255, 255, 255, 0.72);
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(7, 44, 77, 0.2);
+  height: 28px; width: auto; display: block; flex-shrink: 0;
+  object-fit: contain;
+  filter: brightness(1.12) contrast(1.06) drop-shadow(0 1px 2px rgba(0, 27, 48, 0.35));
 }
 
 .header-info { flex: 1; min-width: 0; order: 2; }
@@ -1512,7 +1504,7 @@ button {
   .lp-nav { gap: 18px; padding: 13px clamp(20px, 5vw, 48px); }
   .lp-brand { gap: 8px; }
   .lp-brand-logo { height: 25px; }
-  .lp-brand-logo-unit { height: 25px; }
+  .lp-brand-logo-unit { height: 32px; }
 
   /* Lencana melayang punya ruang untuk keluar dari tepi kartu */
   .lp-chip { display: flex; }
@@ -1543,7 +1535,7 @@ button {
     border-top: 0;
   }
   .pertamina-logo-img { height: 26px; }
-  .satu-it-logo-img { height: 24px; }
+  .satu-it-logo-img { height: 32px; }
   .header-subtitle { display: block; }
   .header-status { display: inline-flex; }
   .header-back,
@@ -1606,7 +1598,7 @@ button {
   .lp-nav-drawer { display: none; }
   .lp-brand { gap: 10px; min-height: auto; }
   .lp-brand-logo { height: 27px; }
-  .lp-brand-logo-unit { height: 27px; }
+  .lp-brand-logo-unit { height: 34px; }
   .lp-brand-divider { display: block; }
   .lp-brand-text { display: flex; }
   .lp-brand-text strong { font-size: 1rem; }

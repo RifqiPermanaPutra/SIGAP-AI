@@ -22,7 +22,7 @@ export default function Header({ division, reporter, onNewChat, onBack }) {
       <div className="header-logo-container" id="logo-container" aria-label="Pertamina EP, Pertamina ONE, dan SATU-IT SIGAP">
         <img src="/logo-pertamina-ep.svg" alt="Pertamina EP" className="pertamina-logo-img" />
         <img
-          src="/logo-satu-it-sigap.png"
+          src="/logo-satu-it-sigap-dark.png"
           alt="Pertamina ONE dan SATU-IT SIGAP"
           className="satu-it-logo-img"
         />

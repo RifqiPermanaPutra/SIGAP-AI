@@ -65,7 +65,7 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
             className="lp-brand-logo"
           />
           <img
-            src="/logo-satu-it-sigap.png"
+            src="/logo-satu-it-sigap-dark.png"
             alt="Pertamina ONE dan SATU-IT SIGAP"
             className="lp-brand-logo-unit"
           />

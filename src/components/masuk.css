@@ -48,8 +48,9 @@
 .sg-merek { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .sg-merek-logo { height: 26px; width: auto; display: block; flex-shrink: 0; }
 .sg-merek-logo-unit {
-  height: 24px; width: auto; display: block; flex-shrink: 0;
-  padding: 3px 6px; background: #fff; border-radius: 6px;
+  height: 28px; width: auto; display: block; flex-shrink: 0;
+  object-fit: contain;
+  filter: brightness(1.12) contrast(1.06) drop-shadow(0 1px 2px rgba(0, 27, 48, 0.35));
 }
 .sg-merek-garis {
   width: 1px; height: 26px; flex-shrink: 0;
@@ -142,7 +143,7 @@
 
 @media (min-width: 600px) {
   .sg-merek-logo { height: 30px; }
-  .sg-merek-logo-unit { height: 27px; }
+  .sg-merek-logo-unit { height: 32px; }
   .sg-merek-garis { height: 30px; }
   .sg-merek-teks strong { font-size: 1rem; }
   .sg-merek-teks small { font-size: 0.65rem; }
