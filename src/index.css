@@ -188,7 +188,14 @@ button {
     var(--pt-red) 66% 100%);
 }
 
-.lp-brand { display: flex; align-items: center; gap: 10px; min-height: 44px; margin-right: auto; }
+.lp-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  min-height: 44px;
+  margin-right: auto;
+}
 
 /* PENTING — berkas logo ini adalah varian untuk LATAR GELAP: di dalamnya
    wordmark "PERTAMINA" digambar dengan fill #ffffff (lihat komentar pada
@@ -196,32 +203,37 @@ button {
    gelap. Menaruhnya di atas bidang putih membuat tulisan PERTAMINA lenyap,
    menyisakan emblem dan "EP" saja. Jangan beri latar terang di belakangnya. */
 .lp-brand-logo {
-  height: 27px;
+  height: 22px;
   width: auto;
   display: block;
   flex-shrink: 0;
 }
 
 /* Logo unit SATU-IT SIGAP, diletakkan berdampingan dengan logo Pertamina EP.
-   Berlatar terang, sehingga diberi alas putih agar terbaca di navbar biru. */
+   Asetnya transparan. Alas putih kecil di sini merupakan bidang aksesibilitas
+   agar detail hitam tetap terbaca di navbar biru, bukan latar gambar bawaan. */
 .lp-brand-logo-unit {
-  height: 30px;
+  height: 22px;
   width: auto;
   display: block;
   flex-shrink: 0;
-  padding: 3px 7px;
-  background: #fff;
-  border-radius: 7px;
+  padding: 3px 5px;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(7, 44, 77, 0.2);
 }
 
 .lp-brand-divider {
+  display: none;
   width: 1px;
   height: 30px;
   background: rgba(255, 255, 255, 0.3);
   flex-shrink: 0;
 }
 
-.lp-brand-text { display: flex; flex-direction: column; line-height: 1.3; }
+.lp-brand-text { display: none; flex-direction: column; line-height: 1.3; }
 .lp-brand-text strong {
   font-size: 0.94rem;
   font-weight: 700;
@@ -729,9 +741,10 @@ button {
 /* Header */
 .header {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 14px;
-  padding: 14px clamp(16px, 3vw, 24px);
+  gap: 8px 10px;
+  padding: 10px clamp(16px, 3vw, 24px) 12px;
   border-bottom: 1px solid var(--line);
   /* Latar gelap wajib: wordmark PERTAMINA pada berkas logo berwarna putih
      (lihat catatan pada .lp-brand-logo). Header terang membuatnya lenyap. */
@@ -755,17 +768,31 @@ button {
   font-size: 1rem;
   transition: background var(--ease), border-color var(--ease);
   flex-shrink: 0;
+  order: 1;
 }
 .header-back:hover { background: rgba(255, 255, 255, 0.14); border-color: rgba(255, 255, 255, 0.5); }
 
-.header-logo-container { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
-.pertamina-logo-img { height: 34px; width: auto; display: block; }
+.header-logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  flex: 1 0 100%;
+  order: 4;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+.pertamina-logo-img { height: 24px; width: auto; display: block; flex-shrink: 0; }
 .satu-it-logo-img {
-  height: 28px; width: auto; display: block;
-  padding: 3px 6px; background: #fff; border-radius: 6px;
+  height: 24px; width: auto; display: block; flex-shrink: 0;
+  padding: 3px 6px; object-fit: contain;
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(7, 44, 77, 0.2);
 }
 
-.header-info { flex: 1; min-width: 0; }
+.header-info { flex: 1; min-width: 0; order: 2; }
 .header-title {
   display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
   font-size: 1.02rem; font-weight: 700; letter-spacing: -0.02em;
@@ -796,6 +823,7 @@ button {
   background: rgba(255, 255, 255, 0.16);
   border-radius: var(--r-full);
   flex-shrink: 0;
+  order: 5;
 }
 .status-dot {
   width: 7px; height: 7px; border-radius: 50%;
@@ -812,6 +840,7 @@ button {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
   transition: transform var(--ease);
   flex-shrink: 0;
+  order: 3;
 }
 .header-new-chat:hover { transform: translateY(-2px) rotate(90deg); }
 
@@ -1466,6 +1495,7 @@ button {
      >= 401px     ponsel biasa
      >= 721px     tablet ke atas
      >= 981px     desktop
+     >= 1100px    navigasi desktop lengkap
    ================================================ */
 
 /* ── >= 401px — ponsel biasa ───────────────────────────────────── */
@@ -1479,16 +1509,10 @@ button {
 
 /* ── >= 721px — tablet ke atas ─────────────────────────────────── */
 @media (min-width: 721px) {
-  /* Navbar penuh: tautan tampil, tombol menu laci disembunyikan */
-  .lp-nav { gap: 32px; padding: 15px clamp(20px, 5vw, 64px); }
-  .lp-nav-links { display: flex; }
-  .lp-nav-cta { display: flex; }
-  .lp-nav-toggle { display: none; width: 40px; height: 40px; }
-  .lp-nav-drawer { display: none; }
-  .lp-brand { gap: 14px; min-height: auto; }
-  .lp-brand-logo { height: 34px; }
-  .lp-brand-text strong { font-size: 1.05rem; }
-  .lp-brand-text small { font-size: 0.76rem; letter-spacing: 0.1em; }
+  .lp-nav { gap: 18px; padding: 13px clamp(20px, 5vw, 48px); }
+  .lp-brand { gap: 8px; }
+  .lp-brand-logo { height: 25px; }
+  .lp-brand-logo-unit { height: 25px; }
 
   /* Lencana melayang punya ruang untuk keluar dari tepi kartu */
   .lp-chip { display: flex; }
@@ -1506,6 +1530,20 @@ button {
 
   /* Wadah percakapan menyempit dari layar, sehingga garis tepinya bermakna */
   .app-container { border-inline: 1px solid var(--line-2); }
+  .header { flex-wrap: nowrap; gap: 12px; padding-block: 14px; }
+  .header-back,
+  .header-logo-container,
+  .header-info,
+  .header-status,
+  .header-new-chat { order: 0; }
+  .header-logo-container {
+    justify-content: flex-start;
+    flex: 0 0 auto;
+    padding-top: 0;
+    border-top: 0;
+  }
+  .pertamina-logo-img { height: 26px; }
+  .satu-it-logo-img { height: 24px; }
   .header-subtitle { display: block; }
   .header-status { display: inline-flex; }
   .header-back,
@@ -1556,6 +1594,23 @@ button {
   .chip-b { right: -18px; }
   .lp-steps { grid-template-columns: repeat(3, 1fr); gap: 24px; }
   .lp-steps-rail { display: block; }
+}
+
+/* Logo gabungan menambah lebar merek. Navigasi lengkap baru dibuka ketika
+   seluruh logo, empat tautan, dan tombol ajakan benar-benar muat satu baris. */
+@media (min-width: 1100px) {
+  .lp-nav { gap: 28px; padding: 15px clamp(28px, 4vw, 64px); }
+  .lp-nav-links { display: flex; }
+  .lp-nav-cta { display: flex; }
+  .lp-nav-toggle { display: none; width: 40px; height: 40px; }
+  .lp-nav-drawer { display: none; }
+  .lp-brand { gap: 10px; min-height: auto; }
+  .lp-brand-logo { height: 27px; }
+  .lp-brand-logo-unit { height: 27px; }
+  .lp-brand-divider { display: block; }
+  .lp-brand-text { display: flex; }
+  .lp-brand-text strong { font-size: 1rem; }
+  .lp-brand-text small { font-size: 0.72rem; letter-spacing: 0.08em; }
 }
 
 /* Kolom isian boleh mengecil HANYA pada perangkat berkursor.

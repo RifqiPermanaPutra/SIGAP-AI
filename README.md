@@ -494,7 +494,7 @@ yang belum diatur ditandai `⚠ belum diberi`.
 npm test
 ```
 
-Menjalankan 247 pemeriksaan di atas basis data sementara — data nyata tidak
+Menjalankan 295 pemeriksaan di atas basis data sementara — data nyata tidak
 tersentuh. Mencakup lapisan penyimpanan, akurasi pencocokan keluhan,
 autentikasi, wewenang peran, penyaringan rekap, ekspor Excel, kelengkapan data
 SOP, penyunting SOP, daftar tugas engineer, dan kedua alur percakapan.
@@ -536,7 +536,7 @@ menurut kekhasannya dalam divisi tersebut.
 | Mode | Divisi | Perilaku |
 |---|---|---|
 | `swalayan` | Printer, Windows | Dipandu tiga solusi dulu; formulir muncul bila belum tuntas |
-| `engineer` | CCTV, Telepon, Radio, FTTP, LAN, WAN | Langsung ke formulir pelapor |
+| `engineer` | CCTV, Telepon, Radio, FTTH, LAN, WAN | Langsung ke formulir pelapor |
 
 Pembagian ini berasal dari masukan Engineer ICT: kendala yang cukup umum untuk
 dipandu sendiri hanya ada pada komputer dan printer. Selebihnya memerlukan

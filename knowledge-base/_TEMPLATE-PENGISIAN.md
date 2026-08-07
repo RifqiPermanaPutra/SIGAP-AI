@@ -4,7 +4,7 @@ Panduan dan template untuk mengumpulkan data masalah & solusi ICT **langsung dar
 engineer**, guna menggantikan data contoh (dummy) di basis pengetahuan SIGAP.
 
 > Satu file per divisi, disimpan di: `knowledge-base/<divisi>/sop-<divisi>.md`
-> Divisi: `printer`, `cctv`, `telepon`, `radio`, `windows`, `fttp`, `lan`, `wan`
+> Divisi: `printer`, `cctv`, `telepon`, `radio`, `windows`, `ftth`, `lan`, `wan`
 
 ---
 

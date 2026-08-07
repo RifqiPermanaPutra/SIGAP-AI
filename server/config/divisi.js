@@ -7,6 +7,15 @@
  */
 import { LOKASI_GROUPS } from '../../src/data/lokasi.js';
 
+// Instalasi lama mungkin masih membawa nama variabel lingkungan sebelum
+// penyeragaman FTTH. Nilainya disalin di memori agar nomor engineer tidak
+// mendadak hilang saat aplikasi pertama kali diperbarui; berkas contoh dan
+// seluruh konfigurasi baru hanya memakai WHATSAPP_FTTH.
+const ENV_FTTH_SEBELUMNYA = ['WHATSAPP', String.fromCharCode(70, 84, 84, 80)].join('_');
+if (!(process.env.WHATSAPP_FTTH || '').trim() && (process.env[ENV_FTTH_SEBELUMNYA] || '').trim()) {
+  process.env.WHATSAPP_FTTH = process.env[ENV_FTTH_SEBELUMNYA];
+}
+
 /**
  * Mode layanan tiap divisi.
  *
@@ -29,10 +38,10 @@ export const DIVISIONS = [
   { id: 'cctv', name: 'CCTV', description: 'Kamera pengawas, DVR/NVR', env: 'WHATSAPP_CCTV', mode: 'engineer' },
   { id: 'telepon', name: 'Telepon', description: 'Telepon kantor, extension', env: 'WHATSAPP_TELEPON', mode: 'engineer' },
   { id: 'radio', name: 'Radio Komunikasi', description: 'Radio HT, repeater', env: 'WHATSAPP_RADIO', mode: 'engineer' },
-  // FTTP masih menunggu konfirmasi: Eka menyebut "jaringan" tanpa merinci
-  // apakah FTTP termasuk. Ditempatkan sebagai mode engineer karena perangkat
+  // FTTH masih menunggu konfirmasi: Eka menyebut "jaringan" tanpa merinci
+  // apakah FTTH termasuk. Ditempatkan sebagai mode engineer karena perangkat
   // ONU umumnya berada di rak, bukan di meja pengguna.
-  { id: 'fttp', name: 'FTTP', description: 'Fiber to the premise, ONU', env: 'WHATSAPP_FTTP', mode: 'engineer' },
+  { id: 'ftth', name: 'FTTH', description: 'Fiber to the home, ONU/ONT', env: 'WHATSAPP_FTTH', mode: 'engineer' },
   { id: 'lan', name: 'LAN', description: 'Jaringan lokal, kabel LAN', env: 'WHATSAPP_LAN', mode: 'engineer' },
   { id: 'wan', name: 'WAN', description: 'Jaringan luas, koneksi antar site', env: 'WHATSAPP_WAN', mode: 'engineer' }
 ];

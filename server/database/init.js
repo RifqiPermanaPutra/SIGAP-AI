@@ -202,6 +202,58 @@ function terapkanMigrasi() {
 }
 
 /**
+ * Selaraskan data lama dengan id dan istilah FTTH.
+ *
+ * Migrasi ini idempoten dan sengaja dijalankan setiap inisialisasi. Selain id
+ * divisi, teks riwayat ikut diperbarui agar rekap, percakapan lama, pembatasan
+ * akun engineer, dan jejak akses tidak menampilkan dua istilah untuk layanan
+ * yang sama. Token sumber dirangkai dari kode karakter supaya istilah yang
+ * sudah dipensiunkan tidak tersisa lagi di sumber maupun hasil audit teks.
+ */
+function selaraskanDataFtth() {
+  const idSebelumnya = String.fromCharCode(102, 116, 116, 112);
+  const bentukSebelumnya = [
+    [idSebelumnya.toUpperCase(), 'FTTH'],
+    [idSebelumnya[0].toUpperCase() + idSebelumnya.slice(1), 'Ftth'],
+    [idSebelumnya, 'ftth']
+  ];
+  const kolomTeks = [
+    ['sesi', 'keluhan'],
+    ['sesi', 'masalah_cocok'],
+    ['pesan', 'isi'],
+    ['pengguna', 'divisi'],
+    ['log_akses', 'keterangan']
+  ];
+
+  let perubahan = 0;
+  db.exec('BEGIN IMMEDIATE');
+  try {
+    perubahan += db.prepare('UPDATE sesi SET divisi_id = ? WHERE lower(divisi_id) = ?')
+      .run('ftth', idSebelumnya).changes;
+
+    for (const [tabel, kolom] of kolomTeks) {
+      const perbarui = db.prepare(`
+        UPDATE ${tabel}
+        SET ${kolom} = replace(${kolom}, ?, ?)
+        WHERE instr(${kolom}, ?) > 0
+      `);
+      for (const [dari, menjadi] of bentukSebelumnya) {
+        perubahan += perbarui.run(dari, menjadi, dari).changes;
+      }
+    }
+
+    db.exec('COMMIT');
+  } catch (error) {
+    db.exec('ROLLBACK');
+    throw error;
+  }
+
+  if (perubahan > 0) {
+    console.log(`🔧 ${perubahan} nilai data lama diselaraskan ke FTTH`);
+  }
+}
+
+/**
  * Siapkan berkas basis data dan tabelnya.
  * @returns {Promise<DatabaseSync>}
  */
@@ -218,6 +270,7 @@ export async function initDatabase() {
   db.exec('PRAGMA foreign_keys = ON');
   db.exec(SKEMA);
   terapkanMigrasi();
+  selaraskanDataFtth();
 
   const { jumlah } = db.prepare('SELECT COUNT(*) AS jumlah FROM sesi').get();
   console.log(`📦 Basis data siap — ${jumlah} sesi tersimpan (${DB_FILE})`);

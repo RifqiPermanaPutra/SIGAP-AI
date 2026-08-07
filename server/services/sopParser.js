@@ -27,7 +27,7 @@ export const FOLDER_KE_DIVISI = {
   telepon: 'telepon',
   'radio-komunikasi': 'radio',
   windows: 'windows',
-  fttp: 'fttp',
+  ftth: 'ftth',
   lan: 'lan',
   wan: 'wan'
 };

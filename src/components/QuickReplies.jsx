@@ -31,7 +31,7 @@ const SUGGESTIONS = {
     'Komputer terasa sangat lambat',
     'Tidak bisa connect ke printer jaringan'
   ],
-  fttp: [
+  ftth: [
     'Lampu LOS pada ONU menyala merah',
     'ONU tidak menyala sama sekali',
     'Internet lambat dari ONU'

@@ -1,5 +1,5 @@
 {
-  "dibuatPada": "2026-08-05T06:25:28.068Z",
+  "dibuatPada": "2026-08-07T01:39:45.919Z",
   "masalah": [
     {
       "id": "cctv-salah-satu-kamera-tidak-tampil",
@@ -291,8 +291,8 @@
       ]
     },
     {
-      "id": "fttp-lampu-los-menyala-merah-pada",
-      "divisi": "fttp",
+      "id": "ftth-lampu-los-menyala-merah-pada",
+      "divisi": "ftth",
       "judul": "Lampu LOS Menyala Merah pada Perangkat Internet",
       "gejala": "Pada kotak perangkat internet terdapat lampu bertuliskan LOS yang menyala atau berkedip merah. Internet mati total.",
       "kategori": "ringan",
@@ -318,7 +318,7 @@
         },
         {
           "judul": "Solusi Kedua: Matikan dan Nyalakan Ulang Perangkat",
-          "pengantar": "Dipakai bila lampu LOS tetap merah setelah posisi kabel dirapikan. Mematikan perangkat memaksa sambungan ke penyedia layanan dibangun ulang dari awal.",
+          "pengantar": "Dipakai bila lampu LOS tetap merah setelah posisi kabel dirapikan. Mematikan\r perangkat memaksa sambungan ke penyedia layanan dibangun ulang dari awal.",
           "langkah": [
             "Cari kabel listrik perangkat, yaitu kabel yang menuju stopkontak di dinding.",
             "Cabut kabel tersebut dari stopkontak.",
@@ -332,7 +332,7 @@
         },
         {
           "judul": "Solusi Ketiga: Pastikan Gangguan Bersifat Menyeluruh",
-          "pengantar": "Dipakai bila lampu LOS tetap merah. Langkah ini bukan untuk memperbaiki, melainkan mengumpulkan keterangan agar engineer dapat menangani lebih cepat.",
+          "pengantar": "Dipakai bila lampu LOS tetap merah. Langkah ini bukan untuk memperbaiki, melainkan\r mengumpulkan keterangan agar engineer dapat menangani lebih cepat.",
           "langkah": [
             "Tanyakan kepada rekan di ruangan lain, apakah internet mereka juga mati.",
             "Perhatikan apakah ada pekerjaan penggalian, perbaikan jalan, atau alat berat di sekitar area belakangan ini.",
@@ -374,8 +374,8 @@
       ]
     },
     {
-      "id": "fttp-perangkat-internet-tidak-menyala-sama",
-      "divisi": "fttp",
+      "id": "ftth-perangkat-internet-tidak-menyala-sama",
+      "divisi": "ftth",
       "judul": "Perangkat Internet Tidak Menyala Sama Sekali",
       "gejala": "Seluruh lampu pada kotak perangkat internet padam. Tidak ada internet sama sekali.",
       "kategori": "ringan",
@@ -423,8 +423,8 @@
       ]
     },
     {
-      "id": "fttp-lampu-pon-berkedip-terus-menerus",
-      "divisi": "fttp",
+      "id": "ftth-lampu-pon-berkedip-terus-menerus",
+      "divisi": "ftth",
       "judul": "Lampu PON Berkedip Terus Menerus",
       "gejala": "Lampu bertuliskan PON pada perangkat berkedip terus dan tidak pernah menyala tetap. Internet tidak bisa dipakai.",
       "kategori": "ringan",
@@ -476,8 +476,8 @@
       ]
     },
     {
-      "id": "fttp-internet-dari-fiber-terasa-lambat",
-      "divisi": "fttp",
+      "id": "ftth-internet-dari-fiber-terasa-lambat",
+      "divisi": "ftth",
       "judul": "Internet dari Fiber Terasa Lambat",
       "gejala": "Internet tetap tersambung, tetapi membuka halaman terasa lama dan mengunduh berkas berjalan lambat.",
       "kategori": "ringan",
@@ -533,8 +533,8 @@
       ]
     },
     {
-      "id": "fttp-kabel-fiber-optik-putus-atau",
-      "divisi": "fttp",
+      "id": "ftth-kabel-fiber-optik-putus-atau",
+      "divisi": "ftth",
       "judul": "Kabel Fiber Optik Putus atau Rusak",
       "gejala": "Kabel fiber terlihat putus, terpotong, atau rusak. Bisa terjadi akibat pekerjaan penggalian atau alat berat di sekitar area.",
       "kategori": "berat",
@@ -571,8 +571,8 @@
       ]
     },
     {
-      "id": "fttp-perangkat-internet-rusak-atau-berbau",
-      "divisi": "fttp",
+      "id": "ftth-perangkat-internet-rusak-atau-berbau",
+      "divisi": "ftth",
       "judul": "Perangkat Internet Rusak atau Berbau Terbakar",
       "gejala": "Perangkat terasa sangat panas, tercium bau terbakar, keluar asap, atau lampu menyala dengan pola yang tidak wajar.",
       "kategori": "berat",
@@ -645,7 +645,7 @@
         },
         {
           "judul": "Solusi Kedua: Lupakan Jaringan lalu Sambungkan Ulang",
-          "pengantar": "Dipakai bila WiFi tetap gagal tersambung padahal kata sandi sudah benar. Cara ini menghapus data sambungan lama yang mungkin sudah tidak sesuai.",
+          "pengantar": "Dipakai bila WiFi tetap gagal tersambung padahal kata sandi sudah benar. Cara ini\r menghapus data sambungan lama yang mungkin sudah tidak sesuai.",
           "langkah": [
             "Klik tombol Start di bagian bawah layar, lalu klik ikon roda gigi bertuliskan \"Settings\".",
             "Pada daftar di sisi kiri, klik \"Network & internet\".",
@@ -660,7 +660,7 @@
         },
         {
           "judul": "Solusi Ketiga: Jalankan Perbaikan Otomatis Windows",
-          "pengantar": "Dipakai bila kedua cara di atas belum berhasil. Windows memiliki alat perbaikan jaringan bawaan yang memeriksa dan memperbaiki sendiri.",
+          "pengantar": "Dipakai bila kedua cara di atas belum berhasil. Windows memiliki alat perbaikan\r jaringan bawaan yang memeriksa dan memperbaiki sendiri.",
           "langkah": [
             "Klik tombol Start di bagian bawah layar.",
             "Ketik kata \"Get Help\" pada kotak pencarian, lalu tekan Enter.",
@@ -739,7 +739,7 @@
         },
         {
           "judul": "Solusi Kedua: Restart Komputer",
-          "pengantar": "Dipakai bila kabel sudah terpasang benar tetapi internet tetap tidak jalan. Restart menyegarkan sambungan jaringan pada komputer.",
+          "pengantar": "Dipakai bila kabel sudah terpasang benar tetapi internet tetap tidak jalan. Restart\r menyegarkan sambungan jaringan pada komputer.",
           "langkah": [
             "Simpan seluruh pekerjaan Anda yang belum tersimpan.",
             "Klik tombol Start di bagian bawah layar.",
@@ -1014,7 +1014,7 @@
         },
         {
           "judul": "Solusi Kedua: Restart Komputer untuk Menyegarkan Layanan Cetak",
-          "pengantar": "Dipakai bila printer tetap tertulis Offline. Restart komputer akan menyegarkan layanan pencetakan di dalam Windows tanpa perlu pengaturan rumit.",
+          "pengantar": "Dipakai bila printer tetap tertulis Offline. Restart komputer akan menyegarkan\r layanan pencetakan di dalam Windows tanpa perlu pengaturan rumit.",
           "langkah": [
             "Simpan terlebih dahulu seluruh pekerjaan Anda yang belum tersimpan.",
             "Klik tombol Start di bagian bawah layar.",
@@ -1028,7 +1028,7 @@
         },
         {
           "judul": "Solusi Ketiga: Hapus Printer lalu Tambahkan Kembali",
-          "pengantar": "Dipakai bila printer tetap Offline setelah restart. Cara ini memasang ulang sambungan printer pada komputer Anda.",
+          "pengantar": "Dipakai bila printer tetap Offline setelah restart. Cara ini memasang ulang\r sambungan printer pada komputer Anda.",
           "langkah": [
             "Klik tombol Start, lalu klik ikon roda gigi bertuliskan \"Settings\".",
             "Pada daftar di sisi kiri, klik \"Bluetooth & devices\".",
@@ -1101,7 +1101,7 @@
         },
         {
           "judul": "Solusi Kedua: Rapikan Kertas dan Periksa Baki",
-          "pengantar": "Dipakai bila printer masih macet setelah kertasnya dikeluarkan. Penyebab yang paling sering terlewat bukan pada mesinnya, melainkan pada keadaan kertas dan cara kertas tersusun di dalam baki.",
+          "pengantar": "Dipakai bila printer masih macet setelah kertasnya dikeluarkan. Penyebab yang\r paling sering terlewat bukan pada mesinnya, melainkan pada keadaan kertas\r dan cara kertas tersusun di dalam baki.",
           "langkah": [
             "Tarik keluar baki kertas di bagian bawah printer sampai lepas seluruhnya.",
             "Keluarkan semua kertas dari baki, lalu periksa apakah ada lembar yang kusut, terlipat, atau sobek pinggirannya. Buang lembar seperti itu, jangan dipakai lagi.",
@@ -1116,7 +1116,7 @@
         },
         {
           "judul": "Solusi Ketiga: Periksa Jalur Belakang dan Nyalakan Ulang Total",
-          "pengantar": "Dipakai bila kertas masih tersangkut meski baki sudah dirapikan. Biasanya masih ada sobekan kertas yang tertinggal di jalur yang tidak terlihat dari depan.",
+          "pengantar": "Dipakai bila kertas masih tersangkut meski baki sudah dirapikan. Biasanya\r masih ada sobekan kertas yang tertinggal di jalur yang tidak terlihat dari depan.",
           "langkah": [
             "Matikan printer, lalu cabut kabel listriknya dari stopkontak.",
             "Putar printer sehingga bagian belakangnya menghadap Anda.",
@@ -1196,7 +1196,7 @@
         },
         {
           "judul": "Solusi Kedua: Pastikan Printer yang Dituju Sudah Benar",
-          "pengantar": "Dipakai bila antrian sudah dikosongkan tetapi kertas tetap tidak keluar. Sering kali dokumen sebenarnya terkirim ke printer lain, atau pencetakan sedang ditahan tanpa disadari.",
+          "pengantar": "Dipakai bila antrian sudah dikosongkan tetapi kertas tetap tidak keluar. Sering\r kali dokumen sebenarnya terkirim ke printer lain, atau pencetakan sedang\r ditahan tanpa disadari.",
           "langkah": [
             "Klik tombol Start, lalu klik ikon roda gigi bertuliskan \"Settings\".",
             "Pada daftar di sisi kiri, klik \"Bluetooth & devices\", lalu klik \"Printers & scanners\".",
@@ -1212,7 +1212,7 @@
         },
         {
           "judul": "Solusi Ketiga: Nyalakan Ulang Printer dan Komputer",
-          "pengantar": "Dipakai bila dokumen tetap tidak keluar meski printernya sudah benar. Menyalakan ulang keduanya menyegarkan layanan pencetakan yang menggantung di dalam Windows.",
+          "pengantar": "Dipakai bila dokumen tetap tidak keluar meski printernya sudah benar. Menyalakan\r ulang keduanya menyegarkan layanan pencetakan yang menggantung di dalam Windows.",
           "langkah": [
             "Simpan terlebih dahulu seluruh pekerjaan Anda yang belum tersimpan.",
             "Matikan printer dengan menekan tombol daya, lalu cabut kabel listriknya dari stopkontak.",
@@ -1285,7 +1285,7 @@
         },
         {
           "judul": "Solusi Kedua: Ganti Kertas dan Naikkan Kualitas Cetak",
-          "pengantar": "Dipakai bila hasil cetak masih samar setelah pembersihan. Dua penyebab yang sering terlewat adalah kertas yang menyerap lembap dan pengaturan cetak yang sedang berada di mode hemat.",
+          "pengantar": "Dipakai bila hasil cetak masih samar setelah pembersihan. Dua penyebab yang\r sering terlewat adalah kertas yang menyerap lembap dan pengaturan cetak yang\r sedang berada di mode hemat.",
           "langkah": [
             "Ambil kertas dari bungkus baru yang belum lama dibuka. Kertas yang lama terbuka menyerap lembap dan membuat tinta menyebar.",
             "Keluarkan kertas lama dari baki, lalu ganti dengan kertas baru tersebut.",
@@ -1300,7 +1300,7 @@
         },
         {
           "judul": "Solusi Ketiga: Cetak Halaman Uji untuk Memastikan Bagian yang Bermasalah",
-          "pengantar": "Dipakai bila hasil cetak tetap bergaris. Halaman uji dicetak langsung oleh printer tanpa melalui komputer, sehingga memisahkan masalah pada printer dari masalah pada dokumen atau pengaturan komputer.",
+          "pengantar": "Dipakai bila hasil cetak tetap bergaris. Halaman uji dicetak langsung oleh\r printer tanpa melalui komputer, sehingga memisahkan masalah pada printer dari\r masalah pada dokumen atau pengaturan komputer.",
           "langkah": [
             "Cari tombol menu pada badan printer, lalu telusuri hingga menemukan pilihan bertuliskan \"Print Quality Report\", \"Nozzle Check\", \"Test Page\", atau \"Self Test\".",
             "Jalankan pilihan tersebut. Printer akan mencetak satu halaman berisi kotak atau garis-garis warna.",
@@ -1371,7 +1371,7 @@
         },
         {
           "judul": "Solusi Kedua: Cetak Beberapa Lembar Kosong untuk Membersihkan Jalur",
-          "pengantar": "Dipakai bila noda masih muncul setelah dibersihkan. Sisa tinta yang menempel pada jalur kertas akan terangkat sendiri oleh lembaran yang lewat, tetapi memerlukan lebih banyak lembar daripada yang biasanya dicoba orang.",
+          "pengantar": "Dipakai bila noda masih muncul setelah dibersihkan. Sisa tinta yang menempel\r pada jalur kertas akan terangkat sendiri oleh lembaran yang lewat, tetapi\r memerlukan lebih banyak lembar daripada yang biasanya dicoba orang.",
           "langkah": [
             "Buka aplikasi pengolah kata atau Notepad pada komputer, lalu biarkan halamannya benar-benar kosong.",
             "Tekan Print, lalu pada kotak jumlah salinan isikan 10.",
@@ -1384,7 +1384,7 @@
         },
         {
           "judul": "Solusi Ketiga: Periksa Kertas dan Kebersihan Baki",
-          "pengantar": "Dipakai bila noda tetap muncul. Sumbernya sering bukan pada bagian dalam printer, melainkan pada kertas atau baki yang berdebu.",
+          "pengantar": "Dipakai bila noda tetap muncul. Sumbernya sering bukan pada bagian dalam\r printer, melainkan pada kertas atau baki yang berdebu.",
           "langkah": [
             "Matikan printer, lalu tarik keluar baki kertas sampai lepas seluruhnya.",
             "Keluarkan seluruh kertas dari baki.",
@@ -1989,7 +1989,7 @@
         },
         {
           "judul": "Solusi Kedua: Tunggu Penguncian Berakhir lalu Nyalakan Ulang",
-          "pengantar": "Dipakai bila muncul tulisan bahwa akun terkunci. Mencoba berulang kali justru memperpanjang masa penguncian, sehingga menunggu adalah langkah yang benar.",
+          "pengantar": "Dipakai bila muncul tulisan bahwa akun terkunci. Mencoba berulang kali justru\r memperpanjang masa penguncian, sehingga menunggu adalah langkah yang benar.",
           "langkah": [
             "Bila muncul tulisan bahwa akun terkunci, hentikan percobaan memasukkan kata sandi.",
             "Tunggu 15 sampai 30 menit tanpa mencoba lagi sama sekali.",
@@ -2002,7 +2002,7 @@
         },
         {
           "judul": "Solusi Ketiga: Pastikan Akun dan Papan Ketik Sudah Benar",
-          "pengantar": "Dipakai bila kata sandi tetap ditolak padahal Anda yakin benar. Kadang yang keliru bukan kata sandinya, melainkan akun yang dipilih atau tombol keyboard yang rusak sehingga satu huruf tidak pernah terketik.",
+          "pengantar": "Dipakai bila kata sandi tetap ditolak padahal Anda yakin benar. Kadang yang\r keliru bukan kata sandinya, melainkan akun yang dipilih atau tombol keyboard\r yang rusak sehingga satu huruf tidak pernah terketik.",
           "langkah": [
             "Lihat bagian bawah layar masuk. Bila ada beberapa nama pengguna, pastikan yang terpilih adalah nama akun Anda sendiri.",
             "Bila tertera pilihan \"Other user\" atau \"Pengguna lain\", perhatikan apakah kotak nama pengguna kosong dan perlu diisi. Isikan nama akun Anda persis seperti yang biasa dipakai.",
@@ -2078,7 +2078,7 @@
         },
         {
           "judul": "Solusi Kedua: Kosongkan Berkas Sementara",
-          "pengantar": "Dipakai bila komputer masih lambat setelah restart. Penyimpanan yang hampir penuh membuat komputer bekerja jauh lebih berat.",
+          "pengantar": "Dipakai bila komputer masih lambat setelah restart. Penyimpanan yang hampir penuh\r membuat komputer bekerja jauh lebih berat.",
           "langkah": [
             "Klik tombol Start, lalu klik ikon roda gigi bertuliskan \"Settings\".",
             "Pada daftar di sisi kiri, klik \"System\".",
@@ -2093,7 +2093,7 @@
         },
         {
           "judul": "Solusi Ketiga: Kurangi Program yang Berjalan Otomatis",
-          "pengantar": "Dipakai bila komputer terasa berat sejak awal dinyalakan. Terlalu banyak program yang berjalan otomatis membuat komputer lambat sejak menyala.",
+          "pengantar": "Dipakai bila komputer terasa berat sejak awal dinyalakan. Terlalu banyak program\r yang berjalan otomatis membuat komputer lambat sejak menyala.",
           "langkah": [
             "Klik tombol Start, lalu klik ikon roda gigi bertuliskan \"Settings\".",
             "Pada daftar di sisi kiri, klik \"Apps\".",
@@ -2164,7 +2164,7 @@
         },
         {
           "judul": "Solusi Kedua: Cari Berkas Besar yang Sudah Tidak Diperlukan",
-          "pengantar": "Dipakai bila penyimpanan masih penuh setelah berkas sementara dibersihkan. Biasanya ruang termakan oleh sedikit berkas berukuran sangat besar, bukan oleh banyak berkas kecil, sehingga membuang satu-dua berkas saja sudah cukup.",
+          "pengantar": "Dipakai bila penyimpanan masih penuh setelah berkas sementara dibersihkan.\r Biasanya ruang termakan oleh sedikit berkas berukuran sangat besar, bukan oleh\r banyak berkas kecil, sehingga membuang satu-dua berkas saja sudah cukup.",
           "langkah": [
             "Klik tombol Start, klik ikon roda gigi \"Settings\", lalu klik \"System\" dan \"Storage\".",
             "Perhatikan daftar kategori seperti \"Apps & features\", \"Documents\", \"Pictures\", dan \"Videos\" beserta ukurannya. Buka kategori yang paling besar.",
@@ -2180,7 +2180,7 @@
         },
         {
           "judul": "Solusi Ketiga: Nyalakan Pembersihan Otomatis dan Buang Berkas Pembaruan Lama",
-          "pengantar": "Dipakai bila ruang tetap kurang. Windows menyimpan salinan sistem lama setelah pembaruan besar, dan ukurannya dapat mencapai belasan gigabyte.",
+          "pengantar": "Dipakai bila ruang tetap kurang. Windows menyimpan salinan sistem lama setelah\r pembaruan besar, dan ukurannya dapat mencapai belasan gigabyte.",
           "langkah": [
             "Klik tombol Start, klik \"Settings\", klik \"System\", lalu klik \"Storage\".",
             "Cari tulisan \"Storage Sense\", lalu klik tombol gesernya hingga berubah menjadi \"On\". Ini membuat Windows membersihkan berkas sementara dengan sendirinya secara berkala.",
@@ -2252,7 +2252,7 @@
         },
         {
           "judul": "Solusi Kedua: Pastikan yang Bermasalah Aplikasinya atau Berkasnya",
-          "pengantar": "Dipakai bila aplikasi membeku lagi setelah dibuka ulang. Memisahkan keduanya menentukan langkah berikutnya, dan sering kali cukup dengan memakai berkas lain.",
+          "pengantar": "Dipakai bila aplikasi membeku lagi setelah dibuka ulang. Memisahkan keduanya\r menentukan langkah berikutnya, dan sering kali cukup dengan memakai berkas lain.",
           "langkah": [
             "Tutup paksa lagi aplikasi tersebut memakai cara pada Solusi Pertama.",
             "Buka kembali aplikasinya, tetapi **jangan** membuka berkas apa pun terlebih dahulu.",
@@ -2266,7 +2266,7 @@
         },
         {
           "judul": "Solusi Ketiga: Bebaskan Memori lalu Nyalakan Ulang Komputer",
-          "pengantar": "Dipakai bila aplikasi tetap membeku meski dengan berkas baru. Penyebab yang tersisa biasanya memori komputer yang sudah terpakai habis oleh aplikasi lain.",
+          "pengantar": "Dipakai bila aplikasi tetap membeku meski dengan berkas baru. Penyebab yang\r tersisa biasanya memori komputer yang sudah terpakai habis oleh aplikasi lain.",
           "langkah": [
             "Simpan seluruh pekerjaan Anda yang masih terbuka di aplikasi lain.",
             "Tekan Ctrl, Shift, dan Esc bersamaan untuk membuka Task Manager.",
@@ -2339,7 +2339,7 @@
         },
         {
           "judul": "Solusi Kedua: Tambahkan Printer ke Komputer Anda",
-          "pengantar": "Dipakai bila jaringan normal dan rekan lain dapat mencetak. Berarti printer tersebut memang belum pernah terdaftar pada komputer Anda.",
+          "pengantar": "Dipakai bila jaringan normal dan rekan lain dapat mencetak. Berarti printer\r tersebut memang belum pernah terdaftar pada komputer Anda.",
           "langkah": [
             "Klik tombol Start di bagian bawah layar, lalu klik ikon roda gigi bertuliskan \"Settings\".",
             "Pada daftar di sisi kiri, klik \"Bluetooth & devices\".",
@@ -2354,7 +2354,7 @@
         },
         {
           "judul": "Solusi Ketiga: Hapus Printer lalu Tambahkan Kembali",
-          "pengantar": "Dipakai bila nama printer sudah ada tetapi dokumen tetap tidak keluar. Menghapus lalu memasang ulang menyegarkan sambungan yang tersimpan keliru.",
+          "pengantar": "Dipakai bila nama printer sudah ada tetapi dokumen tetap tidak keluar.\r Menghapus lalu memasang ulang menyegarkan sambungan yang tersimpan keliru.",
           "langkah": [
             "Klik tombol Start, klik \"Settings\", klik \"Bluetooth & devices\", lalu klik \"Printers & scanners\".",
             "Cari nama printer yang bermasalah, lalu klik satu kali pada namanya.",

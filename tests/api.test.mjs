@@ -117,6 +117,9 @@ const ringkas = (d) => `${d.id}|${d.name}|${d.mode}`;
 cek('id, nama, dan mode layanan cadangan sama dengan server',
   DIVISI_CADANGAN.map(ringkas).join(' · ') === cfg.divisions.map(ringkas).join(' · '),
   { cadangan: DIVISI_CADANGAN.map((d) => d.id), server: cfg.divisions.map((d) => d.id) });
+const ftth = cfg.divisions.find((d) => d.id === 'ftth');
+cek('layanan FTTH tersedia dengan identitas yang benar',
+  ftth?.name === 'FTTH' && /fiber to the home/i.test(ftth.description), ftth);
 
 bagian('7. Percakapan — divisi mode engineer');
 const sesiA = await post('/chat/new', {});
@@ -131,6 +134,12 @@ const jwbA = await post('/chat', { sessionId: sesiA.sessionId, message: 'kamera 
 cek('langsung dieskalasi', jwbA.shouldEscalate === true, jwbA.shouldEscalate);
 cek('tidak menawarkan langkah SOP', !/^\s*1\./m.test(jwbA.response), jwbA.response?.slice(0, 120));
 cek('nomor tiket disebutkan ke pengguna', /SGP-\d{8}-\d{4}/.test(jwbA.response), jwbA.response?.slice(0, 160));
+
+const sesiFtth = await post('/chat/new', {});
+const divFtth = await post('/chat/division', { sessionId: sesiFtth.sessionId, division: 'ftth' });
+cek('FTTH diterima backend sebagai divisi engineer',
+  divFtth.success === true && divFtth.division === 'ftth' && divFtth.mode === 'engineer', divFtth);
+cek('respons FTTH memakai label baru', /\*\*FTTH\*\*/.test(divFtth.message), divFtth.message?.slice(0, 120));
 
 bagian('8. Percakapan — divisi swalayan');
 const sesiB = await post('/chat/new', {});

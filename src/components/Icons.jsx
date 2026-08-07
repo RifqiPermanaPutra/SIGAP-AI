@@ -64,7 +64,7 @@ export const IconWindows = (p) => (
   </Svg>
 );
 
-export const IconFttp = (p) => (
+export const IconFtth = (p) => (
   <Svg {...p}>
     <rect x="3" y="14" width="18" height="6" rx="2" />
     <path d="M7 17h.01" />
@@ -249,7 +249,7 @@ const DIVISION_ICONS = {
   telepon: IconPhone,
   radio: IconRadio,
   windows: IconWindows,
-  fttp: IconFttp,
+  ftth: IconFtth,
   lan: IconLan,
   wan: IconWan
 };

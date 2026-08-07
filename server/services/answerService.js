@@ -74,7 +74,7 @@ muatBasisPengetahuan();
 
 const DIVISION_LABELS = {
   printer: 'Printer', cctv: 'CCTV', telepon: 'Telepon', radio: 'Radio Komunikasi',
-  windows: 'Windows', fttp: 'FTTP', lan: 'LAN', wan: 'WAN'
+  windows: 'Windows', ftth: 'FTTH', lan: 'LAN', wan: 'WAN'
 };
 
 // Ambang skor minimum agar sebuah masalah dianggap cocok. Di bawah ini,
@@ -211,7 +211,7 @@ export function saranTerdekat(keluhan, divisi, maks = 3) {
  * Peringkat divisi yang paling mungkin sesuai dengan sebuah keluhan.
  *
  * Pekerja berpikir dalam **gejala**, sedangkan antarmuka meminta mereka
- * memilih **kategori**. "Internet saya mati" itu LAN, FTTP, WAN, atau
+ * memilih **kategori**. "Internet saya mati" itu LAN, FTTH, WAN, atau
  * Windows? Salah pilih berarti laporannya masuk ke WhatsApp engineer yang
  * keliru — engineer CCTV menerima keluhan printer.
  *

@@ -7,7 +7,7 @@
  * keluhan yang ditulisnya.
  *
  * Alasannya: pekerja berpikir dalam **gejala**, sedangkan daftar layanan
- * menuntut mereka memilih **kategori**. "Internet saya mati" itu LAN, FTTP,
+ * menuntut mereka memilih **kategori**. "Internet saya mati" itu LAN, FTTH,
  * WAN, atau Windows? Salah pilih bukan sekadar merepotkan — laporannya sampai
  * ke WhatsApp engineer yang keliru.
  *
