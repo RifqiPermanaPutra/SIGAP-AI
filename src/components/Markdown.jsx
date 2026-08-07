@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Penampil Markdown ringan, khusus untuk format jawaban SIGAP AI.
+ * Penampil Markdown ringan, khusus untuk format jawaban SIGAP.
  *
  * Menggantikan pustaka react-markdown yang menyeret lebih dari 60 paket
  * (sekitar 2,2 MB) hanya untuk menampilkan teks tebal dan daftar bernomor.

@@ -17,18 +17,49 @@ import {
   addChatMessage,
   getChatMessages
 } from '../database/init.js';
-import { chat, getWelcomeMessage, getDivisionPrompt } from '../services/answerService.js';
+import {
+  chat, getWelcomeMessage, getDivisionPrompt, pilihDivisiOtomatis
+} from '../services/answerService.js';
 import {
   DIVISI_ID, namaDivisi, modeDivisi, areaDariLokasi, engineerTujuan
 } from '../config/divisi.js';
+import { wajibMasuk } from '../services/authService.js';
+import { batasiLaju } from '../services/pembatasLaju.js';
+// Daftar pilihan dipakai bersama antarmuka dan server. Memeriksanya hanya di
+// antarmuka berarti tidak memeriksanya sama sekali — permintaan dapat dikirim
+// langsung ke API tanpa melewati formulir.
+import { FUNGSI_LIST } from '../../src/data/fungsi.js';
+import { LOKASI_ALL } from '../../src/data/lokasi.js';
 
 export const chatRouter = Router();
+
+/**
+ * Setiap sesi baru menulis satu baris ke basis data, sehingga rute ini adalah
+ * satu-satunya yang dapat membuat berkas membengkak tanpa batas. Angkanya
+ * dilonggarkan jauh di atas pemakaian wajar — satu orang biasanya membuka satu
+ * sampai dua sesi per kunjungan — supaya beberapa pekerja yang berbagi satu
+ * alamat NAT tidak ikut tertahan.
+ */
+const batasSesiBaru = batasiLaju({
+  nama: 'sesi-baru',
+  maks: 30,
+  jendelaDetik: 10 * 60,
+  pesan: 'Terlalu banyak sesi dibuat dari jaringan ini. Silakan tunggu beberapa menit.'
+});
+
+/** Pembatas percakapan, jauh lebih longgar karena ini pemakaian normal */
+const batasPesan = batasiLaju({
+  nama: 'pesan',
+  maks: 120,
+  jendelaDetik: 60,
+  pesan: 'Terlalu banyak pesan terkirim. Silakan tunggu sejenak.'
+});
 
 /**
  * POST /api/chat/new
  * Create a new chat session
  */
-chatRouter.post('/new', (req, res) => {
+chatRouter.post('/new', batasSesiBaru, (req, res) => {
   try {
     const sessionId = randomUUID();
     const session = createChatSession(sessionId);
@@ -88,6 +119,29 @@ chatRouter.post('/reporter', (req, res) => {
       });
     }
 
+    // Fungsi dan lokasi ikut diperiksa terhadap daftarnya, sama seperti
+    // urgensi. Sebelumnya keduanya diterima apa adanya, dan itu bukan sekadar
+    // soal kerapian: pilihan saringan pada halaman rekap disusun dari nilai
+    // DISTINCT yang tersimpan, sehingga satu kiriman ngawur akan menetap
+    // selamanya di dalam dropdown yang dipakai admin.
+    if (!FUNGSI_LIST.includes(fungsi)) {
+      return res.status(400).json({ success: false, error: 'Fungsi/divisi tidak dikenali' });
+    }
+
+    // Lokasi menentukan area lewat areaDariLokasi(). Lokasi di luar daftar
+    // menghasilkan area kosong, dan baris seperti itu hilang dari seluruh
+    // sebaran per area tanpa jejak.
+    if (!LOKASI_ALL.includes(lokasi)) {
+      return res.status(400).json({ success: false, error: 'Lokasi tidak dikenali' });
+    }
+
+    // Nama satu-satunya isian bebas di sini. Dibatasi supaya satu kiriman
+    // tidak dapat menanam ribuan karakter ke dalam kolom yang kelak dicetak
+    // pada laporan.
+    if (nama.length > 80) {
+      return res.status(400).json({ success: false, error: 'Nama terlalu panjang (maksimal 80 karakter)' });
+    }
+
     const session = getChatSession(sessionId);
     if (!session) {
       return res.status(404).json({ success: false, error: 'Sesi tidak ditemukan' });
@@ -120,7 +174,9 @@ chatRouter.post('/division', (req, res) => {
       });
     }
 
-    if (!DIVISI_ID.includes(division)) {
+    // 'auto' bukan divisi sungguhan, melainkan pernyataan "saya tidak tahu
+    // layanan mana". Divisinya ditentukan kemudian dari keluhan yang ditulis.
+    if (division !== 'auto' && !DIVISI_ID.includes(division)) {
       return res.status(400).json({
         success: false,
         error: 'Divisi tidak valid'
@@ -135,12 +191,32 @@ chatRouter.post('/division', (req, res) => {
       });
     }
 
-    const mode = modeDivisi(division);
-    updateChatSession(sessionId, { divisi_id: division, mode_divisi: mode });
-
     // Sapa dengan nama depan pelapor bila tersedia (keramahan + konteks nyata)
     const namaDepan = session.reporter?.nama?.trim().split(/\s+/)[0];
     const sapaan = namaDepan ? `Baik, ${namaDepan}. ` : 'Baik. ';
+
+    if (division === 'auto') {
+      updateChatSession(sessionId, { divisi_id: null, mode_divisi: 'auto' });
+
+      const pesanAuto =
+        `${sapaan}Anda tidak perlu menentukan layanannya sendiri.\n\n` +
+        'Ceritakan saja kendala yang Anda alami dengan bahasa sehari-hari — ' +
+        'sebutkan perangkat atau hal yang bermasalah, misalnya *"printer di ruang admin tidak mau mencetak"* ' +
+        'atau *"komputer saya tidak bisa masuk internet"*.\n\n' +
+        'Kami yang akan menentukan layanan mana yang menanganinya.';
+
+      addChatMessage(sessionId, 'assistant', pesanAuto);
+
+      return res.json({
+        success: true,
+        message: pesanAuto,
+        division: 'auto',
+        mode: 'auto'
+      });
+    }
+
+    const mode = modeDivisi(division);
+    updateChatSession(sessionId, { divisi_id: division, mode_divisi: mode });
 
     // Divisi mode engineer tidak memiliki langkah SOP yang dapat dipandu
     // sendiri, sehingga harapan pengguna diluruskan sejak kalimat pembuka —
@@ -171,7 +247,7 @@ chatRouter.post('/division', (req, res) => {
  * POST /api/chat
  * Send a message and get a response from the knowledge base
  */
-chatRouter.post('/', async (req, res) => {
+chatRouter.post('/', batasPesan, async (req, res) => {
   try {
     const { sessionId, message } = req.body;
 
@@ -197,8 +273,8 @@ chatRouter.post('/', async (req, res) => {
       });
     }
 
-    // Check if division is selected
-    if (!session.divisi_id) {
+    // Belum memilih layanan dan tidak meminta penentuan otomatis
+    if (!session.divisi_id && session.mode_divisi !== 'auto') {
       const divPrompt = getDivisionPrompt();
       addChatMessage(sessionId, 'user', message);
       addChatMessage(sessionId, 'assistant', `Sebelum saya dapat membantu, silakan pilih **divisi layanan** terlebih dahulu.\n\n${divPrompt}`);
@@ -207,8 +283,18 @@ chatRouter.post('/', async (req, res) => {
         success: true,
         response: `Sebelum saya dapat membantu, silakan pilih **divisi layanan** terlebih dahulu.\n\n${divPrompt}`,
         needsDivision: true,
-        shouldEscalate: false
+        shouldEscalate: false,
+        menungguKonfirmasi: false
       });
+    }
+
+    // Pengguna yang sempat pergi lebih dari batas diam sudah ditandai
+    // 'ditinggalkan' oleh penyapu berkala. Bila ia kembali dan melanjutkan,
+    // sesinya harus dihidupkan lagi — kalau tidak, `berakhir_pada` tetap
+    // memuat jam ia pergi, sehingga durasi pada laporan terpotong dan
+    // laporannya sempat terhitung ditinggalkan padahal berlanjut.
+    if (session.status === 'ditinggalkan') {
+      updateChatSession(sessionId, { status: 'aktif', berakhir_pada: null });
     }
 
     // Save user message
@@ -221,11 +307,76 @@ chatRouter.post('/', async (req, res) => {
       updateChatSession(sessionId, { keluhan: message.trim() });
     }
 
+    /* ── Penentuan layanan otomatis ────────────────────────────────
+       Pengguna memilih "Saya tidak yakin", sehingga layanannya ditebak dari
+       keluhan yang baru saja ditulis. */
+    let sesi = session;
+    let pembuka = '';
+
+    if (!sesi.divisi_id && sesi.mode_divisi === 'auto') {
+      const tebakan = pilihDivisiOtomatis(message);
+
+      if (tebakan.hasil === 'pasti') {
+        // Cukup meyakinkan untuk diputuskan sendiri. Keputusannya tetap
+        // diberitahukan — pengguna berhak tahu laporannya diarahkan ke mana.
+        sesi = updateChatSession(sessionId, {
+          divisi_id: tebakan.divisi,
+          mode_divisi: modeDivisi(tebakan.divisi)
+        });
+        pembuka = `Kendala ini kami arahkan ke layanan **${namaDivisi(tebakan.divisi)}**.\n\n`;
+
+      } else if (tebakan.hasil === 'ragu') {
+        // Ada beberapa kemungkinan. Menebak di antaranya berisiko mengirim
+        // laporan ke engineer yang salah, jadi pengguna yang menentukan.
+        const daftar = tebakan.pilihan.map((p) => namaDivisi(p.divisi));
+        const balasan =
+          'Keluhan Anda bisa termasuk beberapa layanan berikut:\n\n' +
+          daftar.map((n) => `- **${n}**`).join('\n') +
+          '\n\nSilakan pilih salah satu agar laporan Anda sampai ke engineer yang tepat.';
+
+        addChatMessage(sessionId, 'assistant', balasan);
+
+        return res.json({
+          success: true,
+          response: balasan,
+          saranDivisi: tebakan.pilihan.map((p) => ({ id: p.divisi, name: namaDivisi(p.divisi) })),
+          shouldEscalate: false,
+          isResolved: false,
+          menungguKonfirmasi: false,
+          needsDivision: false
+        });
+
+      } else {
+        // Tidak dikenali sama sekali. Bantuan engineer DITAWARKAN — statusnya
+        // belum berubah, karena pengguna belum tentu menerimanya.
+        updateChatSession(sessionId, { eskalasi_ditawarkan_pada: new Date().toISOString() });
+        const balasan =
+          `Terima kasih, keterangan Anda sudah kami catat dengan nomor tiket **${sesi.nomor_tiket}**.\n\n` +
+          'Kendala Anda belum dapat kami kenali secara otomatis, sehingga akan diteruskan kepada Engineer ICT untuk ditinjau langsung.\n\n' +
+          'Silakan tekan tombol **Hubungi Engineer** dan lengkapi data pelaporan.';
+
+        addChatMessage(sessionId, 'assistant', balasan);
+
+        return res.json({
+          success: true,
+          response: balasan,
+          shouldEscalate: true,
+          isResolved: false,
+          menungguKonfirmasi: false,
+          needsDivision: false
+        });
+      }
+    }
+
     // Divisi mode engineer tidak melalui pencocokan SOP sama sekali.
-    if (session.mode_divisi === 'engineer') {
-      const balasan =
-        `Terima kasih, keterangan Anda sudah kami catat dengan nomor tiket **${session.nomor_tiket}**.\n\n` +
-        `Kendala **${namaDivisi(session.divisi_id)}** memerlukan penanganan langsung oleh Engineer ICT.\n\n` +
+    if (sesi.mode_divisi === 'engineer') {
+      if (!sesi.eskalasi_ditawarkan_pada) {
+        updateChatSession(sessionId, { eskalasi_ditawarkan_pada: new Date().toISOString() });
+      }
+
+      const balasan = pembuka +
+        `Terima kasih, keterangan Anda sudah kami catat dengan nomor tiket **${sesi.nomor_tiket}**.\n\n` +
+        `Kendala **${namaDivisi(sesi.divisi_id)}** memerlukan penanganan langsung oleh Engineer ICT.\n\n` +
         'Silakan tekan tombol **Hubungi Engineer** dan lengkapi data pelaporan agar engineer dapat menindaklanjuti.';
 
       addChatMessage(sessionId, 'assistant', balasan);
@@ -233,17 +384,34 @@ chatRouter.post('/', async (req, res) => {
       return res.json({
         success: true,
         response: balasan,
+        // Layanan mungkin baru ditentukan otomatis pada permintaan ini
+        division: sesi.divisi_id,
+        mode: sesi.mode_divisi,
         shouldEscalate: true,
         isResolved: false,
+        // Tidak ada langkah yang dapat dicoba, sehingga tidak ada hasil
+        // yang perlu dikonfirmasi.
+        menungguKonfirmasi: false,
         needsDivision: false
       });
     }
 
     // Process through knowledge base
-    const result = await chat(sessionId, session.divisi_id, message);
+    const result = await chat(sessionId, sesi.divisi_id, message);
 
-    // Save response
-    addChatMessage(sessionId, 'assistant', result.response);
+    // Save response. `pembuka` terisi bila layanannya barusan ditentukan
+    // otomatis — pengguna diberi tahu ke mana kendalanya diarahkan.
+    //
+    // Nomor tiket disebutkan pada jawaban yang mengarahkan ke engineer. Jalur
+    // mode engineer sudah menyebutkannya sejak awal, sehingga tanpa ini justru
+    // pengguna Printer dan Windows — satu-satunya yang dipandu SOP — tidak
+    // pernah melihat nomor tiketnya sendiri.
+    const penutupTiket = result.shouldEscalate
+      ? `\n\nNomor tiket Anda: **${sesi.nomor_tiket}**. Sebutkan nomor ini saat menghubungi engineer.` +
+        `\n\nStatus laporan dapat diperiksa kapan saja di halaman **/tiket**.`
+      : '';
+    const balasanAkhir = pembuka + result.response + penutupTiket;
+    addChatMessage(sessionId, 'assistant', balasanAkhir);
 
     // Hasil pencocokan disimpan untuk rekap. Nilai `undefined` dilewati oleh
     // updateChatSession, sehingga catatan lama tidak tertimpa kosong.
@@ -253,18 +421,29 @@ chatRouter.post('/', async (req, res) => {
       solusi_terakhir: result.solusiTerakhir
     });
 
-    // Update session status if resolved or escalated
+    // Status 'diteruskan' berarti laporan BERPINDAH TANGAN ke engineer, dan
+    // itu baru terjadi di POST /chat/escalate — setelah pengguna mengisi
+    // formulir. Menyetelnya di sini, saat sistem baru MENAWARKAN bantuan
+    // engineer, menghasilkan baris rekap tanpa nama, fungsi, lokasi, maupun
+    // area, sekaligus mengecilkan persentase selesai mandiri karena
+    // penyebutnya ikut menghitung pengguna yang tidak pernah menghubungi
+    // siapa pun. Lihat RANCANGAN-DATA.md §8.
     if (result.isResolved) {
       updateChatSession(sessionId, { status: 'selesai' });
-    } else if (result.shouldEscalate) {
-      updateChatSession(sessionId, { status: 'diteruskan' });
+    } else if (result.shouldEscalate && !sesi.eskalasi_ditawarkan_pada) {
+      updateChatSession(sessionId, { eskalasi_ditawarkan_pada: new Date().toISOString() });
     }
 
     res.json({
       success: true,
-      response: result.response,
+      response: balasanAkhir,
+      // Layanan mungkin baru ditentukan otomatis pada permintaan ini, sehingga
+      // antarmuka perlu tahu agar kepala percakapan ikut diperbarui.
+      division: sesi.divisi_id,
+      mode: sesi.mode_divisi,
       shouldEscalate: result.shouldEscalate,
       isResolved: result.isResolved,
+      menungguKonfirmasi: result.menungguKonfirmasi === true,
       needsDivision: false
     });
   } catch (error) {
@@ -308,9 +487,13 @@ chatRouter.post('/escalate', (req, res) => {
 
 /**
  * GET /api/chat/history/:sessionId
- * Get chat history for a session
+ *
+ * Mengembalikan sesi beserta data pelapornya — nama, fungsi, lokasi — sehingga
+ * WAJIB melalui autentikasi. Sebelumnya terbuka bagi siapa pun yang mengetahui
+ * id sesi. Antarmuka pelapor tidak memakainya sama sekali; yang membutuhkannya
+ * hanya penelusuran oleh engineer atau admin.
  */
-chatRouter.get('/history/:sessionId', (req, res) => {
+chatRouter.get('/history/:sessionId', wajibMasuk('admin', 'engineer'), (req, res) => {
   try {
     const { sessionId } = req.params;
     const messages = getChatMessages(sessionId);

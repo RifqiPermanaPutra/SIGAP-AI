@@ -1,0 +1,194 @@
+/* ================================================
+   Cek status laporan — halaman pelapor
+
+   Satu-satunya halaman berautentikasi-nol selain beranda, jadi ia harus
+   terbaca oleh orang yang membukanya sekali seumur hidup dari tautan
+   WhatsApp. Tidak ada tabel, tidak ada saringan, tidak ada istilah sistem.
+
+   Mobile-first: aturan dasar untuk ponsel, diperkaya ke atas.
+   ================================================ */
+
+.tk-halaman {
+  width: 100%;
+  min-width: 0;
+  background: var(--canvas);
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.tk {
+  width: 100%;
+  min-width: 0;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 20px 14px calc(48px + env(safe-area-inset-bottom));
+  color: var(--ink);
+}
+
+.tk h1 { font-size: 1.35rem; margin: 0 0 8px; letter-spacing: -0.02em; }
+.tk-ket { font-size: 0.86rem; color: var(--ink-3); line-height: 1.6; margin: 0 0 18px; }
+.tk-ket code {
+  background: var(--line-2); padding: 1px 6px;
+  border-radius: 4px; font-size: 0.92em; margin-left: 4px;
+}
+
+/* ── Navbar ───────────────────────────────────────────────────── */
+
+/* Logo Pertamina EP varian latar gelap — bidangnya wajib biru */
+.tk-navbar {
+  position: relative;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+  padding: 11px 14px;
+  background: linear-gradient(100deg,
+    var(--pt-blue-dark) 0%, var(--pt-blue-mid) 55%, var(--pt-blue) 100%);
+}
+.tk-navbar::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: -1px;
+  height: 3px;
+  background: linear-gradient(90deg,
+    var(--pt-blue) 0 33%, var(--pt-green) 33% 66%, var(--pt-red) 66% 100%);
+}
+
+.tk-merek { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.tk-merek-logo { height: 26px; width: auto; display: block; flex-shrink: 0; }
+.tk-merek-garis { width: 1px; height: 26px; flex-shrink: 0; background: rgba(255, 255, 255, 0.3); }
+.tk-merek-teks { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.tk-merek-teks strong { font-size: 0.92rem; font-weight: 700; color: #fff; letter-spacing: -0.015em; }
+.tk-merek-teks small {
+  font-size: 0.6rem; letter-spacing: 0.08em; font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.tk-tombol-navbar {
+  display: inline-flex; align-items: center; gap: 6px;
+  font: inherit; font-size: 0.8rem; font-weight: 600;
+  padding: 8px 12px;
+  min-height: 40px;
+  color: #fff; text-decoration: none;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--r-sm);
+  flex-shrink: 0;
+  transition: background var(--ease);
+}
+.tk-tombol-navbar:hover { background: rgba(255, 255, 255, 0.24); }
+
+/* ── Kolom pencarian ──────────────────────────────────────────── */
+
+.tk-cari { display: flex; flex-direction: column; gap: 9px; margin-bottom: 18px; }
+
+.tk-cari input {
+  font: inherit;
+  /* 16px mencegah iOS memperbesar halaman saat kolom disentuh */
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--ink);
+  width: 100%;
+  min-width: 0;
+}
+.tk-cari input::placeholder { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--ink-4); }
+.tk-cari input:focus { outline: 2px solid var(--pt-blue); outline-offset: 1px; }
+
+.tk-cari button {
+  font: inherit; font-weight: 600; font-size: 0.9rem;
+  padding: 12px;
+  min-height: 48px;
+  border: none;
+  border-radius: var(--r-sm);
+  background: var(--pt-blue);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 108, 184, 0.25);
+  transition: background var(--ease);
+}
+.tk-cari button:hover:not(:disabled) { background: var(--pt-blue-mid); }
+.tk-cari button:disabled { background: var(--ink-4); box-shadow: none; cursor: not-allowed; }
+
+/* ── Hasil ────────────────────────────────────────────────────── */
+
+.tk-galat {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--pt-red-soft); color: var(--pt-red-text);
+  border: 1px solid #f7c4ca;
+  border-radius: var(--r-sm);
+  padding: 12px 14px;
+  font-size: 0.86rem; line-height: 1.5;
+  margin: 0;
+}
+.tk-galat svg { flex-shrink: 0; }
+
+.tk-hasil {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--ink-4);
+  border-radius: var(--r-md);
+  box-shadow: var(--sh-xs);
+  padding: 16px;
+}
+.tk-hasil.tuntas       { border-left-color: var(--pt-green); }
+.tk-hasil.selesai      { border-left-color: var(--pt-green); }
+.tk-hasil.diteruskan   { border-left-color: #eb6834; }
+.tk-hasil.aktif        { border-left-color: var(--pt-blue); }
+.tk-hasil.ditinggalkan { border-left-color: var(--ink-4); }
+
+.tk-nomor {
+  display: block;
+  font-size: 0.74rem; font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--pt-blue-text);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 8px;
+}
+
+.tk-lencana { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.tk-lencana strong { font-size: 1.05rem; letter-spacing: -0.015em; }
+.tk-hasil.tuntas .tk-lencana,
+.tk-hasil.selesai .tk-lencana { color: var(--pt-green-text); }
+.tk-hasil.diteruskan .tk-lencana { color: #a8410f; }
+
+.tk-arti { font-size: 0.86rem; color: var(--ink-2); line-height: 1.6; margin: 0 0 14px; }
+
+.tk-rincian {
+  display: flex; flex-direction: column; gap: 8px;
+  margin: 0 0 14px; padding: 14px 0 0;
+  border-top: 1px solid var(--line-2);
+}
+.tk-rincian > div { display: flex; flex-direction: column; gap: 1px; }
+.tk-rincian dt { font-size: 0.7rem; color: var(--ink-4); font-weight: 600; }
+.tk-rincian dd { margin: 0; font-size: 0.86rem; color: var(--ink-2); font-weight: 500; }
+
+.tk-catatan {
+  font-size: 0.76rem; color: var(--ink-4); line-height: 1.55;
+  margin: 0; padding-top: 12px;
+  border-top: 1px solid var(--line-2);
+}
+
+/* ────────────────────────────────────────────────────────────────
+   >= 600px
+   ──────────────────────────────────────────────────────────────── */
+
+@media (min-width: 600px) {
+  .tk { padding: 28px 20px 56px; }
+  .tk h1 { font-size: 1.5rem; }
+  .tk-navbar { padding: 12px 20px; }
+
+  .tk-merek-logo { height: 30px; }
+  .tk-merek-garis { height: 30px; }
+  .tk-merek-teks strong { font-size: 1rem; }
+
+  .tk-cari { flex-direction: row; }
+  .tk-cari input { flex: 1; }
+  .tk-cari button { flex-shrink: 0; padding: 12px 26px; }
+
+  .tk-hasil { padding: 20px; }
+  .tk-rincian { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; }
+}

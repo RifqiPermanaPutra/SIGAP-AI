@@ -54,6 +54,9 @@ export const SINONIM = {
   connect: 'terhubung', konek: 'terhubung', nyambung: 'terhubung',
   sambung: 'terhubung', tersambung: 'terhubung',
   offline: 'offline', ofline: 'offline',
+  // SOP menulis "Tidak Terdeteksi", pengguna lazim menulis "gak kedeteksi"
+  kedeteksi: 'terdeteksi', kedetek: 'terdeteksi', terdeteksi: 'terdeteksi',
+  deteksi: 'terdeteksi', detect: 'terdeteksi', kebaca: 'terdeteksi',
   print: 'cetak', ngeprint: 'cetak', nyetak: 'cetak', cetakan: 'cetak',
   buram: 'buram', blur: 'buram', kabur: 'buram', samar: 'buram',
   bergaris: 'bergaris', garis: 'bergaris', belang: 'bergaris',
@@ -67,7 +70,7 @@ export const SINONIM = {
   // terpisah ("blue screen") maupun menyatu ("bluescreen").
   blank: 'hitam', blue: 'biru', screen: 'layar', layar: 'layar',
   bluescreen: 'biru', bsod: 'biru', ngeblank: 'hitam',
-  booting: 'boot', boot: 'boot', nyala: 'menyala',
+  booting: 'boot', boot: 'boot',
 
   // Penyimpanan dan berkas
   memori: 'penyimpanan', memory: 'penyimpanan', storage: 'penyimpanan',

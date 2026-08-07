@@ -32,7 +32,7 @@ export default function Header({ division, reporter, onNewChat, onBack }) {
 
       <div className="header-info">
         <h1 className="header-title">
-          SIGAP AI
+          SIGAP
           {division && (
             <span className="division-badge">
               <DivisionIcon id={division.id} size={14} />

@@ -1,0 +1,151 @@
+/* ================================================
+   Layar masuk bersama — halaman rekap & penyunting SOP
+
+   Berdiri sendiri: tidak bergantung pada rekap.css maupun gaya halaman
+   pelapor, sehingga halaman mana pun dapat memakainya tanpa ikut menarik
+   berkas gaya yang jauh lebih besar.
+
+   Ditulis MOBILE-FIRST — aturan dasar untuk ponsel, diperkaya ke atas.
+   ================================================ */
+
+.sg-masuk-latar {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  background: var(--canvas);
+  padding: 16px;
+}
+
+/* Pita korporat tipis di tepi atas layar */
+.sg-masuk-pita {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg,
+    var(--pt-blue) 0 33%, var(--pt-green) 33% 66%, var(--pt-red) 66% 100%);
+}
+
+.sg-masuk {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  width: min(100%, 390px);
+  overflow: hidden;
+  box-shadow: var(--sh-lg);
+}
+
+/* Kepala biru — syarat agar logo Pertamina varian latar gelap terbaca */
+.sg-masuk-kepala {
+  padding: 16px;
+  background: linear-gradient(100deg,
+    var(--pt-blue-dark) 0%, var(--pt-blue-mid) 55%, var(--pt-blue) 100%);
+}
+
+/* ── Merek ────────────────────────────────────────────────────── */
+
+.sg-merek { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.sg-merek-logo { height: 26px; width: auto; display: block; flex-shrink: 0; }
+.sg-merek-logo-unit {
+  height: 24px; width: auto; display: block; flex-shrink: 0;
+  padding: 3px 6px; background: #fff; border-radius: 6px;
+}
+.sg-merek-garis {
+  width: 1px; height: 26px; flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.3);
+}
+.sg-merek-teks { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.sg-merek-teks strong {
+  font-size: 0.92rem; font-weight: 700; color: #fff; letter-spacing: -0.015em;
+}
+.sg-merek-teks small {
+  font-size: 0.6rem; letter-spacing: 0.08em; font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* ── Isi ──────────────────────────────────────────────────────── */
+
+.sg-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.66rem; font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--pt-blue-text);
+  margin-bottom: 6px;
+}
+
+.sg-masuk-isi { padding: 22px 20px; display: flex; flex-direction: column; }
+.sg-masuk-isi h1 { font-size: 1.2rem; margin: 0; color: var(--ink); letter-spacing: -0.02em; }
+.sg-masuk-sub { font-size: 0.8rem; color: var(--ink-3); margin: 6px 0 14px; line-height: 1.55; }
+.sg-masuk-isi label { font-size: 0.76rem; font-weight: 600; color: var(--ink-3); margin-top: 10px; }
+.sg-masuk-isi input {
+  font: inherit;
+  font-size: 16px;                 /* cegah zoom otomatis iOS */
+  padding: 11px 12px;
+  margin-top: 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--ink);
+}
+.sg-masuk-isi input:focus { outline: 2px solid var(--pt-blue); outline-offset: 1px; }
+.sg-masuk-isi button {
+  margin-top: 18px;
+  font: inherit; font-weight: 600;
+  padding: 12px;
+  min-height: 46px;
+  border: none;
+  border-radius: var(--r-sm);
+  background: var(--pt-blue);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 108, 184, 0.25);
+  transition: background var(--ease);
+}
+.sg-masuk-isi button:hover:not(:disabled) { background: var(--pt-blue-mid); }
+.sg-masuk-isi button:disabled { background: var(--ink-4); box-shadow: none; cursor: not-allowed; }
+
+/* Sasaran sentuhnya seluruh baris, bukan hanya kotak centangnya.
+   Ditulis `.sg-masuk-isi label.sg-ingat` agar lebih khusus daripada aturan
+   label di atas — bukan dengan !important, yang hanya memindahkan masalahnya
+   ke aturan berikutnya yang perlu menimpanya. */
+.sg-masuk-isi label.sg-ingat {
+  display: flex; align-items: center; gap: 9px;
+  margin-top: 14px;
+  min-height: 44px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+.sg-ingat input { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--pt-blue); }
+.sg-ingat small { color: var(--ink-4); font-weight: 400; }
+
+.sg-galat {
+  background: var(--pt-red-soft);
+  color: var(--pt-red-text);
+  border: 1px solid #f7c4ca;
+  border-radius: var(--r-sm);
+  padding: 10px 14px;
+  font-size: 0.84rem;
+  margin: 14px 0 0;
+}
+
+.sg-masuk-kaki {
+  margin: 16px 0 0;
+  font-size: 0.74rem; color: var(--ink-4); line-height: 1.5;
+  border-top: 1px solid var(--line-2);
+  padding-top: 12px;
+}
+.sg-masuk-kaki a { color: var(--pt-blue-text); font-weight: 600; }
+
+@media (min-width: 600px) {
+  .sg-merek-logo { height: 30px; }
+  .sg-merek-logo-unit { height: 27px; }
+  .sg-merek-garis { height: 30px; }
+  .sg-merek-teks strong { font-size: 1rem; }
+  .sg-merek-teks small { font-size: 0.65rem; }
+
+  .sg-masuk-isi { padding: 26px 24px; }
+}

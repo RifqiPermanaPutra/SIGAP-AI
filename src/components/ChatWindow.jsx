@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import ChatMessage from './ChatMessage.jsx';
 import EngineerButton from './EngineerButton.jsx';
 import QuickReplies from './QuickReplies.jsx';
-import { IconHeadset, IconArrowDown } from './Icons.jsx';
+import ConfirmReplies from './ConfirmReplies.jsx';
+import { IconHeadset, IconArrowDown, DivisionIcon } from './Icons.jsx';
 
 export default function ChatWindow({
   messages,
@@ -10,7 +11,10 @@ export default function ChatWindow({
   showEngineerBtn,
   onEngineerContact,
   division,
-  onQuickReply
+  onQuickReply,
+  menungguKonfirmasi,
+  saranDivisi,
+  onPilihDivisi
 }) {
   const chatEndRef = useRef(null);
   const areaRef = useRef(null);
@@ -67,7 +71,7 @@ export default function ChatWindow({
       {messages.length === 0 ? (
         <div className="empty-state">
           <div className="empty-state-icon"><IconHeadset size={30} /></div>
-          <h2 className="empty-state-title">SIGAP AI</h2>
+          <h2 className="empty-state-title">SIGAP</h2>
           <p className="empty-state-desc">
             Siap membantu Anda menyelesaikan kendala layanan ICT di Field Lirik.
           </p>
@@ -85,7 +89,7 @@ export default function ChatWindow({
 
           {isLoading && (
             <div className="typing-indicator">
-              <div className="message-avatar ai">AI</div>
+              <div className="message-avatar ai">SG</div>
               <div className="typing-bubble">
                 <span className="typing-dot" />
                 <span className="typing-dot" />
@@ -100,6 +104,35 @@ export default function ChatWindow({
               onPick={onQuickReply}
               disabled={isLoading}
             />
+          )}
+
+          {/* Penentuan layanan otomatis belum cukup meyakinkan — pengguna
+              yang memilih, karena salah tebak berarti laporannya sampai ke
+              engineer yang keliru. */}
+          {saranDivisi?.length > 0 && !isLoading && (
+            <div className="saran-divisi" id="saran-divisi">
+              <p className="saran-divisi-label">Pilih layanan yang paling sesuai</p>
+              <div className="saran-divisi-list">
+                {saranDivisi.map((d) => (
+                  <button
+                    key={d.id}
+                    type="button"
+                    className="saran-divisi-item"
+                    onClick={() => onPilihDivisi(d.id)}
+                  >
+                    <DivisionIcon id={d.id} size={18} />
+                    {d.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Hanya salah satu yang tampil: selagi masih ada langkah untuk
+              dicoba, pilihannya "sudah/belum"; setelah langkahnya habis,
+              barulah tombol engineer. */}
+          {menungguKonfirmasi && !isLoading && !showEngineerBtn && (
+            <ConfirmReplies onPick={onQuickReply} disabled={isLoading} />
           )}
 
           {showEngineerBtn && (

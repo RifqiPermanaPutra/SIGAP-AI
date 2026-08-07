@@ -1,5 +1,5 @@
 /**
- * Penyimpanan Data SIGAP AI — SQLite
+ * Penyimpanan Data SIGAP — SQLite
  *
  * Menggantikan penyimpanan berkas JSON yang dipakai sebelumnya. Alasan
  * penggantian (lihat RANCANGAN-DATA.md §13a): penyimpanan lama menulis ulang
@@ -33,6 +33,11 @@ const DB_FILE = process.env.DB_PATH
 
 /** @type {DatabaseSync|null} */
 let db = null;
+
+/** Letak berkas basis data — dipakai layanan pencadangan */
+export function jalurBasisData() {
+  return DB_FILE;
+}
 
 /* ────────────────────────────────────────────────────────────────
    Waktu
@@ -78,6 +83,12 @@ CREATE TABLE IF NOT EXISTS sesi (
   divisi_id         TEXT,
   mode_divisi       TEXT,                      -- swalayan | engineer   (Tahap 3)
   keluhan           TEXT,                      -- keluhan pertama       (Tahap 2)
+
+  -- Saat sistem MENAWARKAN bantuan engineer. Berbeda dari diteruskan_pada,
+  -- yang baru terisi bila pengguna benar-benar mengisi formulir dan menekan
+  -- tombol WhatsApp. Selisih keduanya menunjukkan berapa banyak pengguna
+  -- yang ditawari engineer lalu memilih pergi begitu saja.
+  eskalasi_ditawarkan_pada TEXT,
 
   -- Lapis 2 · penelusuran                                              (Tahap 2)
   masalah_cocok     TEXT,
@@ -139,6 +150,41 @@ CREATE INDEX IF NOT EXISTS idx_log_waktu ON log_akses(dibuat_pada);
 `;
 
 /**
+ * Kolom yang ditambahkan setelah tabel pernah dibuat.
+ *
+ * `CREATE TABLE IF NOT EXISTS` tidak menyentuh tabel yang sudah ada, sehingga
+ * basis data yang sudah berisi data tidak akan pernah memperoleh kolom baru
+ * dari SKEMA di atas. Tanpa migrasi ini, server yang dimutakhirkan akan gagal
+ * pada kueri pertama yang menyebut kolom tersebut — di mesin yang sudah dipakai,
+ * bukan di mesin pengembang yang basis datanya masih kosong.
+ *
+ * Sengaja sesederhana ini: hanya penambahan kolom, tanpa nomor versi. Perubahan
+ * yang lebih rumit dari ini sebaiknya ditulis sebagai skrip tersendiri agar
+ * terlihat dan dapat diuji.
+ */
+const KOLOM_TAMBAHAN = [
+  ['sesi', 'eskalasi_ditawarkan_pada', 'TEXT'],
+  // Daftar divisi yang boleh ditangani sebuah akun, dipisah koma —
+  // contoh 'printer,windows'. KOSONG berarti seluruh divisi.
+  //
+  // Kosong sengaja dipilih sebagai nilai bawaan, bukan "tidak satu pun":
+  // akun yang sudah ada sebelum kolom ini lahir tidak boleh mendadak
+  // kehilangan seluruh wewenangnya hanya karena servernya dimutakhirkan.
+  // Pembatasan diberlakukan saat admin memang menetapkannya.
+  ['pengguna', 'divisi', 'TEXT']
+];
+
+function terapkanMigrasi() {
+  for (const [tabel, kolom, tipe] of KOLOM_TAMBAHAN) {
+    const ada = db.prepare(`PRAGMA table_info(${tabel})`).all().some((k) => k.name === kolom);
+    if (ada) continue;
+
+    db.exec(`ALTER TABLE ${tabel} ADD COLUMN ${kolom} ${tipe}`);
+    console.log(`🔧 Kolom ${tabel}.${kolom} ditambahkan`);
+  }
+}
+
+/**
  * Siapkan berkas basis data dan tabelnya.
  * @returns {Promise<DatabaseSync>}
  */
@@ -154,6 +200,7 @@ export async function initDatabase() {
   db.exec('PRAGMA journal_mode = WAL');
   db.exec('PRAGMA foreign_keys = ON');
   db.exec(SKEMA);
+  terapkanMigrasi();
 
   const { jumlah } = db.prepare('SELECT COUNT(*) AS jumlah FROM sesi').get();
   console.log(`📦 Basis data siap — ${jumlah} sesi tersimpan (${DB_FILE})`);
@@ -214,6 +261,7 @@ const STATUS_AKHIR = ['selesai', 'diteruskan', 'ditinggalkan'];
 const KOLOM_BOLEH_UBAH = new Set([
   'status', 'divisi_id', 'mode_divisi', 'keluhan',
   'masalah_cocok', 'skor_cocok', 'solusi_terakhir',
+  'eskalasi_ditawarkan_pada',
   'nama', 'fungsi', 'lokasi', 'area', 'urgensi',
   'engineer_tujuan', 'diteruskan_pada',
   'ditangani_pada', 'ditangani_oleh', 'catatan',

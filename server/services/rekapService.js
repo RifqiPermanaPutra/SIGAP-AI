@@ -85,6 +85,13 @@ export function cariLaporan(f = {}, batas = 500) {
   const limit = batas > 0 ? 'LIMIT ?' : '';
   const params = batas > 0 ? [...nilai, batas] : nilai;
 
+  // Nama lengkap penandanya sengaja TIDAK diambil lewat JOIN ke tabel pengguna.
+  // Tabel `sesi` dan `pengguna` sama-sama punya kolom `nama` — yang pertama
+  // nama pelapor, yang kedua nama engineer — sehingga menyambungkan keduanya
+  // membuat `nama LIKE ?` pada penyaring pencarian menjadi ambigu, dan
+  // penyaring itu dipakai bersama oleh enam fungsi lain di berkas ini.
+  // Penerjemahan akun menjadi nama dikerjakan di lapisan rute, di mana daftar
+  // akunnya berjumlah enam dan sudah ada di memori.
   return wajibSiap().prepare(`
     SELECT *, ${KOLOM_TURUNAN}
     FROM sesi ${where}
@@ -119,6 +126,12 @@ export function ringkasan(f = {}) {
       SUM(CASE WHEN status = 'ditinggalkan' THEN 1 ELSE 0 END)         AS ditinggalkan,
       SUM(CASE WHEN status = 'aktif'        THEN 1 ELSE 0 END)         AS aktif,
       SUM(CASE WHEN ditangani_pada IS NOT NULL THEN 1 ELSE 0 END)      AS ditangani,
+      -- Ditawari bantuan engineer, lalu pergi tanpa mengambilnya. Inilah
+      -- kelompok yang paling tidak terlihat: sistem gagal menolong mereka DAN
+      -- mereka tidak melapor ke siapa pun, sehingga kendalanya tidak muncul di
+      -- mana pun kecuali angka ini.
+      SUM(CASE WHEN eskalasi_ditawarkan_pada IS NOT NULL AND status != 'diteruskan'
+          THEN 1 ELSE 0 END)                                           AS ditawari_pergi,
       AVG(CASE WHEN berakhir_pada >= dibuat_pada
           THEN (julianday(berakhir_pada) - julianday(dibuat_pada)) * 86400 END)      AS rata_durasi,
       AVG(CASE WHEN ditangani_pada >= diteruskan_pada
@@ -135,6 +148,7 @@ export function ringkasan(f = {}) {
     ditinggalkan: r.ditinggalkan || 0,
     aktif: r.aktif || 0,
     ditangani: r.ditangani || 0,
+    ditawari_pergi: r.ditawari_pergi || 0,
     persen_mandiri: tuntas > 0 ? Math.round(((r.selesai || 0) / tuntas) * 100) : 0,
     rata_durasi: Math.round(r.rata_durasi || 0),
     rata_tanggap: Math.round(r.rata_tanggap || 0)
@@ -217,20 +231,230 @@ export function nilaiUnik(kolom) {
  * Bersifat opsional: bila engineer tidak pernah menandai, rekap tetap benar
  * dan hanya kolom waktu tanggap yang kosong. Sistem tidak boleh bergantung
  * pada kedisiplinan pengisian.
+ *
+ * @param {string} nomorTiket
+ * @param {string} namaAkun
+ * @param {{catatan?: string|null, selesaiPada?: string|null,
+ *          divisiDiizinkan?: string[]|null}} [opsi]
+ *   `divisiDiizinkan` berisi daftar divisi yang boleh ditangani pemanggil;
+ *   `null` berarti tanpa batas. Pemeriksaannya diletakkan DI SINI, bukan di
+ *   rute, karena ada dua jalan menuju penandaan selesai — halaman tugas dan
+ *   halaman rekap. Menaruhnya di salah satu rute berarti pembatasannya dapat
+ *   dilewati hanya dengan berpindah halaman.
  */
-export function tandaiDitangani(nomorTiket, namaAkun, catatan = null) {
+export function tandaiDitangani(nomorTiket, namaAkun, opsi = {}) {
+  const { catatan = null, selesaiPada = null, divisiDiizinkan = null } = opsi;
+
   const sesi = wajibSiap().prepare('SELECT * FROM sesi WHERE nomor_tiket = ?').get(nomorTiket);
   if (!sesi) return { ok: false, alasan: 'Tiket tidak ditemukan' };
+
+  if (divisiDiizinkan && !divisiDiizinkan.includes(String(sesi.divisi_id || '').toLowerCase())) {
+    return {
+      ok: false,
+      status: 403,
+      alasan: `Akun Anda tidak menangani layanan ${namaDivisi(sesi.divisi_id)}`
+    };
+  }
+
   if (sesi.status !== 'diteruskan') {
     return { ok: false, alasan: 'Hanya tiket berstatus "diteruskan" yang dapat ditandai selesai' };
   }
   if (sesi.ditangani_pada) return { ok: false, alasan: 'Tiket ini sudah ditandai selesai sebelumnya' };
 
+  // Waktu selesai boleh disebutkan sendiri oleh engineer.
+  //
+  // Yang diukur `waktu_tanggap` adalah lama penanganan, bukan lama keterlambatan
+  // mengisi formulir. Engineer yang baru sempat menandai tiga hari kemudian
+  // akan tercatat menanggapi dalam tiga hari — padahal kendalanya beres pada
+  // jam yang sama ia datang. Angka yang berlebihan seperti itu membuat seluruh
+  // laporan waktu tanggap tidak dipercaya, dan yang tidak dipercaya tidak
+  // dipakai.
+  let waktu = new Date();
+  if (selesaiPada) {
+    const diminta = new Date(selesaiPada);
+    if (Number.isNaN(diminta.getTime())) {
+      return { ok: false, alasan: 'Waktu selesai tidak dapat dibaca' };
+    }
+    // Toleransi satu menit untuk selisih jam antar perangkat
+    if (diminta.getTime() > Date.now() + 60_000) {
+      return { ok: false, alasan: 'Waktu selesai tidak boleh berada di masa depan' };
+    }
+    if (sesi.diteruskan_pada && diminta < new Date(sesi.diteruskan_pada)) {
+      return { ok: false, alasan: 'Waktu selesai mendahului saat laporan diteruskan' };
+    }
+    waktu = diminta;
+  }
+
+  // `berakhir_pada` SENGAJA tidak disentuh. Untuk tiket berstatus 'diteruskan'
+  // kolom itu berarti "jam laporan berpindah tangan ke engineer"
+  // (RANCANGAN-DATA.md §8) — bukan jam kendalanya beres. Menimpanya akan
+  // mencampur dua makna berbeda di dalam satu kolom, dan `rata_durasi`
+  // yang membacanya berubah arti tanpa ada yang menyadarinya.
   wajibSiap().prepare(`
     UPDATE sesi SET ditangani_pada = ?, ditangani_oleh = ?, catatan = ? WHERE nomor_tiket = ?
-  `).run(new Date().toISOString(), namaAkun, catatan, nomorTiket);
+  `).run(waktu.toISOString(), namaAkun, catatan, nomorTiket);
 
-  return { ok: true };
+  return { ok: true, ditanganiPada: waktu.toISOString() };
+}
+
+/**
+ * Tiket yang menunggu ditangani engineer — isi halaman `/tugas`.
+ *
+ * Hanya yang benar-benar berpindah tangan (`diteruskan`) dan belum ditandai
+ * selesai. Terlama di atas: tiket yang paling lama menganggur adalah yang
+ * paling perlu dilihat, bukan yang paling baru masuk.
+ *
+ * @param {string} [divisi] Saringan yang dipilih pengguna, satu layanan
+ * @param {string[]|null} [divisiDiizinkan] Batas wewenang akun; null = seluruhnya.
+ *   Berbeda dari `divisi` di atas: yang ini BUKAN saringan yang boleh
+ *   dimatikan pengguna, melainkan batas yang selalu berlaku.
+ */
+export function daftarTugas(divisi = null, divisiDiizinkan = null) {
+  // Akun engineer yang belum diberi layanan apa pun. Dijawab lebih dulu karena
+  // `divisi_id IN ()` bukan SQL yang sah — dan karena jawabannya memang kosong.
+  if (Array.isArray(divisiDiizinkan) && divisiDiizinkan.length === 0) return [];
+
+  const syarat = [];
+  const nilai = [];
+
+  if (divisi) {
+    syarat.push('divisi_id = ?');
+    nilai.push(divisi);
+  }
+
+  if (divisiDiizinkan) {
+    // Daftar disusun dari nilai tetap di dalam kode, tetapi tetap diikat
+    // sebagai parameter — jumlah tanda tanyanya saja yang dirangkai.
+    syarat.push(`divisi_id IN (${divisiDiizinkan.map(() => '?').join(', ')})`);
+    nilai.push(...divisiDiizinkan);
+  }
+
+  const where = syarat.length > 0 ? `AND ${syarat.join(' AND ')}` : '';
+
+  return wajibSiap().prepare(`
+    SELECT nomor_tiket, tanggal_wib, dibuat_pada, diteruskan_pada, divisi_id,
+           keluhan, nama, fungsi, lokasi, area, urgensi, masalah_cocok, solusi_terakhir
+    FROM sesi
+    WHERE status = 'diteruskan' AND ditangani_pada IS NULL ${where}
+    ORDER BY diteruskan_pada ASC
+  `).all(...nilai).map((r) => ({ ...r, divisi_nama: namaDivisi(r.divisi_id) }));
+}
+
+/**
+ * Batalkan penandaan selesai sebuah tiket.
+ *
+ * Tanpa ini, satu penandaan yang keliru bersifat permanen: tiketnya hilang
+ * dari daftar tugas, `waktu_tanggap` terlanjur terhitung, dan tidak ada jalan
+ * kembali selain menyunting basis data langsung. Salah tekan pada layar ponsel
+ * bukan kejadian langka, dan ini juga satu-satunya pemulihan bila ada yang
+ * menandai tiket orang lain dengan sengaja.
+ *
+ * Catatan penanganan ikut dikosongkan — ketiganya satu kesatuan. Yang TIDAK
+ * hilang adalah jejaknya: `log_akses` menyimpan siapa menandai dan siapa
+ * membatalkan, beserta waktunya.
+ *
+ * Khusus admin. Membiarkan engineer membatalkan penandaan engineer lain
+ * berarti membuka kembali celah yang hendak ditutup.
+ */
+export function batalkanPenandaan(nomorTiket) {
+  const sesi = wajibSiap()
+    .prepare('SELECT nomor_tiket, ditangani_pada FROM sesi WHERE nomor_tiket = ?')
+    .get(nomorTiket);
+
+  if (!sesi) return { ok: false, alasan: 'Tiket tidak ditemukan' };
+  if (!sesi.ditangani_pada) {
+    return { ok: false, alasan: 'Tiket ini memang belum pernah ditandai selesai' };
+  }
+
+  wajibSiap().prepare(`
+    UPDATE sesi SET ditangani_pada = NULL, ditangani_oleh = NULL, catatan = NULL
+    WHERE nomor_tiket = ?
+  `).run(nomorTiket);
+
+  return { ok: true, sebelumnya: sesi.ditangani_pada };
+}
+
+/**
+ * Seberapa sering tiap solusi benar-benar menuntaskan kendala.
+ *
+ * Datanya sudah tersimpan sejak awal pada `solusi_terakhir`, tetapi tidak
+ * pernah dihitung. Padahal inilah satu-satunya ukuran yang menjawab pertanyaan
+ * yang paling menentukan mutu SOP: **apakah langkah yang kita tulis benar-benar
+ * menolong orang?**
+ *
+ * Cara bacanya berupa corong. Pengguna yang sampai ke solusi ke-3 pasti sudah
+ * melewati solusi ke-1 dan ke-2, sehingga:
+ *
+ *   ditawarkan(n) = banyaknya pengguna yang sampai melihat solusi ke-n
+ *   tuntas(n)     = yang menyatakan berhasil TEPAT setelah solusi ke-n
+ *
+ * Solusi yang sering ditawarkan tetapi hampir tidak pernah menuntaskan adalah
+ * langkah yang perlu ditulis ulang — dan tanpa angka ini, ia akan bertahan
+ * bertahun-tahun tanpa ada yang mempertanyakannya.
+ *
+ * Hanya divisi mode `swalayan` yang dihitung; divisi mode engineer memang
+ * tidak pernah menawarkan langkah apa pun.
+ */
+export function keefektifanSolusi(f = {}) {
+  // Saringan STATUS sengaja diabaikan di sini, tidak seperti pada panel lain.
+  //
+  // Penyebut corong ini adalah "berapa orang sampai melihat solusi ke-n", dan
+  // itu harus menghitung semua orang — yang tuntas maupun yang menyerah. Bila
+  // saringan status ikut berlaku, memilih "status: selesai" membuat penyebutnya
+  // hanya berisi yang tuntas, sehingga tiap solusi tampak menuntaskan 100%.
+  // Angka yang menyesatkan pada laporan resmi lebih buruk daripada tidak ada
+  // angka sama sekali.
+  const { status, ...tanpaStatus } = f;
+  const { where, nilai } = bangunSaringan(tanpaStatus);
+  const sambung = where ? 'AND' : 'WHERE';
+  const dasar = `FROM sesi ${where} ${sambung} mode_divisi = 'swalayan' AND solusi_terakhir IS NOT NULL`;
+
+  const corong = wajibSiap().prepare(`
+    SELECT
+      solusi_terakhir AS nomor,
+      COUNT(*) AS sampai,
+      SUM(CASE WHEN status = 'selesai' THEN 1 ELSE 0 END) AS tuntas
+    ${dasar}
+    GROUP BY solusi_terakhir
+    ORDER BY solusi_terakhir
+  `).all(...nilai);
+
+  // "Sampai ke solusi n" bersifat kumulatif ke atas: yang berhenti di solusi 3
+  // ikut terhitung pernah melihat solusi 1 dan 2.
+  const MAKS = 3;
+  const perSolusi = [];
+  for (let n = 1; n <= MAKS; n++) {
+    const ditawarkan = corong
+      .filter((c) => c.nomor >= n)
+      .reduce((t, c) => t + c.sampai, 0);
+    const tuntas = corong.find((c) => c.nomor === n)?.tuntas || 0;
+
+    perSolusi.push({
+      nomor: n,
+      ditawarkan,
+      tuntas,
+      persen: ditawarkan > 0 ? Math.round((tuntas / ditawarkan) * 100) : null
+    });
+  }
+
+  // Masalah yang langkahnya paling jarang menolong. Yang dicari bukan masalah
+  // tersering, melainkan masalah yang SOP-nya paling sering gagal.
+  const perMasalah = wajibSiap().prepare(`
+    SELECT
+      masalah_cocok AS masalah,
+      COUNT(*) AS total,
+      SUM(CASE WHEN status = 'selesai' THEN 1 ELSE 0 END) AS tuntas
+    ${dasar} AND masalah_cocok IS NOT NULL
+    GROUP BY masalah_cocok
+    HAVING total >= 3
+    ORDER BY (CAST(tuntas AS REAL) / total) ASC, total DESC
+    LIMIT 8
+  `).all(...nilai).map((r) => ({
+    ...r,
+    persen: Math.round((r.tuntas / r.total) * 100)
+  }));
+
+  return { perSolusi, perMasalah };
 }
 
 /**

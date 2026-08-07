@@ -1,7 +1,7 @@
-# Template Pengumpulan Data SOP — SIGAP AI
+# Template Pengumpulan Data SOP — SIGAP
 
 Panduan dan template untuk mengumpulkan data masalah & solusi ICT **langsung dari
-engineer**, guna menggantikan data contoh (dummy) di basis pengetahuan SIGAP AI.
+engineer**, guna menggantikan data contoh (dummy) di basis pengetahuan SIGAP.
 
 > Satu file per divisi, disimpan di: `knowledge-base/<divisi>/sop-<divisi>.md`
 > Divisi: `printer`, `cctv`, `telepon`, `radio`, `windows`, `fttp`, `lan`, `wan`

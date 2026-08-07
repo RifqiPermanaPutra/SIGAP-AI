@@ -13,125 +13,30 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { STOPWORDS, SINONIM, normalisasi, tokenisasi } from '../server/services/teksUtil.js';
+// Pengurai dipakai bersama dengan API penyunting SOP (server/routes/sop.js).
+// Dua pengurai untuk satu format berarti dua tafsiran yang dapat bergeser
+// sendiri-sendiri: SOP yang tampak benar di penyunting akan terurai berbeda
+// saat dibangun, dan tidak ada yang menyadarinya sampai pengguna menerima
+// langkah yang keliru.
+import { FOLDER_KE_DIVISI, uraiBlok } from '../server/services/sopParser.js';
+import { SOP_DIR as KB_DIR, KB_FILE as OUT_FILE } from '../server/config/jalur.js';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const KB_DIR = path.join(__dirname, '..', 'knowledge-base');
-const OUT_FILE = path.join(__dirname, '..', 'server', 'data', 'knowledge-base.json');
-
-// Nama folder pada knowledge-base/ dipetakan ke id divisi yang dipakai aplikasi
-const FOLDER_KE_DIVISI = {
-  printer: 'printer',
-  cctv: 'cctv',
-  telepon: 'telepon',
-  'radio-komunikasi': 'radio',
-  windows: 'windows',
-  fttp: 'fttp',
-  lan: 'lan',
-  wan: 'wan'
-};
-
-/** Ubah judul menjadi id yang aman dipakai, contoh "Printer Offline" -> "printer-offline" */
-function buatId(divisi, judul) {
-  const potongan = judul
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, '')
-    .trim()
-    .split(/\s+/)
-    .slice(0, 5)
-    .join('-');
-  return `${divisi}-${potongan}`;
-}
 
 /**
- * Urai satu blok masalah (satu bagian yang diawali "## ") menjadi objek.
- * @returns {object|null} null bila blok bukan blok masalah
+ * Bangun berkas basis pengetahuan dari seluruh berkas SOP.
+ *
+ * Diekspor karena penyunting SOP lewat peramban wajib memanggilnya sendiri
+ * setelah menyimpan (`server/services/sopBerkas.js`). Meminta admin membuka
+ * terminal untuk menjalankan `npm run build:kb` sesudah menyunting sama saja
+ * dengan tidak punya penyunting: suntingannya tersimpan di berkas Markdown
+ * tetapi tidak pernah sampai ke pengguna.
+ *
+ * @param {boolean} diam Tanpa keluaran konsol — dipakai saat dipanggil server
+ * @returns {{masalah: number, solusi: number}}
  */
-function uraiBlok(divisi, blok) {
-  const baris = blok.split('\n');
-  const judul = baris[0].trim();
-
-  // Blok catatan dan judul berkas bukan blok masalah
-  if (!judul || /^Catatan Konfirmasi Engineer$/i.test(judul)) return null;
-
-  const ambilBagian = (namaBagian) => {
-    const pola = new RegExp(`###\\s*${namaBagian}[^\\n]*\\n([\\s\\S]*?)(?=\\n###|$)`, 'i');
-    const cocok = blok.match(pola);
-    return cocok ? cocok[1].trim() : '';
-  };
-
-  const gejala = ambilBagian('Gejala yang Dirasakan User');
-  const penyebabTeks = ambilBagian('Penyebab yang Mungkin Terjadi');
-  const kategoriTeks = ambilBagian('Kategori');
-  const penanganan = ambilBagian('Penanganan');
-
-  const penyebab = penyebabTeks
-    .split('\n')
-    .map((b) => b.replace(/^\s*[-*]\s*/, '').trim())
-    .filter(Boolean);
-
-  // Kumpulkan seluruh bagian "Solusi ..." berikut langkah-langkahnya
-  const solusi = [];
-  const polaSolusi = /###\s*(Solusi[^\n]*)\n([\s\S]*?)(?=\n###|$)/gi;
-  let m;
-  while ((m = polaSolusi.exec(blok)) !== null) {
-    const judulSolusi = m[1].trim();
-    const isi = m[2];
-
-    const langkah = isi
-      .split('\n')
-      .map((b) => b.trim())
-      .filter((b) => /^\d+[.)]\s+/.test(b))
-      .map((b) => b.replace(/^\d+[.)]\s*/, '').trim());
-
-    // Kalimat pengantar sebelum daftar langkah, bila ada
-    const pengantar = isi
-      .split('\n')
-      .filter((b) => b.trim() && !/^\d+[.)]\s+/.test(b.trim()))
-      .join(' ')
-      .trim();
-
-    if (langkah.length > 0) {
-      solusi.push({ judul: judulSolusi, pengantar: pengantar || null, langkah });
-    }
-  }
-
-  // Blok tanpa bagian "Solusi" memakai daftar langkah biasa, bila ada
-  if (solusi.length === 0) {
-    const langkahTeks = ambilBagian('Langkah Penyelesaian');
-    const langkah = langkahTeks
-      .split('\n')
-      .map((b) => b.trim())
-      .filter((b) => /^\d+[.)]\s+/.test(b))
-      .map((b) => b.replace(/^\d+[.)]\s*/, '').trim());
-    if (langkah.length > 0) {
-      solusi.push({ judul: 'Langkah Penyelesaian', pengantar: null, langkah });
-    }
-  }
-
-  const kategori = /berat/i.test(kategoriTeks) ? 'berat' : 'ringan';
-
-  // Kata kunci diambil dari judul, gejala, dan penyebab. Bagian inilah yang
-  // dicocokkan dengan kalimat keluhan pengguna.
-  const sumberKunci = [judul, gejala, ...penyebab].join(' ');
-  const kataKunci = [...new Set(tokenisasi(sumberKunci))];
-
-  return {
-    id: buatId(divisi, judul),
-    divisi,
-    judul,
-    gejala,
-    kategori,
-    penyebab,
-    solusi,
-    penanganan: penanganan || null,
-    kataKunci
-  };
-}
-
-function bangun() {
+export function bangun(diam = false) {
+  const catat = diam ? () => {} : console.log;
   const hasil = { dibuatPada: new Date().toISOString(), masalah: [] };
   let totalSolusi = 0;
 
@@ -155,7 +60,7 @@ function bangun() {
         totalSolusi += masalah.solusi.length;
         jumlah++;
       }
-      console.log(`  ${divisi.padEnd(9)} ${String(jumlah).padStart(2)} masalah  (${berkas})`);
+      catat(`  ${divisi.padEnd(9)} ${String(jumlah).padStart(2)} masalah  (${berkas})`);
     }
   }
 
@@ -163,10 +68,17 @@ function bangun() {
   fs.writeFileSync(OUT_FILE, JSON.stringify(hasil, null, 2), 'utf-8');
 
   const ukuran = (fs.statSync(OUT_FILE).size / 1024).toFixed(0);
-  console.log('');
-  console.log(`Total : ${hasil.masalah.length} masalah, ${totalSolusi} solusi`);
-  console.log(`Berkas: ${path.relative(process.cwd(), OUT_FILE)} (${ukuran} KB)`);
+  catat('');
+  catat(`Total : ${hasil.masalah.length} masalah, ${totalSolusi} solusi`);
+  catat(`Berkas: ${path.relative(process.cwd(), OUT_FILE)} (${ukuran} KB)`);
+
+  return { masalah: hasil.masalah.length, solusi: totalSolusi };
 }
 
-console.log('Membangun basis pengetahuan dari berkas SOP...\n');
-bangun();
+// Hanya berjalan sendiri saat dipanggil sebagai perintah (`npm run build:kb`).
+// Tanpa penjaga ini, sekadar meng-import modulnya dari server akan menulis
+// ulang berkas basis pengetahuan sebagai efek samping.
+if (process.argv[1] && path.resolve(process.argv[1]) === __filename) {
+  console.log('Membangun basis pengetahuan dari berkas SOP...\n');
+  bangun();
+}

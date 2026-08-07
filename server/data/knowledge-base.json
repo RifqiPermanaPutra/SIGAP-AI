@@ -1,5 +1,5 @@
 {
-  "dibuatPada": "2026-07-31T04:35:17.319Z",
+  "dibuatPada": "2026-08-05T06:25:28.068Z",
   "masalah": [
     {
       "id": "cctv-salah-satu-kamera-tidak-tampil",
@@ -1087,7 +1087,7 @@
       ],
       "solusi": [
         {
-          "judul": "Langkah Penyelesaian",
+          "judul": "Solusi Pertama: Keluarkan Kertas yang Tersangkut",
           "pengantar": null,
           "langkah": [
             "Matikan printer terlebih dahulu dengan menekan tombol daya. Jangan menarik kertas saat printer masih menyala.",
@@ -1095,11 +1095,39 @@
             "Perhatikan di mana letak kertas yang tersangkut sebelum menariknya.",
             "Tarik kertas perlahan searah jalur keluarnya kertas, yaitu ke arah depan. Jangan menarik ke arah berlawanan dan jangan menyentak.",
             "Bila kertas sobek, periksa dengan teliti apakah ada potongan kecil yang tertinggal di dalam. Potongan yang tertinggal akan menyebabkan macet lagi.",
-            "Periksa juga baki kertas di bagian bawah. Tarik keluar bakinya dan pastikan tidak ada kertas kusut di sana.",
-            "Rapikan tumpukan kertas dengan mengetuk sisinya di atas meja agar rata, lalu masukkan kembali ke baki.",
-            "Pastikan jumlah kertas tidak melebihi garis batas yang tertera di dalam baki.",
             "Tutup kembali seluruh penutup printer sampai terdengar bunyi klik.",
             "Nyalakan printer, tunggu hingga lampu peringatan padam, lalu coba cetak satu halaman."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Rapikan Kertas dan Periksa Baki",
+          "pengantar": "Dipakai bila printer masih macet setelah kertasnya dikeluarkan. Penyebab yang paling sering terlewat bukan pada mesinnya, melainkan pada keadaan kertas dan cara kertas tersusun di dalam baki.",
+          "langkah": [
+            "Tarik keluar baki kertas di bagian bawah printer sampai lepas seluruhnya.",
+            "Keluarkan semua kertas dari baki, lalu periksa apakah ada lembar yang kusut, terlipat, atau sobek pinggirannya. Buang lembar seperti itu, jangan dipakai lagi.",
+            "Raba tumpukan kertas. Bila terasa lembap atau bergelombang, ganti dengan kertas dari bungkus baru. Kertas lembap adalah penyebab macet yang paling sering di ruangan ber-AC maupun di lokasi lapangan.",
+            "Ambil tumpukan kertas secukupnya, lalu ketuk sisi panjang dan sisi pendeknya di atas meja bergantian sampai seluruh tepinya rata.",
+            "Kipas-kipaskan tumpukan kertas dengan ibu jari agar lembarannya tidak saling menempel.",
+            "Masukkan kembali kertas ke dalam baki. Pastikan jumlahnya tidak melebihi garis batas yang tertera di dinding dalam baki.",
+            "Perhatikan penjepit atau sekat yang dapat digeser di sisi kiri, kanan, dan belakang baki. Geser sampai menyentuh tepi kertas — cukup menempel, jangan sampai menekan hingga kertas melengkung.",
+            "Masukkan baki kembali ke printer sampai terdengar bunyi klik atau terasa berhenti rapat.",
+            "Coba cetak satu halaman saja untuk menguji."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Periksa Jalur Belakang dan Nyalakan Ulang Total",
+          "pengantar": "Dipakai bila kertas masih tersangkut meski baki sudah dirapikan. Biasanya masih ada sobekan kertas yang tertinggal di jalur yang tidak terlihat dari depan.",
+          "langkah": [
+            "Matikan printer, lalu cabut kabel listriknya dari stopkontak.",
+            "Putar printer sehingga bagian belakangnya menghadap Anda.",
+            "Cari penutup di bagian belakang printer. Biasanya ada tuas, kait, atau dua tombol yang ditekan bersamaan untuk membukanya.",
+            "Buka penutup tersebut, lalu periksa dengan teliti apakah ada sobekan kertas yang tertinggal di dalam jalur.",
+            "Bila ada, tarik perlahan searah jalur kertas. Gunakan penerangan senter ponsel bila bagian dalamnya gelap.",
+            "Perhatikan roda karet berwarna abu-abu atau hitam di dalam jalur. Bila terlihat berdebu, usap perlahan dengan kain kering yang lembut. Jangan memakai air atau cairan pembersih apa pun.",
+            "Tutup kembali penutup belakang sampai rapat.",
+            "Biarkan printer dalam keadaan tercabut selama 1 menit penuh agar seluruh peringatan di dalamnya tersetel ulang.",
+            "Pasang kembali kabel listrik, nyalakan printer, lalu tunggu sampai lampu berhenti berkedip.",
+            "Coba cetak satu halaman. Bila kertas masih macet juga, laporkan kepada Engineer ICT."
           ]
         }
       ],
@@ -1153,7 +1181,7 @@
       ],
       "solusi": [
         {
-          "judul": "Langkah Penyelesaian",
+          "judul": "Solusi Pertama: Kosongkan Antrian Cetak",
           "pengantar": null,
           "langkah": [
             "Klik tombol Start di bagian bawah layar, lalu klik ikon roda gigi bertuliskan \"Settings\".",
@@ -1163,9 +1191,39 @@
             "Klik tulisan \"Open print queue\". Akan muncul jendela berisi daftar dokumen yang menunggu dicetak.",
             "Pada jendela tersebut, hapus seluruh dokumen yang menunggu. Klik kanan pada tiap dokumen lalu pilih \"Cancel\".",
             "Perhatikan layar kecil pada badan printer. Bila ada peringatan tinta atau toner habis, laporkan kepada Engineer ICT untuk penggantian.",
-            "Matikan printer, tunggu 30 detik, lalu nyalakan kembali.",
-            "Buka kembali dokumen yang ingin dicetak, lalu cetak satu halaman saja terlebih dahulu untuk menguji.",
-            "Bila tetap tidak keluar, laporkan kepada Engineer ICT."
+            "Buka kembali dokumen yang ingin dicetak, lalu cetak satu halaman saja terlebih dahulu untuk menguji."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Pastikan Printer yang Dituju Sudah Benar",
+          "pengantar": "Dipakai bila antrian sudah dikosongkan tetapi kertas tetap tidak keluar. Sering kali dokumen sebenarnya terkirim ke printer lain, atau pencetakan sedang ditahan tanpa disadari.",
+          "langkah": [
+            "Klik tombol Start, lalu klik ikon roda gigi bertuliskan \"Settings\".",
+            "Pada daftar di sisi kiri, klik \"Bluetooth & devices\", lalu klik \"Printers & scanners\".",
+            "Perhatikan daftar printer. Bila ada beberapa nama yang mirip, cocokkan dengan nama yang tertempel pada badan printer di ruangan Anda.",
+            "Klik nama printer yang benar, lalu klik tombol \"Set as default\" bila tersedia. Ini membuat dokumen berikutnya otomatis terkirim ke printer tersebut.",
+            "Masih pada halaman printer itu, klik \"Open print queue\".",
+            "Pada jendela antrian, klik menu \"Printer\" di bagian atas.",
+            "Perhatikan pilihan \"Pause Printing\" dan \"Use Printer Offline\". Bila salah satunya bertanda centang, klik untuk menghilangkan centangnya.",
+            "Tutup jendela antrian.",
+            "Buka dokumen Anda, tekan Print, lalu pastikan nama printer yang tertera pada jendela pencetakan sudah benar sebelum menekan tombol Print.",
+            "Cetak satu halaman untuk menguji."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Nyalakan Ulang Printer dan Komputer",
+          "pengantar": "Dipakai bila dokumen tetap tidak keluar meski printernya sudah benar. Menyalakan ulang keduanya menyegarkan layanan pencetakan yang menggantung di dalam Windows.",
+          "langkah": [
+            "Simpan terlebih dahulu seluruh pekerjaan Anda yang belum tersimpan.",
+            "Matikan printer dengan menekan tombol daya, lalu cabut kabel listriknya dari stopkontak.",
+            "Klik tombol Start, klik ikon tombol daya, lalu pilih \"Restart\". Pilih Restart, bukan Shut Down.",
+            "Selagi komputer menyala ulang, biarkan printer tetap tercabut selama 1 menit penuh.",
+            "Pasang kembali kabel listrik printer, lalu nyalakan printer.",
+            "Tunggu hingga lampu printer berhenti berkedip, sekitar 1 menit.",
+            "Setelah komputer masuk ke layar utama, tunggu tambahan 2 menit agar seluruh layanan siap.",
+            "Buka kembali dokumen yang ingin dicetak.",
+            "Cetak satu halaman saja untuk menguji.",
+            "Bila tetap tidak keluar, laporkan kepada Engineer ICT beserta nama printer yang Anda pakai."
           ]
         }
       ],
@@ -1214,7 +1272,7 @@
       ],
       "solusi": [
         {
-          "judul": "Langkah Penyelesaian",
+          "judul": "Solusi Pertama: Periksa Sisa Tinta lalu Jalankan Pembersihan",
           "pengantar": null,
           "langkah": [
             "Perhatikan layar kecil pada badan printer. Cari tanda sisa tinta atau toner. Bila tampak hampir kosong, laporkan kepada Engineer ICT untuk penggantian.",
@@ -1222,11 +1280,36 @@
             "Telusuri menu tersebut hingga menemukan pilihan bertuliskan \"Cleaning\", \"Head Cleaning\", atau \"Maintenance\".",
             "Jalankan pembersihan tersebut. Proses ini memakan waktu sekitar 2 sampai 3 menit dan printer akan berbunyi. Ini normal.",
             "Setelah selesai, cetak satu halaman untuk memeriksa hasilnya.",
-            "Bila masih bergaris, ulangi pembersihan sekali lagi. Jangan lebih dari dua kali berturut-turut karena boros tinta.",
-            "Ganti kertas dengan kertas baru dari bungkus yang belum lama dibuka. Kertas yang lama terbuka menyerap lembap.",
-            "Saat akan mencetak dari komputer, sebelum menekan Print, klik tulisan \"More settings\" atau \"Printer properties\".",
-            "Cari pilihan kualitas, lalu ubah dari \"Draft\" atau \"Standard\" menjadi \"High\" atau \"Best\".",
-            "Cetak ulang dokumen Anda. Bila hasilnya tetap buram, laporkan kepada Engineer ICT."
+            "Bila masih bergaris, ulangi pembersihan sekali lagi. Jangan lebih dari dua kali berturut-turut karena boros tinta."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Ganti Kertas dan Naikkan Kualitas Cetak",
+          "pengantar": "Dipakai bila hasil cetak masih samar setelah pembersihan. Dua penyebab yang sering terlewat adalah kertas yang menyerap lembap dan pengaturan cetak yang sedang berada di mode hemat.",
+          "langkah": [
+            "Ambil kertas dari bungkus baru yang belum lama dibuka. Kertas yang lama terbuka menyerap lembap dan membuat tinta menyebar.",
+            "Keluarkan kertas lama dari baki, lalu ganti dengan kertas baru tersebut.",
+            "Buka dokumen yang ingin dicetak di komputer, lalu tekan Print.",
+            "Sebelum menekan tombol Print pada jendela yang muncul, klik tulisan \"More settings\" atau \"Printer properties\".",
+            "Cari pilihan bertuliskan \"Quality\", \"Print Quality\", atau \"Kualitas\".",
+            "Ubah dari \"Draft\", \"Economy\", atau \"Standard\" menjadi \"High\" atau \"Best\".",
+            "Bila ada pilihan bertanda \"Toner Save\", \"Eco Mode\", atau \"Hemat Tinta\" yang aktif, matikan.",
+            "Bila dokumen Anda berwarna, pastikan pilihan cetaknya bukan \"Grayscale\" atau \"Black and white only\".",
+            "Tekan Print, lalu periksa hasilnya."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Cetak Halaman Uji untuk Memastikan Bagian yang Bermasalah",
+          "pengantar": "Dipakai bila hasil cetak tetap bergaris. Halaman uji dicetak langsung oleh printer tanpa melalui komputer, sehingga memisahkan masalah pada printer dari masalah pada dokumen atau pengaturan komputer.",
+          "langkah": [
+            "Cari tombol menu pada badan printer, lalu telusuri hingga menemukan pilihan bertuliskan \"Print Quality Report\", \"Nozzle Check\", \"Test Page\", atau \"Self Test\".",
+            "Jalankan pilihan tersebut. Printer akan mencetak satu halaman berisi kotak atau garis-garis warna.",
+            "Amati hasilnya. Bila halaman uji ini tercetak **rapi**, berarti printernya sehat dan masalahnya ada pada dokumen atau pengaturan komputer — ulangi Solusi Kedua dengan dokumen lain sebagai pembanding.",
+            "Bila halaman uji ikut bergaris, cari pilihan bertuliskan \"Alignment\", \"Print Head Alignment\", atau \"Kalibrasi\" pada menu yang sama, lalu jalankan.",
+            "Tunggu sampai proses selesai, lalu cetak ulang halaman uji.",
+            "Perhatikan apakah ada satu warna yang hilang sama sekali, misalnya seluruh bagian merah tidak tercetak.",
+            "Bila ada warna yang hilang seluruhnya, hentikan percobaan. Itu menandakan tinta warna tersebut habis atau salurannya tersumbat, dan penanganannya bukan di sisi pengguna.",
+            "Laporkan kepada Engineer ICT. Sertakan halaman uji yang sudah tercetak agar engineer dapat langsung melihat bagian mana yang bermasalah."
           ]
         }
       ],
@@ -1273,7 +1356,7 @@
       ],
       "solusi": [
         {
-          "judul": "Langkah Penyelesaian",
+          "judul": "Solusi Pertama: Dinginkan lalu Bersihkan Bagian Dalam",
           "pengantar": null,
           "langkah": [
             "Matikan printer dan cabut kabel listriknya.",
@@ -1283,8 +1366,35 @@
             "Bersihkan bagian yang terlihat kotor memakai kain kering yang lembut. Jangan memakai air, tisu basah, atau cairan pembersih apa pun.",
             "Bila terlihat serbuk toner tumpah cukup banyak, hentikan pembersihan dan laporkan kepada Engineer ICT. Serbuk toner tidak boleh dihirup.",
             "Tutup kembali penutup printer, pasang kabel listrik, lalu nyalakan.",
-            "Cetak tiga sampai lima halaman percobaan. Noda ringan biasanya hilang dengan sendirinya setelah beberapa lembar.",
-            "Bila noda tetap muncul, laporkan kepada Engineer ICT."
+            "Cetak tiga sampai lima halaman percobaan. Noda ringan biasanya hilang dengan sendirinya setelah beberapa lembar."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Cetak Beberapa Lembar Kosong untuk Membersihkan Jalur",
+          "pengantar": "Dipakai bila noda masih muncul setelah dibersihkan. Sisa tinta yang menempel pada jalur kertas akan terangkat sendiri oleh lembaran yang lewat, tetapi memerlukan lebih banyak lembar daripada yang biasanya dicoba orang.",
+          "langkah": [
+            "Buka aplikasi pengolah kata atau Notepad pada komputer, lalu biarkan halamannya benar-benar kosong.",
+            "Tekan Print, lalu pada kotak jumlah salinan isikan 10.",
+            "Cetak sepuluh lembar kosong tersebut berturut-turut.",
+            "Amati lembar demi lembar. Perhatikan apakah nodanya semakin memudar dari lembar pertama ke lembar terakhir.",
+            "Bila memudar tetapi belum bersih, ulangi sekali lagi dengan sepuluh lembar berikutnya.",
+            "Bila noda muncul di posisi yang sama persis pada setiap lembar, ukur jaraknya dari tepi atas kertas dan catat. Keterangan ini membantu engineer menentukan bagian mana yang kotor.",
+            "Setelah selesai, cetak satu halaman dokumen sungguhan untuk memeriksa hasilnya."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Periksa Kertas dan Kebersihan Baki",
+          "pengantar": "Dipakai bila noda tetap muncul. Sumbernya sering bukan pada bagian dalam printer, melainkan pada kertas atau baki yang berdebu.",
+          "langkah": [
+            "Matikan printer, lalu tarik keluar baki kertas sampai lepas seluruhnya.",
+            "Keluarkan seluruh kertas dari baki.",
+            "Perhatikan dasar baki. Bila terlihat berdebu atau ada serbuk halus, usap dengan kain kering yang lembut.",
+            "Periksa tumpukan kertas yang tadi dikeluarkan. Bila tepinya berdebu, kotor, atau tampak bekas tersimpan lama tanpa bungkus, jangan dipakai lagi.",
+            "Ganti dengan kertas dari bungkus baru yang belum lama dibuka.",
+            "Pastikan jenis kertasnya sesuai untuk printer kantor biasa. Kertas foto, kertas stiker, atau kertas tebal dapat meninggalkan noda pada printer yang tidak dirancang untuk itu.",
+            "Masukkan kertas baru ke dalam baki, lalu pasang baki kembali sampai rapat.",
+            "Nyalakan printer, lalu cetak tiga halaman percobaan.",
+            "Bila noda tetap muncul, laporkan kepada Engineer ICT. Sertakan satu lembar hasil cetak yang bernoda sebagai contoh."
           ]
         }
       ],
@@ -1867,18 +1977,41 @@
       ],
       "solusi": [
         {
-          "judul": "Langkah Penyelesaian",
+          "judul": "Solusi Pertama: Periksa Caps Lock lalu Ketik Ulang Kata Sandi",
           "pengantar": null,
           "langkah": [
             "Lihat keyboard Anda. Cari lampu kecil di bagian kanan atas atau di dekat tombol Caps Lock. Bila lampu itu menyala, tekan tombol Caps Lock satu kali agar padam.",
             "Perhatikan juga lampu Num Lock bila Anda mengetik angka memakai tombol angka di sisi kanan keyboard.",
             "Pada kotak kata sandi, klik ikon berbentuk mata di sisi kanan bila tersedia. Ini menampilkan kata sandi yang Anda ketik agar dapat diperiksa.",
             "Hapus seluruh isi kotak kata sandi, lalu ketik ulang perlahan huruf demi huruf.",
-            "Tekan tombol Enter, lalu tunggu sekitar 10 detik.",
-            "Bila muncul tulisan bahwa akun terkunci, jangan mencoba lagi. Tunggu 15 sampai 30 menit, karena percobaan berulang akan memperpanjang penguncian.",
-            "Setelah menunggu, restart komputer dengan menekan tombol daya pada badan komputer, lalu nyalakan kembali.",
-            "Coba masukkan kata sandi sekali lagi dengan tenang.",
-            "Bila tetap ditolak, pengaturan ulang kata sandi hanya dapat dilakukan Engineer ICT. Silakan hubungi Engineer."
+            "Tekan tombol Enter, lalu tunggu sekitar 10 detik."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Tunggu Penguncian Berakhir lalu Nyalakan Ulang",
+          "pengantar": "Dipakai bila muncul tulisan bahwa akun terkunci. Mencoba berulang kali justru memperpanjang masa penguncian, sehingga menunggu adalah langkah yang benar.",
+          "langkah": [
+            "Bila muncul tulisan bahwa akun terkunci, hentikan percobaan memasukkan kata sandi.",
+            "Tunggu 15 sampai 30 menit tanpa mencoba lagi sama sekali.",
+            "Selama menunggu, tuliskan kata sandi Anda di kertas terlebih dahulu, lalu periksa huruf demi huruf. Perhatikan huruf besar-kecil, angka nol yang tertukar dengan huruf O, dan angka satu yang tertukar dengan huruf l.",
+            "Setelah masa tunggu berakhir, nyalakan ulang komputer. Tekan tombol daya pada badan komputer, tunggu sampai mati, lalu nyalakan kembali.",
+            "Tunggu sampai layar masuk muncul sepenuhnya. Jangan mengetik apa pun sebelum layar berhenti bergerak.",
+            "Masukkan kata sandi sekali saja, dengan tenang dan perlahan.",
+            "Bila diterima, segera catat kata sandi yang berhasil tersebut di tempat yang aman."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Pastikan Akun dan Papan Ketik Sudah Benar",
+          "pengantar": "Dipakai bila kata sandi tetap ditolak padahal Anda yakin benar. Kadang yang keliru bukan kata sandinya, melainkan akun yang dipilih atau tombol keyboard yang rusak sehingga satu huruf tidak pernah terketik.",
+          "langkah": [
+            "Lihat bagian bawah layar masuk. Bila ada beberapa nama pengguna, pastikan yang terpilih adalah nama akun Anda sendiri.",
+            "Bila tertera pilihan \"Other user\" atau \"Pengguna lain\", perhatikan apakah kotak nama pengguna kosong dan perlu diisi. Isikan nama akun Anda persis seperti yang biasa dipakai.",
+            "Buka Notepad bila memungkinkan, atau gunakan kolom nama pengguna, lalu ketik kata sandi Anda di sana agar terlihat. Periksa apakah semua huruf muncul.",
+            "Bila ada satu huruf yang tidak pernah muncul, kemungkinan tombol keyboardnya rusak.",
+            "Untuk memastikannya, cari ikon aksesibilitas di pojok kanan bawah layar masuk, lalu pilih \"On-Screen Keyboard\". Akan muncul papan ketik di layar yang dapat diklik dengan tetikus.",
+            "Masukkan kata sandi Anda memakai papan ketik layar tersebut, huruf demi huruf.",
+            "Bila dengan papan ketik layar kata sandi diterima, berarti keyboard fisik Anda yang bermasalah. Laporkan hal itu kepada Engineer ICT.",
+            "Bila tetap ditolak, hentikan percobaan. Pengaturan ulang kata sandi hanya dapat dilakukan Engineer ICT. Silakan hubungi Engineer dan sebutkan nama akun Anda."
           ]
         }
       ],
@@ -2016,7 +2149,7 @@
       ],
       "solusi": [
         {
-          "judul": "Langkah Penyelesaian",
+          "judul": "Solusi Pertama: Kosongkan Tempat Sampah dan Berkas Sementara",
           "pengantar": null,
           "langkah": [
             "Lihat layar utama komputer. Cari ikon berbentuk tempat sampah bernama \"Recycle Bin\".",
@@ -2026,8 +2159,38 @@
             "Klik \"Storage\". Tunggu beberapa detik sampai perhitungan penyimpanan selesai.",
             "Klik tulisan \"Temporary files\".",
             "Beri centang pada pilihan yang tersedia, terutama \"Temporary files\" dan \"Delivery Optimization Files\".",
-            "Klik tombol \"Remove files\" di bagian atas, lalu tunggu proses selesai. Bisa memakan waktu beberapa menit.",
-            "Buka folder Downloads melalui File Explorer, yaitu ikon berbentuk map kuning di bagian bawah layar. Periksa berkas lama yang sudah tidak diperlukan.",
+            "Klik tombol \"Remove files\" di bagian atas, lalu tunggu proses selesai. Bisa memakan waktu beberapa menit."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Cari Berkas Besar yang Sudah Tidak Diperlukan",
+          "pengantar": "Dipakai bila penyimpanan masih penuh setelah berkas sementara dibersihkan. Biasanya ruang termakan oleh sedikit berkas berukuran sangat besar, bukan oleh banyak berkas kecil, sehingga membuang satu-dua berkas saja sudah cukup.",
+          "langkah": [
+            "Klik tombol Start, klik ikon roda gigi \"Settings\", lalu klik \"System\" dan \"Storage\".",
+            "Perhatikan daftar kategori seperti \"Apps & features\", \"Documents\", \"Pictures\", dan \"Videos\" beserta ukurannya. Buka kategori yang paling besar.",
+            "Buka File Explorer, yaitu ikon berbentuk map kuning di bagian bawah layar.",
+            "Klik \"Downloads\" pada daftar di sisi kiri.",
+            "Klik menu \"View\" di bagian atas, pilih \"Details\", agar ukuran tiap berkas terlihat.",
+            "Klik judul kolom \"Size\" satu kali untuk mengurutkan berkas dari yang terbesar.",
+            "Periksa berkas paling atas. Berkas pemasang aplikasi berakhiran .exe, .iso, atau .zip yang sudah lama biasanya sudah tidak diperlukan.",
+            "Hapus berkas yang Anda yakin tidak diperlukan lagi. **Jangan menghapus berkas yang tidak Anda kenali**, terutama yang berada di luar folder Downloads.",
+            "Lakukan hal yang sama pada folder \"Documents\", \"Pictures\", dan \"Videos\".",
+            "Setelah selesai, kosongkan kembali Recycle Bin agar ruangnya benar-benar terbebas. Berkas yang dihapus belum menambah ruang kosong sebelum tempat sampah dikosongkan."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Nyalakan Pembersihan Otomatis dan Buang Berkas Pembaruan Lama",
+          "pengantar": "Dipakai bila ruang tetap kurang. Windows menyimpan salinan sistem lama setelah pembaruan besar, dan ukurannya dapat mencapai belasan gigabyte.",
+          "langkah": [
+            "Klik tombol Start, klik \"Settings\", klik \"System\", lalu klik \"Storage\".",
+            "Cari tulisan \"Storage Sense\", lalu klik tombol gesernya hingga berubah menjadi \"On\". Ini membuat Windows membersihkan berkas sementara dengan sendirinya secara berkala.",
+            "Klik pada tulisan \"Storage Sense\" tersebut untuk membuka pengaturannya.",
+            "Pada pilihan \"Delete files in my recycle bin if they have been there for over\", pilih \"30 days\".",
+            "Kembali ke halaman Storage, lalu klik \"Cleanup recommendations\".",
+            "Perhatikan bagian \"Temporary files\". Bila terdapat pilihan bertuliskan \"Previous Windows installation(s)\" atau \"Windows Update Cleanup\", beri centang pada pilihan tersebut.",
+            "Perhatikan juga bagian \"Large or unused files\" dan \"Files synced to the cloud\" — periksa daftarnya, beri centang hanya pada berkas yang Anda kenali dan yakin tidak diperlukan.",
+            "Klik tombol \"Clean up\" di bagian bawah, lalu tunggu sampai selesai. Proses ini dapat memakan waktu sampai 15 menit dan komputer akan terasa lebih lambat selama itu. Ini normal.",
+            "Nyalakan ulang komputer setelah proses selesai.",
             "Bila ruang penyimpanan tetap penuh setelah semua langkah ini, laporkan kepada Engineer ICT."
           ]
         }
@@ -2074,7 +2237,7 @@
       ],
       "solusi": [
         {
-          "judul": "Langkah Penyelesaian",
+          "judul": "Solusi Pertama: Tunggu lalu Tutup Paksa lewat Task Manager",
           "pengantar": null,
           "langkah": [
             "Jangan mengklik berkali-kali. Klik berulang justru memperberat kerja komputer.",
@@ -2084,8 +2247,37 @@
             "Klik satu kali pada nama aplikasi tersebut untuk memilihnya.",
             "Klik tombol \"End task\" di bagian atas jendela. Aplikasi akan tertutup paksa.",
             "Tutup jendela Task Manager dengan mengklik tanda silang di pojok kanan atas.",
-            "Buka kembali aplikasi tersebut, lalu buka berkas yang sama.",
-            "Bila aplikasi membeku lagi pada berkas yang sama, kemungkinan berkasnya bermasalah. Laporkan kepada Engineer ICT beserta nama berkasnya."
+            "Buka kembali aplikasi tersebut, lalu buka berkas yang sama."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Pastikan yang Bermasalah Aplikasinya atau Berkasnya",
+          "pengantar": "Dipakai bila aplikasi membeku lagi setelah dibuka ulang. Memisahkan keduanya menentukan langkah berikutnya, dan sering kali cukup dengan memakai berkas lain.",
+          "langkah": [
+            "Tutup paksa lagi aplikasi tersebut memakai cara pada Solusi Pertama.",
+            "Buka kembali aplikasinya, tetapi **jangan** membuka berkas apa pun terlebih dahulu.",
+            "Perhatikan apakah aplikasinya berjalan normal dalam keadaan kosong selama 1 menit.",
+            "Bila normal, buat berkas baru yang kosong lalu ketik beberapa kata. Simpan, tutup, lalu buka lagi.",
+            "Bila berkas baru berjalan lancar, berarti masalahnya ada pada berkas lama Anda, bukan pada aplikasinya.",
+            "Coba buka berkas lama tersebut dari komputer lain bila memungkinkan, untuk memastikan.",
+            "Bila berkas lama itu tersimpan di penyimpanan jaringan atau flashdisk, salin dulu ke folder Documents di komputer Anda, lalu buka salinannya. Berkas yang dibuka langsung dari jaringan yang lambat sering tampak seperti membeku padahal sedang menunggu.",
+            "Catat nama berkas yang bermasalah. Keterangan ini diperlukan engineer."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Bebaskan Memori lalu Nyalakan Ulang Komputer",
+          "pengantar": "Dipakai bila aplikasi tetap membeku meski dengan berkas baru. Penyebab yang tersisa biasanya memori komputer yang sudah terpakai habis oleh aplikasi lain.",
+          "langkah": [
+            "Simpan seluruh pekerjaan Anda yang masih terbuka di aplikasi lain.",
+            "Tekan Ctrl, Shift, dan Esc bersamaan untuk membuka Task Manager.",
+            "Klik judul kolom \"Memory\" satu kali untuk mengurutkan dari pemakaian terbesar.",
+            "Perhatikan aplikasi di urutan teratas. Bila ada aplikasi yang sedang tidak Anda pakai, pilih namanya lalu klik \"End task\".",
+            "**Jangan** menutup baris yang namanya tidak Anda kenali, terutama yang berhubungan dengan Windows, antivirus, atau jaringan kantor.",
+            "Bila Anda memakai peramban seperti Chrome atau Edge, tutup tab yang tidak diperlukan. Tiap tab memakan memori tersendiri.",
+            "Nyalakan ulang komputer. Klik tombol Start, klik ikon tombol daya, lalu pilih \"Restart\". Pilih Restart, bukan Shut Down.",
+            "Setelah menyala kembali, tunggu sekitar 3 menit sebelum mulai bekerja.",
+            "Buka **hanya** aplikasi yang bermasalah tadi, tanpa membuka aplikasi lain.",
+            "Bila masih membeku juga, laporkan kepada Engineer ICT beserta nama aplikasi dan nama berkasnya."
           ]
         }
       ],
@@ -2134,19 +2326,46 @@
       ],
       "solusi": [
         {
-          "judul": "Langkah Penyelesaian",
+          "judul": "Solusi Pertama: Periksa Jaringan dan Kondisi Printer",
           "pengantar": null,
           "langkah": [
             "Lihat pojok kanan bawah layar di sebelah jam. Pastikan ikon jaringan tidak bertanda silang atau tanda seru.",
-            "Periksa printer secara fisik, pastikan lampunya menyala.",
+            "Bila ikon jaringan bertanda silang atau tanda seru, kendalanya ada pada jaringan, bukan pada printer. Laporkan sebagai kendala jaringan kepada Engineer ICT.",
+            "Periksa printer secara fisik, pastikan lampunya menyala dan tidak ada lampu peringatan berwarna merah atau oranye.",
+            "Periksa kabel jaringan yang menuju printer. Tekan kedua ujungnya sampai terpasang rapat.",
+            "Coba tanyakan kepada rekan di ruangan yang sama apakah mereka bisa mencetak ke printer tersebut. Bila mereka juga tidak bisa, berarti masalahnya pada printer atau jaringannya, bukan pada komputer Anda — langsung laporkan kepada Engineer ICT.",
+            "Bila hanya komputer Anda yang bermasalah, lanjutkan ke langkah berikutnya."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Tambahkan Printer ke Komputer Anda",
+          "pengantar": "Dipakai bila jaringan normal dan rekan lain dapat mencetak. Berarti printer tersebut memang belum pernah terdaftar pada komputer Anda.",
+          "langkah": [
             "Klik tombol Start di bagian bawah layar, lalu klik ikon roda gigi bertuliskan \"Settings\".",
             "Pada daftar di sisi kiri, klik \"Bluetooth & devices\".",
             "Klik \"Printers & scanners\".",
             "Klik tombol \"Add device\" di bagian atas kanan.",
             "Tunggu sekitar 30 detik sambil komputer mencari printer yang tersedia di jaringan.",
             "Bila nama printer muncul, klik tombol \"Add device\" di sebelahnya.",
-            "Tunggu sampai proses pemasangan selesai, lalu coba cetak satu halaman percobaan.",
-            "Bila printer sama sekali tidak muncul dalam pencarian, laporkan kepada Engineer ICT."
+            "Tunggu sampai proses pemasangan selesai. Bila muncul permintaan izin administrator, hentikan dan laporkan kepada Engineer ICT — pemasangan itu bukan wewenang pengguna.",
+            "Setelah terpasang, klik nama printer tersebut lalu klik \"Set as default\" bila tersedia.",
+            "Cetak satu halaman percobaan untuk menguji."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Hapus Printer lalu Tambahkan Kembali",
+          "pengantar": "Dipakai bila nama printer sudah ada tetapi dokumen tetap tidak keluar. Menghapus lalu memasang ulang menyegarkan sambungan yang tersimpan keliru.",
+          "langkah": [
+            "Klik tombol Start, klik \"Settings\", klik \"Bluetooth & devices\", lalu klik \"Printers & scanners\".",
+            "Cari nama printer yang bermasalah, lalu klik satu kali pada namanya.",
+            "Klik tombol \"Remove\" di bagian atas. Bila muncul pertanyaan konfirmasi, pilih \"Yes\".",
+            "Perhatikan daftar printer sekali lagi. Bila ada nama lain yang mirip dan sudah tidak dipakai, hapus juga agar tidak tertukar di kemudian hari.",
+            "Nyalakan ulang komputer. Klik tombol Start, ikon daya, lalu \"Restart\".",
+            "Setelah komputer menyala kembali, tunggu 2 menit agar jaringan siap sepenuhnya.",
+            "Kembali ke \"Printers & scanners\", lalu klik tombol \"Add device\".",
+            "Tunggu sekitar 30 detik sampai nama printer muncul, lalu klik \"Add device\" di sebelahnya.",
+            "Cetak satu halaman percobaan.",
+            "Bila printer tetap tidak muncul dalam pencarian, laporkan kepada Engineer ICT beserta nama printer yang tertempel pada badan printer tersebut."
           ]
         }
       ],

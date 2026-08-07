@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { GrafikPeriode, BatangSebaran } from './Grafik.jsx';
+import {
+  DivisionIcon, IconChart, IconDownload, IconPrint, IconLogout, IconAlert,
+  IconClock, IconInbox, IconChevronDown, IconCheck, IconWhatsapp
+} from '../components/Icons.jsx';
+import Markdown from '../components/Markdown.jsx';
+import Masuk from '../components/Masuk.jsx';
 import './rekap.css';
 
 const API = '/api';
@@ -12,13 +18,10 @@ const WIB_MS = 7 * 60 * 60 * 1000;
 
 /** Tanggal hari ini menurut WIB, bentuk 'YYYY-MM-DD' */
 function hariIniWIB(geserHari = 0) {
-  const t = Date.now() + WIB_MS - geserHari * 86400000;
-  return new Date(t).toISOString().slice(0, 10);
+  return new Date(Date.now() + WIB_MS - geserHari * 86400000).toISOString().slice(0, 10);
 }
 
-function awalBulanWIB() {
-  return hariIniWIB().slice(0, 8) + '01';
-}
+const awalBulanWIB = () => hariIniWIB().slice(0, 8) + '01';
 
 function jamWIB(iso) {
   if (!iso) return '—';
@@ -30,6 +33,24 @@ function tanggalID(t) {
   if (!t) return '—';
   const [th, bl, hr] = t.split('-');
   return `${hr}/${bl}/${th}`;
+}
+
+/**
+ * Tanggal DAN jam menurut WIB dari satu timestamp UTC.
+ *
+ * Tanggalnya wajib ikut digeser ke WIB, bukan diambil dari sepuluh huruf
+ * pertama ISO-nya: penanganan pukul 01.00 WIB tercatat sebagai hari sebelumnya
+ * dalam UTC, sehingga tanggalnya akan mundur sehari sementara jamnya benar.
+ */
+function tanggalJamWIB(iso) {
+  if (!iso) return '—';
+  const d = new Date(new Date(iso).getTime() + WIB_MS);
+  const tanggal = [
+    String(d.getUTCDate()).padStart(2, '0'),
+    String(d.getUTCMonth() + 1).padStart(2, '0'),
+    d.getUTCFullYear()
+  ].join('/');
+  return `${tanggal} ${jamWIB(iso)}`;
 }
 
 function durasi(detik) {
@@ -48,57 +69,29 @@ const LABEL_STATUS = {
 };
 
 /* ────────────────────────────────────────────────────────────────
-   Halaman masuk
+   Kepala berjenama — meniru navbar halaman pelapor
    ──────────────────────────────────────────────────────────────── */
 
-function Masuk({ onBerhasil }) {
-  const [namaAkun, setNamaAkun] = useState('');
-  const [sandi, setSandi] = useState('');
-  const [galat, setGalat] = useState('');
-  const [sibuk, setSibuk] = useState(false);
-
-  const kirim = async (e) => {
-    e.preventDefault();
-    setGalat('');
-    setSibuk(true);
-    try {
-      const res = await fetch(`${API}/auth/masuk`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ namaAkun, sandi })
-      });
-      const data = await res.json();
-      if (data.success) onBerhasil(data.pengguna);
-      else setGalat(data.error || 'Gagal masuk');
-    } catch {
-      setGalat('Tidak dapat terhubung ke server.');
-    } finally {
-      setSibuk(false);
-    }
-  };
-
+/**
+ * Logo Pertamina EP adalah varian untuk LATAR GELAP: wordmark "PERTAMINA"
+ * digambar putih. Karena itu bidangnya wajib biru, sama seperti navbar
+ * halaman pelapor. Menaruhnya di atas putih membuat tulisannya lenyap.
+ */
+function Merek() {
   return (
-    <div className="rk-masuk-latar">
-      <form className="rk-masuk" onSubmit={kirim}>
-        <h1>Laporan Rekap SIGAP</h1>
-        <p className="rk-masuk-sub">
-          Halaman ini memuat data pelapor. Masuk dengan akun engineer atau admin.
-        </p>
-
-        <label htmlFor="rk-akun">Nama akun</label>
-        <input id="rk-akun" value={namaAkun} autoComplete="username" autoFocus
-               onChange={(e) => setNamaAkun(e.target.value)} />
-
-        <label htmlFor="rk-sandi">Kata sandi</label>
-        <input id="rk-sandi" type="password" value={sandi} autoComplete="current-password"
-               onChange={(e) => setSandi(e.target.value)} />
-
-        {galat && <p className="rk-galat" role="alert">{galat}</p>}
-
-        <button type="submit" disabled={sibuk || !namaAkun || !sandi}>
-          {sibuk ? 'Memeriksa…' : 'Masuk'}
-        </button>
-      </form>
+    <div className="rk-merek">
+      <img src="/logo-pertamina-ep.svg" alt="Pertamina EP" className="rk-merek-logo" />
+      <img
+        src="/logo-satu-it-sigap.png"
+        alt="SATU-IT SIGAP"
+        className="rk-merek-logo-unit"
+        onError={(e) => { e.currentTarget.style.display = 'none'; }}
+      />
+      <span className="rk-merek-garis" aria-hidden="true" />
+      <span className="rk-merek-teks">
+        <strong>SIGAP</strong>
+        <small>LAPORAN REKAP · FIELD LIRIK</small>
+      </span>
     </div>
   );
 }
@@ -107,15 +100,27 @@ function Masuk({ onBerhasil }) {
    Kotak angka ringkasan
    ──────────────────────────────────────────────────────────────── */
 
-function Kotak({ label, nilai, satuan, keterangan, sorot }) {
+function Kotak({ ikon, label, nilai, satuan, keterangan, nada }) {
   return (
-    <div className={`rk-kotak ${sorot ? 'sorot' : ''}`}>
+    <div className={`rk-kotak ${nada || ''}`}>
+      <span className="rk-kotak-ikon" aria-hidden="true">{ikon}</span>
       <span className="rk-kotak-label">{label}</span>
       <span className="rk-kotak-nilai">
         {nilai}{satuan && <small>{satuan}</small>}
       </span>
       {keterangan && <span className="rk-kotak-ket">{keterangan}</span>}
     </div>
+  );
+}
+
+/** Rangka abu-abu selagi data dimuat — lebih tenang daripada tulisan "Memuat…" */
+function Rangka({ tinggi = 96, jumlah = 1 }) {
+  return (
+    <>
+      {Array.from({ length: jumlah }, (_, i) => (
+        <div key={i} className="rk-rangka" style={{ height: tinggi }} aria-hidden="true" />
+      ))}
+    </>
   );
 }
 
@@ -128,7 +133,10 @@ export default function RekapPage() {
   const [data, setData] = useState(null);
   const [memuat, setMemuat] = useState(false);
   const [galat, setGalat] = useState('');
-  const [tandai, setTandai] = useState(null);            // tiket yang sedang ditandai
+  const [tandai, setTandai] = useState(null);
+  const [batal, setBatal] = useState(null);
+  const [barisTerbuka, setBarisTerbuka] = useState(null);
+  const [riwayat, setRiwayat] = useState({});           // id sesi → daftar pesan
 
   // Waktu penyusunan laporan, dicetak pada catatan kaki. Diperbarui tepat
   // sebelum jendela cetak dibuka, supaya berkas PDF membawa jam cetaknya
@@ -146,7 +154,6 @@ export default function RekapPage() {
   });
   const [satuan, setSatuan] = useState('hari');
 
-  // Periksa sesi yang mungkin masih berlaku
   useEffect(() => {
     fetch(`${API}/auth/saya`)
       .then((r) => r.json())
@@ -187,6 +194,8 @@ export default function RekapPage() {
     if (satuanBaru) setSatuan(satuanBaru);
   };
 
+  const presetAktif = (dari, sampai) => f.dari === dari && f.sampai === sampai;
+
   const unduhExcel = () => {
     const q = new URLSearchParams(f);
     for (const [k, v] of [...q]) if (!v) q.delete(k);
@@ -194,8 +203,6 @@ export default function RekapPage() {
   };
 
   const cetak = async () => {
-    // Dicatat lebih dulu: berkas PDF hasil cetak keluar dari kendali sistem
-    // begitu tersimpan, sehingga jejaknya perlu ada di sisi ini.
     try {
       await fetch(`${API}/rekap/catat-cetak`, {
         method: 'POST',
@@ -204,9 +211,23 @@ export default function RekapPage() {
       });
     } catch { /* pencetakan tetap boleh berjalan */ }
     setWaktuSusun(new Date());
-    // Tunggu satu putaran render agar catatan kaki sudah memuat jam terbaru
-    // sebelum peramban mengambil cuplikan halamannya.
     setTimeout(() => window.print(), 0);
+  };
+
+  const kirimBatal = async () => {
+    try {
+      const res = await fetch(`${API}/tugas/batal`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nomorTiket: batal.nomor_tiket })
+      });
+      const d = await res.json();
+      if (!d.success) { setGalat(d.error); return; }
+      setBatal(null);
+      ambil();
+    } catch {
+      setGalat('Gagal membatalkan penandaan.');
+    }
   };
 
   const kirimTandai = async (catatan) => {
@@ -225,234 +246,658 @@ export default function RekapPage() {
     }
   };
 
-  if (pengguna === undefined) return <div className="rk-tunggu">Memuat…</div>;
-  if (pengguna === null) return <Masuk onBerhasil={setPengguna} />;
+  /**
+   * Buka atau tutup rincian satu laporan.
+   *
+   * Percakapannya diambil sekali lalu disimpan: engineer kerap membuka
+   * beberapa tiket bergantian, dan mengambil ulang tiap kali membuatnya
+   * terasa lambat tanpa alasan.
+   */
+  const bukaBaris = async (laporan) => {
+    if (barisTerbuka === laporan.nomor_tiket) {
+      setBarisTerbuka(null);
+      return;
+    }
+    setBarisTerbuka(laporan.nomor_tiket);
+
+    if (riwayat[laporan.id]) return;
+    try {
+      const r = await fetch(`${API}/chat/history/${laporan.id}`);
+      const d = await r.json();
+      if (d.success) setRiwayat((v) => ({ ...v, [laporan.id]: d.messages }));
+    } catch { /* rincian lain tetap tampil */ }
+  };
+
+  /** Saring cepat dengan mengklik batang sebaran */
+  const saringDari = (kolom, label) => {
+    if (kolom === 'divisi') {
+      const d = data?.pilihan.divisi.find((x) => x.name === label);
+      if (d) setF((v) => ({ ...v, divisi: v.divisi === d.id ? '' : d.id }));
+      return;
+    }
+    setF((v) => ({ ...v, [kolom]: v[kolom] === label ? '' : label }));
+  };
+
+  if (pengguna === undefined) {
+    return <div className="rk-tunggu">Memuat…</div>;
+  }
+  if (pengguna === null) {
+    return (
+      <Masuk
+        judul="Laporan Rekap"
+        sub="LAPORAN REKAP · FIELD LIRIK"
+        onBerhasil={setPengguna}
+      />
+    );
+  }
 
   const r = data?.ringkasan;
 
+  /**
+   * Nama lengkap dari nama akun. Yang tersimpan pada laporan tetap nama akun —
+   * itulah identitas yang dapat dipertanggungjawabkan — sedangkan nama lengkap
+   * hanya cara menampilkannya. Bila akunnya sudah dihapus, nama akun itu
+   * sendiri yang ditampilkan; laporan lama tidak boleh kehilangan penandanya.
+   */
+  const namaAkun = (akun) => data?.engineer?.nama?.[akun] || akun;
+
+  /** Engineer yang menangani sebuah layanan, untuk tiket yang masih menunggu */
+  const penanggungJawab = (divisiId) => {
+    const daftar = data?.engineer?.perDivisi?.[divisiId];
+    if (!daftar || daftar.length === 0) return null;
+    return daftar.map((e) => e.nama).join(', ');
+  };
+
   return (
-    <div className="rk">
-      <header className="rk-atas">
-        <div>
-          <h1>Laporan Rekap SIGAP</h1>
-          <p>Pertamina EP Asset 1 Regional 1 Field Lirik</p>
-        </div>
-        <div className="rk-atas-kanan rk-sembunyi-cetak">
+    <div className="rk-halaman">
+      {/* ── Kepala berjenama ───────────────────────── */}
+      <header className="rk-navbar rk-sembunyi-cetak">
+        <Merek />
+        <div className="rk-navbar-kanan">
           <span className="rk-pengguna">
-            {pengguna.nama} · <em>{pengguna.peran}</em>
+            <strong>{pengguna.nama}</strong>
+            <em>{pengguna.peran}</em>
           </span>
-          <button className="rk-tombol-samar" onClick={keluar}>Keluar</button>
+          <button className="rk-tombol-navbar" onClick={keluar}>
+            <IconLogout size={16} /> Keluar
+          </button>
         </div>
       </header>
 
-      {/* ── Saringan ── */}
-      <section className="rk-saringan rk-sembunyi-cetak" aria-label="Saringan laporan">
-        <div className="rk-preset">
-          <button onClick={() => setPreset(hariIniWIB(), hariIniWIB(), 'hari')}>Hari ini</button>
-          <button onClick={() => setPreset(hariIniWIB(6), hariIniWIB(), 'hari')}>7 hari</button>
-          <button onClick={() => setPreset(hariIniWIB(29), hariIniWIB(), 'hari')}>30 hari</button>
-          <button onClick={() => setPreset(awalBulanWIB(), hariIniWIB(), 'hari')}>Bulan ini</button>
-          <button onClick={() => setPreset(hariIniWIB(364), hariIniWIB(), 'bulan')}>1 tahun</button>
+      <div className="rk">
+        <div className="rk-judul-cetak">
+          <h1>Laporan Rekap SIGAP</h1>
+          <p>Pertamina EP Asset 1 Regional 1 Field Lirik</p>
+          <p>Periode {tanggalID(f.dari)} – {tanggalID(f.sampai)}</p>
         </div>
 
-        <div className="rk-kolom-saringan">
-          <label>Dari
-            <input type="date" value={f.dari} onChange={(e) => setF({ ...f, dari: e.target.value })} />
-          </label>
-          <label>Sampai
-            <input type="date" value={f.sampai} onChange={(e) => setF({ ...f, sampai: e.target.value })} />
-          </label>
-          <label>Layanan
-            <select value={f.divisi} onChange={(e) => setF({ ...f, divisi: e.target.value })}>
-              <option value="">Semua</option>
-              {data?.pilihan.divisi.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
-            </select>
-          </label>
-          <label>Status
-            <select value={f.status} onChange={(e) => setF({ ...f, status: e.target.value })}>
-              <option value="">Semua</option>
-              {Object.entries(LABEL_STATUS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-            </select>
-          </label>
-          <label>Area
-            <select value={f.area} onChange={(e) => setF({ ...f, area: e.target.value })}>
-              <option value="">Semua</option>
-              {data?.pilihan.area.map((a) => <option key={a} value={a}>{a}</option>)}
-            </select>
-          </label>
-          <label>Urgensi
-            <select value={f.urgensi} onChange={(e) => setF({ ...f, urgensi: e.target.value })}>
-              <option value="">Semua</option>
-              {data?.pilihan.urgensi.map((u) => <option key={u} value={u}>{u}</option>)}
-            </select>
-          </label>
-          <label className="rk-cari">Cari
-            <input type="search" placeholder="tiket, nama, atau kata dalam keluhan"
-                   value={f.cari} onChange={(e) => setF({ ...f, cari: e.target.value })} />
-          </label>
-        </div>
+        {/* ── Saringan ── */}
+        <section className="rk-saringan rk-sembunyi-cetak" aria-label="Saringan laporan">
+          <div className="rk-preset">
+            {[
+              ['Hari ini', hariIniWIB(), hariIniWIB(), 'hari'],
+              ['7 hari', hariIniWIB(6), hariIniWIB(), 'hari'],
+              ['30 hari', hariIniWIB(29), hariIniWIB(), 'hari'],
+              ['Bulan ini', awalBulanWIB(), hariIniWIB(), 'hari'],
+              ['1 tahun', hariIniWIB(364), hariIniWIB(), 'bulan']
+            ].map(([label, dari, sampai, s]) => (
+              <button
+                key={label}
+                className={presetAktif(dari, sampai) ? 'aktif' : ''}
+                onClick={() => setPreset(dari, sampai, s)}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
 
-        <div className="rk-aksi">
-          {pengguna.peran === 'admin' && (
-            <button className="rk-tombol-utama" onClick={unduhExcel}>Unduh Excel</button>
-          )}
-          <button className="rk-tombol-samar" onClick={cetak}>Cetak / Simpan PDF</button>
-        </div>
-      </section>
+          <div className="rk-kolom-saringan">
+            <label>Dari
+              <input type="date" value={f.dari} onChange={(e) => setF({ ...f, dari: e.target.value })} />
+            </label>
+            <label>Sampai
+              <input type="date" value={f.sampai} onChange={(e) => setF({ ...f, sampai: e.target.value })} />
+            </label>
+            <label>Layanan
+              <select value={f.divisi} onChange={(e) => setF({ ...f, divisi: e.target.value })}>
+                <option value="">Semua</option>
+                {data?.pilihan.divisi.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
+              </select>
+            </label>
+            <label>Status
+              <select value={f.status} onChange={(e) => setF({ ...f, status: e.target.value })}>
+                <option value="">Semua</option>
+                {Object.entries(LABEL_STATUS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+              </select>
+            </label>
+            <label>Area
+              <select value={f.area} onChange={(e) => setF({ ...f, area: e.target.value })}>
+                <option value="">Semua</option>
+                {data?.pilihan.area.map((a) => <option key={a} value={a}>{a}</option>)}
+              </select>
+            </label>
+            <label>Urgensi
+              <select value={f.urgensi} onChange={(e) => setF({ ...f, urgensi: e.target.value })}>
+                <option value="">Semua</option>
+                {data?.pilihan.urgensi.map((u) => <option key={u} value={u}>{u}</option>)}
+              </select>
+            </label>
+            <label className="rk-cari">Cari
+              <input type="search" placeholder="tiket, nama, atau kata dalam keluhan"
+                     value={f.cari} onChange={(e) => setF({ ...f, cari: e.target.value })} />
+            </label>
+          </div>
 
-      <p className="rk-periode-cetak">
-        Periode {tanggalID(f.dari)} – {tanggalID(f.sampai)}
-      </p>
+          <div className="rk-aksi">
+            {pengguna.peran === 'admin' && (
+              <button className="rk-tombol-utama" onClick={unduhExcel}>
+                <IconDownload size={17} /> Unduh Excel
+              </button>
+            )}
+            <button className="rk-tombol-samar" onClick={cetak}>
+              <IconPrint size={17} /> Cetak / Simpan PDF
+            </button>
+          </div>
+        </section>
 
-      {galat && <p className="rk-galat" role="alert">{galat}</p>}
-      {memuat && <p className="rk-tunggu">Memuat data…</p>}
+        {galat && <p className="rk-galat" role="alert">{galat}</p>}
 
-      {r && (
-        <>
-          {/* ── Angka ringkasan ── */}
-          <section className="rk-kotak-baris" aria-label="Ringkasan periode">
-            <Kotak label="Total laporan" nilai={r.total} />
-            <Kotak label="Selesai mandiri" nilai={r.persen_mandiri} satuan="%" sorot
-                   keterangan={`${r.selesai} dari ${r.selesai + r.diteruskan} laporan tuntas`} />
-            <Kotak label="Diteruskan ke engineer" nilai={r.diteruskan}
-                   keterangan={r.ditangani > 0 ? `${r.ditangani} sudah ditandai selesai` : 'belum ada yang ditandai selesai'} />
-            <Kotak label="Ditinggalkan" nilai={r.ditinggalkan}
-                   keterangan="pengguna pergi di tengah jalan" />
-            <Kotak label="Rata-rata durasi" nilai={durasi(r.rata_durasi)} />
-            <Kotak label="Rata-rata waktu tanggap" nilai={durasi(r.rata_tanggap)}
-                   keterangan="diteruskan → ditandai selesai" />
-          </section>
+        {memuat && !data && (
+          <div className="rk-kotak-baris"><Rangka jumlah={6} tinggi={104} /></div>
+        )}
 
-          {/* ── Grafik periode ── */}
-          <section className="rk-panel">
-            <div className="rk-panel-atas">
-              <h2>Laporan masuk per {satuan}</h2>
-              <div className="rk-satuan rk-sembunyi-cetak">
-                {['hari', 'minggu', 'bulan'].map((s) => (
-                  <button key={s} className={satuan === s ? 'aktif' : ''}
-                          onClick={() => setSatuan(s)}>{s}</button>
-                ))}
-              </div>
-            </div>
-            <GrafikPeriode deret={data.deret} satuan={satuan} />
-          </section>
+        {r && (
+          <>
+            {/* ── Angka ringkasan ── */}
+            <section className="rk-kotak-baris" aria-label="Ringkasan periode">
+              <Kotak
+                ikon={<IconInbox size={17} />}
+                label="Total laporan" nilai={r.total}
+              />
+              <Kotak
+                ikon={<IconCheck size={17} />}
+                label="Selesai mandiri" nilai={r.persen_mandiri} satuan="%" nada="sorot"
+                keterangan={`${r.selesai} dari ${r.selesai + r.diteruskan} laporan tuntas`}
+              />
+              <Kotak
+                ikon={<IconWhatsapp size={16} />}
+                label="Diteruskan ke engineer" nilai={r.diteruskan} nada="jingga"
+                keterangan={r.ditangani > 0
+                  ? `${r.ditangani} sudah ditandai selesai`
+                  : 'belum ada yang ditandai selesai'}
+              />
+              <Kotak
+                ikon={<IconChart size={17} />}
+                label="Ditinggalkan" nilai={r.ditinggalkan}
+                keterangan="pengguna pergi di tengah jalan"
+              />
+              {/* Kelompok yang paling tidak terlihat: sistem gagal menolong
+                  mereka DAN mereka tidak melapor ke siapa pun, sehingga
+                  kendalanya tidak muncul di mana pun kecuali angka ini. */}
+              <Kotak
+                ikon={<IconAlert size={17} />}
+                label="Ditawari engineer, lalu pergi" nilai={r.ditawari_pergi}
+                keterangan="tidak tuntas dan tidak dilaporkan ke siapa pun"
+              />
+              <Kotak
+                ikon={<IconClock size={17} />}
+                label="Rata-rata durasi" nilai={durasi(r.rata_durasi)}
+              />
+              <Kotak
+                ikon={<IconClock size={17} />}
+                label="Rata-rata waktu tanggap" nilai={durasi(r.rata_tanggap)}
+                keterangan="diteruskan → ditandai selesai"
+              />
+            </section>
 
-          {/* ── Sebaran ── */}
-          <section className="rk-kisi">
-            <div className="rk-panel">
-              <h2>Sebaran per layanan</h2>
-              <BatangSebaran data={data.sebaranDivisi} />
-            </div>
-            <div className="rk-panel">
-              <h2>Tingkat urgensi</h2>
-              <BatangSebaran data={data.sebaranUrgensi} kosong="Belum ada laporan yang diteruskan." />
-            </div>
-            <div className="rk-panel">
-              <h2>Sebaran per area</h2>
-              <BatangSebaran data={data.sebaranArea} kosong="Belum ada laporan yang diteruskan." />
-            </div>
-            <div className="rk-panel">
-              <h2>Sebaran per fungsi</h2>
-              <BatangSebaran data={data.sebaranFungsi} kosong="Belum ada laporan yang diteruskan." />
-            </div>
-          </section>
-
-          {/* ── Keluhan belum dikenali ── */}
-          {data.takDikenali.length > 0 && (
+            {/* ── Grafik periode ── */}
             <section className="rk-panel">
-              <h2>Keluhan yang belum dikenali</h2>
-              <p className="rk-panel-ket">
-                Keluhan berskor mendekati 0,4 hanya kurang satu-dua kata kunci pada SOP —
-                inilah daftar perbaikan basis pengetahuan yang paling murah.
+              <div className="rk-panel-atas">
+                <div>
+                  <span className="rk-eyebrow"><IconChart size={13} /> VOLUME LAPORAN</span>
+                  <h2>Laporan masuk per {satuan}</h2>
+                </div>
+                <div className="rk-satuan rk-sembunyi-cetak">
+                  {['hari', 'minggu', 'bulan'].map((s) => (
+                    <button key={s} className={satuan === s ? 'aktif' : ''}
+                            onClick={() => setSatuan(s)}>{s}</button>
+                  ))}
+                </div>
+              </div>
+              <GrafikPeriode deret={data.deret} satuan={satuan} />
+            </section>
+
+            {/* ── Sebaran ── */}
+            <section className="rk-kisi">
+              <div className="rk-panel">
+                <h2>Sebaran per layanan</h2>
+                <p className="rk-panel-ket rk-sembunyi-cetak">Klik salah satu untuk menyaring.</p>
+                <BatangSebaran data={data.sebaranDivisi}
+                               onPilih={(l) => saringDari('divisi', l)}
+                               terpilih={data.pilihan.divisi.find((d) => d.id === f.divisi)?.name} />
+              </div>
+              <div className="rk-panel">
+                <h2>Tingkat urgensi</h2>
+                <p className="rk-panel-ket rk-sembunyi-cetak">Klik salah satu untuk menyaring.</p>
+                <BatangSebaran data={data.sebaranUrgensi} terpilih={f.urgensi}
+                               onPilih={(l) => saringDari('urgensi', l)}
+                               kosong="Belum ada laporan yang diteruskan." />
+              </div>
+              <div className="rk-panel">
+                <h2>Sebaran per area</h2>
+                <p className="rk-panel-ket rk-sembunyi-cetak">Klik salah satu untuk menyaring.</p>
+                <BatangSebaran data={data.sebaranArea} terpilih={f.area}
+                               onPilih={(l) => saringDari('area', l)}
+                               kosong="Belum ada laporan yang diteruskan." />
+              </div>
+              <div className="rk-panel">
+                <h2>Sebaran per fungsi</h2>
+                <BatangSebaran data={data.sebaranFungsi}
+                               kosong="Belum ada laporan yang diteruskan." />
+              </div>
+            </section>
+
+            {/* ── Keefektifan tiap solusi ── */}
+            {data.keefektifan?.perSolusi.some((s) => s.ditawarkan > 0) && (
+              <section className="rk-panel">
+                <span className="rk-eyebrow">MUTU LANGKAH SOP</span>
+                <h2>Seberapa sering tiap solusi menuntaskan</h2>
+                <p className="rk-panel-ket">
+                  Dibaca sebagai corong: yang sampai ke Solusi Ketiga pasti sudah
+                  mencoba yang pertama dan kedua. Solusi yang sering ditawarkan
+                  tetapi jarang menuntaskan adalah langkah yang perlu ditulis
+                  ulang — dan tanpa angka ini ia dapat bertahan bertahun-tahun
+                  tanpa ada yang mempertanyakannya.
+                </p>
+
+                <ul className="rk-corong">
+                  {data.keefektifan.perSolusi.map((s) => (
+                    <li key={s.nomor}>
+                      <span className="rk-corong-label">Solusi ke-{s.nomor}</span>
+                      <span className="rk-batang-jalur">
+                        <span
+                          className="rk-batang-isi"
+                          style={{ width: `${s.persen ?? 0}%` }}
+                        />
+                      </span>
+                      <span className="rk-corong-nilai">
+                        {s.ditawarkan === 0
+                          ? '—'
+                          : <><strong>{s.persen}%</strong> <em>{s.tuntas} dari {s.ditawarkan}</em></>}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+
+                {data.keefektifan.perMasalah.length > 0 && (
+                  <>
+                    <h3 className="rk-sub">Masalah yang SOP-nya paling sering gagal</h3>
+                    <p className="rk-panel-ket">
+                      Hanya masalah dengan minimal tiga laporan — di bawah itu
+                      angkanya belum berarti apa-apa.
+                    </p>
+                    <div className="rk-gulir">
+                      <table className="rk-tabel">
+                        <thead>
+                          <tr>
+                            <th>Masalah</th><th className="rk-angka">Laporan</th>
+                            <th className="rk-angka">Tuntas</th><th className="rk-angka">Persen</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {data.keefektifan.perMasalah.map((m) => (
+                            <tr key={m.masalah}>
+                              <td className="rk-keluhan">{m.masalah}</td>
+                              <td className="rk-angka">{m.total}</td>
+                              <td className="rk-angka">{m.tuntas}</td>
+                              <td className="rk-angka">
+                                <span className={`rk-skor ${m.persen >= 50 ? 'dekat' : ''}`}>
+                                  {m.persen}%
+                                </span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
+                )}
+              </section>
+            )}
+
+            {/* ── Keluhan belum dikenali ── */}
+            {data.takDikenali.length > 0 && (
+              <section className="rk-panel">
+                <span className="rk-eyebrow">BAHAN PERBAIKAN SOP</span>
+                <h2>Keluhan yang belum dikenali</h2>
+                <p className="rk-panel-ket">
+                  Keluhan berskor mendekati 0,4 hanya kurang satu-dua kata kunci pada SOP —
+                  inilah daftar perbaikan basis pengetahuan yang paling murah.
+                </p>
+                <div className="rk-gulir">
+                  <table className="rk-tabel">
+                    <thead>
+                      <tr><th>Tanggal</th><th>Layanan</th><th>Keluhan</th><th>Skor</th><th>Terdekat</th></tr>
+                    </thead>
+                    <tbody>
+                      {data.takDikenali.map((k) => (
+                        <tr key={k.nomor_tiket}>
+                          <td>{tanggalID(k.tanggal_wib)}</td>
+                          <td>{k.divisi_nama}</td>
+                          <td className="rk-keluhan">{k.keluhan}</td>
+                          <td className="rk-angka">
+                            <span className={`rk-skor ${(k.skor_cocok ?? 0) >= 0.2 ? 'dekat' : ''}`}>
+                              {(k.skor_cocok ?? 0).toFixed(2)}
+                            </span>
+                          </td>
+                          <td>{k.masalah_cocok || '—'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            )}
+
+            {/* ── Tabel rinci ── */}
+            <section className="rk-panel">
+              <div className="rk-panel-atas">
+                <div>
+                  <span className="rk-eyebrow">RINCIAN</span>
+                  <h2>Daftar laporan</h2>
+                </div>
+                <span className="rk-panel-ket">
+                  {data.jumlah} laporan
+                  {data.jumlah > data.laporan.length && ` · menampilkan ${data.laporan.length} terbaru`}
+                </span>
+              </div>
+              <p className="rk-panel-ket rk-sembunyi-cetak">
+                Klik baris untuk melihat percakapan lengkapnya.
               </p>
+
               <div className="rk-gulir">
-                <table className="rk-tabel">
+                <table className="rk-tabel rk-tabel-klik">
                   <thead>
-                    <tr><th>Tanggal</th><th>Layanan</th><th>Keluhan</th><th>Skor</th><th>Terdekat</th></tr>
+                    <tr>
+                      <th className="rk-sembunyi-cetak" aria-label="Buka rincian" />
+                      <th>Tiket</th><th>Tanggal</th><th>Mulai</th><th>Berakhir</th><th>Durasi</th>
+                      <th>Layanan</th><th>Keluhan</th><th>Pelapor</th><th>Fungsi</th>
+                      <th>Lokasi</th><th>Urgensi</th><th>Tanggap</th><th>Status</th>
+                      <th className="rk-sembunyi-cetak">Tindakan</th>
+                    </tr>
                   </thead>
                   <tbody>
-                    {data.takDikenali.map((k) => (
-                      <tr key={k.nomor_tiket}>
-                        <td>{tanggalID(k.tanggal_wib)}</td>
-                        <td>{k.divisi_nama}</td>
-                        <td className="rk-keluhan">{k.keluhan}</td>
-                        <td className="rk-angka">{(k.skor_cocok ?? 0).toFixed(2)}</td>
-                        <td>{k.masalah_cocok || '—'}</td>
-                      </tr>
+                    {data.laporan.map((l) => (
+                      <React.Fragment key={l.nomor_tiket}>
+                        <tr
+                          className={barisTerbuka === l.nomor_tiket ? 'terbuka' : ''}
+                          onClick={() => bukaBaris(l)}
+                        >
+                          <td className="rk-sembunyi-cetak rk-sel-buka">
+                            <IconChevronDown size={15} />
+                          </td>
+                          <td className="rk-tiket">{l.nomor_tiket}</td>
+                          <td>{tanggalID(l.tanggal_wib)}</td>
+                          <td>{jamWIB(l.dibuat_pada)}</td>
+                          <td>{jamWIB(l.berakhir_pada)}</td>
+                          <td>{durasi(l.durasi_detik)}</td>
+                          <td>
+                            <span className="rk-layanan">
+                              {l.divisi_id && <DivisionIcon id={l.divisi_id} size={15} />}
+                              {l.divisi_nama || '—'}
+                            </span>
+                          </td>
+                          <td className="rk-keluhan">{l.keluhan || '—'}</td>
+                          <td>{l.nama || '—'}</td>
+                          <td>{l.fungsi || '—'}</td>
+                          <td>{l.lokasi || '—'}</td>
+                          <td>
+                            {l.urgensi
+                              ? <span className={`rk-urgensi u-${l.urgensi.toLowerCase()}`}>{l.urgensi}</span>
+                              : '—'}
+                          </td>
+                          <td>{durasi(l.waktu_tanggap)}</td>
+                          <td>
+                            <span className={`rk-status rk-status-${l.status}`}>
+                              {LABEL_STATUS[l.status] || l.status}
+                            </span>
+                          </td>
+                          <td className="rk-sembunyi-cetak">
+                            {l.status === 'diteruskan' && !l.ditangani_pada ? (
+                              <>
+                                <button
+                                  className="rk-tombol-kecil"
+                                  onClick={(e) => { e.stopPropagation(); setTandai(l); }}
+                                >
+                                  Tandai selesai
+                                </button>
+                                {/* Siapa yang harus ditagih. Dengan delapan
+                                    layanan dan engineer berbeda-beda, admin
+                                    tidak seharusnya mengingatnya sendiri. */}
+                                {penanggungJawab(l.divisi_id) && (
+                                  <span className="rk-penanggung">
+                                    {penanggungJawab(l.divisi_id)}
+                                  </span>
+                                )}
+                              </>
+                            ) : l.ditangani_pada ? (
+                              <span className="rk-selesai-oleh" title={l.catatan || ''}>
+                                <IconCheck size={13} /> {namaAkun(l.ditangani_oleh)}
+                                {/* Salah tekan di layar ponsel bukan kejadian
+                                    langka, dan tanpa jalan kembali satu ketukan
+                                    keliru merusak waktu tanggap selamanya. */}
+                                {pengguna.peran === 'admin' && (
+                                  <button
+                                    className="rk-batal"
+                                    title="Batalkan penandaan — tiket kembali ke daftar tugas"
+                                    onClick={(e) => { e.stopPropagation(); setBatal(l); }}
+                                  >
+                                    batalkan
+                                  </button>
+                                )}
+                              </span>
+                            ) : '—'}
+                          </td>
+                        </tr>
+
+                        {barisTerbuka === l.nomor_tiket && (
+                          <tr className="rk-baris-rincian rk-sembunyi-cetak">
+                            <td colSpan={15}>
+                              <RincianLaporan laporan={l} pesan={riwayat[l.id]} />
+                            </td>
+                          </tr>
+                        )}
+                      </React.Fragment>
                     ))}
                   </tbody>
                 </table>
               </div>
-            </section>
-          )}
 
-          {/* ── Tabel rinci ── */}
-          <section className="rk-panel">
-            <div className="rk-panel-atas">
-              <h2>Daftar laporan</h2>
-              <span className="rk-panel-ket">
-                {data.jumlah} laporan{data.jumlah > data.laporan.length && ` · menampilkan ${data.laporan.length} terbaru`}
-              </span>
+              {data.laporan.length === 0 && (
+                <p className="rk-kosong">Tidak ada laporan pada saringan ini.</p>
+              )}
+            </section>
+
+            {/* ── Jejak akses ── */}
+            {pengguna.peran === 'admin' && <JejakAkses />}
+
+            <footer className="rk-kaki">
+              Dokumen internal — memuat data pegawai.
+              Disusun {waktuSusun.toLocaleString('id-ID')} oleh {pengguna.nama} ({pengguna.namaAkun}).
+              <br />
+              Status <em>diteruskan</em> berarti laporan berpindah tangan ke engineer,
+              bukan bahwa kendalanya sudah tuntas.
+            </footer>
+          </>
+        )}
+      </div>
+
+      {tandai && <DialogTandai tiket={tandai} onBatal={() => setTandai(null)} onKirim={kirimTandai} />}
+
+      {batal && (
+        <div className="rk-dialog-latar" onClick={() => setBatal(null)}>
+          <div className="rk-dialog" role="dialog" aria-modal="true"
+               aria-label="Batalkan penandaan selesai" onClick={(e) => e.stopPropagation()}>
+            <h3>Batalkan penandaan selesai?</h3>
+            <p className="rk-dialog-tiket">{batal.nomor_tiket} · {batal.divisi_nama}</p>
+            <p className="rk-dialog-keluhan">
+              Tiket ini akan kembali ke daftar tugas engineer. Catatan penanganan
+              dan waktu tanggapnya ikut dikosongkan.
+              <br /><br />
+              Ditandai selesai oleh <strong>{batal.ditangani_oleh}</strong>.
+              Riwayat siapa menandai dan siapa membatalkan tetap tersimpan pada
+              jejak akses.
+            </p>
+            <div className="rk-dialog-aksi">
+              <button className="rk-tombol-samar" onClick={() => setBatal(null)}>Tidak jadi</button>
+              <button className="rk-tombol-utama" onClick={kirimBatal}>Ya, batalkan</button>
             </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Jejak akses
+   ──────────────────────────────────────────────────────────────── */
+
+const LABEL_TINDAKAN = {
+  masuk: 'Masuk',
+  lihat: 'Membuka rekap',
+  'unduh-excel': 'Mengunduh Excel',
+  cetak: 'Mencetak PDF',
+  'tandai-selesai': 'Menandai selesai',
+  'batal-tandai-selesai': 'Membatalkan penandaan',
+  'sop-dibuka': 'Membuka SOP',
+  'sop-disunting': 'Menyunting SOP'
+};
+
+/**
+ * Siapa membuka, mengunduh, dan mengubah apa.
+ *
+ * Pencatatannya sudah berjalan sejak awal (RANCANGAN-DATA.md §10), tetapi
+ * selama ini tidak ada satu pun halaman yang menampilkannya — sehingga
+ * alasan pencatatannya, *"bila dipertanyakan siapa yang menyebarkan daftar
+ * tersebut, jawabannya tersedia"*, baru benar-benar terpenuhi sekarang.
+ *
+ * Dimuat hanya saat dibuka: isinya jarang diperlukan, dan menariknya di setiap
+ * pemuatan halaman berarti 200 baris tambahan yang hampir selalu terbuang.
+ */
+function JejakAkses() {
+  const [akses, setAkses] = useState(null);
+  const [terbuka, setTerbuka] = useState(false);
+
+  const buka = async () => {
+    const baru = !terbuka;
+    setTerbuka(baru);
+    if (!baru || akses) return;
+    try {
+      const r = await fetch(`${API}/rekap/akses`);
+      const d = await r.json();
+      if (d.success) setAkses(d.akses);
+    } catch {
+      setAkses([]);
+    }
+  };
+
+  return (
+    <section className="rk-panel rk-sembunyi-cetak">
+      <button type="button" className="rk-jejak-buka" onClick={buka} aria-expanded={terbuka}>
+        <span>
+          <span className="rk-eyebrow">JEJAK AKSES</span>
+          <h2>Siapa membuka dan mengubah apa</h2>
+        </span>
+        <IconChevronDown size={18} className={terbuka ? 'terbuka' : ''} />
+      </button>
+
+      {terbuka && (
+        <>
+          <p className="rk-panel-ket">
+            Halaman ini memuat nama pegawai asli. Bila suatu saat dipertanyakan
+            siapa yang menyebarkan daftarnya, jawabannya ada di sini. Menampilkan
+            200 tindakan terakhir.
+          </p>
+
+          {!akses && <p className="rk-kosong">Memuat…</p>}
+          {akses && akses.length === 0 && <p className="rk-kosong">Belum ada tindakan tercatat.</p>}
+
+          {akses && akses.length > 0 && (
             <div className="rk-gulir">
               <table className="rk-tabel">
                 <thead>
-                  <tr>
-                    <th>Tiket</th><th>Tanggal</th><th>Mulai</th><th>Berakhir</th><th>Durasi</th>
-                    <th>Layanan</th><th>Keluhan</th><th>Pelapor</th><th>Fungsi</th>
-                    <th>Lokasi</th><th>Urgensi</th><th>Tanggap</th><th>Status</th>
-                    <th className="rk-sembunyi-cetak">Tindakan</th>
-                  </tr>
+                  <tr><th>Waktu</th><th>Akun</th><th>Tindakan</th><th>Keterangan</th></tr>
                 </thead>
                 <tbody>
-                  {data.laporan.map((l) => (
-                    <tr key={l.nomor_tiket}>
-                      <td className="rk-tiket">{l.nomor_tiket}</td>
-                      <td>{tanggalID(l.tanggal_wib)}</td>
-                      <td>{jamWIB(l.dibuat_pada)}</td>
-                      <td>{jamWIB(l.berakhir_pada)}</td>
-                      <td>{durasi(l.durasi_detik)}</td>
-                      <td>{l.divisi_nama}</td>
-                      <td className="rk-keluhan">{l.keluhan || '—'}</td>
-                      <td>{l.nama || '—'}</td>
-                      <td>{l.fungsi || '—'}</td>
-                      <td>{l.lokasi || '—'}</td>
-                      <td>{l.urgensi || '—'}</td>
-                      <td>{durasi(l.waktu_tanggap)}</td>
-                      <td>
-                        <span className={`rk-status rk-status-${l.status}`}>
-                          {LABEL_STATUS[l.status] || l.status}
-                        </span>
-                      </td>
-                      <td className="rk-sembunyi-cetak">
-                        {l.status === 'diteruskan' && !l.ditangani_pada ? (
-                          <button className="rk-tombol-kecil" onClick={() => setTandai(l)}>
-                            Tandai selesai
-                          </button>
-                        ) : l.ditangani_pada ? (
-                          <span className="rk-selesai-oleh" title={l.catatan || ''}>
-                            ✓ {l.ditangani_oleh}
-                          </span>
-                        ) : '—'}
-                      </td>
+                  {akses.map((a) => (
+                    <tr key={a.id}>
+                      <td>{tanggalJamWIB(a.dibuat_pada)}</td>
+                      <td className="rk-tiket">{a.nama_akun}</td>
+                      <td>{LABEL_TINDAKAN[a.tindakan] || a.tindakan}</td>
+                      <td className="rk-keluhan">{a.keterangan || '—'}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-          </section>
-
-          <footer className="rk-kaki">
-            Dokumen internal — memuat data pegawai.
-            Disusun {waktuSusun.toLocaleString('id-ID')} oleh {pengguna.nama} ({pengguna.namaAkun}).
-            <br />
-            Status <em>diteruskan</em> berarti laporan berpindah tangan ke engineer,
-            bukan bahwa kendalanya sudah tuntas.
-          </footer>
+          )}
         </>
       )}
+    </section>
+  );
+}
 
-      {tandai && <DialogTandai tiket={tandai} onBatal={() => setTandai(null)} onKirim={kirimTandai} />}
+/* ────────────────────────────────────────────────────────────────
+   Rincian satu laporan
+   ──────────────────────────────────────────────────────────────── */
+
+/**
+ * Percakapan lengkap sebuah laporan.
+ *
+ * Inilah yang paling menghemat waktu engineer: sebelum menelepon pelapor, ia
+ * dapat melihat langkah apa saja yang sudah dicoba. Tanpa ini, percakapan
+ * selalu dimulai dari "sudah coba dimatikan lalu dinyalakan lagi belum?"
+ */
+function RincianLaporan({ laporan, pesan }) {
+  return (
+    <div className="rk-rincian">
+      <div className="rk-rincian-ringkas">
+        {[
+          ['Masalah terdeteksi', laporan.masalah_cocok || 'tidak dikenali'],
+          ['Skor pencocokan', (laporan.skor_cocok ?? 0).toFixed(2)],
+          ['Solusi diberikan', laporan.solusi_terakhir ? `sampai ke-${laporan.solusi_terakhir}` : '—'],
+          ['Mode layanan', laporan.mode_divisi || '—'],
+          ['Engineer tujuan', laporan.engineer_tujuan || '—'],
+          // Untuk tiket yang diteruskan, INILAH jam kendalanya benar-benar
+          // beres. Kolom "Berakhir" pada tabel berarti jam laporan berpindah
+          // tangan ke engineer, bukan jam masalahnya selesai
+          // (RANCANGAN-DATA.md §8).
+          ['Ditangani engineer', tanggalJamWIB(laporan.ditangani_pada)],
+          ['Catatan penanganan', laporan.catatan || '—']
+        ].map(([k, v]) => (
+          <div key={k}>
+            <span>{k}</span>
+            <strong>{v}</strong>
+          </div>
+        ))}
+      </div>
+
+      <div className="rk-rincian-percakapan">
+        <span className="rk-eyebrow">PERCAKAPAN</span>
+        {!pesan && <p className="rk-kosong">Memuat percakapan…</p>}
+        {pesan && pesan.length === 0 && <p className="rk-kosong">Tidak ada pesan tersimpan.</p>}
+        {pesan && pesan.map((m) => (
+          <div key={m.id} className={`rk-pesan ${m.role}`}>
+            <span className="rk-pesan-peran">
+              {m.role === 'user' ? 'Pelapor' : m.role === 'assistant' ? 'SIGAP' : 'Sistem'}
+            </span>
+            {/* Jawaban SIGAP memakai penanda Markdown. Ditampilkan mentah,
+                engineer membaca "**Solusi Pertama**" berikut bintangnya. */}
+            {m.role === 'assistant' ? <Markdown>{m.content}</Markdown> : <p>{m.content}</p>}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -479,7 +924,9 @@ function DialogTandai({ tiket, onBatal, onKirim }) {
 
         <div className="rk-dialog-aksi">
           <button className="rk-tombol-samar" onClick={onBatal}>Batal</button>
-          <button className="rk-tombol-utama" onClick={() => onKirim(catatan)}>Tandai selesai</button>
+          <button className="rk-tombol-utama" onClick={() => onKirim(catatan)}>
+            <IconCheck size={16} /> Tandai selesai
+          </button>
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { DivisionIcon, IconLan, IconCctv, IconArrowRight, IconMenu, IconClose } from './Icons.jsx';
+import { DivisionIcon, IconCctv, IconArrowRight, IconMenu, IconClose, IconHeadset } from './Icons.jsx';
+import { LAYANAN_OTOMATIS } from '../data/layananOtomatis.js';
 
 const NAV_LINKS = [
   { href: '#layanan', label: 'Layanan' },
@@ -7,24 +8,27 @@ const NAV_LINKS = [
   { href: '#dukungan', label: 'Bantuan' }
 ];
 
+// Keterangan langkah harus sesuai alur yang sebenarnya. Sebelumnya langkah 01
+// menyuruh mengisi data pelapor lebih dulu, padahal formulir itu justru muncul
+// di akhir — hanya bila kendalanya perlu diteruskan ke engineer.
 const STEPS = [
   {
     no: '01',
     tone: 'blue',
-    title: 'Lengkapi Data & Pilih Layanan',
-    desc: 'Isi data pelapor, kemudian pilih divisi layanan ICT yang sedang mengalami kendala.'
+    title: 'Pilih Layanan',
+    desc: 'Pilih divisi layanan ICT yang sedang mengalami kendala. Tidak perlu mengisi data apa pun terlebih dahulu.'
   },
   {
     no: '02',
     tone: 'green',
     title: 'Sampaikan Kendala',
-    desc: 'Uraikan keluhan Anda. SIGAP AI menganalisis berdasarkan basis pengetahuan internal Field Lirik.'
+    desc: 'Uraikan keluhan Anda dengan bahasa sehari-hari. Keluhan dicocokkan dengan dokumen SOP Field Lirik, sehingga langkah yang diberikan selalu bersumber dari prosedur resmi.'
   },
   {
     no: '03',
     tone: 'red',
     title: 'Terima Solusi atau Eskalasi',
-    desc: 'Ikuti langkah penanganan yang diberikan. Bila belum tuntas, laporan diteruskan ke engineer terkait melalui WhatsApp.'
+    desc: 'Ikuti langkah penanganan yang diberikan. Bila belum tuntas, barulah data pelapor diminta dan laporan diteruskan ke engineer terkait melalui WhatsApp.'
   }
 ];
 
@@ -50,7 +54,7 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
     <div className="landing" id="landing">
       {/* ── Navigasi ───────────────────────────────── */}
       <nav className="lp-nav">
-        <a className="lp-brand" href="#landing" aria-label="SIGAP AI — Layanan ICT Pertamina EP Field Lirik">
+        <a className="lp-brand" href="#landing" aria-label="SIGAP — Layanan ICT Pertamina EP Field Lirik">
           <img
             src="/logo-pertamina-ep.svg"
             alt="Pertamina EP"
@@ -66,7 +70,7 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
           />
           <span className="lp-brand-divider" aria-hidden="true" />
           <span className="lp-brand-text">
-            <strong>SIGAP AI</strong>
+            <strong>SIGAP</strong>
             <small>LAYANAN ICT · FIELD LIRIK</small>
           </span>
         </a>
@@ -121,7 +125,7 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
           </h1>
 
           <p className="lp-sub">
-            SIGAP AI membantu seluruh pekerja Pertamina EP Asset 1 Regional 1 Field
+            SIGAP membantu seluruh pekerja Pertamina EP Asset 1 Regional 1 Field
             Lirik menyelesaikan kendala layanan ICT. Sampaikan keluhan Anda, ikuti
             panduan penanganan bertahap, dan bila diperlukan, laporan diteruskan
             langsung kepada engineer terkait.
@@ -144,9 +148,9 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
         <div className="lp-hero-visual" aria-hidden="true">
           <div className="lp-preview">
             <div className="lp-preview-top">
-              <span className="lp-preview-avatar">AI</span>
+              <span className="lp-preview-avatar">SG</span>
               <div>
-                <div className="lp-preview-name">SIGAP AI</div>
+                <div className="lp-preview-name">SIGAP</div>
                 <div className="lp-preview-status">
                   <i className="dot-live" /> siap membantu Anda
                 </div>
@@ -163,11 +167,14 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
             </div>
           </div>
 
+          {/* Contoh "selesai mandiri" harus memakai divisi yang memang dipandu
+              sistem. LAN kini langsung diteruskan ke engineer, sehingga tidak
+              pernah berakhir "selesai" di dalam aplikasi. */}
           <div className="lp-chip chip-a">
-            <span className="chip-ico"><IconLan size={19} /></span>
+            <span className="chip-ico"><DivisionIcon id="printer" size={19} /></span>
             <div>
-              <b>LAN Gedung B</b>
-              <em>selesai · 4 langkah</em>
+              <b>Printer Ruang Admin</b>
+              <em>selesai · 3 langkah</em>
             </div>
           </div>
 
@@ -209,8 +216,10 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
             Delapan divisi ICT, <span className="accent-text">satu kanal layanan.</span>
           </h2>
           <p className="lp-section-sub">
-            Pilih kategori yang paling sesuai dengan kendala Anda. Setiap laporan
-            langsung diarahkan ke basis pengetahuan divisi terkait.
+            Pilih kategori yang paling sesuai dengan kendala Anda. Layanan bertanda
+            <span className="lp-tag-inline">Langsung ke engineer</span> memerlukan
+            pemeriksaan di lokasi, sehingga laporannya langsung diteruskan tanpa
+            langkah mandiri.
           </p>
         </div>
 
@@ -225,9 +234,27 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
               <span className="lp-service-ico"><DivisionIcon id={d.id} size={21} /></span>
               <span className="lp-service-name">{d.name}</span>
               <span className="lp-service-desc">{d.description}</span>
+              {/* Menandai lebih awal jauh lebih baik daripada membiarkan
+                  pengguna menunggu langkah perbaikan yang tidak akan datang. */}
+              {d.mode === 'engineer' && (
+                <span className="lp-service-tag">Langsung ke engineer</span>
+              )}
               <span className="lp-service-go"><IconArrowRight size={17} /></span>
             </button>
           ))}
+
+          {/* Jalan keluar bagi yang tidak tahu kendalanya masuk layanan mana.
+              Menebak sendiri berisiko: laporan sampai ke engineer yang salah. */}
+          <button
+            className="lp-service lp-service-auto"
+            onClick={() => onPickDivision(LAYANAN_OTOMATIS)}
+            id="lp-service-auto"
+          >
+            <span className="lp-service-ico"><IconHeadset size={21} /></span>
+            <span className="lp-service-name">{LAYANAN_OTOMATIS.name}</span>
+            <span className="lp-service-desc">{LAYANAN_OTOMATIS.description}</span>
+            <span className="lp-service-go"><IconArrowRight size={17} /></span>
+          </button>
         </div>
       </section>
 
@@ -273,7 +300,7 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
       <footer className="lp-footer">
         <div className="lp-footer-rule" aria-hidden="true" />
         <div className="lp-footer-text">
-          <p>SIGAP AI · PT PERTAMINA EP ASSET 1 REGIONAL 1 FIELD LIRIK</p>
+          <p>SIGAP · PT PERTAMINA EP ASSET 1 REGIONAL 1 FIELD LIRIK</p>
           <p>Fungsi ICT · Untuk penggunaan internal perusahaan</p>
         </div>
       </footer>

@@ -18,9 +18,23 @@ const PORT = process.env.UJI_PORT || 3999;
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'sigap-uji-'));
 const DB = path.join(tmp, 'uji.db');
 
+/**
+ * Berkas SOP disalin ke folder sementara sebelum pengujian dimulai.
+ *
+ * Pengujian penyunting SOP benar-benar MENULIS ke berkas Markdown — itulah
+ * yang diuji. Membiarkannya menulis ke `knowledge-base/` sungguhan berarti
+ * `npm test` menyunting dokumen sumber milik pengembang, dan kegagalan di
+ * tengah jalan meninggalkannya dalam keadaan setengah berubah.
+ */
+const SOP_UJI = path.join(tmp, 'knowledge-base');
+const KB_UJI = path.join(tmp, 'knowledge-base.json');
+fs.cpSync(path.join(AKAR, 'knowledge-base'), SOP_UJI, { recursive: true });
+
 const LINGKUNGAN = {
   ...process.env,
   DB_PATH: DB,
+  SOP_DIR: SOP_UJI,
+  KB_FILE: KB_UJI,
   PORT: String(PORT),
   UJI_PORT: String(PORT),
   // Rahasia tetap supaya sesi tidak putus di tengah pengujian
@@ -60,23 +74,67 @@ async function tungguServer() {
   return false;
 }
 
+/**
+ * Pastikan tidak ada server lain yang sudah memakai porta uji.
+ *
+ * Tanpa pemeriksaan ini, server uji gagal mengikat porta tetapi penjalan tetap
+ * menemukan jawaban dari server yang sudah ada, lalu menjalankan seluruh
+ * pengujian terhadap basis data yang keliru. Hasilnya sekumpulan kegagalan yang
+ * menyesatkan — tampak seperti kerusakan kode, padahal salah sasaran.
+ */
+async function portaTerpakai() {
+  try {
+    const r = await fetch(`http://localhost:${PORT}/api/health`, {
+      signal: AbortSignal.timeout(1500)
+    });
+    return r.ok;
+  } catch {
+    return false;
+  }
+}
+
 /* ──────────────────────────────────────────────────────────── */
 
-console.log('═══ Pengujian SIGAP AI ═══');
+console.log('═══ Pengujian SIGAP ═══');
 console.log(`Basis data sementara: ${DB}`);
+
+if (await portaTerpakai()) {
+  console.error(`\n❌ Porta ${PORT} sudah dipakai server lain.`);
+  console.error('   Pengujian dibatalkan agar tidak menghantam basis data yang keliru.');
+  console.error(`   Hentikan server tersebut, atau jalankan: UJI_PORT=4100 npm test\n`);
+  process.exit(1);
+}
+
+// Basis pengetahuan sementara dibangun dari salinan SOP di atas. Pengujian
+// akurasi membacanya langsung, jadi ia harus sudah ada sebelum berkas uji
+// pertama dijalankan.
+await new Promise((selesaikan) => {
+  spawn(process.execPath, [path.join(AKAR, 'scripts', 'build-kb.js')], {
+    cwd: AKAR, env: LINGKUNGAN, stdio: 'ignore'
+  }).on('exit', selesaikan);
+});
+
+if (!fs.existsSync(KB_UJI)) {
+  console.error('\n❌ Basis pengetahuan sementara gagal dibangun.');
+  process.exit(1);
+}
+console.log(`Salinan SOP sementara : ${SOP_UJI}`);
 
 let kodeAkhir = 0;
 
 // 1. Lapisan penyimpanan — berdiri sendiri, tidak perlu server
 kodeAkhir |= await jalankanBerkas('basisdata.test.mjs');
 
-// 2. Data contoh untuk pengujian lewat HTTP
+// 2. Akurasi pencocokan — membaca basis pengetahuan langsung, tanpa server
+kodeAkhir |= await jalankanBerkas('akurasi.test.mjs');
+
+// 3. Data contoh untuk pengujian lewat HTTP
 process.env.DB_PATH = DB;
 const { isiDataContoh } = await import('./benih.mjs');
 const jumlah = await isiDataContoh();
 console.log(`\n📦 ${jumlah} laporan contoh disiapkan`);
 
-// 3. Server uji
+// 4. Server uji
 server = spawn(process.execPath, [path.join(AKAR, 'server.js')], {
   cwd: AKAR, env: LINGKUNGAN, stdio: ['ignore', 'ignore', 'inherit']
 });
@@ -88,6 +146,12 @@ if (!(await tungguServer())) {
 }
 
 kodeAkhir |= await jalankanBerkas('api.test.mjs');
+
+// 5. Penyunting SOP — menulis ke salinan SOP sementara, bukan berkas nyata
+kodeAkhir |= await jalankanBerkas('sop.test.mjs');
+
+// 6. Daftar tugas engineer & makna status 'diteruskan'
+kodeAkhir |= await jalankanBerkas('tugas.test.mjs');
 
 server.kill();
 

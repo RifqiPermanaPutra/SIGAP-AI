@@ -1,7 +1,7 @@
 {
-  "name": "ai-helpdesk-ict",
+  "name": "sigap-helpdesk-ict",
   "version": "1.0.0",
-  "description": "SIGAP AI - Layanan bantuan ICT Pertamina EP Field Lirik (berbasis data SOP, tanpa AI)",
+  "description": "SIGAP - Layanan bantuan ICT Pertamina EP Field Lirik (berbasis data SOP, tanpa AI)",
   "type": "module",
   "scripts": {
     "dev": "node server.js",
@@ -11,6 +11,8 @@
     "start": "node server.js",
     "build:kb": "node scripts/build-kb.js",
     "akun": "node scripts/akun.js",
+    "cadangkan": "node scripts/cadangkan.js",
+    "perbaiki-status": "node scripts/perbaiki-status-diteruskan.js",
     "test": "node tests/jalankan.mjs"
   },
   "keywords": [

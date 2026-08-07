@@ -1,4 +1,4 @@
-# Konteks Proyek SIGAP AI
+# Konteks Proyek SIGAP
 
 > Dokumen serah-terima. Bacalah berkas ini lebih dulu sebelum mengubah apa pun,
 > terutama bagian **Keputusan Penting** dan **Jebakan yang Sudah Ditemukan** —
@@ -8,17 +8,27 @@
 
 ## 1. Ringkasan
 
-**SIGAP AI** — layanan bantuan (helpdesk) ICT untuk PT Pertamina EP Asset 1
+**SIGAP** — layanan bantuan (helpdesk) ICT untuk PT Pertamina EP Asset 1
 Regional 1 Field Lirik. Pekerja menyampaikan kendala ICT, sistem memandu
 langkah perbaikan dari SOP, dan bila belum tuntas laporan diteruskan ke
 engineer divisi terkait melalui WhatsApp.
 
-- Pengembang: Rifqi Permana Putra · Teknik Informatika, Universitas Islam Riau
+- Pengembang: Rifqi Permana Putra
 - Repositori: https://github.com/RifqiPermanaPutra/SIGAP-AI
-- Sifat: proyek skripsi, direncanakan dipakai nyata di Field Lirik
+- Sifat: **sistem internal untuk PT Pertamina EP Field Lirik** — dibangun untuk
+  dipakai sehari-hari oleh pekerja dan Engineer ICT, bukan proyek akademik.
+  Karena itu prioritasnya kesiapan operasional: data yang benar, laporan yang
+  dapat dipertanggungjawabkan, dan sistem yang tidak kehilangan data.
 
-**Penting:** meski namanya "SIGAP AI", sistem ini **sudah tidak memakai AI**.
-Nama tetap dipertahankan sebagai merek. Lihat bagian 4.
+**Penting:** sistem ini **sudah tidak memakai AI**. Namanya dulu "SIGAP AI",
+dan kata "AI" dibuang setelah arsitekturnya berpindah — nama yang menjanjikan
+sesuatu yang tidak ada akan menyesatkan siapa pun yang datang berikutnya, dan
+membuat orang mengira jawaban yang keliru berasal dari model yang mengarang.
+Lihat bagian 4.
+
+> Repositori git-nya masih bernama `SIGAP-AI`. Menggantinya berarti mengubah
+> URL remote di setiap salinan yang sudah ada, jadi dibiarkan sampai ada
+> alasan yang cukup.
 
 ---
 
@@ -94,7 +104,7 @@ knowledge-base/<divisi>/sop-*.md          (sumber, ditulis manusia)
         │
         │  npm run build:kb
         ▼
-server/data/knowledge-base.json           (44 masalah, 40 solusi)
+server/data/knowledge-base.json           (44 masalah, 56 solusi)
         │
         ▼
 Keluhan pengguna ──> teksUtil.js ──> answerService.js ──> jawaban
@@ -194,20 +204,44 @@ semua pengguna demi sebagian kecil yang benar-benar memerlukan engineer.
 
 ## 9. Status Basis Pengetahuan
 
-| Divisi | Status |
-|---|---|
-| Printer, Windows, LAN, CCTV, FTTP | Sudah disusun rinci — **draf, belum divalidasi engineer** |
-| Telepon, Radio Komunikasi, WAN | **Masih data contoh (dummy)** |
+Sejak divisi dibagi menjadi mode `swalayan` dan `engineer`, **hanya SOP Printer
+dan Windows yang benar-benar disajikan kepada pengguna.** Enam divisi lain
+langsung diteruskan ke engineer, sehingga isinya tidak lagi menghambat.
+
+| Divisi | Mode | Status |
+|---|---|---|
+| Printer, Windows | `swalayan` | **Lengkap** — tiap masalah ringan punya 3 solusi. Draf, belum divalidasi engineer |
+| LAN, CCTV, FTTP | `engineer` | Sudah disusun rinci, tetapi tidak disajikan ke pengguna |
+| Telepon, Radio Komunikasi, WAN | `engineer` | Masih data contoh (dummy), tidak disajikan ke pengguna |
+
+Alur percakapan menjanjikan **tiga** solusi sebelum menyerah ke engineer
+(`MAKS_SOLUSI = 3`). Sebelumnya 8 dari 10 masalah ringan pada divisi swalayan
+hanya memiliki satu solusi, sehingga sistem menyerah setelah percobaan pertama
+padahal antarmukanya menjanjikan tiga. Sudah dilengkapi, dan dijaga oleh
+pengujian `npm test` bagian "Kelengkapan data divisi swalayan".
 
 Tiga divisi terakhir sengaja belum disusun: isinya sangat spesifik lapangan
 (jenis PABX, frekuensi radio, topologi antar site) dan **tidak boleh** diisi
 dari sumber umum. Radio Komunikasi terutama — alat komunikasi darurat, salah
 instruksi berisiko.
 
-Terdapat **33 penanda `[KONFIRMASI]`** di berkas SOP: hal-hal yang hanya
-engineer yang tahu (merek perangkat, nama WiFi, penyedia fiber, dsb).
+Terdapat penanda `[KONFIRMASI]` di berkas SOP: hal-hal yang hanya engineer yang
+tahu (merek perangkat, nama WiFi, penyedia fiber, dsb). Semuanya terkumpul di
+blok "Catatan Konfirmasi Engineer" pada akhir tiap berkas, bukan tersebar di
+dalam langkah — jadi langkah SOP-nya sudah dapat dipakai apa adanya.
+
+Seluruhnya ada **29 penanda**. Yang benar-benar mendesak hanya **11 penanda
+pada Printer dan Windows**, karena hanya kedua divisi itu yang isinya sampai ke
+pengguna.
 
 Panduan pengumpulan data dari engineer: `knowledge-base/_TEMPLATE-PENGISIAN.md`
+
+Sejak ada halaman `/sop-editor`, SOP dapat disunting langsung lewat peramban
+oleh admin — tidak perlu lagi menyunting Markdown, menjalankan `npm run
+build:kb`, lalu menyalakan ulang server. Berkas Markdown tetap menjadi sumber
+kebenaran; penyunting itu menulis ulang berkas yang sama. Penanda
+`[KONFIRMASI]` sengaja ditampilkan baca-saja di sana: isinya harus datang dari
+jawaban engineer, bukan dari tebakan.
 
 ---
 
@@ -238,31 +272,47 @@ npm run dev:frontend   # antarmuka dengan hot-reload, port 5173
 2. Validasi engineer untuk 5 divisi yang sudah disusun
 3. Pengisian 33 penanda `[KONFIRMASI]`
 
-**Diminta tetapi belum dikerjakan:**
+**Menunggu pihak lain:**
 4. **Berkas logo `public/logo-satu-it-sigap.png`** — kode sudah siap di navbar
    dan header, elemennya tersembunyi otomatis karena berkasnya belum ada
+5. **Nomor WhatsApp engineer FTTP** belum diisi di `.env`; eskalasinya jatuh ke
+   `WHATSAPP_DEFAULT`
 
-**Perlu dipertimbangkan:**
-5. Belum ada pengujian otomatis yang tersimpan di repositori
-6. Belum di-deploy, masih berjalan di laptop pengembang
-7. `src/index.css` masih ditulis desktop-first (20 aturan `max-width` pada
-   titik henti 400/720/980). Halaman rekap sudah mobile-first dengan
-   `min-width`; keduanya belum seragam.
+**Langkah menuju pemakaian nyata:**
+6. Deploy — masih berjalan di laptop pengembang. Perlu komputer yang menyala
+   terus, proses yang hidup ulang otomatis, dan sebaiknya HTTPS
+   (`COOKIE_SECURE=1` dan `TRUST_PROXY=1` bila di belakang reverse proxy)
+7. Uji pakai oleh beberapa pekerja sebelum diumumkan ke seluruh Field Lirik
 
-**Sudah selesai (lihat `RANCANGAN-DATA.md`):**
+**Sudah selesai:**
 - Riwayat laporan berupa grafik per hari/minggu/bulan, dengan penyaringan
 - Perpindahan penyimpanan dari berkas JSON ke SQLite
 - Autentikasi halaman rekap (peran admin & engineer) beserta jejak akses
 - Mode divisi `swalayan` / `engineer` sesuai masukan Engineer ICT
+- SOP Printer & Windows lengkap tiga solusi per masalah ringan
+- Pencadangan harian otomatis + salinan ke luar mesin (`CADANGAN_LUAR`),
+  retensi 2 tahun, log aplikasi bertahan
+- Pembatas laju, penguncian masuk per akun+alamat, penangkap galat tampilan
+- Penyunting SOP lewat peramban (`/sop-editor`, khusus admin) — cadangan
+  sebelum menimpa, pratinjau hasil urai, dan alat uji skor pencocokan
+- Daftar tugas engineer (`/tugas`) — nomor tiket kini ikut terkirim lewat
+  WhatsApp beserta tautan langsung, sehingga tiket dapat ditandai selesai dari
+  ponsel tanpa membuka tabel rekap
+- Skrip pendaftar Task Scheduler Windows (`skrip-windows/`)
+- Pengujian otomatis: 247 pemeriksaan, termasuk tolok ukur akurasi pencocokan
 
 ---
 
 ## 12. Keadaan Git
 
 - Cabang: `main`
-- Commit terakhir: `8ef8c0c` — "Rombak SIGAP AI: LLM berlapis, SOP rinci, dan efisiensi bundel"
-- **22 berkas belum di-commit** — termasuk seluruh migrasi tanpa AI, formulir
-  urgensi, dan pemindahan alur formulir
+- Commit terakhir: `8594b5a` — "mengubah desain ke mobile"
+- **54 berkas belum di-commit** — termasuk pencadangan otomatis, pembatas laju,
+  skrip Windows, penyunting SOP, dan daftar tugas engineer
+
+> ⚠️ Ini risiko terbesar yang paling mudah dihilangkan. Pekerjaan berbulan-bulan
+> hanya berada di satu disk, yaitu disk yang sama dengan basis datanya.
+> Lakukan commit sebelum apa pun yang lain.
 
 `.env` berisi nomor WhatsApp asli dan **tidak boleh** ikut ter-commit
 (sudah diabaikan `.gitignore`).

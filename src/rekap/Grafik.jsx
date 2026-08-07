@@ -160,23 +160,49 @@ export function GrafikPeriode({ deret, satuan }) {
  * Sengaja satu warna untuk semua batang: yang dibandingkan adalah besarannya,
  * bukan identitasnya. Memberi warna berbeda per baris justru menyiratkan
  * pengelompokan yang tidak ada.
+ *
+ * Bila `onPilih` diberikan, tiap baris menjadi tombol penyaring. Mengklik
+ * angka yang menonjol lalu langsung melihat laporannya adalah cara paling
+ * wajar membaca sebaran — jauh lebih cepat daripada berpindah ke dropdown
+ * saringan di atas halaman.
+ *
+ * @param {(label: string) => void} [props.onPilih]
+ * @param {string} [props.terpilih] Label yang sedang menjadi saringan aktif
  */
-export function BatangSebaran({ data, kosong = 'Belum ada data.' }) {
+export function BatangSebaran({ data, kosong = 'Belum ada data.', onPilih, terpilih }) {
   if (!data || data.length === 0) return <p className="rk-kosong">{kosong}</p>;
 
   const maks = Math.max(...data.map((d) => d.jumlah), 1);
 
   return (
-    <ul className="rk-batang">
-      {data.map((d) => (
-        <li key={d.label}>
-          <span className="rk-batang-label" title={d.label}>{d.label}</span>
-          <span className="rk-batang-jalur">
-            <span className="rk-batang-isi" style={{ width: `${(d.jumlah / maks) * 100}%` }} />
-          </span>
-          <span className="rk-batang-nilai">{d.jumlah}</span>
-        </li>
-      ))}
+    <ul className={`rk-batang ${onPilih ? 'dapat-diklik' : ''}`}>
+      {data.map((d) => {
+        const aktif = terpilih === d.label;
+        const isi = (
+          <>
+            <span className="rk-batang-label" title={d.label}>{d.label}</span>
+            <span className="rk-batang-jalur">
+              <span className="rk-batang-isi" style={{ width: `${(d.jumlah / maks) * 100}%` }} />
+            </span>
+            <span className="rk-batang-nilai">{d.jumlah}</span>
+          </>
+        );
+
+        return (
+          <li key={d.label} className={aktif ? 'aktif' : ''}>
+            {onPilih ? (
+              <button
+                type="button"
+                onClick={() => onPilih(d.label)}
+                aria-pressed={aktif}
+                title={aktif ? `Hapus saringan ${d.label}` : `Saring hanya ${d.label}`}
+              >
+                {isi}
+              </button>
+            ) : isi}
+          </li>
+        );
+      })}
     </ul>
   );
 }
