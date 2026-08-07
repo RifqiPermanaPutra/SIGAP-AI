@@ -1,4 +1,4 @@
-# SOP Troubleshooting - Divisi FTTP (Fiber To The Premise)
+# SOP Troubleshooting - Divisi FTTH (Fiber To The Home)
 
 > Sumber langkah umum: praktik standar pengoperasian perangkat ONU/ONT jaringan fiber.
 > Bagian bertanda [KONFIRMASI] wajib dilengkapi/divalidasi Engineer ICT Field Lirik.

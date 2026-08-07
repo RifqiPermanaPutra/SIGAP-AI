@@ -376,7 +376,7 @@ perhitungan.
 
 | # | Pertanyaan | Untuk siapa |
 |---|---|---|
-| 1 | FTTP masuk kelompok swalayan atau engineer? Eka menyebut "jaringan" tanpa merinci | Engineer (Eka) |
+| 1 | FTTH masuk kelompok swalayan atau engineer? Eka menyebut "jaringan" tanpa merinci | Engineer (Eka) |
 | 2 | Engineer melihat **semua** divisi, atau hanya divisinya sendiri? | Pembimbing |
 | 3 | Adakah kebijakan retensi data internal Pertamina? | Pembimbing / ICT |
 | 4 | Dari laporan CCTV/jaringan/telepon/HT yang masuk selama ini, adakah yang ternyata sepele — kabel lepas, baterai habis? | Engineer (Eka) |

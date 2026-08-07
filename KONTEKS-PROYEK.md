@@ -183,7 +183,7 @@ semua pengguna demi sebagian kecil yang benar-benar memerlukan engineer.
 
 ## 8. Data Lapangan
 
-**8 divisi layanan:** Printer, CCTV, Telepon, Radio Komunikasi, Windows, FTTP, LAN, WAN
+**8 divisi layanan:** Printer, CCTV, Telepon, Radio Komunikasi, Windows, FTTH, LAN, WAN
 
 **5 nomor WhatsApp engineer** (di `.env`, tidak ikut ke repositori):
 
@@ -193,7 +193,7 @@ semua pengguna demi sebagian kecil yang benar-benar memerlukan engineer.
 | 2 | CCTV, Radio |
 | 3 | Telepon |
 | 4 | LAN, WAN |
-| 5 | FTTP |
+| 5 | FTTH |
 
 **Data pilihan pengguna** (`src/data/`):
 - `fungsi.js` — 7 fungsi: FM, HC & Plan Eval, PE & WO/WS, Finance, R.A.M, Legal & Relation, PO
@@ -211,7 +211,7 @@ langsung diteruskan ke engineer, sehingga isinya tidak lagi menghambat.
 | Divisi | Mode | Status |
 |---|---|---|
 | Printer, Windows | `swalayan` | **Lengkap** — tiap masalah ringan punya 3 solusi. Draf, belum divalidasi engineer |
-| LAN, CCTV, FTTP | `engineer` | Sudah disusun rinci, tetapi tidak disajikan ke pengguna |
+| LAN, CCTV, FTTH | `engineer` | Sudah disusun rinci, tetapi tidak disajikan ke pengguna |
 | Telepon, Radio Komunikasi, WAN | `engineer` | Masih data contoh (dummy), tidak disajikan ke pengguna |
 
 Alur percakapan menjanjikan **tiga** solusi sebelum menyerah ke engineer
@@ -273,16 +273,14 @@ npm run dev:frontend   # antarmuka dengan hot-reload, port 5173
 3. Pengisian 33 penanda `[KONFIRMASI]`
 
 **Menunggu pihak lain:**
-4. **Berkas logo `public/logo-satu-it-sigap.png`** — kode sudah siap di navbar
-   dan header, elemennya tersembunyi otomatis karena berkasnya belum ada
-5. **Nomor WhatsApp engineer FTTP** belum diisi di `.env`; eskalasinya jatuh ke
+4. **Nomor WhatsApp engineer FTTH** belum diisi di `.env`; eskalasinya jatuh ke
    `WHATSAPP_DEFAULT`
 
 **Langkah menuju pemakaian nyata:**
-6. Deploy — masih berjalan di laptop pengembang. Perlu komputer yang menyala
+5. Deploy — masih berjalan di laptop pengembang. Perlu komputer yang menyala
    terus, proses yang hidup ulang otomatis, dan sebaiknya HTTPS
    (`COOKIE_SECURE=1` dan `TRUST_PROXY=1` bila di belakang reverse proxy)
-7. Uji pakai oleh beberapa pekerja sebelum diumumkan ke seluruh Field Lirik
+6. Uji pakai oleh beberapa pekerja sebelum diumumkan ke seluruh Field Lirik
 
 **Sudah selesai:**
 - Riwayat laporan berupa grafik per hari/minggu/bulan, dengan penyaringan
@@ -299,7 +297,9 @@ npm run dev:frontend   # antarmuka dengan hot-reload, port 5173
   WhatsApp beserta tautan langsung, sehingga tiket dapat ditandai selesai dari
   ponsel tanpa membuka tabel rekap
 - Skrip pendaftar Task Scheduler Windows (`skrip-windows/`)
-- Pengujian otomatis: 247 pemeriksaan, termasuk tolok ukur akurasi pencocokan
+- Pengujian otomatis: 295 pemeriksaan, termasuk tolok ukur akurasi pencocokan
+- Logo Pertamina ONE dan SATU-IT SIGAP transparan terpasang responsif di navbar
+  dan header percakapan
 
 ---
 

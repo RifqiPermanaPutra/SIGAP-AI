@@ -42,7 +42,7 @@ const KELUHAN = {
   lan: [['internet mati di ruangan saya', null, 0], ['kabel lan lepas kayaknya', null, 0]],
   telepon: [['telepon ga ada nada', null, 0]],
   radio: [['ht saya ga bisa nyala', null, 0]],
-  fttp: [['lampu los merah di onu', null, 0]],
+  ftth: [['lampu los merah di onu', null, 0]],
   wan: [['koneksi ke ukui putus', null, 0]]
 };
 

@@ -101,9 +101,33 @@ cek('kolom di luar daftar izin diabaikan', s1d.id === 'sesi-satu' && s1d.tanggal
 cek('sesi tak dikenal → undefined', getChatSession('entah') === undefined, getChatSession('entah'));
 cek('update sesi tak dikenal → undefined', updateChatSession('entah', { status: 'selesai' }) === undefined, 'bukan undefined');
 
-bagian('9. Bertahan setelah ditutup dan dibuka ulang');
+bagian('9. Migrasi data lama ke FTTH');
+const idSebelumnya = String.fromCharCode(102, 116, 116, 112);
+const labelSebelumnya = idSebelumnya.toUpperCase();
+updateChatSession('sesi-tiga', {
+  divisi_id: idSebelumnya,
+  masalah_cocok: `Gangguan ${labelSebelumnya}`
+});
+addChatMessage('sesi-tiga', 'assistant', `Layanan ${labelSebelumnya} dipilih`);
+wajibSiap().prepare(`
+  INSERT INTO pengguna (nama_akun, nama, peran, sandi_hash, dibuat_pada, divisi)
+  VALUES (?, ?, 'engineer', 'uji', ?, ?)
+`).run('engineer-migrasi', 'Engineer Migrasi', new Date().toISOString(), idSebelumnya);
+wajibSiap().prepare(`
+  INSERT INTO log_akses (nama_akun, tindakan, keterangan, dibuat_pada)
+  VALUES ('engineer-migrasi', 'lihat', ?, ?)
+`).run(`Membuka rekap ${labelSebelumnya}`, new Date().toISOString());
+
 tutupDatabase();
 await initDatabase();
+const s3Migrasi = getChatSession('sesi-tiga');
+cek('id divisi lama menjadi ftth', s3Migrasi.divisi_id === 'ftth', s3Migrasi.divisi_id);
+cek('teks sesi lama memakai FTTH', s3Migrasi.masalah_cocok === 'Gangguan FTTH', s3Migrasi.masalah_cocok);
+cek('riwayat pesan lama memakai FTTH', getChatMessages('sesi-tiga').at(-1)?.content === 'Layanan FTTH dipilih', getChatMessages('sesi-tiga').at(-1)?.content);
+cek('batas divisi akun lama menjadi ftth', wajibSiap().prepare('SELECT divisi FROM pengguna WHERE nama_akun = ?').get('engineer-migrasi')?.divisi === 'ftth', 'belum berubah');
+cek('jejak akses lama memakai FTTH', wajibSiap().prepare('SELECT keterangan FROM log_akses WHERE nama_akun = ?').get('engineer-migrasi')?.keterangan === 'Membuka rekap FTTH', 'belum berubah');
+
+bagian('10. Bertahan setelah ditutup dan dibuka ulang');
 const s1e = getChatSession('sesi-satu');
 cek('data sesi bertahan', s1e?.reporter?.nama === 'Budi Santoso', s1e?.reporter);
 cek('pesan bertahan', getChatMessages('sesi-satu').length === 3, getChatMessages('sesi-satu').length);

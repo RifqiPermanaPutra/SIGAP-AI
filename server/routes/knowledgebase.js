@@ -14,7 +14,7 @@ import { KB_FILE } from '../config/jalur.js';
 
 export const kbRouter = Router();
 
-const DIVISI = ['printer', 'cctv', 'telepon', 'radio', 'windows', 'fttp', 'lan', 'wan'];
+const DIVISI = ['printer', 'cctv', 'telepon', 'radio', 'windows', 'ftth', 'lan', 'wan'];
 
 /**
  * GET /api/kb/stats
