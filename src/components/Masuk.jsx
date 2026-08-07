@@ -53,10 +53,9 @@ export default function Masuk({ judul, sub, label = 'AKSES TERBATAS', kaki, onBe
           <div className="sg-merek">
             <img src="/logo-pertamina-ep.svg" alt="Pertamina EP" className="sg-merek-logo" />
             <img
-              src="/logo-satu-it-sigap.png"
-              alt="SATU-IT SIGAP"
+              src="/logo-satu-it-sigap-dark.png"
+              alt="Pertamina ONE dan SATU-IT SIGAP"
               className="sg-merek-logo-unit"
-              onError={(e) => { e.currentTarget.style.display = 'none'; }}
             />
             <span className="sg-merek-garis" aria-hidden="true" />
             <span className="sg-merek-teks">

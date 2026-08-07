@@ -82,10 +82,9 @@ function Merek() {
     <div className="rk-merek">
       <img src="/logo-pertamina-ep.svg" alt="Pertamina EP" className="rk-merek-logo" />
       <img
-        src="/logo-satu-it-sigap.png"
-        alt="SATU-IT SIGAP"
+        src="/logo-satu-it-sigap-dark.png"
+        alt="Pertamina ONE dan SATU-IT SIGAP"
         className="rk-merek-logo-unit"
-        onError={(e) => { e.currentTarget.style.display = 'none'; }}
       />
       <span className="rk-merek-garis" aria-hidden="true" />
       <span className="rk-merek-teks">
