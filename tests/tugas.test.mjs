@@ -109,9 +109,21 @@ cek('tiket yang baru diteruskan muncul di daftar',
   tugas.tugas.some((t) => t.nomor_tiket === ssdh.nomor_tiket), ssdh.nomor_tiket);
 cek('seluruhnya belum ditangani',
   tugas.tugas.every((t) => t.nama !== undefined) && tugas.jumlah === tugas.tugas.length, tugas.jumlah);
-cek('terurut dari yang paling lama menunggu',
-  tugas.tugas.every((t, i) => i === 0 || t.diteruskan_pada >= tugas.tugas[i - 1].diteruskan_pada),
-  'urutan tidak menaik');
+// Aturan urutan sebenarnya ada dua tingkat: yang belum dipegang siapa pun
+// didahulukan, lalu terlama di atas. Memeriksa tingkat kedua saja membuat uji
+// ini lulus hanya karena kebetulan belum ada tiket yang dipegang — dan berhenti
+// menjaga apa pun begitu ada.
+const urutanBenar = (daftar) => daftar.every((t, i) => {
+  if (i === 0) return true;
+  const sblm = daftar[i - 1];
+  const dipegang = Boolean(t.dikerjakan_oleh), dipegangSblm = Boolean(sblm.dikerjakan_oleh);
+  if (dipegangSblm !== dipegang) return dipegang;                 // kosong dulu
+  return t.diteruskan_pada >= sblm.diteruskan_pada;               // lalu terlama
+});
+
+cek('yang belum dipegang di atas, lalu terlama di atas',
+  urutanBenar(tugas.tugas),
+  tugas.tugas.map((t) => `${t.dikerjakan_oleh ? 'dipegang' : 'kosong'} ${t.diteruskan_pada}`));
 cek('nama layanan ikut disertakan',
   tugas.tugas.every((t) => Boolean(t.divisi_nama)), 'ada yang tanpa nama layanan');
 cek('saringan divisi bekerja',
@@ -543,10 +555,9 @@ cek('admin dapat menutup tiket yang dipegang engineer tanpa mengambil alih',
 const T4 = await tiketBaru('printer', 'printer warnanya jadi ungu semua');
 await kirim('/tugas/mulai', budi, { nomorTiket: T1 });
 const urut = (await json('/tugas', budi)).tugas;
-const indeksDipegang = urut.findIndex((t) => t.dikerjakan_oleh);
-cek('yang belum dipegang berada di atas',
-  indeksDipegang === -1 || urut.slice(indeksDipegang).every((t) => t.dikerjakan_oleh),
-  urut.map((t) => (t.dikerjakan_oleh ? 'dipegang' : 'kosong')));
+cek('urutan tetap benar setelah ada tiket yang dipegang',
+  urut.some((t) => t.dikerjakan_oleh) && urutanBenar(urut),
+  urut.map((t) => `${t.dikerjakan_oleh ? 'dipegang' : 'kosong'} ${t.diteruskan_pada}`));
 cek('tiket baru ikut masuk daftar', urut.some((t) => t.nomor_tiket === T4), T4);
 
 // Yang paling ingin diketahui pelapor: laporannya sudah dipegang orang atau

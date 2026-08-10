@@ -104,9 +104,11 @@ cek('update sesi tak dikenal → undefined', updateChatSession('entah', { status
 bagian('9. Migrasi data lama ke FTTH');
 const idSebelumnya = String.fromCharCode(102, 116, 116, 112);
 const labelSebelumnya = idSebelumnya.toUpperCase();
+const keluhanAsli = `internet ${labelSebelumnya} di ruang saya mati`;
 updateChatSession('sesi-tiga', {
   divisi_id: idSebelumnya,
-  masalah_cocok: `Gangguan ${labelSebelumnya}`
+  masalah_cocok: `Gangguan ${labelSebelumnya}`,
+  keluhan: keluhanAsli
 });
 addChatMessage('sesi-tiga', 'assistant', `Layanan ${labelSebelumnya} dipilih`);
 wajibSiap().prepare(`
@@ -118,14 +120,44 @@ wajibSiap().prepare(`
   VALUES ('engineer-migrasi', 'lihat', ?, ?)
 `).run(`Membuka rekap ${labelSebelumnya}`, new Date().toISOString());
 
+// Penandanya dihapus supaya keadaannya sama persis dengan server yang baru
+// dimutakhirkan di lapangan: basis data sudah berisi, penyelarasan belum pernah
+// berjalan. Tanpa ini basis data uji sudah bertanda sejak initDatabase()
+// pertama, dan migrasinya tidak akan berjalan sama sekali.
+const PENANDA_FTTH = 'ftth-2026-08';
+wajibSiap().prepare('DELETE FROM migrasi WHERE nama = ?').run(PENANDA_FTTH);
+
 tutupDatabase();
 await initDatabase();
 const s3Migrasi = getChatSession('sesi-tiga');
 cek('id divisi lama menjadi ftth', s3Migrasi.divisi_id === 'ftth', s3Migrasi.divisi_id);
 cek('teks sesi lama memakai FTTH', s3Migrasi.masalah_cocok === 'Gangguan FTTH', s3Migrasi.masalah_cocok);
-cek('riwayat pesan lama memakai FTTH', getChatMessages('sesi-tiga').at(-1)?.content === 'Layanan FTTH dipilih', getChatMessages('sesi-tiga').at(-1)?.content);
 cek('batas divisi akun lama menjadi ftth', wajibSiap().prepare('SELECT divisi FROM pengguna WHERE nama_akun = ?').get('engineer-migrasi')?.divisi === 'ftth', 'belum berubah');
 cek('jejak akses lama memakai FTTH', wajibSiap().prepare('SELECT keterangan FROM log_akses WHERE nama_akun = ?').get('engineer-migrasi')?.keterangan === 'Membuka rekap FTTH', 'belum berubah');
+
+// Yang diselaraskan hanya nilai yang menjadi KUNCI PENCOCOKAN. Kata-kata orang
+// tidak termasuk: `keluhan` adalah kalimat pelapor apa adanya (RANCANGAN-DATA.md
+// §4), dan dari situlah diketahui istilah apa yang belum dikenali penyeragam
+// bahasa. FTTP bukan salah ketik — ia istilah nyata yang masih dipakai orang.
+cek('keluhan pelapor TIDAK ikut disunting',
+  s3Migrasi.keluhan === keluhanAsli, s3Migrasi.keluhan);
+cek('riwayat percakapan TIDAK ikut disunting',
+  getChatMessages('sesi-tiga').at(-1)?.content === `Layanan ${labelSebelumnya} dipilih`,
+  getChatMessages('sesi-tiga').at(-1)?.content);
+catatan('menyuntingnya berarti laporan memuat kalimat yang tidak pernah ditulis siapa pun');
+
+// Penggantian nama hanya boleh sekali. Sebelumnya ia merebut kunci tulis pada
+// SETIAP penyalaan untuk pekerjaan yang sudah tuntas berbulan-bulan lalu.
+cek('penandanya tercatat setelah berjalan',
+  Boolean(wajibSiap().prepare('SELECT 1 FROM migrasi WHERE nama = ?').get(PENANDA_FTTH)),
+  'tidak tercatat');
+
+updateChatSession('sesi-tiga', { masalah_cocok: `Gangguan ${labelSebelumnya}` });
+tutupDatabase();
+await initDatabase();
+cek('penyalaan berikutnya TIDAK menjalankannya lagi',
+  getChatSession('sesi-tiga').masalah_cocok === `Gangguan ${labelSebelumnya}`,
+  getChatSession('sesi-tiga').masalah_cocok);
 
 bagian('10. Bertahan setelah ditutup dan dibuka ulang');
 const s1e = getChatSession('sesi-satu');

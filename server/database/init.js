@@ -158,6 +158,15 @@ CREATE TABLE IF NOT EXISTS log_akses (
 );
 
 CREATE INDEX IF NOT EXISTS idx_log_waktu ON log_akses(dibuat_pada);
+
+-- Penanda migrasi yang hanya boleh berjalan SEKALI, berbeda dari penambahan
+-- kolom yang dapat diperiksa sendiri lewat PRAGMA table_info. Penggantian nama
+-- layanan termasuk jenis ini: setelah tuntas, mengulanginya tiap penyalaan
+-- hanya merebut kunci tulis untuk pekerjaan yang sudah selesai.
+CREATE TABLE IF NOT EXISTS migrasi (
+  nama            TEXT PRIMARY KEY,
+  dijalankan_pada TEXT NOT NULL
+);
 `;
 
 /**
@@ -204,23 +213,43 @@ function terapkanMigrasi() {
 /**
  * Selaraskan data lama dengan id dan istilah FTTH.
  *
- * Migrasi ini idempoten dan sengaja dijalankan setiap inisialisasi. Selain id
- * divisi, teks riwayat ikut diperbarui agar rekap, percakapan lama, pembatasan
- * akun engineer, dan jejak akses tidak menampilkan dua istilah untuk layanan
- * yang sama. Token sumber dirangkai dari kode karakter supaya istilah yang
- * sudah dipensiunkan tidak tersisa lagi di sumber maupun hasil audit teks.
+ * Penggantian nama layanan bersifat SEKALI SEUMUR BASIS DATA, dan itu dijaga
+ * oleh penanda pada tabel `migrasi`. Sebelumnya migrasi ini dijalankan setiap
+ * kali server menyala, dan itu menimbulkan dua masalah nyata:
+ *
+ *   1. `sesi.keluhan` ikut ditulis ulang. Kolom itu adalah kata-kata pelapor
+ *      apa adanya, dan RANCANGAN-DATA.md §4 menetapkannya begitu justru karena
+ *      dari situlah diketahui istilah apa yang belum dikenali penyeragam
+ *      bahasa. "FTTP" bukan salah ketik — ia istilah nyata yang masih dipakai
+ *      orang; menyuntingnya diam-diam berarti laporan memuat kalimat yang
+ *      tidak pernah ditulis siapa pun. Karena itu kolom ini TIDAK disentuh.
+ *
+ *   2. `BEGIN IMMEDIATE` merebut kunci tulis pada setiap penyalaan, termasuk
+ *      saat proses lain sedang menulis, demi pekerjaan yang sudah tuntas
+ *      berbulan-bulan sebelumnya.
+ *
+ * Yang diselaraskan hanya nilai yang memang menjadi kunci pencocokan: id
+ * divisi, judul masalah pada rekap, daftar wewenang akun, dan keterangan jejak
+ * akses. Isi percakapan lama pun dibiarkan — itu catatan sejarah, bukan kunci.
+ *
+ * Token sumber dirangkai dari kode karakter supaya istilah yang sudah
+ * dipensiunkan tidak tersisa lagi di sumber maupun hasil audit teks.
  */
 function selaraskanDataFtth() {
+  const PENANDA = 'ftth-2026-08';
+  const sudah = db.prepare('SELECT 1 FROM migrasi WHERE nama = ?').get(PENANDA);
+  if (sudah) return;
+
   const idSebelumnya = String.fromCharCode(102, 116, 116, 112);
   const bentukSebelumnya = [
     [idSebelumnya.toUpperCase(), 'FTTH'],
     [idSebelumnya[0].toUpperCase() + idSebelumnya.slice(1), 'Ftth'],
     [idSebelumnya, 'ftth']
   ];
+  // `sesi.keluhan` dan `pesan.isi` SENGAJA tidak ada di sini — lihat alasannya
+  // pada keterangan di atas.
   const kolomTeks = [
-    ['sesi', 'keluhan'],
     ['sesi', 'masalah_cocok'],
-    ['pesan', 'isi'],
     ['pengguna', 'divisi'],
     ['log_akses', 'keterangan']
   ];
@@ -242,15 +271,16 @@ function selaraskanDataFtth() {
       }
     }
 
+    db.prepare('INSERT INTO migrasi (nama, dijalankan_pada) VALUES (?, ?)')
+      .run(PENANDA, sekarang());
+
     db.exec('COMMIT');
   } catch (error) {
     db.exec('ROLLBACK');
     throw error;
   }
 
-  if (perubahan > 0) {
-    console.log(`🔧 ${perubahan} nilai data lama diselaraskan ke FTTH`);
-  }
+  console.log(`🔧 Penyelarasan FTTH dijalankan — ${perubahan} nilai diperbarui`);
 }
 
 /**

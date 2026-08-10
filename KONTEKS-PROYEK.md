@@ -157,11 +157,33 @@ melewati langkah perbaikan. Penanda yang dipakai: `kategori berat`,
 Frasa "tombol WhatsApp" sudah diverifikasi hanya muncul pada 14 blok berat dan
 **0 blok ringan**.
 
-### e. Logo Pertamina wajib di atas latar gelap
-Berkas `public/logo-pertamina-ep.svg` adalah **varian untuk latar gelap** —
-wordmark "PERTAMINA" digambar putih (`fill="#ffffff"`). Menaruhnya di atas
-bidang putih membuat tulisan PERTAMINA lenyap, menyisakan emblem dan "EP" saja.
-Karena itu navbar dan header percakapan berlatar biru.
+### e. Dua logo, dua syarat latar yang berkebalikan
+Bilah merek memuat **dua** berkas berdampingan, dan keduanya menuntut hal yang
+bertolak belakang:
+
+| Berkas | Isi | Syarat |
+|---|---|---|
+| `public/logo-pertamina-ep.svg` | Pertamina EP | **wajib latar gelap** |
+| `public/logo-satu-it-sigap.png` | PERTAMINA ONE + SATU-IT SIGAP | **wajib alas terang** |
+
+Yang pertama adalah varian untuk latar gelap — wordmark "PERTAMINA" digambar
+putih (`fill="#ffffff"`). Di atas bidang putih tulisannya lenyap, menyisakan
+emblem dan "EP" saja. Karena itu navbar dan header percakapan berlatar biru.
+
+Yang kedua justru sebaliknya: latarnya tembus pandang dan sebagian isinya
+**hitam** — wordmark "PERTAMINA ONE" serta baris "SOLUSI DIGITAL LAYANAN IT
+YANG TEPAT". Di atas navbar biru bagian itu praktis lenyap. Karena itu ia
+selalu diberi alas putih (`.lp-brand-logo-unit` dan saudaranya di tiap halaman);
+alas itu bidang keterbacaan, bukan hiasan. Jangan menghapusnya.
+
+Rasionya **4,45:1** — jauh lebih lebar daripada logo unit sebelumnya. Pada
+navbar sempit (`/tugas`, `/tiket`, `/rekap`, penyunting SOP) teks merek
+disembunyikan di bawah 700px agar tombol di sisi kanan tidak terdesak keluar
+layar; nama halaman tetap terbaca pada judul `<h1>` di bawahnya.
+
+Berkasnya disajikan pada **600×135** (68 KB). Aslinya 1786×401 (357 KB) dan
+tersimpan di riwayat Git — lebar tampil terbesarnya hanya sekitar 133px,
+sehingga 600px sudah melebihi kebutuhan layar 3×.
 
 ### f. Formulir data di akhir, bukan di awal
 Sebagian besar kendala selesai di percakapan. Meminta data di awal membebani

@@ -68,9 +68,19 @@ authRouter.post('/masuk', (req, res) => {
     catatAkses(namaAkun, 'masuk', ingatSaya ? 'sesi panjang' : null);
     pasangKuki(res, buatToken(pengguna, ingatSaya), ingatSaya);
 
+    // Bentuknya WAJIB sama persis dengan GET /auth/saya. Antarmuka menyimpan
+    // keduanya ke keadaan yang sama: hasil masuk dipakai langsung, hasil /saya
+    // dipakai saat halaman dimuat ulang. Bila salah satunya kekurangan kolom,
+    // halaman berperilaku berbeda sebelum dan sesudah muat ulang — perbedaan
+    // yang hampir mustahil ditemukan lewat pengujian manual.
     res.json({
       success: true,
-      pengguna: { namaAkun: pengguna.nama_akun, nama: pengguna.nama, peran: pengguna.peran }
+      pengguna: {
+        namaAkun: pengguna.nama_akun,
+        nama: pengguna.nama,
+        peran: pengguna.peran,
+        divisi: divisiAkun(pengguna)
+      }
     });
   } catch (error) {
     console.error('Error masuk:', error);

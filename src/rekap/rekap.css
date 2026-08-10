@@ -51,16 +51,24 @@
    putih tulisannya lenyap dan hanya menyisakan emblem. */
 .rk-merek { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .rk-merek-logo { height: 26px; width: auto; display: block; flex-shrink: 0; }
+/* Gabungan logo PERTAMINA ONE dan SATU-IT SIGAP. Alasnya putih justru karena
+   alasan yang berkebalikan dengan logo di atas: latar berkasnya tembus pandang
+   dan sebagian isinya hitam. Keterangan lengkapnya pada .lp-brand-logo-unit di
+   src/index.css. */
 .rk-merek-logo-unit {
   height: 28px; width: auto; display: block; flex-shrink: 0;
   object-fit: contain;
   filter: brightness(1.12) contrast(1.06) drop-shadow(0 1px 2px rgba(0, 27, 48, 0.35));
 }
+
+/* Rasio logo gabungan 4,45:1 — di ponsel bilah merek cukup memuat kedua logo.
+   Nama halaman tetap ada pada judul <h1> tepat di bawahnya. */
 .rk-merek-garis {
+  display: none;
   width: 1px; height: 26px; flex-shrink: 0;
   background: rgba(255, 255, 255, 0.3);
 }
-.rk-merek-teks { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.rk-merek-teks { display: none; flex-direction: column; line-height: 1.25; min-width: 0; }
 .rk-merek-teks strong {
   font-size: 0.92rem; font-weight: 700; color: #fff; letter-spacing: -0.015em;
 }
@@ -485,6 +493,17 @@
   color: var(--pt-green-text); font-size: 0.76rem; font-weight: 600;
 }
 
+/* Sedang dipegang engineer — belum selesai, jadi bukan hijau. Ditaruh di atas
+   tombol, bukan di sampingnya: kolom tindakan sempit dan namanya bisa panjang. */
+.rk-dikerjakan {
+  display: flex; align-items: center; gap: 4px;
+  margin-bottom: 5px;
+  color: #8a5a00; font-size: 0.72rem; font-weight: 600;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 130px;
+}
+.rk-dikerjakan svg { flex-shrink: 0; }
+
 .rk-status, .rk-urgensi, .rk-skor {
   display: inline-block;
   padding: 2px 9px;
@@ -700,6 +719,23 @@
   margin-top: 4px;
 }
 .rk-dialog textarea:focus { outline: 2px solid var(--pt-blue); outline-offset: 1px; }
+
+/* Penolakan server ditampilkan di dalam dialog. Di luar dialog ia berada di
+   belakang lapisan gelap dan kerap sudah tergulir jauh ke atas — sehingga
+   penolakan terlihat sama persis dengan tombol yang tidak berfungsi. */
+.rk-dialog-galat {
+  display: flex; align-items: flex-start; gap: 7px;
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: var(--r-sm);
+  background: var(--pt-red-soft);
+  border: 1px solid #f7c4ca;
+  color: var(--pt-red-text);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+.rk-dialog-galat svg { flex-shrink: 0; margin-top: 1px; }
+
 .rk-dialog-aksi {
   display: flex;
   flex-direction: column-reverse;   /* tindakan utama paling bawah */
@@ -718,7 +754,11 @@
 
   .rk-merek-logo { height: 30px; }
   .rk-merek-logo-unit { height: 32px; }
-  .rk-merek-garis { height: 30px; }
+  /* Keduanya disembunyikan di ponsel (lihat aturan dasarnya di atas) karena
+     logo gabungan berasio 4,9:1 — di layar sempit ia mendesak tombol navbar
+     keluar. Baru pada lebar ini ruangnya cukup. */
+  .rk-merek-garis { display: block; height: 30px; }
+  .rk-merek-teks { display: flex; }
   .rk-merek-teks strong { font-size: 1rem; }
   .rk-merek-teks small { font-size: 0.65rem; }
 
