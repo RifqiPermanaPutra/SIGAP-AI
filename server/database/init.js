@@ -340,14 +340,26 @@ export function wajibSiap() {
  * Penomoran ulang setiap hari, mengikuti tanggal WIB.
  */
 function nomorTiketBaru(tanggal) {
-  const { jumlah } = wajibSiap()
-    .prepare('SELECT COUNT(*) AS jumlah FROM sesi WHERE tanggal_wib = ?')
-    .get(tanggal);
+  const awalan = `SGP-${tanggal.replace(/-/g, '')}-`;
+
+  // Nomor berikutnya diambil dari urutan TERTINGGI yang pernah dipakai hari
+  // itu, bukan dari jumlah baris. Keduanya sama selama tidak ada yang pernah
+  // dihapus — dan berbeda tajam begitu ada.
+  //
+  // Dengan COUNT+1, menghapus satu baris membuat nomor berikutnya mundur dan
+  // menabrak tiket yang masih ada; penyisipannya lalu gagal oleh batasan UNIQUE
+  // pada `nomor_tiket`, dan pelapor berikutnya tidak dapat membuat sesi sama
+  // sekali. `scripts/bersihkan-sesi-kosong.js` memang menghapus baris, sehingga
+  // penomoran wajib tahan terhadapnya.
+  const { tertinggi } = wajibSiap().prepare(`
+    SELECT MAX(CAST(substr(nomor_tiket, ?) AS INTEGER)) AS tertinggi
+    FROM sesi WHERE nomor_tiket LIKE ?
+  `).get(awalan.length + 1, `${awalan}%`);
 
   // Aman dari perebutan nomor tanpa transaksi: node:sqlite bersifat sinkron
-  // dan Node berjalan satu utas, sehingga hitung-lalu-sisip tidak dapat
-  // disela permintaan lain.
-  return `SGP-${tanggal.replace(/-/g, '')}-${String(jumlah + 1).padStart(4, '0')}`;
+  // dan Node berjalan satu utas, sehingga baca-lalu-sisip tidak dapat disela
+  // permintaan lain.
+  return awalan + String((tertinggi || 0) + 1).padStart(4, '0');
 }
 
 /* ────────────────────────────────────────────────────────────────

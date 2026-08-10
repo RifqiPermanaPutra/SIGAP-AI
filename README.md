@@ -439,6 +439,24 @@ masuk, pengunduhan rekap, pencadangan, dan galat server.
 | `npm run akun` | Kelola akun halaman rekap |
 | `npm run cadangkan` | Cadangkan basis data sekarang juga |
 | `npm run perbaiki-status` | Perbaiki status `diteruskan` lama yang tanpa data pelapor (sekali jalan) |
+| `npm run bersihkan-sesi` | Buang baris sesi yang terbentuk tanpa jejak manusia (sekali jalan) |
+
+Dua perintah terakhir **menulis ulang atau menghapus data**, dan karena itu
+berjalan dalam mode melihat-saja lebih dulu. Keduanya baru benar-benar mengubah
+sesuatu bila diberi `--terapkan`:
+
+```bash
+npm run bersihkan-sesi                 # lihat dulu apa yang akan dibuang
+npm run cadangkan                      # cadangkan sebelum mengubah
+npm run bersihkan-sesi -- --terapkan   # benar-benar menghapus
+```
+
+`bersihkan-sesi` hanya membuang baris yang **tidak punya jejak manusia sama
+sekali**: tanpa keluhan, tanpa layanan terpilih, tanpa nama pelapor, tanpa
+eskalasi, dan tanpa satu pun pesan dari pengguna. Baris seperti itu dulu
+terbentuk setiap kali halaman dibuka, sehingga "Total laporan" pada rekap
+menghitung kunjungan alih-alih laporan. Sumbernya sudah ditutup; perintah ini
+untuk membereskan yang terlanjur tersimpan.
 
 ### Mengelola akun
 

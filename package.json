@@ -13,7 +13,8 @@
     "akun": "node scripts/akun.js",
     "cadangkan": "node scripts/cadangkan.js",
     "perbaiki-status": "node scripts/perbaiki-status-diteruskan.js",
-    "test": "node tests/jalankan.mjs"
+    "test": "node tests/jalankan.mjs",
+    "bersihkan-sesi": "node scripts/bersihkan-sesi-kosong.js"
   },
   "keywords": [
     "helpdesk",

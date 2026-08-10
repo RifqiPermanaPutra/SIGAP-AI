@@ -9,7 +9,7 @@
 import fs from 'fs';
 import path from 'path';
 import { jalurBasisData, wajibSiap, tandaiSesiTerbengkalai } from '../database/init.js';
-import { anonimkanLama } from './rekapService.js';
+import { anonimkanLama, pangkasIsiLama } from './rekapService.js';
 import { info, peringatan, galat, bersihkanLogLama } from './logUtil.js';
 
 const HARI_CADANGAN = Number(process.env.HARI_SIMPAN_CADANGAN || 14);
@@ -185,6 +185,18 @@ export function pemeliharaanHarian() {
   if (dianonimkan > 0) {
     info('retensi-dijalankan', { baris: dianonimkan, tahun: TAHUN_RETENSI });
     console.log(`🔒 ${dianonimkan} laporan lama dianonimkan (retensi ${TAHUN_RETENSI} tahun)`);
+  }
+
+  // Isi percakapan dan jejak akses tidak dapat dianonimkan sebagian — keduanya
+  // teks bebas. Sebelumnya keduanya menumpuk tanpa pernah dibuang sama sekali,
+  // sementara baris sesinya sudah dianonimkan bertahun-tahun lalu.
+  const dipangkas = pangkasIsiLama(TAHUN_RETENSI);
+  if (dipangkas.pesan > 0 || dipangkas.akses > 0) {
+    info('retensi-pangkas', { ...dipangkas, tahun: TAHUN_RETENSI });
+    console.log(
+      `🔒 ${dipangkas.pesan} pesan dan ${dipangkas.akses} jejak akses lama dibuang ` +
+      `(retensi ${TAHUN_RETENSI} tahun)`
+    );
   }
 }
 

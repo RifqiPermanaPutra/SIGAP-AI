@@ -9,6 +9,23 @@ import { DIVISI_CADANGAN } from './data/divisiCadangan.js';
 
 const API_BASE = '/api';
 
+const jam = () =>
+  new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+/**
+ * Sambutan pembuka.
+ *
+ * Ditampilkan dari sisi peramban, TIDAK diambil dari server — mengambilnya
+ * berarti membuat sesi, dan sesi tidak boleh lahir hanya karena halaman
+ * dibuka. Isinya wajib sama persis dengan `getWelcomeMessage()` di
+ * `server/services/answerService.js`.
+ */
+const SAMBUTAN =
+  'Selamat datang di **SIGAP**, layanan bantuan ICT Pertamina EP Asset 1 Regional 1 Field Lirik.\n\n' +
+  'Saya siap membantu menyelesaikan kendala ICT Anda. Silakan pilih **layanan** yang ingin dilaporkan terlebih dahulu.';
+
+const pesanSambutan = () => [{ role: 'assistant', content: SAMBUTAN, time: jam() }];
+
 export default function App() {
   const [view, setView] = useState('landing');
   const [sessionId, setSessionId] = useState(null);
@@ -17,7 +34,7 @@ export default function App() {
   // pun, sehingga engineer tidak dapat menemukan tiketnya untuk ditandai
   // selesai — dan kolom waktu tanggap pada rekap tidak pernah terisi.
   const [nomorTiket, setNomorTiket] = useState(null);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(pesanSambutan);
   const [division, setDivision] = useState(null);
   const [reporter, setReporter] = useState(null);
   const [showIntake, setShowIntake] = useState(false);
@@ -47,9 +64,6 @@ export default function App() {
       });
   }, []);
 
-  const jam = () =>
-    new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-
   /**
    * Alamat yang dapat dibuka dari ponsel engineer.
    *
@@ -69,68 +83,48 @@ export default function App() {
     return lokal ? null : origin;
   };
 
-  const SAMBUTAN_LOKAL =
-    'Selamat datang di **SIGAP**, layanan bantuan ICT Pertamina EP Asset 1 Regional 1 Field Lirik.\n\n' +
-    'Saya siap membantu menyelesaikan kendala ICT Anda. Silakan pilih **layanan** yang ingin dilaporkan terlebih dahulu.';
-
   /**
-   * Buka sesi percakapan baru.
+   * Buka sesi percakapan baru di server.
+   *
+   * Dipanggil MALAS — hanya ketika pengguna benar-benar bertindak: memilih
+   * layanan atau mengirim pesan pertama. Sebelumnya ini dijalankan saat
+   * komponen dimuat, bahkan sementara pengguna masih di beranda, sehingga
+   * setiap pembukaan halaman menyisipkan satu baris laporan dan membakar satu
+   * nomor tiket. Pada data nyata 69 dari 83 sesi terbentuk seperti itu:
+   * "Total laporan" pada rekap menghitung kunjungan, bukan laporan, dan sebuah
+   * laporan sungguhan bisa bernomor SGP-…-0047 pada hari dengan tiga kejadian.
+   *
+   * TIDAK menyentuh daftar pesan. Pemanggilnya kerap sudah menambahkan pesan
+   * pengguna sebelum ini dijalankan, dan menyetel ulang daftar akan menghapus
+   * kalimat yang baru saja diketik orang itu.
    *
    * Mengembalikan id sesinya, bukan sekadar menyimpannya ke state: pemanggil
-   * kerap memerlukan id itu pada baris berikutnya, sedangkan pembaruan state
-   * React belum terlihat sampai penggambaran ulang.
+   * memerlukan id itu pada baris berikutnya, sedangkan pembaruan state React
+   * belum terlihat sampai penggambaran ulang.
    *
-   * @param {boolean} [bukaPemilih=true] Tampilkan pemilihan layanan setelahnya.
-   *   Diisi false bila pemanggil sudah menentukan layanannya sendiri.
    * @returns {Promise<string|null>} id sesi, atau null bila server menolak
    */
-  const startNewSession = useCallback(async (bukaPemilih = true) => {
-    const mulaiLokal = () => {
-      setMessages([{ role: 'assistant', content: SAMBUTAN_LOKAL, time: jam() }]);
-      setDivision(null);
-      setShowEngineerBtn(false);
-      setMenungguKonfirmasi(false);
-      if (bukaPemilih) setShowDivisionSelector(true);
-    };
-
+  const mulaiSesi = useCallback(async () => {
     try {
       const res = await fetch(`${API_BASE}/chat/new`, { method: 'POST' });
       const data = await res.json();
 
-      // Server menjawab tetapi menolak. Sebelumnya cabang ini tidak menangani
-      // apa pun, sehingga layar diam tanpa sambutan maupun penjelasan.
+      // Server menjawab tetapi menolak — misalnya pembatas laju terlampaui.
       if (!data.success) {
         console.error('Server menolak pembuatan sesi:', data.error);
-        setSessionId(null);
-        setNomorTiket(null);
-        mulaiLokal();
         return null;
       }
 
       setSessionId(data.sessionId);
       setNomorTiket(data.nomorTiket || null);
-      setMessages([{ role: 'assistant', content: data.message, time: jam() }]);
-      setDivision(null);
-      setShowEngineerBtn(false);
-      setMenungguKonfirmasi(false);
-      if (bukaPemilih) setShowDivisionSelector(true);
       return data.sessionId;
     } catch (error) {
-      console.error('Failed to start session:', error);
-      // Luring: sambutan tetap ditampilkan agar layar tidak kosong, tetapi
-      // TIDAK dibuatkan id palsu. Id palsu membuat setiap permintaan
+      // Luring. TIDAK dibuatkan id palsu: id palsu membuat setiap permintaan
       // berikutnya ditolak server dengan galat yang membingungkan.
-      setSessionId(null);
-      setNomorTiket(null);
-      mulaiLokal();
+      console.error('Failed to start session:', error);
       return null;
     }
   }, []);
-
-  // Init on mount
-  useEffect(() => {
-    startNewSession();
-  }, [startNewSession]);
 
   // Kunci scroll body saat berada di tampilan chat
   useEffect(() => {
@@ -162,7 +156,7 @@ export default function App() {
     // Layanan dapat dipilih langsung dari kartu di beranda, kadang sebelum
     // sesi selesai dibuat. Tanpa sesi, permintaan ditolak server dan layar
     // diam tanpa penjelasan apa pun.
-    const sid = sessionId || (await startNewSession(false));
+    const sid = sessionId || (await mulaiSesi());
     if (!sid) {
       sapaLokal();
       return;
@@ -273,7 +267,7 @@ export default function App() {
       // Sesi bisa saja belum terbentuk bila server sempat tidak terjangkau
       // saat halaman dibuka. Dicoba sekali lagi di sini alih-alih membalas
       // dengan galat yang tidak menjelaskan apa pun.
-      const sid = sessionId || (await startNewSession(false));
+      const sid = sessionId || (await mulaiSesi());
       if (!sid) {
         setMessages(prev => [...prev, {
           role: 'assistant',
@@ -340,9 +334,24 @@ export default function App() {
     }
   };
 
-  // Handle new chat
+  /**
+   * Mulai percakapan baru.
+   *
+   * Dikosongkan di peramban saja — TIDAK memanggil server. Menekan "chat baru"
+   * belum berarti ada kendala yang hendak dilaporkan; sesinya lahir nanti,
+   * begitu layanan dipilih. Sesi lama dibiarkan apa adanya: penyapu berkala
+   * akan menandainya ditinggalkan bila memang tidak dilanjutkan.
+   */
   const handleNewChat = () => {
-    startNewSession();
+    setSessionId(null);
+    setNomorTiket(null);
+    setMessages(pesanSambutan());
+    setDivision(null);
+    setReporter(null);
+    setShowEngineerBtn(false);
+    setMenungguKonfirmasi(false);
+    setSaranDivisi(null);
+    setShowDivisionSelector(true);
   };
 
   // Tombol "Hubungi Engineer" kini membuka formulir pelaporan terlebih dahulu.

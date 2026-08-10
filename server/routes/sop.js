@@ -12,7 +12,10 @@
  */
 import { Router } from 'express';
 import { wajibMasuk, catatAkses } from '../services/authService.js';
-import { bacaSop, simpanMasalah, pratinjauMasalah, daftarCadanganSop } from '../services/sopBerkas.js';
+import {
+  bacaSop, simpanMasalah, pratinjauMasalah, daftarCadanganSop,
+  tambahMasalah, hapusMasalah
+} from '../services/sopBerkas.js';
 import { cariMasalah, kandidatTeratas, AMBANG_COCOK } from '../services/answerService.js';
 import { DIVISI_KE_FOLDER } from '../services/sopParser.js';
 import { DIVISIONS } from '../config/divisi.js';
@@ -111,6 +114,36 @@ sopRouter.post('/:divisi/:masalahId/pratinjau', (req, res) => {
 });
 
 /**
+ * DELETE /api/sop/:divisi/:masalahId
+ * Hapus satu masalah. Berkas lama tetap dicadangkan lebih dulu.
+ */
+sopRouter.delete('/:divisi/:masalahId', (req, res) => {
+  const { divisi, masalahId } = req.params;
+  if (!divisiSah(divisi)) {
+    return res.status(400).json({ success: false, error: 'Divisi tidak valid' });
+  }
+
+  const hasil = hapusMasalah(divisi, masalahId);
+
+  if (!hasil.ok) {
+    return res.status(hasil.status).json({
+      success: false,
+      error: hasil.galat[0],
+      galat: hasil.galat
+    });
+  }
+
+  catatAkses(req.pengguna.akun, 'sop-dihapus', `${divisi}/${masalahId}`);
+
+  res.json({
+    success: true,
+    message: `"${hasil.judul}" dihapus — tersisa ${hasil.sisa} masalah pada layanan ini`,
+    kb: hasil.kb,
+    cadangan: hasil.cadangan
+  });
+});
+
+/**
  * PUT /api/sop/:divisi/:masalahId
  * Perbarui satu blok masalah, cadangkan yang lama, bangun ulang, muat ulang.
  */
@@ -172,5 +205,45 @@ sopRouter.post('/uji', (req, res) => {
     skor: teratas ? Number(teratas.skor.toFixed(3)) : 0,
     masalah: teratas ? { id: teratas.masalah.id, judul: teratas.masalah.judul } : null,
     dijawab: Boolean(cocok)
+  });
+});
+
+/**
+ * POST /api/sop/:divisi
+ * Tambahkan satu masalah baru ke berkas SOP divisi ini.
+ *
+ * Tanpa rute ini penyunting hanya dapat memperbaiki kalimat pada kendala yang
+ * sudah dikenal, sementara kendala baru terus bermunculan. SOP yang tidak dapat
+ * tumbuh akan usang sendiri.
+ *
+ * SENGAJA didaftarkan paling akhir. Express mencocokkan rute menurut urutan
+ * pendaftaran, sehingga `/:divisi` yang didaftarkan lebih dulu akan menelan
+ * `POST /uji` di atas — permintaan uji keluhan akan dibaca sebagai penambahan
+ * masalah pada divisi bernama "uji", lalu ditolak "Divisi tidak valid".
+ */
+sopRouter.post('/:divisi', (req, res) => {
+  const { divisi } = req.params;
+  if (!divisiSah(divisi)) {
+    return res.status(400).json({ success: false, error: 'Divisi tidak valid' });
+  }
+
+  const hasil = tambahMasalah(divisi, req.body || {});
+
+  if (!hasil.ok) {
+    return res.status(hasil.status).json({
+      success: false,
+      error: hasil.galat[0],
+      galat: hasil.galat
+    });
+  }
+
+  catatAkses(req.pengguna.akun, 'sop-ditambah', `${divisi}/${hasil.masalah.id}`);
+
+  res.status(201).json({
+    success: true,
+    message: `Masalah baru ditambahkan — basis pengetahuan dimuat ulang (${hasil.kb.dimuat} masalah)`,
+    masalah: hasil.masalah,
+    kb: hasil.kb,
+    cadangan: hasil.cadangan
   });
 });

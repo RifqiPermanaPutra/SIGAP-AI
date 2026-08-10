@@ -307,13 +307,33 @@ dimaksudkan untuk menaikkan kehati-hatian, bukan sebagai pengaman.
 
 | Umur data | Perlakuan |
 |---|---|
-| 0–2 tahun | Lengkap, termasuk nama pelapor |
-| Lebih dari 2 tahun | **Kolom nama dikosongkan**, baris tetap disimpan |
+| 0–2 tahun | Lengkap, termasuk nama pelapor dan isi percakapan |
+| Lebih dari 2 tahun | **Nama dikosongkan; isi percakapan dan jejak akses dibuang.** Baris sesi tetap disimpan |
 
-Yang dibuang hanya kolom yang sensitif, bukan barisnya. Setelah dua tahun, nama
+Yang dibuang hanya isi yang sensitif, bukan barisnya. Setelah dua tahun, nama
 seseorang yang pernah melaporkan printer macet tidak bernilai bagi siapa pun,
 sementara fungsi, lokasi, divisi, urgensi, dan durasinya masih berguna untuk
 membandingkan tren antar tahun.
+
+Tabel `pesan` dan `log_akses` ikut dipangkas karena keduanya **teks bebas yang
+tidak dapat dianonimkan sebagian**: pelapor kerap menyebut nama rekan, nomor
+ruangan, atau nama berkas di dalam kalimatnya. Ringkasan yang masih berguna
+sudah tersimpan pada kolom `keluhan`, `masalah_cocok`, dan `solusi_terakhir` di
+baris sesinya. Jejak akses berguna justru ketika dipertanyakan — dan pertanyaan
+itu tidak datang dua tahun kemudian.
+
+### Sesi tanpa jejak manusia
+
+Baris sesi yang **tidak pernah disentuh siapa pun** — tanpa keluhan, tanpa
+layanan terpilih, tanpa satu pun pesan dari pengguna — bukan data retensi
+melainkan sampah. Ia terbentuk ketika sesi masih dibuat saat halaman dimuat;
+pada basis data nyata 71 dari 94 baris terbentuk seperti itu, sehingga "Total
+laporan" menghitung kunjungan, bukan laporan.
+
+Sumbernya sudah ditutup di `src/App.jsx` — sesi kini lahir hanya saat pengguna
+memilih layanan atau mengirim pesan. Baris lama dibersihkan sekali dengan
+`scripts/bersihkan-sesi-kosong.js`, yang berjalan dalam mode melihat-saja
+kecuali diberi `--terapkan`.
 
 Dipilih dua tahun karena mencakup masa penelitian, cukup untuk satu perbandingan
 tahun-ke-tahun yang utuh, dan cukup singkat untuk dipertanggungjawabkan.
