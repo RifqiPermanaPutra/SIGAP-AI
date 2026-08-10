@@ -778,8 +778,7 @@ button {
   border-top: 1px solid rgba(255, 255, 255, 0.14);
 }
 .pertamina-logo-img { height: 24px; width: auto; display: block; flex-shrink: 0; }
-/* Alas putih wajib, dan tingginya sudah mencakup alas itu (border-box) —
-   lihat keterangan panjang pada .lp-brand-logo-unit */
+/* Varian gelap — lihat keterangan pada .lp-brand-logo-unit di atas */
 .satu-it-logo-img {
   height: 28px; width: auto; display: block; flex-shrink: 0;
   object-fit: contain;

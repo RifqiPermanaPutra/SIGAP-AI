@@ -47,10 +47,8 @@
 
 .sg-merek { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .sg-merek-logo { height: 26px; width: auto; display: block; flex-shrink: 0; }
-/* Gabungan logo PERTAMINA ONE dan SATU-IT SIGAP. Alas putihnya wajib: latar
-   berkasnya tembus pandang dan sebagian isinya hitam, sehingga di atas kepala
-   biru bagian itu lenyap. Keterangan lengkapnya pada .lp-brand-logo-unit di
-   src/index.css.
+/* Varian logo untuk header gelap sudah memiliki alpha transparan dan elemen
+   monokrom putih, sehingga tidak memerlukan panel, border, maupun padding.
 
    Tidak seperti navbar halaman lain, teks merek di sini TETAP tampil pada
    ponsel: kartu masuk lebarnya 390px penuh dan tidak berbagi ruang dengan
