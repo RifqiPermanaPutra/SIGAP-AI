@@ -133,6 +133,7 @@ export default function RekapPage() {
   const [memuat, setMemuat] = useState(false);
   const [galat, setGalat] = useState('');
   const [tandai, setTandai] = useState(null);
+  const [galatTandai, setGalatTandai] = useState('');
   const [batal, setBatal] = useState(null);
   const [barisTerbuka, setBarisTerbuka] = useState(null);
   const [riwayat, setRiwayat] = useState({});           // id sesi → daftar pesan
@@ -230,6 +231,7 @@ export default function RekapPage() {
   };
 
   const kirimTandai = async (catatan) => {
+    setGalatTandai('');
     try {
       const res = await fetch(`${API}/rekap/tandai-selesai`, {
         method: 'POST',
@@ -237,11 +239,17 @@ export default function RekapPage() {
         body: JSON.stringify({ nomorTiket: tandai.nomor_tiket, catatan })
       });
       const d = await res.json();
-      if (!d.success) { setGalat(d.error); return; }
+
+      // Galat ditampilkan DI DALAM dialog. Sebelumnya ia dikirim ke pesan galat
+      // tingkat halaman, yang berada di belakang lapisan gelap dialog dan kerap
+      // sudah tergulir jauh ke atas — sehingga penolakan server terlihat sama
+      // persis dengan tombol yang tidak berfungsi.
+      if (!d.success) { setGalatTandai(d.error || 'Gagal menandai tiket.'); return; }
+
       setTandai(null);
       ambil();
     } catch {
-      setGalat('Gagal menandai tiket.');
+      setGalatTandai('Tidak dapat terhubung ke server.');
     }
   };
 
@@ -674,16 +682,40 @@ export default function RekapPage() {
                           <td className="rk-sembunyi-cetak">
                             {l.status === 'diteruskan' && !l.ditangani_pada ? (
                               <>
-                                <button
-                                  className="rk-tombol-kecil"
-                                  onClick={(e) => { e.stopPropagation(); setTandai(l); }}
-                                >
-                                  Tandai selesai
-                                </button>
+                                {/* Tiket yang sudah dipegang engineer. Tanpa
+                                    keterangan ini halaman rekap menjadi jalan
+                                    buntu: tombolnya ditekan, formulirnya diisi,
+                                    lalu server menolak dan menyuruh "ambil alih
+                                    dahulu" — padahal halaman ini tidak punya
+                                    tombol itu. Yang berhak menutupnya cukup
+                                    melihat tombolnya; yang tidak, tahu sebabnya
+                                    sebelum mencoba. */}
+                                {l.dikerjakan_oleh && (
+                                  <span
+                                    className="rk-dikerjakan"
+                                    title={`Mulai dikerjakan ${tanggalJamWIB(l.mulai_dikerjakan_pada)}`}
+                                  >
+                                    <IconWrench size={12} /> {namaAkun(l.dikerjakan_oleh)}
+                                  </span>
+                                )}
+
+                                {(!l.dikerjakan_oleh
+                                  || l.dikerjakan_oleh === pengguna.namaAkun
+                                  || pengguna.peran === 'admin') && (
+                                  <button
+                                    className="rk-tombol-kecil"
+                                    onClick={(e) => { e.stopPropagation(); setTandai(l); }}
+                                  >
+                                    Tandai selesai
+                                  </button>
+                                )}
+
                                 {/* Siapa yang harus ditagih. Dengan delapan
                                     layanan dan engineer berbeda-beda, admin
-                                    tidak seharusnya mengingatnya sendiri. */}
-                                {penanggungJawab(l.divisi_id) && (
+                                    tidak seharusnya mengingatnya sendiri.
+                                    Tidak perlu lagi bila tiketnya sudah
+                                    dipegang orang — namanya sudah tertulis. */}
+                                {!l.dikerjakan_oleh && penanggungJawab(l.divisi_id) && (
                                   <span className="rk-penanggung">
                                     {penanggungJawab(l.divisi_id)}
                                   </span>
@@ -741,7 +773,14 @@ export default function RekapPage() {
         )}
       </div>
 
-      {tandai && <DialogTandai tiket={tandai} onBatal={() => setTandai(null)} onKirim={kirimTandai} />}
+      {tandai && (
+        <DialogTandai
+          tiket={tandai}
+          galat={galatTandai}
+          onBatal={() => { setTandai(null); setGalatTandai(''); }}
+          onKirim={kirimTandai}
+        />
+      )}
 
       {batal && (
         <div className="rk-dialog-latar" onClick={() => setBatal(null)}>
@@ -923,7 +962,7 @@ function RincianLaporan({ laporan, pesan }) {
    Dialog penandaan selesai
    ──────────────────────────────────────────────────────────────── */
 
-function DialogTandai({ tiket, onBatal, onKirim }) {
+function DialogTandai({ tiket, galat, onBatal, onKirim }) {
   const [catatan, setCatatan] = useState('');
 
   return (
@@ -938,6 +977,12 @@ function DialogTandai({ tiket, onBatal, onKirim }) {
         <textarea id="rk-catatan" rows="3" value={catatan} autoFocus
                   placeholder="Contoh: kabel LAN diganti, port switch dipindah"
                   onChange={(e) => setCatatan(e.target.value)} />
+
+        {galat && (
+          <p className="rk-dialog-galat" role="alert">
+            <IconAlert size={15} /> {galat}
+          </p>
+        )}
 
         <div className="rk-dialog-aksi">
           <button className="rk-tombol-samar" onClick={onBatal}>Batal</button>

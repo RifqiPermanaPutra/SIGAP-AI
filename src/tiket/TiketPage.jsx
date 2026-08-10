@@ -66,6 +66,11 @@ export default function TiketPage() {
       <header className="tk-navbar">
         <div className="tk-merek">
           <img src="/logo-pertamina-ep.svg" alt="Pertamina EP" className="tk-merek-logo" />
+          <img
+            src="/logo-satu-it-sigap-dark.png"
+            alt="Pertamina ONE dan SATU-IT SIGAP"
+            className="tk-merek-logo-unit"
+          />
           <span className="tk-merek-garis" aria-hidden="true" />
           <span className="tk-merek-teks">
             <strong>SIGAP</strong>

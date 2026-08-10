@@ -44,6 +44,17 @@ cek('admin berhasil masuk', adm.data.success && adm.data.pengguna.peran === 'adm
 cek('engineer berhasil masuk', eng.data.success && eng.data.pengguna.peran === 'engineer', eng.data);
 cek('kuki sesi terpasang', adm.kuki.startsWith('sigap_sesi='), adm.kuki);
 
+// Antarmuka menyimpan keduanya ke keadaan yang sama: hasil masuk dipakai
+// langsung, hasil /saya dipakai saat halaman dimuat ulang. Bentuk yang berbeda
+// membuat halaman berperilaku lain sebelum dan sesudah muat ulang.
+const sayaEng = (await json('/auth/saya', eng.kuki)).pengguna;
+cek('bentuk balasan /masuk sama dengan /auth/saya',
+  Object.keys(eng.data.pengguna).sort().join(',') === Object.keys(sayaEng).sort().join(','),
+  { masuk: Object.keys(eng.data.pengguna).sort(), saya: Object.keys(sayaEng).sort() });
+cek('wewenang layanan ikut pada keduanya',
+  JSON.stringify(eng.data.pengguna.divisi) === JSON.stringify(sayaEng.divisi),
+  [eng.data.pengguna.divisi, sayaEng.divisi]);
+
 bagian('2. Wewenang peran');
 cek('engineer TIDAK boleh mengunduh Excel', (await ambil('/rekap/excel', eng.kuki)).status === 403, 'bukan 403');
 cek('admin boleh mengunduh Excel', (await ambil('/rekap/excel', adm.kuki)).status === 200, 'bukan 200');

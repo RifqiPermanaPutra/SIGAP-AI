@@ -459,6 +459,11 @@ export default function SopEditorPage() {
       <header className="se-navbar">
         <div className="se-merek">
           <img src="/logo-pertamina-ep.svg" alt="Pertamina EP" className="se-merek-logo" />
+          <img
+            src="/logo-satu-it-sigap-dark.png"
+            alt="Pertamina ONE dan SATU-IT SIGAP"
+            className="se-merek-logo-unit"
+          />
           <span className="se-merek-garis" aria-hidden="true" />
           <span className="se-merek-teks">
             <strong>SIGAP</strong>

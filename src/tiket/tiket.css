@@ -53,8 +53,24 @@
 
 .tk-merek { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .tk-merek-logo { height: 26px; width: auto; display: block; flex-shrink: 0; }
-.tk-merek-garis { width: 1px; height: 26px; flex-shrink: 0; background: rgba(255, 255, 255, 0.3); }
-.tk-merek-teks { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+
+/* Varian logo untuk header gelap sudah memiliki alpha transparan dan elemen
+   monokrom putih, sehingga tidak memerlukan panel, border, maupun padding. */
+.tk-merek-logo-unit {
+  height: 28px; width: auto; display: block; flex-shrink: 0;
+  object-fit: contain;
+  filter: brightness(1.12) contrast(1.06) drop-shadow(0 1px 2px rgba(0, 27, 48, 0.35));
+}
+
+/* Di ponsel bilah merek hanya memuat kedua logo — rasio logo gabungan 4,45:1,
+   dan menambahkannya di samping teks akan mendesak tombol Beranda keluar dari
+   layar. Nama halaman tetap ada pada judul <h1> tepat di bawahnya. */
+.tk-merek-garis {
+  display: none;
+  width: 1px; height: 26px; flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.3);
+}
+.tk-merek-teks { display: none; flex-direction: column; line-height: 1.25; min-width: 0; }
 .tk-merek-teks strong { font-size: 0.92rem; font-weight: 700; color: #fff; letter-spacing: -0.015em; }
 .tk-merek-teks small {
   font-size: 0.6rem; letter-spacing: 0.08em; font-weight: 600;
@@ -186,7 +202,9 @@
   .tk-navbar { padding: 12px 20px; }
 
   .tk-merek-logo { height: 30px; }
-  .tk-merek-garis { height: 30px; }
+  .tk-merek-logo-unit { height: 32px; }
+  .tk-merek-garis { display: block; height: 30px; }
+  .tk-merek-teks { display: flex; }
   .tk-merek-teks strong { font-size: 1rem; }
 
   .tk-cari { flex-direction: row; }
