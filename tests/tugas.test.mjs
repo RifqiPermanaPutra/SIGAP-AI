@@ -590,6 +590,46 @@ cek('keduanya berjumlah waktu tanggap',
   Math.abs((t3Selesai.waktu_respons + t3Selesai.lama_kerja) - t3Selesai.waktu_tanggap) <= 1,
   [t3Selesai.waktu_respons, t3Selesai.lama_kerja, t3Selesai.waktu_tanggap]);
 
+// Kolom "Status" pada rekap dulu berhenti di "Diteruskan" selamanya, termasuk
+// untuk tiket yang sudah engineer tuntaskan — seolah tidak ada yang
+// mengerjakannya. Nilai `status` di basis data memang tidak boleh berubah
+// (RANCANGAN-DATA.md §8), jadi keadaannya diturunkan.
+const semuaLap = (await json('/rekap?dari=2020-01-01', adm)).laporan;
+const cariLap = (nomor) => semuaLap.find((l) => l.nomor_tiket === nomor);
+
+cek('tiket yang tuntas ditangani tidak lagi terbaca "diteruskan"',
+  cariLap(T3).keadaan === 'selesai-engineer' && cariLap(T3).status === 'diteruskan',
+  { keadaan: cariLap(T3).keadaan, status: cariLap(T3).status });
+catatan('status di basis data tetap empat nilai — yang bertambah hanya cara membacanya');
+
+cek('tiket yang sedang dipegang terbaca "dikerjakan"',
+  cariLap(T1).keadaan === 'dikerjakan', cariLap(T1).keadaan);
+cek('tiket yang belum disentuh terbaca "belum-dikerjakan"',
+  cariLap(T4).keadaan === 'belum-dikerjakan', cariLap(T4).keadaan);
+cek('selesai mandiri tetap berbeda dari selesai ditangani',
+  semuaLap.filter((l) => l.status === 'selesai').every((l) => l.keadaan === 'selesai'),
+  'tercampur');
+
+// Saringan yang tidak dapat memilih apa yang tertulis di kolomnya sendiri
+// adalah jebakan: pembacanya melihat "Sedang dikerjakan" lalu tidak menemukan
+// cara menyaringnya.
+for (const keadaan of ['belum-dikerjakan', 'dikerjakan', 'selesai-engineer']) {
+  const disaring = (await json(`/rekap?dari=2020-01-01&status=${keadaan}`, adm)).laporan;
+  cek(`saringan "${keadaan}" hanya memuat keadaan itu`,
+    disaring.length > 0 && disaring.every((l) => l.keadaan === keadaan),
+    { jumlah: disaring.length, keadaan: [...new Set(disaring.map((l) => l.keadaan))] });
+}
+
+// Ketiganya harus berjumlah persis sama dengan seluruh yang diteruskan —
+// tidak ada tiket yang jatuh ke celah antar keadaan.
+const semuaDiteruskan = (await json('/rekap?dari=2020-01-01&status=diteruskan', adm)).laporan.length;
+const jumlahBertahap = (await Promise.all(
+  ['belum-dikerjakan', 'dikerjakan', 'selesai-engineer'].map(async (k) =>
+    (await json(`/rekap?dari=2020-01-01&status=${k}`, adm)).laporan.length)
+)).reduce((a, b) => a + b, 0);
+cek('ketiga keadaan menutupi seluruh tiket yang diteruskan',
+  jumlahBertahap === semuaDiteruskan, [jumlahBertahap, semuaDiteruskan]);
+
 const jejakKerja = await json('/rekap/akses', adm);
 const tindakanKerja = new Set(jejakKerja.akses.map((a) => a.tindakan));
 cek('pengambilan, pengambilalihan, dan pelepasan tercatat',

@@ -511,10 +511,17 @@
   font-size: 0.7rem;
   font-weight: 700;
 }
-.rk-status-selesai      { background: var(--pt-green-soft); color: var(--pt-green-text); }
-.rk-status-diteruskan   { background: #fdf0e8; color: #a8410f; }
-.rk-status-ditinggalkan { background: var(--line-2); color: var(--ink-3); }
-.rk-status-aktif        { background: var(--pt-blue-soft); color: var(--pt-blue-text); }
+/* Warnanya mengikuti perjalanan laporan, bukan sekadar membedakan.
+   Hijau = tuntas, oranye = masih menunggu orang, biru = sedang berjalan,
+   abu = berhenti tanpa penutup. Keduanya yang tuntas dibedakan nadanya:
+   yang ditangani engineer lebih pekat, karena ia menuntut kerja seseorang. */
+.rk-status-selesai          { background: var(--pt-green-soft); color: var(--pt-green-text); }
+.rk-status-selesai-engineer { background: #cdeedd; color: var(--pt-green-text); }
+.rk-status-belum-dikerjakan { background: #fdf0e8; color: #a8410f; }
+.rk-status-dikerjakan       { background: #fdf6e8; color: #8a5a00; }
+.rk-status-diteruskan       { background: #fdf0e8; color: #a8410f; }
+.rk-status-ditinggalkan     { background: var(--line-2); color: var(--ink-3); }
+.rk-status-aktif            { background: var(--pt-blue-soft); color: var(--pt-blue-text); }
 
 .rk-urgensi.u-rendah { background: var(--line-2); color: var(--ink-3); }
 .rk-urgensi.u-sedang { background: var(--pt-blue-soft); color: var(--pt-blue-text); }

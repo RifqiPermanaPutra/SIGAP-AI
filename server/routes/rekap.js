@@ -74,11 +74,24 @@ function durasi(detik) {
   return `${Math.floor(menit / 60)}j ${menit % 60}m`;
 }
 
-const LABEL_STATUS = {
+/**
+ * Keadaan yang dibaca manusia — sengaja TIDAK memakai kata "Selesai" sendirian.
+ *
+ * Dua hal yang sangat berbeda sama-sama berakhir tuntas: kendala yang beres
+ * lewat panduan tanpa melibatkan siapa pun, dan kendala yang ditangani engineer
+ * di lokasi. Menyebut keduanya "Selesai" pada satu kolom membuat pembaca
+ * laporan menjumlahkannya begitu saja — padahal seluruh nilai `persen_mandiri`
+ * bergantung pada perbedaan itu.
+ */
+const LABEL_KEADAAN = {
   aktif: 'Aktif',
-  selesai: 'Selesai',
-  diteruskan: 'Diteruskan',
-  ditinggalkan: 'Ditinggalkan'
+  selesai: 'Selesai mandiri',
+  'belum-dikerjakan': 'Belum dikerjakan',
+  dikerjakan: 'Sedang dikerjakan',
+  'selesai-engineer': 'Selesai ditangani',
+  ditinggalkan: 'Ditinggalkan',
+  // Hanya muncul bila kolom turunannya belum terisi — mis. pemanggil lama
+  diteruskan: 'Diteruskan'
 };
 
 /** Ambil saringan dari query string */
@@ -167,7 +180,7 @@ rekapRouter.get('/excel', wajibMasuk('admin'), (req, res) => {
       r.urgensi,
       r.engineer_tujuan,
       durasi(r.waktu_tanggap),
-      LABEL_STATUS[r.status] || r.status
+      LABEL_KEADAAN[r.keadaan] || r.keadaan
     ]);
 
     const berkas = buatXlsx({
