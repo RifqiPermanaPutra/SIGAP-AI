@@ -61,12 +61,34 @@ function durasi(detik) {
   return `${Math.floor(menit / 60)}j ${menit % 60}m`;
 }
 
-const LABEL_STATUS = {
+/**
+ * Keadaan yang dibaca manusia pada kolom "Status".
+ *
+ * `status` di basis data berhenti di 'diteruskan' begitu laporan berpindah
+ * tangan dan tidak pernah berubah lagi — benar sebagai catatan, salah sebagai
+ * bacaan. Tiket yang sudah engineer tuntaskan tetap tertulis "Diteruskan"
+ * seolah tidak ada yang mengerjakannya. Keadaannya diturunkan server (kolom
+ * `keadaan`), sehingga tabel, berkas Excel, dan saringan mustahil berbeda.
+ *
+ * Kata "Selesai" sengaja tidak berdiri sendiri. Dua hal yang sangat berbeda
+ * sama-sama berakhir tuntas — beres lewat panduan tanpa melibatkan siapa pun,
+ * dan ditangani engineer di lokasi — dan seluruh nilai "Selesai mandiri" pada
+ * ringkasan di atas bergantung pada perbedaan itu.
+ */
+const LABEL_KEADAAN = {
   aktif: 'Aktif',
-  selesai: 'Selesai',
-  diteruskan: 'Diteruskan',
-  ditinggalkan: 'Ditinggalkan'
+  selesai: 'Selesai mandiri',
+  'belum-dikerjakan': 'Belum dikerjakan',
+  dikerjakan: 'Sedang dikerjakan',
+  'selesai-engineer': 'Selesai ditangani',
+  ditinggalkan: 'Ditinggalkan',
+  diteruskan: 'Diteruskan'
 };
+
+/** Pilihan saringan — urut mengikuti perjalanan sebuah laporan */
+const SARINGAN_KEADAAN = [
+  'aktif', 'selesai', 'belum-dikerjakan', 'dikerjakan', 'selesai-engineer', 'ditinggalkan'
+];
 
 /* ────────────────────────────────────────────────────────────────
    Kepala berjenama — meniru navbar halaman pelapor
@@ -374,7 +396,7 @@ export default function RekapPage() {
             <label>Status
               <select value={f.status} onChange={(e) => setF({ ...f, status: e.target.value })}>
                 <option value="">Semua</option>
-                {Object.entries(LABEL_STATUS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+                {SARINGAN_KEADAAN.map((k) => <option key={k} value={k}>{LABEL_KEADAAN[k]}</option>)}
               </select>
             </label>
             <label>Area
@@ -675,8 +697,8 @@ export default function RekapPage() {
                           </td>
                           <td>{durasi(l.waktu_tanggap)}</td>
                           <td>
-                            <span className={`rk-status rk-status-${l.status}`}>
-                              {LABEL_STATUS[l.status] || l.status}
+                            <span className={`rk-status rk-status-${l.keadaan}`}>
+                              {LABEL_KEADAAN[l.keadaan] || l.keadaan}
                             </span>
                           </td>
                           <td className="rk-sembunyi-cetak">

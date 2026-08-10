@@ -28,6 +28,33 @@ export const SATUAN = {
 const STATUS_SAH = ['aktif', 'selesai', 'diteruskan', 'ditinggalkan'];
 
 /**
+ * Keadaan tampilan — apa yang dibaca manusia pada kolom "Status".
+ *
+ * `status` di basis data berhenti di 'diteruskan' begitu laporan berpindah
+ * tangan, dan TIDAK pernah berubah lagi (RANCANGAN-DATA.md §8). Itu benar
+ * sebagai catatan — nilainya menopang `persen_mandiri`, deret grafik, dan
+ * seluruh saringan — tetapi salah sebagai bacaan: tiket yang sudah engineer
+ * tuntaskan tetap tertulis "Diteruskan" selamanya, seolah tidak ada yang
+ * mengerjakannya.
+ *
+ * Karena itu keadaannya DITURUNKAN, bukan disimpan. Empat nilai status tetap
+ * utuh di basis data; yang bertambah hanya cara membacanya:
+ *
+ *   diteruskan + belum disentuh        → belum-dikerjakan
+ *   diteruskan + mulai_dikerjakan_pada → dikerjakan
+ *   diteruskan + ditangani_pada        → selesai-engineer
+ *   selainnya                          → nilai status apa adanya
+ */
+const KEADAAN_DITERUSKAN = {
+  'belum-dikerjakan':
+    "status = 'diteruskan' AND mulai_dikerjakan_pada IS NULL AND ditangani_pada IS NULL",
+  dikerjakan:
+    "status = 'diteruskan' AND mulai_dikerjakan_pada IS NOT NULL AND ditangani_pada IS NULL",
+  'selesai-engineer':
+    "status = 'diteruskan' AND ditangani_pada IS NOT NULL"
+};
+
+/**
  * Susun klausa WHERE dari saringan yang dikirim antarmuka.
  *
  * Seluruh nilai dipasang sebagai parameter terikat, tidak pernah disisipkan
@@ -44,9 +71,17 @@ function bangunSaringan(f = {}) {
   if (f.urgensi) { syarat.push('urgensi = ?');      nilai.push(f.urgensi); }
   if (f.fungsi)  { syarat.push('fungsi = ?');       nilai.push(f.fungsi); }
 
+  // Saringan menerima kedua bentuk: nilai status mentah (dipakai API dan
+  // pemanggil lama) maupun keadaan turunan yang tampil di layar. Tanpa yang
+  // kedua, memilih "Sedang dikerjakan" pada saringan mustahil — padahal
+  // kolomnya menampilkan tulisan itu, dan saringan yang tidak dapat memilih
+  // apa yang tertulis di kolomnya sendiri adalah jebakan.
   if (f.status && STATUS_SAH.includes(f.status)) {
     syarat.push('status = ?');
     nilai.push(f.status);
+  } else if (f.status && KEADAAN_DITERUSKAN[f.status]) {
+    // Rangkaian tetap dari dalam kode, bukan dari masukan pengguna
+    syarat.push(`(${KEADAAN_DITERUSKAN[f.status]})`);
   }
 
   if (f.cari) {
@@ -87,7 +122,15 @@ const KOLOM_TURUNAN = `
   END AS waktu_respons,
   CASE WHEN ditangani_pada >= mulai_dikerjakan_pada
        THEN CAST((julianday(ditangani_pada) - julianday(mulai_dikerjakan_pada)) * 86400 AS INTEGER)
-  END AS lama_kerja
+  END AS lama_kerja,
+  -- Keadaan yang dibaca manusia. Diturunkan di sini, bukan disimpan, supaya
+  -- tabel, berkas Excel, dan saringan mustahil berbeda pendapat.
+  CASE
+    WHEN status = 'diteruskan' AND ditangani_pada IS NOT NULL        THEN 'selesai-engineer'
+    WHEN status = 'diteruskan' AND mulai_dikerjakan_pada IS NOT NULL THEN 'dikerjakan'
+    WHEN status = 'diteruskan'                                       THEN 'belum-dikerjakan'
+    ELSE status
+  END AS keadaan
 `;
 
 /**
