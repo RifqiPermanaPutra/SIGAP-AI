@@ -51,17 +51,15 @@
    putih tulisannya lenyap dan hanya menyisakan emblem. */
 .rk-merek { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .rk-merek-logo { height: 26px; width: auto; display: block; flex-shrink: 0; }
-/* Gabungan logo PERTAMINA ONE dan SATU-IT SIGAP. Alasnya putih justru karena
-   alasan yang berkebalikan dengan logo di atas: latar berkasnya tembus pandang
-   dan sebagian isinya hitam. Keterangan lengkapnya pada .lp-brand-logo-unit di
-   src/index.css. */
+/* Varian logo untuk header gelap sudah memiliki alpha transparan dan elemen
+   monokrom putih, sehingga tidak memerlukan panel, border, maupun padding. */
 .rk-merek-logo-unit {
   height: 28px; width: auto; display: block; flex-shrink: 0;
   object-fit: contain;
   filter: brightness(1.12) contrast(1.06) drop-shadow(0 1px 2px rgba(0, 27, 48, 0.35));
 }
 
-/* Rasio logo gabungan 4,45:1 — di ponsel bilah merek cukup memuat kedua logo.
+/* Rasio logo gabungan 4,9:1 — di ponsel bilah merek cukup memuat kedua logo.
    Nama halaman tetap ada pada judul <h1> tepat di bawahnya. */
 .rk-merek-garis {
   display: none;
