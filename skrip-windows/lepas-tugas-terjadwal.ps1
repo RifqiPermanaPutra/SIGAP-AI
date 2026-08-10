@@ -26,7 +26,13 @@
 [CmdletBinding(SupportsShouldProcess = $true)]
 param(
     # Harus sama persis dengan nama yang dipakai saat memasang.
-    [string]$NamaTugas = 'SIGAP-Server'
+    [string]$NamaTugas = 'SIGAP-Server',
+
+    # Porta yang dibuka saat memasang. Harus sama agar aturannya ketemu.
+    [int]$Porta = 3000,
+
+    # Biarkan porta tetap terbuka. Isi bila server masih dijalankan manual.
+    [switch]$BiarkanFirewall
 )
 
 $ErrorActionPreference = 'Stop'
@@ -48,25 +54,40 @@ if (-not $prinsipalKini.IsInRole([Security.Principal.WindowsBuiltInRole]::Admini
 $tugas = Get-ScheduledTask -TaskName $NamaTugas -TaskPath '\' -ErrorAction SilentlyContinue
 
 if ($null -eq $tugas) {
-    Write-Host "  Tidak ada tugas bernama '$NamaTugas'. Tidak ada yang perlu dibongkar."
-    Write-Host ''
-    exit 0
-}
+    Write-Host "  Tidak ada tugas bernama '$NamaTugas'."
+} else {
+    Write-Host "  Ditemukan tugas '$NamaTugas' (status: $($tugas.State))"
 
-Write-Host "  Ditemukan tugas '$NamaTugas' (status: $($tugas.State))"
+    if ($tugas.State -eq 'Running') {
+        if ($PSCmdlet.ShouldProcess($NamaTugas, 'Hentikan tugas yang sedang berjalan')) {
+            Stop-ScheduledTask -TaskName $NamaTugas -TaskPath '\'
+            Write-Host '  [ok] Tugas dihentikan -- server SIGAP ikut mati'
+        }
+    }
 
-if ($tugas.State -eq 'Running') {
-    if ($PSCmdlet.ShouldProcess($NamaTugas, 'Hentikan tugas yang sedang berjalan')) {
-        Stop-ScheduledTask -TaskName $NamaTugas -TaskPath '\'
-        Write-Host '  [ok] Tugas dihentikan -- server SIGAP ikut mati'
+    if ($PSCmdlet.ShouldProcess($NamaTugas, 'Hapus pendaftaran tugas terjadwal')) {
+        Unregister-ScheduledTask -TaskName $NamaTugas -TaskPath '\' -Confirm:$false
+        Write-Host '  [ok] Pendaftaran dihapus' -ForegroundColor Green
+    } else {
+        Write-Host '  (dilewati -- mode -WhatIf)'
     }
 }
 
-if ($PSCmdlet.ShouldProcess($NamaTugas, 'Hapus pendaftaran tugas terjadwal')) {
-    Unregister-ScheduledTask -TaskName $NamaTugas -TaskPath '\' -Confirm:$false
-    Write-Host '  [ok] Pendaftaran dihapus' -ForegroundColor Green
+# Aturan firewall dibuang juga. Membongkar tugas terjadwal tetapi meninggalkan
+# porta terbuka berarti sisa izin yang tidak ada gunanya -- dan tidak ada yang
+# akan ingat menutupnya kelak.
+$NamaAturan = "SIGAP - porta $Porta (HTTP masuk)"
+
+if ($BiarkanFirewall) {
+    Write-Host "  Aturan firewall '$NamaAturan' dibiarkan (-BiarkanFirewall)."
 } else {
-    Write-Host '  (dilewati -- mode -WhatIf)'
+    $aturan = Get-NetFirewallRule -DisplayName $NamaAturan -ErrorAction SilentlyContinue
+    if ($null -eq $aturan) {
+        Write-Host "  Tidak ada aturan firewall bernama '$NamaAturan'."
+    } elseif ($PSCmdlet.ShouldProcess($NamaAturan, 'Hapus aturan firewall')) {
+        $aturan | Remove-NetFirewallRule
+        Write-Host "  [ok] Porta $Porta ditutup kembali" -ForegroundColor Green
+    }
 }
 
 Write-Host ''

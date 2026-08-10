@@ -37,7 +37,13 @@ param(
 
     # Jeda setelah komputer menyala sebelum server dijalankan, dalam menit.
     # Memberi waktu bagi jaringan dan disk untuk siap lebih dulu.
-    [int]$JedaMulaiMenit = 1
+    [int]$JedaMulaiMenit = 1,
+
+    # Porta tempat server mendengarkan. Harus sama dengan PORT di .env.
+    [int]$Porta = 3000,
+
+    # Lewati pembuatan aturan firewall. Isi bila Anda mengaturnya sendiri.
+    [switch]$TanpaFirewall
 )
 
 $ErrorActionPreference = 'Stop'
@@ -193,8 +199,60 @@ if ($PSCmdlet.ShouldProcess($NamaTugas, 'Daftarkan tugas terjadwal baru')) {
 }
 
 # ------------------------------------------------------------
-#  5. Ringkasan
+#  5. Izin firewall
 # ------------------------------------------------------------
+#
+#  Tanpa aturan ini, Windows Firewall menolak sambungan MASUK ke Node dan
+#  server hanya dapat dibuka dari komputer itu sendiri. Pelapor di meja lain
+#  dan engineer yang membuka /tugas dari ponsel sama-sama tidak akan sampai --
+#  tanpa pesan galat apa pun, hanya halaman yang tidak pernah termuat.
+#
+#  Sengaja dibatasi profil Private dan Domain. Profil Public TIDAK disertakan:
+#  bila laptop ini suatu saat tersambung ke WiFi kafe atau bandara, halaman
+#  pelaporan tidak ikut terbuka bagi orang di jaringan itu.
+
+$NamaAturan = "SIGAP - porta $Porta (HTTP masuk)"
+
+if ($TanpaFirewall) {
+    Tulis-Judul 'Izin firewall'
+    Write-Host '  (dilewati -- parameter -TanpaFirewall diberikan)'
+} else {
+    Tulis-Judul 'Izin firewall'
+
+    $aturanLama = Get-NetFirewallRule -DisplayName $NamaAturan -ErrorAction SilentlyContinue
+    if ($null -ne $aturanLama) {
+        Write-Host "  Aturan '$NamaAturan' sudah ada -- dibuat ulang agar seragam."
+        if ($PSCmdlet.ShouldProcess($NamaAturan, 'Hapus aturan firewall lama')) {
+            $aturanLama | Remove-NetFirewallRule
+        }
+    }
+
+    if ($PSCmdlet.ShouldProcess($NamaAturan, "Izinkan TCP masuk pada porta $Porta")) {
+        New-NetFirewallRule `
+            -DisplayName $NamaAturan `
+            -Direction Inbound `
+            -Action Allow `
+            -Protocol TCP `
+            -LocalPort $Porta `
+            -Profile Private, Domain `
+            -Description 'SIGAP - layanan bantuan ICT Pertamina EP Field Lirik. Mengizinkan pelapor dan engineer membuka halaman dari komputer maupun ponsel di jaringan kantor.' | Out-Null
+
+        Write-Host "  [ok] Porta $Porta dibuka untuk jaringan Private dan Domain" -ForegroundColor Green
+        Write-Host '       (profil Public sengaja TIDAK disertakan)'
+    } else {
+        Write-Host '  (dilewati -- mode -WhatIf)'
+    }
+}
+
+# ------------------------------------------------------------
+#  6. Ringkasan
+# ------------------------------------------------------------
+
+# Alamat yang dapat dibuka dari ponsel di jaringan yang sama. localhost tidak
+# berguna di sana -- ia menunjuk ke ponsel itu sendiri.
+$alamatLan = Get-NetIPAddress -AddressFamily IPv4 -ErrorAction SilentlyContinue |
+    Where-Object { $_.IPAddress -notlike '127.*' -and $_.IPAddress -notlike '169.254.*' } |
+    Select-Object -ExpandProperty IPAddress
 
 Write-Host ''
 Write-Host '------------------------------------------------------------'
@@ -205,7 +263,10 @@ Write-Host "  Nama tugas    : $NamaTugas"
 Write-Host "  Kapan berjalan: setiap kali komputer menyala (+$JedaMulaiMenit menit),"
 Write-Host "                  tanpa perlu ada yang login"
 Write-Host "  Bila mati     : dijalankan ulang $PercobaanUlang kali, jeda $JedaUlangMenit menit"
-Write-Host "  Alamat server : http://localhost:3000"
+Write-Host "  Dari komputer : http://localhost:$Porta"
+foreach ($ip in $alamatLan) {
+    Write-Host "  Dari ponsel   : http://${ip}:$Porta" -ForegroundColor Cyan
+}
 Write-Host ''
 Write-Host '  Memeriksa statusnya:'
 Write-Host "    Get-ScheduledTask     -TaskName $NamaTugas"

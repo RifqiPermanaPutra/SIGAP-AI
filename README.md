@@ -93,13 +93,22 @@ ada yang tahu sampai ada pekerja yang gagal melapor. Tiga berkas di
 | Berkas | Kegunaan |
 |---|---|
 | `jalankan-sigap.bat` | Menjalankan server. Bisa diklik ganda, bisa dipanggil Task Scheduler |
-| `pasang-tugas-terjadwal.ps1` | Mendaftarkan server ke Task Scheduler agar jalan saat komputer menyala |
-| `lepas-tugas-terjadwal.ps1` | Membongkar pendaftaran itu kembali |
+| `pasang-tugas-terjadwal.ps1` | Mendaftarkan server ke Task Scheduler **dan membuka porta 3000 di firewall** |
+| `lepas-tugas-terjadwal.ps1` | Membongkar keduanya kembali |
 
 > ⚠️ **Mendaftarkan tugas terjadwal mengubah pengaturan sistem operasi.**
-> Skripnya berjalan sebagai Administrator dan mendaftarkan layanan yang hidup
-> tanpa ada yang login. Bacalah isi skripnya lebih dulu — keduanya sengaja
-> ditulis dengan komentar panjang supaya dapat dipahami sebelum dijalankan.
+> Skripnya berjalan sebagai Administrator, mendaftarkan layanan yang hidup
+> tanpa ada yang login, dan membuka satu porta pada Windows Firewall. Bacalah
+> isi skripnya lebih dulu — keduanya sengaja ditulis dengan komentar panjang
+> supaya dapat dipahami sebelum dijalankan.
+
+**Izin firewall bukan tambahan yang bisa dilewati.** Tanpa aturan itu Windows
+menolak sambungan masuk ke Node, sehingga server hanya dapat dibuka dari
+komputer itu sendiri — pelapor di meja lain dan engineer yang membuka `/tugas`
+dari ponsel sama-sama tidak akan sampai, **tanpa pesan galat apa pun**, hanya
+halaman yang tidak pernah termuat. Aturannya dibatasi profil **Private dan
+Domain**; profil Public sengaja tidak disertakan supaya halaman pelaporan tidak
+ikut terbuka bila laptop ini suatu saat tersambung ke WiFi umum.
 
 Sebelum menyentuh Task Scheduler, pastikan servernya memang menyala:
 
@@ -132,11 +141,19 @@ Yang didaftarkan:
 | Akun | `SYSTEM` — server tetap hidup meski tidak ada seorang pun yang login |
 | Bila prosesnya mati | Dijalankan ulang 3 kali, jeda 1 menit |
 | Batas waktu jalan | Tidak ada |
+| Aturan firewall | `SIGAP - porta 3000 (HTTP masuk)`, profil Private + Domain |
 
-Skripnya **idempotent**: dijalankan berkali-kali tidak membuat tugas ganda,
-karena pendaftaran lama dengan nama yang sama dihentikan dan dihapus lebih
-dulu. Pencariannya memakai nama persis `SIGAP-Server` tanpa wildcard, jadi
-tugas terjadwal lain milik Anda tidak tersentuh.
+Di akhir, skripnya menampilkan **alamat yang dapat dibuka dari ponsel** — mis.
+`http://10.202.15.98:3000`. Catat alamat itu: `localhost` tidak berguna di
+ponsel, karena di sana ia menunjuk ke ponsel itu sendiri.
+
+Skripnya **idempotent**: dijalankan berkali-kali tidak membuat tugas maupun
+aturan firewall ganda, karena yang lama dengan nama sama dihentikan dan dihapus
+lebih dulu. Pencariannya memakai nama persis tanpa wildcard, jadi tugas
+terjadwal dan aturan firewall lain milik Anda tidak tersentuh.
+
+Ingin mengatur firewall sendiri? Tambahkan `-TanpaFirewall`. Ingin porta lain?
+`-Porta 8080` — samakan dengan `PORT` di `.env`.
 
 Memeriksa dan mengendalikannya:
 
@@ -407,15 +424,38 @@ Boleh juga folder OneDrive atau flashdisk yang selalu tertancap. Bila tujuannya
 sedang tidak terhubung, server **tetap berjalan** dan hanya mencatat peringatan;
 peringatannya mengeras bila kegagalan berlanjut lebih dari 3 hari.
 
+> ⚠️ **Partisi lain belum tentu disk lain.** `C:` dan `D:` pada satu komputer
+> umumnya dua partisi pada SSD yang sama — menaruh cadangan di `C:\` sementara
+> basis datanya di `D:\` tidak melindungi apa pun bila disk itu mati. Periksa
+> lebih dulu:
+>
+> ```powershell
+> Get-Partition | Where-Object DriveLetter | Select-Object DriveLetter, DiskNumber
+> ```
+>
+> Bila `DiskNumber`-nya sama, keduanya satu disk fisik.
+
 Mencadangkan sekarang juga — misalnya sebelum memperbarui SOP:
 
 ```bash
 npm run cadangkan
 ```
 
-**Memulihkan dari cadangan:** hentikan server, ganti `data/sigap.db` dengan
-berkas cadangan yang dikehendaki (hapus juga `sigap.db-wal` dan `sigap.db-shm`
-bila ada), lalu jalankan `npm start`.
+**Memulihkan dari cadangan:** hentikan server, ganti berkas basis data dengan
+cadangan yang dikehendaki, lalu jalankan `npm start`.
+
+Berkas yang diganti adalah yang ditunjuk **`DB_PATH` di `.env`** — bukan selalu
+`data/sigap.db`. Periksa dulu, karena mengganti berkas yang salah saat sedang
+panik hanya menambah satu kebingungan lagi:
+
+```bash
+grep DB_PATH .env          # mis. DB_PATH=./data/helpdesk.db
+```
+
+Hapus juga berkas `-wal` dan `-shm` yang menyertainya (mis.
+`helpdesk.db-wal`, `helpdesk.db-shm`). Keduanya memuat perubahan yang belum
+menyatu ke berkas utama, dan meninggalkannya di samping berkas cadangan yang
+baru membuat SQLite menolak membukanya.
 
 > Folder `cadangan/`, `log/`, dan tujuan `CADANGAN_LUAR` memuat nama pegawai.
 > Dua yang pertama sudah diabaikan `.gitignore`; yang ketiga berada di luar
