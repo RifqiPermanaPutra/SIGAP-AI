@@ -300,6 +300,58 @@
 
 .se-kecil { font-size: 0.78rem; padding: 7px 12px; min-height: 36px; align-self: flex-start; }
 
+/* Penghapusan sengaja TIDAK berwarna merah penuh pada tombol di dalam
+   formulir: yang merah penuh menarik ibu jari, dan tindakan ini tidak dapat
+   dibatalkan dari halaman ini. Merahnya baru penuh setelah pertanyaan
+   "yakin?" dijawab — di dialog, jauh dari tombol simpan. */
+.se-tombol-hapus,
+.se-tombol-hapus-utama {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  font: inherit; font-size: 0.86rem; font-weight: 600;
+  padding: 10px 16px;
+  min-height: 44px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: background var(--ease), border-color var(--ease);
+}
+.se-tombol-hapus {
+  background: var(--surface);
+  color: var(--pt-red-text);
+  border: 1px solid #f7c4ca;
+  margin-right: auto;                  /* menjauh dari Batal dan Simpan */
+}
+.se-tombol-hapus:hover { background: var(--pt-red-soft); border-color: var(--pt-red); }
+
+.se-tombol-hapus-utama {
+  background: var(--pt-red); color: #fff; border: 1px solid var(--pt-red);
+  box-shadow: 0 3px 10px rgba(237, 27, 47, 0.22);
+}
+.se-tombol-hapus-utama:hover:not(:disabled) { filter: brightness(0.93); }
+.se-tombol-hapus-utama:disabled { background: var(--ink-4); border-color: var(--ink-4); box-shadow: none; cursor: not-allowed; }
+
+/* Menambah masalah adalah tindakan yang paling menentukan umur sistem, tetapi
+   bukan yang paling sering dipakai — bergaris putus supaya terbaca sebagai
+   "tambahkan sesuatu di sini", bukan bersaing dengan tombol simpan. */
+.se-tombol-tambah {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%;
+  font: inherit; font-size: 0.88rem; font-weight: 600;
+  padding: 14px 16px;
+  margin-top: 12px;
+  color: var(--pt-blue-text);
+  background: var(--surface);
+  border: 1.5px dashed var(--pt-blue);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: background var(--ease);
+}
+.se-tombol-tambah:hover { background: var(--pt-blue-soft); }
+
+.se-dialog-judul {
+  margin: 2px 0 10px;
+  font-size: 0.92rem; font-weight: 700; color: var(--ink);
+}
+
 .se-aksi { display: flex; flex-direction: column-reverse; gap: 8px; }
 .se-aksi button { width: 100%; }
 
@@ -485,7 +537,7 @@
   .se-masalah-kepala { padding: 14px 16px; }
   .se-masalah-judul { font-size: 0.92rem; }
 
-  .se-aksi { flex-direction: row; justify-content: flex-end; }
+  .se-aksi { flex-direction: row; justify-content: flex-end; align-items: center; }
   .se-aksi button { width: auto; }
 
   .se-uji-baris { flex-direction: row; }

@@ -29,8 +29,10 @@ import {
   bentukUntukPenyunting,
   catatanKonfirmasi,
   periksaMasalah,
-  uraiBlok
+  uraiBlok,
+  buatId
 } from './sopParser.js';
+import { modeDivisi } from '../config/divisi.js';
 import { muatBasisPengetahuan } from './answerService.js';
 import { bangun } from '../../scripts/build-kb.js';
 import { jalurBasisData } from '../database/init.js';
@@ -39,6 +41,14 @@ import { SOP_DIR } from '../config/jalur.js';
 
 /** Banyaknya cadangan yang disimpan per berkas SOP */
 const SIMPAN_CADANGAN = Number(process.env.JUMLAH_CADANGAN_SOP || 20);
+
+/**
+ * Penanda masalah yang belum ada, dipakai pada jalur pratinjau.
+ *
+ * Id masalah selalu berbentuk `<divisi>-<slug>` (lihat `buatId`), sehingga
+ * kata tunggal ini mustahil bentrok dengan id sungguhan.
+ */
+export const PENANDA_BARU = 'baru';
 
 /* ────────────────────────────────────────────────────────────────
    Menemukan berkas
@@ -173,6 +183,30 @@ export function pratinjauMasalah(divisi, masalahId, masukan) {
   if (cacat.length > 0) return { ok: false, status: 400, galat: cacat };
 
   const dokumen = uraiBerkas(divisi, fs.readFileSync(jalur, 'utf-8'));
+
+  // Masalah yang belum ada belum punya id, sehingga tidak dapat dicari pada
+  // berkas. Penanda 'baru' melewati pencarian itu dan memakai judul dari
+  // formulir — supaya penambahan melewati pratinjau yang sama persis dengan
+  // penyuntingan, bukan jalur kedua yang bisa menyimpang diam-diam.
+  // Id masalah selalu berbentuk "<divisi>-<slug>", jadi 'baru' mustahil bentrok.
+  if (masalahId === PENANDA_BARU) {
+    const idBaru = buatId(divisi, String(masukan.judul || '').trim());
+    if (dokumen.blok.some((b) => b.masalah && b.masalah.id === idBaru)) {
+      return {
+        ok: false,
+        status: 409,
+        galat: [`Sudah ada masalah dengan judul serupa (id "${idBaru}"). Pakai judul yang lebih khas.`]
+      };
+    }
+
+    const markdownBaru = susunBlok(masukan, true);
+    const hasilBaru = uraiBlok(divisi, markdownBaru);
+    if (!hasilBaru) {
+      return { ok: false, status: 400, galat: ['Markdown hasil susunan tidak dapat diurai kembali'] };
+    }
+    return { ok: true, markdown: markdownBaru, hasil: hasilBaru };
+  }
+
   const lama = dokumen.blok.find((b) => b.masalah && b.masalah.id === masalahId);
   if (!lama) {
     return { ok: false, status: 404, galat: [`Masalah "${masalahId}" tidak ada pada SOP ${divisi}`] };
@@ -191,6 +225,160 @@ export function pratinjauMasalah(divisi, masalahId, masukan) {
 /* ────────────────────────────────────────────────────────────────
    Menyimpan
    ──────────────────────────────────────────────────────────────── */
+
+/**
+ * Tulis berkas SOP yang sudah diubah, lalu bangun ulang dan muat ulang.
+ *
+ * Dipakai bersama oleh penyuntingan, penambahan, dan penghapusan supaya
+ * urutannya — cadangkan, tulis, bangun, kembalikan bila gagal — mustahil
+ * berbeda di antara ketiganya. Ketiganya sama-sama dapat meninggalkan berkas
+ * yang tidak dapat diurai, dan akibatnya sama buruknya: pengguna menerima
+ * langkah yang keliru, disampaikan dengan yakin.
+ *
+ * @param {string} jalur    Berkas SOP
+ * @param {string} asli     Isi sebelum diubah, untuk dikembalikan bila gagal
+ * @param {object} dokumen  Hasil uraiBerkas yang sudah dimodifikasi
+ * @param {object} jejak    Keterangan untuk log
+ */
+function tulisDanBangun(jalur, asli, dokumen, jejak) {
+  const cadangan = cadangkanSop(jalur);
+  fs.writeFileSync(jalur, susunBerkas(dokumen), 'utf-8');
+
+  try {
+    const ringkas = bangun(true);
+    const jumlah = muatBasisPengetahuan();
+
+    info(jejak.peristiwa, { ...jejak.rincian, totalMasalah: jumlah });
+
+    return {
+      ok: true,
+      kb: { ...ringkas, dimuat: jumlah },
+      cadangan: cadangan ? path.basename(cadangan) : null
+    };
+  } catch (e) {
+    // Berkas sudah berubah tetapi basis pengetahuannya gagal dibangun.
+    // Dikembalikan seperti semula supaya sistem tidak ditinggalkan dalam
+    // keadaan setengah jadi.
+    fs.writeFileSync(jalur, asli, 'utf-8');
+    try { bangun(true); muatBasisPengetahuan(); } catch { /* sudah dilaporkan */ }
+
+    galat('sop-bangun-gagal', e, jejak.rincian);
+    return {
+      ok: false,
+      status: 500,
+      galat: ['Basis pengetahuan gagal dibangun ulang. Berkas SOP dikembalikan seperti semula.']
+    };
+  }
+}
+
+/**
+ * Tambahkan satu masalah baru ke berkas SOP.
+ *
+ * Inilah yang menentukan umur sistem. Tanpa penambahan, penyunting hanya dapat
+ * memperbaiki kalimat pada kendala yang sudah dikenal — sementara kendala baru
+ * terus bermunculan: printer model baru, versi Windows baru. SOP yang tidak
+ * dapat tumbuh akan usang sendiri, dan sistem terus menjawab dengan langkah
+ * yang tidak lagi cocok.
+ *
+ * Berbeda dengan penyuntingan, DI SINI judul menentukan id — dan karena itu
+ * judul yang menghasilkan id kembar ditolak. Dua blok berid sama membuat
+ * pencocokan memilih salah satunya tanpa aturan yang jelas, dan penyunting
+ * kehilangan jejak mana yang sedang ia sunting.
+ *
+ * Masalah baru disisipkan SEBELUM blok "Catatan Konfirmasi Engineer" bila ada,
+ * karena blok itu penutup berkas — bukan salah satu masalah.
+ */
+export function tambahMasalah(divisi, masukan) {
+  const jalur = jalurSop(divisi);
+  if (!jalur) return { ok: false, status: 404, galat: ['Berkas SOP divisi ini tidak ditemukan'] };
+
+  const cacat = periksaMasalah(masukan);
+  if (cacat.length > 0) return { ok: false, status: 400, galat: cacat };
+
+  const asli = fs.readFileSync(jalur, 'utf-8');
+  const dokumen = uraiBerkas(divisi, asli);
+
+  const idBaru = buatId(divisi, String(masukan.judul || '').trim());
+  if (dokumen.blok.some((b) => b.masalah && b.masalah.id === idBaru)) {
+    return {
+      ok: false,
+      status: 409,
+      galat: [`Sudah ada masalah dengan judul serupa (id "${idBaru}"). Pakai judul yang lebih khas.`]
+    };
+  }
+
+  const blokBaru = susunBlok(masukan, true);
+
+  // Diurai lebih dulu sebelum menyentuh berkas: bila hasil susunannya sendiri
+  // tidak dapat dibaca ulang, tidak ada gunanya menulisnya ke disk.
+  const ujiUrai = uraiBlok(divisi, blokBaru);
+  if (!ujiUrai || ujiUrai.id !== idBaru) {
+    return {
+      ok: false,
+      status: 400,
+      galat: ['Markdown hasil susunan tidak dapat diurai kembali — penambahan dibatalkan']
+    };
+  }
+
+  const indeksCatatan = dokumen.blok.findIndex(
+    (b) => /^Catatan Konfirmasi Engineer\s*$/im.test(b.mentah.split('\n')[0])
+  );
+  const sisip = indeksCatatan === -1 ? dokumen.blok.length : indeksCatatan;
+  dokumen.blok.splice(sisip, 0, { mentah: blokBaru, masalah: ujiUrai });
+
+  const hasil = tulisDanBangun(jalur, asli, dokumen, {
+    peristiwa: 'sop-ditambah',
+    rincian: { divisi, masalah: idBaru }
+  });
+  if (!hasil.ok) return hasil;
+
+  return { ...hasil, masalah: bentukUntukPenyunting(ujiUrai) };
+}
+
+/**
+ * Hapus satu masalah dari berkas SOP.
+ *
+ * Layanan mode `swalayan` TIDAK boleh kehabisan masalah. Printer dan Windows
+ * adalah satu-satunya layanan yang menjanjikan panduan bertahap kepada
+ * pengguna; bila daftarnya kosong, janji itu tetap ditampilkan sementara tidak
+ * ada satu pun langkah yang dapat diberikan — pengguna menunggu bantuan yang
+ * tidak akan datang. Karena itu masalah terakhir ditolak untuk dihapus.
+ */
+export function hapusMasalah(divisi, masalahId) {
+  const jalur = jalurSop(divisi);
+  if (!jalur) return { ok: false, status: 404, galat: ['Berkas SOP divisi ini tidak ditemukan'] };
+
+  const asli = fs.readFileSync(jalur, 'utf-8');
+  const dokumen = uraiBerkas(divisi, asli);
+
+  const indeks = dokumen.blok.findIndex((b) => b.masalah && b.masalah.id === masalahId);
+  if (indeks === -1) {
+    return { ok: false, status: 404, galat: [`Masalah "${masalahId}" tidak ada pada SOP ${divisi}`] };
+  }
+
+  const sisa = dokumen.blok.filter((b) => b.masalah).length - 1;
+  if (sisa === 0 && modeDivisi(divisi) === 'swalayan') {
+    return {
+      ok: false,
+      status: 409,
+      galat: [
+        'Ini masalah terakhir pada layanan yang dipandu sendiri. Menghapusnya ' +
+        'membuat pengguna tetap dijanjikan panduan yang tidak akan pernah muncul.'
+      ]
+    };
+  }
+
+  const judul = dokumen.blok[indeks].masalah.judul;
+  dokumen.blok.splice(indeks, 1);
+
+  const hasil = tulisDanBangun(jalur, asli, dokumen, {
+    peristiwa: 'sop-dihapus',
+    rincian: { divisi, masalah: masalahId }
+  });
+  if (!hasil.ok) return hasil;
+
+  return { ...hasil, judul, sisa };
+}
 
 /**
  * Perbarui satu blok masalah pada berkas SOP, lalu bangun ulang basis
@@ -236,35 +424,13 @@ export function simpanMasalah(divisi, masalahId, masukan) {
     };
   }
 
-  const cadangan = cadangkanSop(jalur);
-
   dokumen.blok[indeks] = { mentah: blokBaru, masalah: ujiUrai };
-  fs.writeFileSync(jalur, susunBerkas(dokumen), 'utf-8');
 
-  try {
-    const ringkas = bangun(true);
-    const jumlah = muatBasisPengetahuan();
+  const hasil = tulisDanBangun(jalur, asli, dokumen, {
+    peristiwa: 'sop-disunting',
+    rincian: { divisi, masalah: masalahId }
+  });
+  if (!hasil.ok) return hasil;
 
-    info('sop-disunting', { divisi, masalah: masalahId, totalMasalah: jumlah });
-
-    return {
-      ok: true,
-      masalah: bentukUntukPenyunting(ujiUrai),
-      kb: { ...ringkas, dimuat: jumlah },
-      cadangan: cadangan ? path.basename(cadangan) : null
-    };
-  } catch (e) {
-    // Berkas sudah berubah tetapi basis pengetahuannya gagal dibangun.
-    // Dikembalikan seperti semula supaya sistem tidak ditinggalkan dalam
-    // keadaan setengah jadi.
-    fs.writeFileSync(jalur, asli, 'utf-8');
-    try { bangun(true); muatBasisPengetahuan(); } catch { /* sudah dilaporkan */ }
-
-    galat('sop-bangun-gagal', e, { divisi, masalah: masalahId });
-    return {
-      ok: false,
-      status: 500,
-      galat: ['Basis pengetahuan gagal dibangun ulang. Berkas SOP dikembalikan seperti semula.']
-    };
-  }
+  return { ...hasil, masalah: bentukUntukPenyunting(ujiUrai) };
 }

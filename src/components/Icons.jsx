@@ -210,6 +210,16 @@ export const IconWrench = (p) => (
   </Svg>
 );
 
+/* Membuang — penghapusan yang harus terlihat berbeda dari "batal" */
+export const IconTrash = (p) => (
+  <Svg {...p}>
+    <path d="M4 7h16" />
+    <path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7" />
+    <path d="M6 7v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7" />
+    <path d="M10 11.5v5M14 11.5v5" />
+  </Svg>
+);
+
 /* Melepaskan tugas — kembali ke antrean */
 export const IconUndo = (p) => (
   <Svg {...p}>

@@ -101,6 +101,42 @@ cek('kolom di luar daftar izin diabaikan', s1d.id === 'sesi-satu' && s1d.tanggal
 cek('sesi tak dikenal → undefined', getChatSession('entah') === undefined, getChatSession('entah'));
 cek('update sesi tak dikenal → undefined', updateChatSession('entah', { status: 'selesai' }) === undefined, 'bukan undefined');
 
+bagian('8b. Retensi memangkas isi yang tidak dapat dianonimkan');
+
+// `anonimkanLama` hanya mengosongkan kolom nama. Isi percakapan dan jejak akses
+// adalah teks bebas — pelapor kerap menyebut nama rekan atau nomor ruangan di
+// dalam kalimatnya — sehingga tidak dapat dianonimkan sebagian. Sebelumnya
+// keduanya menumpuk tanpa pernah dibuang sama sekali.
+const { pangkasIsiLama } = await import('../server/services/rekapService.js');
+const db = wajibSiap();
+
+const tuaSekali = '2020-01-01';
+db.prepare(`
+  INSERT INTO sesi (id, nomor_tiket, tanggal_wib, dibuat_pada, diperbarui_pada, status, keluhan)
+  VALUES ('sesi-lawas', 'SGP-20200101-9999', ?, ?, ?, 'selesai', 'printer lama rusak')
+`).run(tuaSekali, `${tuaSekali}T02:00:00.000Z`, `${tuaSekali}T02:00:00.000Z`);
+addChatMessage('sesi-lawas', 'user', 'kata-kata pelapor dari dua tahun lalu');
+db.prepare(`
+  INSERT INTO log_akses (nama_akun, tindakan, keterangan, dibuat_pada)
+  VALUES ('admin', 'lihat', 'jejak lawas', ?)
+`).run(`${tuaSekali}T03:00:00.000Z`);
+
+const pesanBaru = getChatMessages('sesi-satu').length;
+const hasilPangkas = pangkasIsiLama(2);
+
+cek('pesan lama dibuang', hasilPangkas.pesan >= 1, hasilPangkas.pesan);
+cek('jejak akses lama dibuang', hasilPangkas.akses >= 1, hasilPangkas.akses);
+cek('percakapan lawas benar-benar kosong',
+  getChatMessages('sesi-lawas').length === 0, getChatMessages('sesi-lawas').length);
+
+// Inilah batasnya: RANCANGAN-DATA.md §11 menyimpan BARISNYA, karena fungsi,
+// lokasi, divisi, dan durasinya masih dipakai membandingkan tren antar tahun.
+cek('baris sesinya TIDAK ikut dihapus',
+  Boolean(getChatSession('sesi-lawas')), 'baris ikut hilang');
+cek('percakapan yang masih dalam masa retensi tidak tersentuh',
+  getChatMessages('sesi-satu').length === pesanBaru, getChatMessages('sesi-satu').length);
+catatan('yang dibuang isinya, bukan barisnya — tren antar tahun tetap dapat dihitung');
+
 bagian('9. Migrasi data lama ke FTTH');
 const idSebelumnya = String.fromCharCode(102, 116, 116, 112);
 const labelSebelumnya = idSebelumnya.toUpperCase();
@@ -164,6 +200,19 @@ const s1e = getChatSession('sesi-satu');
 cek('data sesi bertahan', s1e?.reporter?.nama === 'Budi Santoso', s1e?.reporter);
 cek('pesan bertahan', getChatMessages('sesi-satu').length === 3, getChatMessages('sesi-satu').length);
 cek('penomoran tiket berlanjut', createChatSession('sesi-empat').nomor_tiket.endsWith('-0004'), 'nomor tidak berlanjut');
+
+// Penomoran memakai urutan TERTINGGI, bukan jumlah baris. Dengan jumlah baris,
+// menghapus satu sesi membuat nomor berikutnya mundur dan menabrak tiket yang
+// masih ada — penyisipannya gagal oleh batasan UNIQUE, dan pelapor berikutnya
+// tidak dapat membuat sesi sama sekali. Skrip pembersih memang menghapus baris.
+const nomorSblmHapus = getChatSession('sesi-empat').nomor_tiket;
+wajibSiap().prepare('DELETE FROM sesi WHERE id = ?').run('sesi-tiga');
+const sesudahHapus = createChatSession('sesi-lima');
+cek('nomor tiket tidak mundur setelah ada baris dihapus',
+  sesudahHapus.nomor_tiket.endsWith('-0005'), sesudahHapus.nomor_tiket);
+cek('nomor lama tidak dipakai ulang',
+  sesudahHapus.nomor_tiket !== nomorSblmHapus, [sesudahHapus.nomor_tiket, nomorSblmHapus]);
+catatan('tanpa ini, membersihkan basis data membuat pelapor berikutnya tidak bisa melapor');
 
 tutupDatabase();
 fs.rmSync(tmp, { recursive: true, force: true });

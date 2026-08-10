@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   DivisionIcon, IconLogout, IconCheck, IconAlert, IconChart,
-  IconPlus, IconClose, IconChevronDown
+  IconPlus, IconClose, IconChevronDown, IconTrash
 } from '../components/Icons.jsx';
 import Masuk from '../components/Masuk.jsx';
 import './sop-editor.css';
@@ -23,6 +23,15 @@ import './sop-editor.css';
 const API = '/api';
 
 const MAKS_SOLUSI = 3;
+
+/**
+ * Id semu untuk masalah yang belum ada.
+ *
+ * Harus sama dengan `PENANDA_BARU` di `server/services/sopBerkas.js` — nilainya
+ * ikut dikirim pada alamat pratinjau. Id sungguhan selalu berbentuk
+ * `<divisi>-<slug>`, sehingga kata tunggal ini mustahil bentrok.
+ */
+const PENANDA_BARU = 'baru';
 
 /* ────────────────────────────────────────────────────────────────
    Bantuan kecil
@@ -306,6 +315,13 @@ export default function SopEditorPage() {
   const [pratinjau, setPratinjau] = useState(null);
   const [menyimpan, setMenyimpan] = useState(false);
   const [memuat, setMemuat] = useState(false);
+  // Terisi bila sedang menyusun masalah yang belum ada. Dipakai sebagai id
+  // semu supaya formulirnya jalur yang sama persis dengan penyuntingan —
+  // formulir kedua berarti dua tempat yang harus ikut diperbaiki setiap kali
+  // bentuk masukannya berubah, dan yang kedua pasti terlewat.
+  const [membuatBaru, setMembuatBaru] = useState(false);
+  // Masalah yang menunggu jawaban "yakin hapus?"
+  const [hendakHapus, setHendakHapus] = useState(null);
 
   useEffect(() => {
     fetch(`${API}/auth/saya`)
@@ -354,11 +370,63 @@ export default function SopEditorPage() {
   };
 
   const pilihMasalah = (masalah) => {
-    if (terpilih === masalah.id) { setTerpilih(null); setDraf(null); return; }
+    if (terpilih === masalah.id) { tutupFormulir(); return; }
+    setMembuatBaru(false);
     setTerpilih(masalah.id);
     setDraf(salin(masalah));
     setKabar('');
     setGalat('');
+  };
+
+  const tutupFormulir = () => {
+    setTerpilih(null);
+    setDraf(null);
+    setMembuatBaru(false);
+  };
+
+  /**
+   * Mulai menyusun masalah yang belum ada.
+   *
+   * Kategorinya dibiarkan "ringan" dengan satu solusi kosong: itulah bentuk
+   * yang paling sering dibutuhkan, dan yang tidak sesuai cukup menggantinya.
+   */
+  const mulaiBaru = () => {
+    setMembuatBaru(true);
+    setTerpilih(PENANDA_BARU);
+    setDraf({
+      id: PENANDA_BARU,
+      judul: '',
+      kategori: 'ringan',
+      gejala: '',
+      penyebab: [''],
+      penanganan: '',
+      solusi: [{ judul: '', pengantar: '', langkah: [''] }]
+    });
+    setKabar('');
+    setGalat('');
+  };
+
+  const hapusMasalah = async () => {
+    setMenyimpan(true);
+    setGalat('');
+    try {
+      const r = await fetch(`${API}/sop/${divisi}/${hendakHapus.id}`, { method: 'DELETE' });
+      const d = await r.json();
+      if (d.success) {
+        setHendakHapus(null);
+        tutupFormulir();
+        setKabar(d.message);
+        await ambilSop();
+      } else {
+        setGalat(d.galat ? d.galat.join(' · ') : d.error);
+        setHendakHapus(null);
+      }
+    } catch {
+      setGalat('Tidak dapat terhubung ke server.');
+      setHendakHapus(null);
+    } finally {
+      setMenyimpan(false);
+    }
   };
 
   const setBidang = (bidang, isi) => setDraf((d) => ({ ...d, [bidang]: isi }));
@@ -403,11 +471,16 @@ export default function SopEditorPage() {
     setMenyimpan(true);
     setGalat('');
     try {
-      const r = await fetch(`${API}/sop/${divisi}/${terpilih}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(bersihkan(draf))
-      });
+      // Menambah dan menyunting memakai jalur yang sama sampai titik ini —
+      // yang berbeda hanya alamat dan metodenya.
+      const r = await fetch(
+        membuatBaru ? `${API}/sop/${divisi}` : `${API}/sop/${divisi}/${terpilih}`,
+        {
+          method: membuatBaru ? 'POST' : 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(bersihkan(draf))
+        }
+      );
       const d = await r.json();
       if (d.success) {
         setPratinjau(null);
@@ -518,13 +591,19 @@ export default function SopEditorPage() {
               {sop.cadangan?.length > 0 && ` · ${sop.cadangan.length} cadangan tersimpan`}
             </p>
 
-            {/* ── Daftar masalah ── */}
+            {/* ── Daftar masalah ──
+                Masalah yang sedang disusun ikut masuk daftar sebagai entri
+                terakhir, sehingga formulirnya benar-benar formulir yang sama —
+                bukan salinan kedua yang lambat laun menyimpang. */}
             <div className="se-daftar-masalah">
-              {sop.masalah.map((m) => (
+              {(membuatBaru && draf ? [...sop.masalah, { ...draf, id: PENANDA_BARU }] : sop.masalah).map((m) => (
                 <article key={m.id} className={`se-masalah ${terpilih === m.id ? 'terbuka' : ''}`}>
-                  <button type="button" className="se-masalah-kepala" onClick={() => pilihMasalah(m)}>
+                  <button type="button" className="se-masalah-kepala"
+                          onClick={() => (m.id === PENANDA_BARU ? tutupFormulir() : pilihMasalah(m))}>
                     <span className={`se-lencana ${m.kategori}`}>{m.kategori}</span>
-                    <span className="se-masalah-judul">{m.judul}</span>
+                    <span className="se-masalah-judul">
+                      {m.id === PENANDA_BARU ? (m.judul || 'Masalah baru — belum berjudul') : m.judul}
+                    </span>
                     <span className={`se-hitung ${m.kategori === 'ringan' && m.solusi.length < MAKS_SOLUSI ? 'kurang' : ''}`}>
                       {m.kategori === 'berat' ? 'penanganan' : `${m.solusi.length}/${MAKS_SOLUSI} solusi`}
                     </span>
@@ -533,15 +612,32 @@ export default function SopEditorPage() {
 
                   {terpilih === m.id && draf && (
                     <div className="se-formulir">
-                      {/* Judul menentukan id masalah, dan id yang berubah memutus
-                          rujukan pada laporan rekap. Karena itu baca-saja. */}
+                      {/* Judul menentukan id masalah. Pada masalah yang sudah ada
+                          ia baca-saja — id yang berubah memutus rujukan pada
+                          laporan rekap. Pada masalah baru justru di sinilah
+                          idnya ditentukan. */}
                       <div className="se-blok">
-                        <label className="se-label">Judul masalah</label>
-                        <p className="se-ket">
-                          Tidak dapat diubah dari sini: judul menentukan id masalah,
-                          dan id yang berubah memutus rujukan pada laporan rekap.
-                        </p>
-                        <input value={draf.judul} readOnly className="se-baca-saja" />
+                        <label className="se-label" htmlFor="se-judul">Judul masalah</label>
+                        {membuatBaru ? (
+                          <>
+                            <p className="se-ket">
+                              Menentukan id masalah dan ikut dinilai paling berat saat
+                              mencocokkan keluhan. Pakai kata yang benar-benar khas —
+                              judul yang mirip masalah lain akan sulit dibedakan sistem.
+                            </p>
+                            <input id="se-judul" value={draf.judul} autoFocus
+                                   placeholder="Contoh: Printer Ngadat Saat Mencetak Amplop"
+                                   onChange={(e) => setBidang('judul', e.target.value)} />
+                          </>
+                        ) : (
+                          <>
+                            <p className="se-ket">
+                              Tidak dapat diubah dari sini: judul menentukan id masalah,
+                              dan id yang berubah memutus rujukan pada laporan rekap.
+                            </p>
+                            <input id="se-judul" value={draf.judul} readOnly className="se-baca-saja" />
+                          </>
+                        )}
                       </div>
 
                       <div className="se-blok">
@@ -608,12 +704,22 @@ export default function SopEditorPage() {
                       )}
 
                       <div className="se-aksi">
+                        {/* Penghapusan diletakkan terpisah di kiri, jauh dari
+                            tombol simpan: keduanya sama-sama mengakhiri
+                            penyuntingan, dan yang satu tidak dapat dibatalkan
+                            dengan satu ketukan. */}
+                        {m.id !== PENANDA_BARU && (
+                          <button type="button" className="se-tombol-hapus"
+                                  onClick={() => setHendakHapus(m)}>
+                            <IconTrash size={15} /> Hapus masalah
+                          </button>
+                        )}
                         <button type="button" className="se-tombol-samar"
-                                onClick={() => pilihMasalah(m)}>
+                                onClick={() => (m.id === PENANDA_BARU ? tutupFormulir() : pilihMasalah(m))}>
                           Batal
                         </button>
                         <button type="button" className="se-tombol-utama" onClick={bukaPratinjau}>
-                          Pratinjau & simpan
+                          Pratinjau & {membuatBaru ? 'tambahkan' : 'simpan'}
                         </button>
                       </div>
                     </div>
@@ -621,6 +727,15 @@ export default function SopEditorPage() {
                 </article>
               ))}
             </div>
+
+            {/* Inilah yang menentukan umur sistem. Tanpa penambahan, penyunting
+                hanya dapat memperbaiki kalimat pada kendala yang sudah dikenal —
+                sementara kendala baru terus bermunculan. */}
+            {!membuatBaru && (
+              <button type="button" className="se-tombol-tambah" onClick={mulaiBaru}>
+                <IconPlus size={16} /> Tambah masalah baru
+              </button>
+            )}
 
             <UjiKeluhan divisi={divisi} ambang={sop.ambangCocok} />
 
@@ -651,6 +766,36 @@ export default function SopEditorPage() {
           onTutup={() => setPratinjau(null)}
           onSimpan={simpan}
         />
+      )}
+
+      {/* Berkas Markdown-nya dicadangkan sebelum ditimpa, sehingga penghapusan
+          masih dapat dikembalikan — tetapi hanya lewat berkas cadangan, bukan
+          lewat halaman ini. Karena itu tetap ditanyakan lebih dulu. */}
+      {hendakHapus && (
+        <div className="se-dialog-latar" onClick={() => setHendakHapus(null)}>
+          <div className="se-dialog" role="dialog" aria-modal="true"
+               aria-label="Hapus masalah" onClick={(e) => e.stopPropagation()}>
+            <h3>Hapus masalah ini?</h3>
+            <p className="se-dialog-judul">{hendakHapus.judul}</p>
+            <p className="se-ket">
+              Blok ini akan dibuang dari berkas SOP, lalu basis pengetahuan
+              dibangun ulang. Keluhan yang selama ini dijawab olehnya akan
+              kembali tidak dikenali — dan diteruskan ke engineer.
+              <br /><br />
+              Berkas SOP sebelum penghapusan tetap tersimpan sebagai cadangan
+              di <code>data/cadangan-sop/</code>.
+            </p>
+
+            <div className="se-aksi">
+              <button type="button" className="se-tombol-samar"
+                      onClick={() => setHendakHapus(null)}>Tidak jadi</button>
+              <button type="button" className="se-tombol-hapus-utama"
+                      disabled={menyimpan} onClick={hapusMasalah}>
+                <IconTrash size={16} /> {menyimpan ? 'Menghapus…' : 'Ya, hapus'}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

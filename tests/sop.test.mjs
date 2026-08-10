@@ -216,6 +216,85 @@ cek('berkas kembali seperti sebelum disunting',
 const setelahPulih = await uji(adm, KELUHAN_UJI);
 cek('pencocokan ikut kembali seperti semula', setelahPulih.dijawab === false, setelahPulih);
 
+bagian('7. Menambah dan menghapus masalah');
+
+// Tanpa keduanya, penyunting hanya dapat memperbaiki kalimat pada kendala yang
+// sudah dikenal — sementara kendala baru terus bermunculan. SOP yang tidak
+// dapat tumbuh akan usang sendiri, dan sistem terus menjawab dengan langkah
+// yang tidak lagi cocok.
+const MASALAH_BARU = {
+  judul: 'Printer Ngadat Saat Mencetak Amplop',
+  kategori: 'ringan',
+  gejala: 'Printer berhenti dan berkedip ketika mencetak amplop tebal',
+  penyebab: ['Amplop terlalu tebal untuk baki utama', 'Pengaturan jenis kertas belum diubah'],
+  solusi: [
+    { judul: 'Pindahkan ke baki manual', langkah: ['Buka baki manual di depan', 'Masukkan amplop satu per satu'] },
+    { judul: 'Ubah jenis kertas', langkah: ['Buka Printing Preferences', 'Pilih jenis kertas Envelope'] },
+    { judul: 'Bersihkan roller penarik', langkah: ['Matikan printer', 'Lap roller dengan kain lembap'] }
+  ]
+};
+
+cek('tanpa masuk tidak dapat menambah masalah',
+  (await fetch(`${API}/sop/printer`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(MASALAH_BARU)
+  })).status === 401, 'bukan 401');
+cek('engineer tidak dapat menambah masalah',
+  (await kirim('/sop/printer', eng, 'POST', MASALAH_BARU)).status === 403, 'bukan 403');
+
+const jumlahSblm = (await json('/sop/printer', adm)).masalah.length;
+const ditambah = await kirim('/sop/printer', adm, 'POST', MASALAH_BARU);
+const isiTambah = await ditambah.json();
+
+cek('admin dapat menambah masalah baru', ditambah.status === 201, [ditambah.status, isiTambah.error]);
+cek('id diturunkan dari judulnya',
+  isiTambah.masalah?.id === 'printer-printer-ngadat-saat-mencetak-amplop', isiTambah.masalah?.id);
+cek('jumlah masalah bertambah satu',
+  (await json('/sop/printer', adm)).masalah.length === jumlahSblm + 1, 'tidak bertambah');
+
+// Inilah pemeriksaan yang sesungguhnya: tersimpan di berkas belum tentu
+// terbaca oleh pengurai, dan yang tidak terbaca tidak akan pernah ditemukan
+// pengguna.
+const kbTambah = JSON.parse(fs.readFileSync(process.env.KB_FILE, 'utf-8'));
+cek('masalah baru benar-benar masuk basis pengetahuan',
+  kbTambah.masalah.some((m) => m.id === isiTambah.masalah.id), isiTambah.masalah.id);
+
+// Keluhannya sengaja memakai kata yang KHAS bagi masalah baru itu. "printer
+// macet" akan tertarik ke "Kertas Macet di Dalam Printer" yang sudah ada, dan
+// itu perilaku yang benar — pembobotan kekhasan kata memang bekerja begitu.
+const KELUHAN_BARU = 'amplop tebal tidak bisa dicetak';
+const cocokBaru = await uji(adm, KELUHAN_BARU);
+cek('keluhan yang sesuai langsung terjawab masalah baru itu',
+  cocokBaru.masalah?.id === isiTambah.masalah.id, cocokBaru);
+cek('skornya menembus ambang, bukan sekadar peringkat teratas',
+  cocokBaru.dijawab === true, cocokBaru.skor);
+catatan('tersimpan di berkas belum berarti terbaca — pencocokan yang membuktikannya');
+
+const kembar = await kirim('/sop/printer', adm, 'POST', MASALAH_BARU);
+cek('judul yang menghasilkan id kembar ditolak', kembar.status === 409, kembar.status);
+
+const baruTanpaSolusi = await kirim('/sop/printer', adm, 'POST',
+  { ...MASALAH_BARU, judul: 'Judul Lain Sekali', solusi: [] });
+cek('masalah baru yang ringan tanpa solusi ditolak',
+  baruTanpaSolusi.status === 400, baruTanpaSolusi.status);
+
+// ── Penghapusan ───────────────────────────────────────────────
+cek('engineer tidak dapat menghapus masalah',
+  (await kirim(`/sop/printer/${isiTambah.masalah.id}`, eng, 'DELETE')).status === 403, 'bukan 403');
+cek('masalah yang tidak ada menghasilkan 404',
+  (await kirim('/sop/printer/printer-entah-apa', adm, 'DELETE')).status === 404, 'bukan 404');
+
+const dihapus = await kirim(`/sop/printer/${isiTambah.masalah.id}`, adm, 'DELETE');
+cek('admin dapat menghapus masalah', dihapus.status === 200, dihapus.status);
+cek('jumlah masalah kembali seperti semula',
+  (await json('/sop/printer', adm)).masalah.length === jumlahSblm, 'tidak kembali');
+cek('masalah yang dihapus ikut hilang dari basis pengetahuan',
+  !JSON.parse(fs.readFileSync(process.env.KB_FILE, 'utf-8'))
+    .masalah.some((m) => m.id === isiTambah.masalah.id), 'masih ada');
+
+const setelahHapus = await uji(adm, KELUHAN_BARU);
+cek('pencocokan ikut melupakannya', setelahHapus.masalah?.id !== isiTambah.masalah.id, setelahHapus);
+
 // SOP Printer & Windows yang sudah lengkap tiga solusi per masalah ringan
 // tidak boleh rusak oleh seluruh rangkaian penyuntingan di atas.
 const akhir = JSON.parse(fs.readFileSync(process.env.KB_FILE, 'utf-8'));
@@ -225,5 +304,29 @@ const swalayan = akhir.masalah.filter(
 cek('seluruh masalah ringan divisi swalayan tetap punya tiga solusi',
   swalayan.every((m) => m.solusi.length === 3), swalayan.filter((m) => m.solusi.length !== 3).map((m) => m.id));
 cek('jumlah masalah tetap 44', akhir.masalah.length === 44, akhir.masalah.length);
+
+bagian('8. Layanan swalayan tidak boleh kehabisan masalah');
+
+// SENGAJA paling akhir: pemeriksaan ini menghabiskan isi SOP Printer, sehingga
+// menaruhnya lebih dulu akan merusak seluruh pemeriksaan keutuhan di atas.
+// Berkas yang disentuh adalah SALINAN sementara, bukan knowledge-base asli.
+//
+// Layanan yang kehabisan masalah tetap menjanjikan panduan bertahap kepada
+// pengguna, sementara tidak ada satu pun langkah yang dapat diberikan — janji
+// yang tidak pernah ditepati, disampaikan dengan yakin.
+const semuaPrinter = (await json('/sop/printer', adm)).masalah;
+for (const m of semuaPrinter.slice(0, -1)) {
+  await kirim(`/sop/printer/${m.id}`, adm, 'DELETE');
+}
+
+const terakhir = (await json('/sop/printer', adm)).masalah;
+cek('tersisa tepat satu masalah', terakhir.length === 1, terakhir.length);
+
+const hapusTerakhir = await kirim(`/sop/printer/${terakhir[0].id}`, adm, 'DELETE');
+cek('masalah TERAKHIR pada layanan swalayan menolak dihapus',
+  hapusTerakhir.status === 409, hapusTerakhir.status);
+cek('masalahnya benar-benar masih ada setelah penolakan',
+  (await json('/sop/printer', adm)).masalah.length === 1, 'ikut terhapus');
+catatan('layanan tanpa SOP tetap berjanji memandu, lalu tidak memberi apa pun');
 
 selesai('sop');

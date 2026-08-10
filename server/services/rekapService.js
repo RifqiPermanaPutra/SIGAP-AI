@@ -707,3 +707,43 @@ export function anonimkanLama(tahun = 2) {
 
   return changes;
 }
+
+/**
+ * Buang isi yang tidak lagi berguna setelah masa retensi lewat.
+ *
+ * Melengkapi `anonimkanLama()`, yang hanya mengosongkan kolom `nama`. Dua hal
+ * lain menumpuk tanpa pernah dibuang sama sekali, dan keduanya memuat teks
+ * bebas yang tidak dapat dianonimkan sebagian:
+ *
+ *   `pesan`      isi percakapan lengkap. Pelapor kerap menyebut nama rekan,
+ *                nomor ruangan, atau nama berkas di dalam kalimatnya. Setelah
+ *                dua tahun, kalimat itu tidak lagi bernilai bagi siapa pun,
+ *                sementara ringkasannya sudah tersimpan pada kolom `keluhan`,
+ *                `masalah_cocok`, dan `solusi_terakhir` di baris sesinya.
+ *
+ *   `log_akses`  jejak siapa membuka dan mengunduh apa. Berguna justru ketika
+ *                dipertanyakan — dan pertanyaan itu tidak datang dua tahun
+ *                kemudian.
+ *
+ * BARIS SESI TIDAK PERNAH DIHAPUS. RANCANGAN-DATA.md §11 menetapkannya: fungsi,
+ * lokasi, divisi, urgensi, dan durasinya masih dipakai membandingkan tren antar
+ * tahun. Yang dibuang hanya isi yang sensitif.
+ *
+ * @returns {{pesan: number, akses: number}} banyaknya baris yang dibuang
+ */
+export function pangkasIsiLama(tahun = 2) {
+  const batasTanggal = new Date(Date.now() - tahun * 365 * 24 * 60 * 60 * 1000)
+    .toISOString().slice(0, 10);
+  const batasWaktu = `${batasTanggal}T00:00:00.000Z`;
+
+  const pesan = wajibSiap().prepare(`
+    DELETE FROM pesan
+    WHERE sesi_id IN (SELECT id FROM sesi WHERE tanggal_wib < ?)
+  `).run(batasTanggal).changes;
+
+  const akses = wajibSiap()
+    .prepare('DELETE FROM log_akses WHERE dibuat_pada < ?')
+    .run(batasWaktu).changes;
+
+  return { pesan, akses };
+}
