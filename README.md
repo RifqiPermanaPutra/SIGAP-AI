@@ -352,7 +352,7 @@ membukanya.
 Berada di **`/sop-editor`** — misalnya http://localhost:3000/sop-editor.
 **Khusus akun admin.**
 
-Sebelumnya, mengubah satu langkah SOP menuntut: menyunting Markdown,
+Sebelumnya, mengubah satu langkah SOP menuntut: menyunting berkas sumber,
 menjalankan `npm run build:kb`, lalu `npm run build`, lalu menyalakan ulang
 server. Akibatnya SOP menjadi usang seiring waktu — dan SOP yang usang lebih
 berbahaya daripada tidak ada SOP sama sekali, karena langkahnya keliru namun
@@ -366,7 +366,7 @@ Lewat halaman ini, satu suntingan cukup ditekan sekali:
 4. Setelah disimpan, basis pengetahuan dibangun ulang dan dimuat ulang sendiri
 
 > **Berkas Markdown tetap menjadi sumber kebenaran.** Penyunting ini menulis
-> ulang berkas `knowledge-base/<divisi>/sop-*.md` yang sama — tidak ada salinan
+> ulang berkas `knowledge-base/<divisi>.json` yang sama — tidak ada salinan
 > data SOP di dalam basis data. Menyunting berkasnya langsung dengan editor teks
 > tetap boleh, dan keduanya menghasilkan hal yang sama.
 
@@ -385,7 +385,7 @@ Penanda **`[KONFIRMASI]`** ditampilkan terpisah dengan warna jingga dan
 **tidak dapat disunting** dari halaman ini. Isinya bukan langkah SOP melainkan
 hal yang hanya engineer lapangan yang tahu — merek perangkat, nama jaringan,
 prosedur internal. Jawabannya harus datang dari engineer, bukan dari tebakan;
-untuk sekarang tetap disunting langsung pada berkas Markdown.
+untuk sekarang tetap disunting langsung pada berkas JSON sumbernya.
 
 ---
 
@@ -558,7 +558,7 @@ autentikasi, wewenang peran, penyaringan rekap, ekspor Excel, kelengkapan data
 SOP, penyunting SOP, daftar tugas engineer, dan kedua alur percakapan.
 
 Berkas SOP juga disalin ke folder sementara lebih dulu: pengujian penyunting
-SOP benar-benar menulis ke berkas Markdown, dan `npm test` tidak boleh
+SOP benar-benar menulis ke berkas sumber, dan `npm test` tidak boleh
 menyentuh dokumen SOP sungguhan.
 
 Pengujian memakai porta 3999. Bila porta itu sedang dipakai, jalankan pada porta
@@ -573,7 +573,7 @@ UJI_PORT=4100 npm test
 ## Cara kerja
 
 ```
-knowledge-base/<divisi>/sop-*.md          (sumber, ditulis manusia)
+knowledge-base/<divisi>.json              (sumber, ditulis manusia)
         │
         │  npm run build:kb
         ▼
@@ -636,7 +636,7 @@ server/
   services/
     answerService.js       Pencocokan keluhan + penyusun jawaban
     teksUtil.js            Penyeragam bahasa: sinonim, kata umum, akhiran
-    sopParser.js           Pengurai & penyusun Markdown SOP (dipakai bersama)
+    sopJson.js             Pembaca & penulis berkas SOP JSON (dipakai bersama)
     sopBerkas.js           Baca/tulis berkas SOP, cadangan, bangun & muat ulang
     rekapService.js        Kueri penyaringan & peringkasan laporan
     authService.js         scrypt, token sesi, peran, jejak akses
@@ -651,13 +651,13 @@ src/
   tugas/                   Halaman tugas engineer
   data/                    Pilihan fungsi, lokasi, urgensi
 
-knowledge-base/<divisi>/   Dokumen SOP — sumber kebenaran, disunting manusia
+knowledge-base/<divisi>.json  Dokumen SOP — sumber kebenaran, disunting manusia
 scripts/                   build-kb.js, akun.js, cadangkan.js
 skrip-windows/             Jalankan server & daftarkan ke Task Scheduler
 tests/                     Pengujian otomatis
 ```
 
-`sopParser.js` sengaja dipakai bersama oleh `scripts/build-kb.js` dan penyunting
+`sopJson.js` sengaja dipakai bersama oleh `scripts/build-kb.js` dan penyunting
 SOP. Dua pengurai untuk satu format berarti dua tafsiran yang dapat bergeser
 sendiri-sendiri — SOP yang tampak benar di penyunting akan terurai berbeda saat
 dibangun, dan tidak ada yang menyadarinya sampai pengguna menerima langkah yang
@@ -671,7 +671,8 @@ keliru.
 |---|---|
 | [KONTEKS-PROYEK.md](KONTEKS-PROYEK.md) | Serah-terima: keputusan penting, jebakan yang sudah ditemukan |
 | [RANCANGAN-DATA.md](RANCANGAN-DATA.md) | Rancangan data & laporan rekap |
-| [knowledge-base/_TEMPLATE-PENGISIAN.md](knowledge-base/_TEMPLATE-PENGISIAN.md) | Panduan mengumpulkan data SOP dari engineer |
+| [server/data/sop.schema.json](server/data/sop.schema.json) | Kontrak berkas SOP sumber — setiap medan dijelaskan |
+| [server/data/knowledge-base.schema.json](server/data/knowledge-base.schema.json) | Kontrak hasil bangunnya |
 
 **Bacalah `KONTEKS-PROYEK.md` sebelum mengubah apa pun** — beberapa hal di sana
 tampak seperti kesalahan padahal sengaja dibuat begitu.

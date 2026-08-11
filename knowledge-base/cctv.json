@@ -1,0 +1,141 @@
+{
+  "$schema": "../server/data/sop.schema.json",
+  "divisi": "cctv",
+  "nama": "CCTV",
+  "catatanKonfirmasi": [
+    "Merek dan tipe perangkat perekam yang dipakai",
+    "Daftar penomoran kamera beserta lokasinya",
+    "Lama masa simpan rekaman",
+    "Siapa yang berwenang melihat dan meminta salinan rekaman",
+    "Prosedur resmi permintaan rekaman untuk penyelidikan",
+    "Letak ruang perangkat perekam di tiap area"
+  ],
+  "masalah": [
+    {
+      "id": "cctv-salah-satu-kamera-tidak-tampil",
+      "judul": "Salah Satu Kamera Tidak Tampil di Layar",
+      "gejala": "Salah satu kotak tampilan pada layar pemantauan berwarna hitam, atau bertuliskan \"No Video\" atau \"No Signal\".",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kabel kamera terlepas pada sisi perangkat perekam",
+        "Sumber listrik kamera terputus",
+        "Saluran kamera pada perangkat perekam tidak aktif",
+        "Kamera kehilangan sambungan jaringan"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Perhatikan layar pemantauan. Hitung berapa kotak tampilan yang hitam. Bila hanya satu, berarti masalahnya pada kamera tersebut saja.",
+            "Catat nomor atau nama kamera yang bermasalah. Biasanya tertulis kecil di sudut kotak tampilannya. Catatan ini penting untuk dilaporkan.",
+            "Periksa layar pemantauan itu sendiri. Pastikan monitornya menyala dan tampilan kamera lain terlihat normal.",
+            "Temukan kotak perangkat perekam. Bentuknya kotak pipih, biasanya diletakkan di rak atau lemari di ruang pemantauan.",
+            "Perhatikan lampu di bagian depan perangkat perekam. Pastikan ada lampu yang menyala, menandakan perangkat hidup.",
+            "Lihat bagian belakang perangkat perekam. Perhatikan apakah ada kabel yang terlihat longgar atau terlepas dari lubangnya.",
+            "Bila ada kabel yang jelas terlepas, dorong masuk perlahan ke lubang tempatnya semula. Jangan mencabut kabel lain yang sudah terpasang.",
+            "Tunggu sekitar 1 menit, lalu perhatikan apakah tampilan kamera sudah muncul kembali.",
+            "Bila kamera tetap tidak tampil, laporkan kepada Engineer ICT. Sebutkan nomor atau nama kamera yang Anda catat pada langkah 2."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "cctv-gambar-kamera-gelap-buram-atau",
+      "judul": "Gambar Kamera Gelap, Buram, atau Berkabut",
+      "gejala": "Tampilan kamera terlihat kabur, berkabut, terlalu gelap, atau silau sehingga objek tidak terlihat jelas.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Bagian depan kamera kotor, berdebu, atau berembun",
+        "Ada sarang laba-laba atau kotoran menempel di depan kamera",
+        "Penerangan di area tersebut kurang",
+        "Kamera menghadap langsung ke sumber cahaya terang"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Perhatikan tampilan kamera tersebut selama beberapa menit.",
+            "Catat apakah gambar buram sepanjang hari, atau hanya pada malam hari, atau hanya pada jam tertentu saat matahari menyilaukan.",
+            "Bandingkan dengan tampilan kamera lain di area sekitarnya. Bila hanya satu kamera yang buram, berarti masalahnya pada kamera itu.",
+            "Bila memungkinkan dan aman, lihat kamera tersebut dari lantai. Jangan naik tangga, kursi, atau apa pun.",
+            "Dari posisi berdiri di lantai, perhatikan apakah bagian depan kamera terlihat kotor, berdebu, atau tertutup sarang laba-laba.",
+            "Periksa apakah lampu penerangan di area tersebut menyala normal, terutama bila keluhan muncul pada malam hari.",
+            "Catat nomor kamera, waktu munculnya masalah, dan hasil pengamatan Anda.",
+            "Laporkan kepada Engineer ICT. Pembersihan atau penyetelan arah kamera akan dilakukan oleh petugas yang berwenang."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "cctv-rekaman-tidak-ditemukan-atau-tidak",
+      "judul": "Rekaman Tidak Ditemukan atau Tidak Bisa Diputar",
+      "gejala": "Rekaman pada tanggal tertentu tidak ditemukan, atau saat diputar ulang tidak muncul gambar apa pun.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Rekaman lama sudah tertimpa sesuai batas masa simpan",
+        "Media penyimpanan perangkat perekam penuh atau bermasalah",
+        "Tanggal atau jam yang dicari keliru",
+        "Kamera sempat tidak aktif pada rentang waktu tersebut"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Periksa kembali tanggal yang Anda cari. Pastikan bulan dan tahunnya benar, bukan hanya tanggalnya.",
+            "Periksa kembali jam yang Anda cari. Perhatikan apakah sistem memakai format 24 jam, sehingga jam 2 siang ditulis 14.00.",
+            "Perluas rentang waktu pencarian. Bila mencari kejadian pukul 10.00, coba cari mulai pukul 09.00 sampai 11.00.",
+            "Coba cari rekaman pada kamera lain di area yang sama pada waktu tersebut, untuk memastikan apakah masalahnya pada satu kamera saja.",
+            "Coba cari rekaman pada tanggal kemarin untuk memastikan sistem perekaman berjalan normal.",
+            "Bila rekaman kemarin ada tetapi rekaman lama tidak ada, kemungkinan rekaman tersebut sudah tertimpa sesuai masa simpan.",
+            "Catat tanggal, jam, dan nama kamera yang Anda butuhkan.",
+            "Laporkan kepada Engineer ICT beserta keperluan permintaan rekaman tersebut."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "cctv-seluruh-kamera-hilang-dan-perangkat",
+      "judul": "Seluruh Kamera Hilang dan Perangkat Perekam Mati",
+      "gejala": "Seluruh kotak tampilan pada layar menjadi hitam bersamaan. Lampu pada perangkat perekam padam.",
+      "kategori": "berat",
+      "penyebab": [
+        "Kerusakan pada perangkat perekam",
+        "Kerusakan media penyimpanan di dalam perangkat",
+        "Gangguan pasokan listrik pada ruang perangkat"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Bila memungkinkan, periksa terlebih dahulu apakah listrik di ruangan tersebut menyala normal, lalu sampaikan hasilnya kepada engineer. Silakan hubungi Engineer melalui tombol WhatsApp."
+    },
+    {
+      "id": "cctv-kamera-rusak-menggantung-atau-berubah",
+      "judul": "Kamera Rusak, Menggantung, atau Berubah Arah",
+      "gejala": "Badan kamera terlihat rusak, menggantung, miring, atau arah pandangnya bergeser dari area yang seharusnya diawasi.",
+      "kategori": "berat",
+      "penyebab": [
+        "Kamera terbentur atau tertiup angin kencang",
+        "Dudukan kamera longgar",
+        "Kerusakan fisik pada perangkat"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Jangan mencoba membetulkan sendiri karena melibatkan pekerjaan di ketinggian. Bila kamera terlihat menggantung dan berisiko jatuh, jauhkan orang dari area di bawahnya. Silakan hubungi Engineer melalui tombol WhatsApp."
+    },
+    {
+      "id": "cctv-permintaan-salinan-rekaman-cctv",
+      "judul": "Permintaan Salinan Rekaman CCTV",
+      "gejala": "Membutuhkan salinan rekaman untuk keperluan penyelidikan, pelaporan, atau dokumentasi kejadian.",
+      "kategori": "berat",
+      "penyebab": [
+        "Kebutuhan dokumentasi kejadian",
+        "Permintaan resmi dari fungsi terkait"
+      ],
+      "solusi": [],
+      "penanganan": "Akses dan penyalinan rekaman CCTV memerlukan izin serta prosedur resmi, sehingga tidak dapat dilakukan sendiri. Siapkan terlebih dahulu tanggal, jam, lokasi, dan nama kamera yang dibutuhkan. Silakan hubungi Engineer melalui tombol WhatsApp untuk memproses permintaan."
+    }
+  ]
+}

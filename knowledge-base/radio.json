@@ -1,0 +1,98 @@
+{
+  "$schema": "../server/data/sop.schema.json",
+  "divisi": "radio",
+  "nama": "Radio Komunikasi",
+  "catatanKonfirmasi": [],
+  "masalah": [
+    {
+      "id": "radio-radio-tidak-ada-suara",
+      "judul": "Radio Tidak Ada Suara",
+      "gejala": "",
+      "kategori": "ringan",
+      "penyebab": [
+        "Volume radio disetel terlalu kecil atau mute",
+        "Baterai radio habis atau lemah",
+        "Channel atau frekuensi radio tidak sesuai",
+        "Antena radio tidak terpasang dengan baik"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Periksa volume radio, pastikan tidak dalam kondisi mute dan naikkan volume ke level yang cukup",
+            "Periksa indikator baterai, jika lemah segera charge atau ganti dengan baterai yang penuh",
+            "Pastikan channel radio yang digunakan sesuai dengan channel yang digunakan rekan kerja lainnya",
+            "Periksa antena radio, pastikan terpasang erat dan tidak rusak atau bengkok",
+            "Coba restart radio dengan mematikan lalu menyalakan kembali"
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "radio-radio-suara-tidak-jelas-atau",
+      "judul": "Radio Suara Tidak Jelas atau Ada Noise",
+      "gejala": "",
+      "kategori": "ringan",
+      "penyebab": [
+        "Jarak komunikasi terlalu jauh dari repeater",
+        "Antena tidak terpasang dengan baik",
+        "Gangguan interferensi dari perangkat lain",
+        "Squelch level tidak sesuai"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Coba pindah ke lokasi yang lebih terbuka atau lebih dekat dengan area jangkauan",
+            "Pastikan antena radio terpasang dengan benar dan dalam posisi tegak",
+            "Jauhkan radio dari perangkat elektronik yang bisa menyebabkan interferensi",
+            "Periksa pengaturan squelch, sesuaikan ke level yang tepat agar noise berkurang",
+            "Jika masih bermasalah, coba gunakan radio HT lain untuk memastikan bukan masalah perangkat"
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "radio-radio-tidak-bisa-transmit-tidak",
+      "judul": "Radio Tidak Bisa Transmit (Tidak Bisa Kirim Suara)",
+      "gejala": "",
+      "kategori": "ringan",
+      "penyebab": [
+        "Tombol PTT (Push-To-Talk) bermasalah",
+        "Baterai lemah sehingga daya transmit tidak cukup",
+        "Frekuensi terblokir atau ada gangguan"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Tekan tombol PTT dan pastikan indikator transmit menyala (biasanya lampu merah)",
+            "Periksa baterai, pastikan terisi penuh karena transmit membutuhkan daya lebih besar",
+            "Minta rekan kerja untuk mengkonfirmasi apakah suara Anda terdengar di channel yang sama",
+            "Coba restart radio dan ulangi percobaan transmit",
+            "Jika indikator transmit tidak menyala sama sekali, kemungkinan ada kerusakan hardware"
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "radio-kerusakan-perangkat-radio-repeater",
+      "judul": "Kerusakan Perangkat Radio / Repeater",
+      "gejala": "",
+      "kategori": "berat",
+      "penyebab": [
+        "Kerusakan fisik pada perangkat radio",
+        "Repeater mengalami gangguan",
+        "Antena base station rusak atau tersambar petir"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Silakan hubungi Engineer melalui tombol WhatsApp."
+    }
+  ]
+}

@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sigap.pertamina-ep.local/skema/knowledge-base.json",
+  "title": "Basis Pengetahuan SIGAP",
+
+  "description": "Kontrak berkas server/data/knowledge-base.json — SATU-SATUNYA sumber jawaban saat server berjalan. HASIL BANGUN dari delapan berkas sumber knowledge-base/<divisi>.json — lihat sop.schema.json di folder yang sama. Boleh dihapus lalu dibuat ulang kapan saja dengan npm run build:kb; menyuntingnya langsung tidak ada gunanya karena pembangunan berikutnya menimpanya. Ikut ke Git, sehingga penyebaran tidak memerlukan langkah build.",
+
+  "type": "object",
+  "required": ["dibuatPada", "masalah"],
+  "additionalProperties": false,
+
+  "properties": {
+    "dibuatPada": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Kapan berkas ini dibangun. Hanya penanda, tidak dibaca kode mana pun. Berguna untuk mengetahui apakah hasil bangun ini tertinggal dari berkas sumbernya."
+    },
+
+    "masalah": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Seluruh masalah dari kedelapan layanan, dalam satu larik datar. Pemisahan per layanan dilakukan lewat medan `divisi`, bukan lewat pengelompokan — answerService.js menyaringnya saat mencocokkan.",
+      "items": { "$ref": "#/$defs/masalah" }
+    }
+  },
+
+  "$defs": {
+    "masalah": {
+      "type": "object",
+      "required": ["id", "divisi", "judul", "gejala", "kategori", "penyebab", "solusi", "penanganan", "kataKunci"],
+      "additionalProperties": false,
+
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^(printer|windows|cctv|telepon|radio|ftth|lan|wan)-[a-z0-9-]+$",
+          "description": "Penanda tetap, berbentuk '<divisi>-<lima kata pertama judul>'. Disimpan pada kolom sesi.masalah_cocok di basis data, sehingga MENGUBAHNYA MEMUTUS rujukan seluruh laporan lama pada halaman rekap. Disalin dari medan id pada berkas sumber, dan TIDAK diturunkan ulang dari judul — sehingga judul boleh diperbaiki tanpa memutus rujukan apa pun.",
+          "examples": ["printer-kertas-macet-di-dalam-printer"]
+        },
+
+        "divisi": {
+          "enum": ["printer", "windows", "cctv", "telepon", "radio", "ftth", "lan", "wan"],
+          "description": "Layanan pemilik masalah ini. WAJIB salah satu dari delapan id di server/config/divisi.js. Nilai di luar daftar membuat masalahnya tidak pernah tercocokkan, tanpa pesan galat apa pun.",
+          "x-catatan-mode": "Hanya 'printer' dan 'windows' bermode swalayan — hanya keduanya yang isinya benar-benar disajikan sebagai langkah kepada pengguna. Enam layanan lain bermode engineer: keluhannya langsung diteruskan, dan isi SOP-nya TIDAK ditampilkan. Pembagian ini keputusan Engineer ICT (Eka Maulana), lihat KONTEKS-PROYEK.md §6a."
+        },
+
+        "judul": {
+          "type": "string",
+          "minLength": 8,
+          "description": "Nama masalah sebagaimana dikenali manusia. Ikut dicocokkan dengan BOBOT PALING BERAT (3×) terhadap keluhan pengguna, sehingga kata di sini paling menentukan apakah masalah ini ditemukan.",
+          "examples": ["Kertas Macet di Dalam Printer"]
+        },
+
+        "gejala": {
+          "type": "string",
+          "minLength": 10,
+          "description": "Apa yang DIRASAKAN pengguna, ditulis memakai kata sehari-hari yang benar-benar dipakai pekerja — bukan istilah teknis. Bobot pencocokan 2×. Inilah medan yang paling sering menentukan keberhasilan: pengguna menulis 'kertas nyangkut', bukan 'paper jam'."
+        },
+
+        "kategori": {
+          "enum": ["ringan", "berat"],
+          "description": "'ringan' = dipandu langkah SOP lebih dulu, dan WAJIB punya isi pada `solusi`. 'berat' = langsung diteruskan ke engineer, `solusi` kosong dan `penanganan` yang diisi."
+        },
+
+        "penyebab": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 3 },
+          "description": "Kemungkinan penyebab, satu kalimat per butir. Bobot pencocokan 1× — paling ringan, tetapi tetap menyumbang kata kunci. Boleh kosong."
+        },
+
+        "solusi": {
+          "type": "array",
+          "maxItems": 3,
+          "description": "Langkah penyelesaian bertahap. MAKSIMAL TIGA karena antarmuka menjanjikan tiga percobaan sebelum menyerah ke engineer (MAKS_SOLUSI di answerService.js). Untuk kategori 'berat' larik ini WAJIB kosong.",
+          "items": { "$ref": "#/$defs/solusi" }
+        },
+
+        "penanganan": {
+          "type": ["string", "null"],
+          "description": "Keterangan yang ditampilkan pada masalah kategori 'berat', menjelaskan mengapa perlu engineer dan tindakan pengamanan apa yang boleh dilakukan pengguna lebih dulu. WAJIB berisi bila kategori 'berat'; WAJIB null bila 'ringan'."
+        },
+
+        "kataKunci": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Kata hasil penyeragaman teksUtil.js atas judul, gejala, dan penyebab — sinonim disamakan, imbuhan dipangkas, kata umum dibuang. DIBANGUN OTOMATIS oleh scripts/build-kb.js; jangan disusun tangan. Tidak ada di berkas sumber: ia turunan, dan turunan yang ikut tersimpan dapat bergeser diam-diam dari kalimat yang menurunkannya."
+        }
+      },
+
+      "allOf": [
+        {
+          "if": { "properties": { "kategori": { "const": "ringan" } } },
+          "then": {
+            "properties": {
+              "solusi": { "minItems": 1 },
+              "penanganan": { "const": null }
+            },
+            "x-alasan": "Masalah ringan tanpa satu pun solusi akan ditawarkan kepada pengguna lalu tidak memberi langkah apa pun."
+          }
+        },
+        {
+          "if": { "properties": { "kategori": { "const": "berat" } } },
+          "then": {
+            "properties": {
+              "solusi": { "maxItems": 0 },
+              "penanganan": { "type": "string", "minLength": 20 }
+            },
+            "x-alasan": "Masalah berat tidak boleh punya langkah mandiri — justru itu yang membedakannya dari ringan."
+          }
+        }
+      ]
+    },
+
+    "solusi": {
+      "type": "object",
+      "required": ["judul", "pengantar", "langkah"],
+      "additionalProperties": false,
+
+      "properties": {
+        "judul": {
+          "type": "string",
+          "minLength": 3,
+          "description": "Nama solusi. Bila sebuah masalah hanya punya SATU solusi, judulnya 'Langkah Penyelesaian'. Bila lebih dari satu, judulnya berawalan 'Solusi Pertama: ', 'Solusi Kedua: ', 'Solusi Ketiga: ' — kesepakatan penamaan agar urutannya terbaca, disalin apa adanya dari berkas sumber.",
+          "examples": ["Langkah Penyelesaian", "Solusi Pertama: Nyalakan Ulang Printer"]
+        },
+        "pengantar": {
+          "type": ["string", "null"],
+          "description": "Satu kalimat pembuka opsional sebelum daftar langkah, mis. menjelaskan kapan solusi ini dipakai. null bila tidak ada."
+        },
+        "langkah": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 5 },
+          "description": "Langkah bernomor yang dibacakan kepada pengguna, satu tindakan per butir. Ditulis untuk orang yang TIDAK paham teknis: sebutkan tombol dan menu yang benar-benar terlihat di layar, bukan istilah umum."
+        }
+      }
+    }
+  },
+
+  "x-ambang-pencocokan": {
+    "AMBANG_COCOK": 0.4,
+    "AMBANG_SARAN": 0.2,
+    "keterangan": "Skor di bawah 0,4 tidak dijawab; di bawah 0,2 tidak disarankan sama sekali. Judul dan gejala yang terdengar wajar bagi manusia bisa saja tidak pernah menembus 0,4 — pakai tombol 'Uji keluhan ini' di halaman /sop-editor sebelum menganggapnya selesai."
+  },
+
+  "x-yang-membaca-berkas-ini": [
+    { "berkas": "server/services/answerService.js", "kapan": "saat modul dimuat (muatBasisPengetahuan)", "untuk": "mencocokkan keluhan dan menyusun jawaban" },
+    { "berkas": "server/routes/knowledgebase.js", "kapan": "POST /api/kb/reload oleh admin", "untuk": "memuat ulang tanpa menyalakan ulang server" },
+    { "berkas": "server/services/sopBerkas.js", "kapan": "setelah SOP disunting lewat peramban", "untuk": "membangun ulang lalu memuat ulang" }
+  ]
+}

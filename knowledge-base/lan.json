@@ -1,0 +1,212 @@
+{
+  "$schema": "../server/data/sop.schema.json",
+  "divisi": "lan",
+  "nama": "LAN",
+  "catatanKonfirmasi": [
+    "Nama jaringan WiFi resmi kantor di tiap area",
+    "Cara pengguna memperoleh kata sandi WiFi",
+    "Skema alamat IP yang digunakan tiap area",
+    "Lokasi perangkat jaringan di tiap gedung",
+    "Apakah pengguna boleh memindahkan kabel antar lubang jaringan",
+    "Prosedur pelaporan gangguan yang berdampak satu ruangan"
+  ],
+  "masalah": [
+    {
+      "id": "lan-tidak-bisa-terhubung-ke-wifi",
+      "judul": "Tidak Bisa Terhubung ke WiFi Kantor",
+      "gejala": "Nama WiFi tidak muncul di daftar, atau muncul tetapi gagal tersambung. Bisa juga sudah tersambung tetapi tidak bisa membuka situs apa pun.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Fitur WiFi pada komputer sedang dimatikan",
+        "Mode pesawat (Airplane mode) tidak sengaja menyala",
+        "Posisi terlalu jauh dari alat pemancar WiFi",
+        "Kata sandi WiFi telah diperbarui oleh Fungsi ICT"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Nyalakan Ulang WiFi dan Sambungkan Kembali",
+          "pengantar": null,
+          "langkah": [
+            "Lihat pojok kanan bawah layar komputer Anda, tepat di sebelah kiri jam. Di sana ada beberapa ikon kecil.",
+            "Cari ikon WiFi. Bentuknya seperti kipas atau gelombang bertingkat tiga. Klik satu kali pada ikon tersebut.",
+            "Akan muncul kotak kecil di atasnya. Perhatikan tombol bergambar pesawat terbang bertuliskan \"Airplane mode\". Bila tombol itu berwarna biru artinya sedang menyala. Klik satu kali agar warnanya berubah menjadi abu-abu.",
+            "Pada kotak yang sama, cari tombol bergambar WiFi. Bila warnanya abu-abu, klik satu kali agar berubah menjadi biru. Ini menandakan WiFi sudah dinyalakan.",
+            "Setelah itu akan muncul daftar nama-nama WiFi yang tertangkap. Tunggu sekitar 10 detik hingga daftarnya terisi penuh.",
+            "Cari nama WiFi kantor pada daftar tersebut, lalu klik satu kali.",
+            "Klik tombol bertuliskan \"Connect\". Bila ada kotak kecil bertuliskan \"Connect automatically\", beri centang terlebih dahulu.",
+            "Bila diminta memasukkan kata sandi, ketik kata sandi WiFi kantor, lalu klik \"Next\".",
+            "Tunggu sekitar 15 detik. Bila berhasil, di bawah nama WiFi akan tertulis \"Connected\"."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Lupakan Jaringan lalu Sambungkan Ulang",
+          "pengantar": "Dipakai bila WiFi tetap gagal tersambung padahal kata sandi sudah benar. Cara ini menghapus data sambungan lama yang mungkin sudah tidak sesuai.",
+          "langkah": [
+            "Klik tombol Start di bagian bawah layar, lalu klik ikon roda gigi bertuliskan \"Settings\".",
+            "Pada daftar di sisi kiri, klik \"Network & internet\".",
+            "Klik \"Wi-Fi\", lalu klik \"Manage known networks\".",
+            "Akan muncul daftar nama WiFi yang pernah tersambung. Cari nama WiFi kantor.",
+            "Klik nama WiFi kantor tersebut, lalu klik tombol \"Forget\".",
+            "Kembali ke pojok kanan bawah layar, klik ikon WiFi.",
+            "Cari kembali nama WiFi kantor pada daftar, lalu klik \"Connect\".",
+            "Masukkan kata sandi WiFi kantor saat diminta, lalu klik \"Next\".",
+            "Tunggu sekitar 15 detik hingga muncul tulisan \"Connected\"."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Jalankan Perbaikan Otomatis Windows",
+          "pengantar": "Dipakai bila kedua cara di atas belum berhasil. Windows memiliki alat perbaikan jaringan bawaan yang memeriksa dan memperbaiki sendiri.",
+          "langkah": [
+            "Klik tombol Start di bagian bawah layar.",
+            "Ketik kata \"Get Help\" pada kotak pencarian, lalu tekan Enter.",
+            "Setelah aplikasi Get Help terbuka, ketik \"network troubleshooter\" pada kotak pertanyaannya.",
+            "Ikuti petunjuk yang muncul di layar. Alat ini akan memeriksa jaringan secara otomatis.",
+            "Bila diminta izin melakukan perbaikan, pilih \"Yes\" atau \"Apply this fix\".",
+            "Tunggu sampai pemeriksaan selesai, biasanya sekitar 2 sampai 3 menit.",
+            "Setelah selesai, restart komputer melalui tombol Start, ikon daya, lalu \"Restart\".",
+            "Setelah komputer menyala, coba sambungkan kembali ke WiFi kantor.",
+            "Bila tetap gagal, laporkan kepada Engineer ICT dan sebutkan bahwa ketiga cara sudah dicoba."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "lan-tidak-ada-koneksi-internet-melalui",
+      "judul": "Tidak Ada Koneksi Internet melalui Kabel LAN",
+      "gejala": "Tidak bisa membuka situs apa pun. Ikon jaringan di pojok kanan bawah bertanda silang atau berbentuk bola dunia.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kabel jaringan terlepas dari komputer atau dari lubang di dinding",
+        "Kabel jaringan rusak atau tertekuk",
+        "Lubang jaringan di dinding sedang tidak aktif",
+        "Gangguan jaringan pada area tersebut"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Periksa dan Pasang Ulang Kabel Jaringan",
+          "pengantar": null,
+          "langkah": [
+            "Lihat bagian belakang atau samping komputer Anda. Cari kabel yang ujungnya mirip colokan telepon tetapi lebih lebar, berwarna bening dengan pengait kecil. Itulah kabel jaringan.",
+            "Pegang ujung kabel tersebut, lalu tekan masuk perlahan sampai terdengar bunyi klik. Bunyi klik menandakan kabel sudah terkunci.",
+            "Telusuri kabel itu sampai ujung satunya, biasanya menuju lubang kecil di dinding atau di bawah meja. Tekan juga ujung tersebut sampai berbunyi klik.",
+            "Perhatikan lubang tempat kabel masuk di komputer. Di sisinya ada lampu sangat kecil yang seharusnya menyala hijau atau berkedip.",
+            "Bila lampu kecil itu mati, cabut kabel, tunggu 10 detik, lalu pasang kembali sampai berbunyi klik.",
+            "Perhatikan apakah ada bagian kabel yang tertindih kaki meja, terjepit pintu, atau tertekuk tajam. Bila ada, rapikan posisinya perlahan.",
+            "Tunggu sekitar 1 menit, lalu periksa ikon jaringan di pojok kanan bawah layar.",
+            "Coba buka satu situs untuk menguji koneksi."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Restart Komputer",
+          "pengantar": "Dipakai bila kabel sudah terpasang benar tetapi internet tetap tidak jalan. Restart menyegarkan sambungan jaringan pada komputer.",
+          "langkah": [
+            "Simpan seluruh pekerjaan Anda yang belum tersimpan.",
+            "Klik tombol Start di bagian bawah layar.",
+            "Klik ikon tombol daya, lalu pilih \"Restart\".",
+            "Tunggu sampai komputer menyala kembali dan masuk ke layar utama.",
+            "Tunggu tambahan 2 menit agar sambungan jaringan siap sepenuhnya.",
+            "Lihat ikon jaringan di pojok kanan bawah layar. Pastikan tidak ada tanda silang atau tanda seru.",
+            "Coba buka dua situs berbeda untuk menguji koneksi."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Jalankan Perbaikan Otomatis Windows",
+          "pengantar": "Dipakai bila kedua cara di atas belum berhasil.",
+          "langkah": [
+            "Klik tombol Start di bagian bawah layar.",
+            "Ketik kata \"Get Help\" pada kotak pencarian, lalu tekan Enter.",
+            "Setelah aplikasi Get Help terbuka, ketik \"network troubleshooter\" pada kotak pertanyaannya.",
+            "Ikuti petunjuk yang muncul di layar.",
+            "Bila diminta izin melakukan perbaikan, pilih \"Yes\" atau \"Apply this fix\".",
+            "Tunggu sampai pemeriksaan selesai, biasanya 2 sampai 3 menit.",
+            "Coba buka satu situs untuk menguji koneksi.",
+            "Bila tetap gagal, tanyakan kepada rekan di ruangan yang sama apakah mereka juga terputus.",
+            "Laporkan kepada Engineer ICT beserta jawaban rekan Anda, karena keterangan itu membantu menentukan apakah gangguannya menyeluruh."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "lan-lampu-pada-lubang-kabel-jaringan",
+      "judul": "Lampu pada Lubang Kabel Jaringan Tidak Menyala",
+      "gejala": "Kabel jaringan sudah terpasang, tetapi lampu kecil di sebelah lubang kabel pada komputer tidak menyala sama sekali.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kabel jaringan putus di bagian dalam meski luarnya terlihat baik",
+        "Pengait plastik pada ujung kabel patah sehingga tidak terkunci",
+        "Lubang jaringan di dinding sedang tidak aktif"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Cabut kabel jaringan dari komputer, lalu perhatikan ujungnya.",
+            "Periksa pengait plastik kecil di ujung kabel. Bila pengait itu patah, kabel tidak akan terkunci dan perlu diganti.",
+            "Pasang kembali kabel, tekan sampai berbunyi klik, lalu perhatikan lampu kecil di sisi lubang.",
+            "Bila masih mati, coba pindahkan ujung kabel yang di dinding ke lubang jaringan lain di dekat meja Anda.",
+            "Perhatikan kembali lampu kecil di komputer setelah pemindahan tersebut.",
+            "Bila tersedia kabel jaringan cadangan, coba ganti dengan kabel tersebut untuk memastikan apakah kabel lama yang bermasalah.",
+            "Bila lampu tetap mati pada semua percobaan, catat lokasi meja Anda, lalu laporkan kepada Engineer ICT."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "lan-koneksi-jaringan-terasa-lambat",
+      "judul": "Koneksi Jaringan Terasa Lambat",
+      "gejala": "Internet tetap tersambung, tetapi membuka halaman terasa lama dan mengunduh berkas berjalan lambat.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Banyak aplikasi memakai jaringan secara bersamaan",
+        "Pembaruan sistem sedang berjalan tanpa disadari",
+        "Pemakaian jaringan sedang padat pada jam sibuk"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Lihat bagian bawah layar Anda. Tutup aplikasi yang tidak sedang dipakai dengan mengklik tanda silang di pojok kanan atas setiap jendela.",
+            "Pada aplikasi peramban seperti Chrome atau Edge, tutup tab yang tidak diperlukan. Tab adalah kotak-kotak judul yang berjajar di bagian atas.",
+            "Perhatikan apakah ada aplikasi yang sedang mengunduh berkas besar. Biasanya terlihat bar biru berjalan di bagian bawah peramban.",
+            "Restart komputer. Klik tombol Start di bawah layar, klik ikon tombol daya, lalu pilih \"Restart\".",
+            "Setelah menyala kembali, tunggu sekitar 3 menit sebelum mulai bekerja, karena komputer masih menyiapkan sambungan.",
+            "Coba buka dua atau tiga situs yang berbeda untuk memastikan apakah lambatnya terjadi pada semua situs atau hanya satu situs.",
+            "Tanyakan kepada rekan di ruangan yang sama apakah mereka merasakan hal serupa.",
+            "Bila lambat berlangsung sepanjang hari dan dialami banyak orang, laporkan kepada Engineer ICT."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "lan-seluruh-komputer-di-satu-ruangan",
+      "judul": "Seluruh Komputer di Satu Ruangan Terputus Bersamaan",
+      "gejala": "Semua orang di ruangan kehilangan koneksi pada waktu yang sama. Lampu pada perangkat jaringan di ruangan mati.",
+      "kategori": "berat",
+      "penyebab": [
+        "Kerusakan pada perangkat pembagi jaringan",
+        "Gangguan pasokan listrik pada perangkat jaringan",
+        "Kerusakan jalur kabel utama"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Silakan hubungi Engineer melalui tombol WhatsApp. Sebutkan nama ruangan dan perkiraan jumlah komputer yang terdampak."
+    },
+    {
+      "id": "lan-diminta-mengubah-pengaturan-jaringan",
+      "judul": "Diminta Mengubah Pengaturan Jaringan",
+      "gejala": "Ada permintaan atau petunjuk untuk mengganti alamat IP, DNS, atau pengaturan jaringan lainnya.",
+      "kategori": "berat",
+      "penyebab": [
+        "Pengaturan jaringan komputer berubah",
+        "Diperlukan penyesuaian konfigurasi jaringan"
+      ],
+      "solusi": [],
+      "penanganan": "Perubahan pengaturan jaringan memerlukan hak administrator serta pengetahuan mengenai skema jaringan Field Lirik. Tindakan ini tidak boleh dilakukan sendiri karena dapat memutus koneksi pengguna lain. Silakan hubungi Engineer melalui tombol WhatsApp."
+    }
+  ]
+}
