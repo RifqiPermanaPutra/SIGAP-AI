@@ -628,31 +628,55 @@ ditulis `6281234567890`. Tanda hubung dan spasi otomatis dibersihkan server.
 
 ## Struktur
 
+Tiga pohon, dan arah ketergantungannya hanya satu:
+
 ```
-server/
+bersama/  ──────┬──────>  server/   (backend)
+                └──────>  src/      (frontend)
+```
+
+`server/` tidak pernah mengimpor dari `src/`, dan sebaliknya. Dijaga pengujian
+`npm test` bagian "modul backend termuat tanpa folder src/".
+
+```
+server.js                  Titik masuk backend — menyajikan API dan dist/
+
+bersama/                   Daftar tetap yang WAJIB sama di kedua sisi
+  fungsi.js                7 fungsi/divisi kerja
+  lokasi.js                29 lokasi, dikelompokkan per area
+  urgensi.js               4 tingkat urgensi
+  README.md                Aturan apa yang boleh masuk sini
+
+server/                    BACKEND — berdiri sendiri, tanpa React
   config/divisi.js         Daftar divisi, mode layanan, turunan area
   config/jalur.js          Letak berkas SOP & hasil bangunnya
-  routes/                  chat, knowledgebase, auth, rekap, sop, tugas
+  routes/                  chat, knowledgebase, auth, rekap, sop, tiket, tugas
   services/
     answerService.js       Pencocokan keluhan + penyusun jawaban
     teksUtil.js            Penyeragam bahasa: sinonim, kata umum, akhiran
     sopJson.js             Pembaca & penulis berkas SOP JSON (dipakai bersama)
-    sopBerkas.js           Baca/tulis berkas SOP, cadangan, bangun & muat ulang
+    sopBerkas.js           Penyunting SOP: cadangan, bangun & muat ulang
     rekapService.js        Kueri penyaringan & peringkasan laporan
     authService.js         scrypt, token sesi, peran, jejak akses
+    pemeliharaan.js        Cadangan harian, retensi, penyapu sesi
     xlsxUtil.js            Penulis berkas .xlsx tanpa dependensi
   database/init.js         Skema & operasi SQLite
-  data/                    Hasil bangun basis pengetahuan (jangan disunting manual)
+  data/
+    knowledge-base.json    Hasil bangun — jangan disunting manual
+    sop.schema.json        Kontrak berkas SOP sumber
+    knowledge-base.schema.json  Kontrak hasil bangunnya
 
-src/
+src/                       FRONTEND — React, dipaketkan Vite ke dist/
   components/              Antarmuka pelapor + layar masuk bersama
   rekap/                   Halaman laporan rekap
   sop-editor/              Halaman penyunting SOP
+  tiket/                   Halaman cek status laporan
   tugas/                   Halaman tugas engineer
-  data/                    Pilihan fungsi, lokasi, urgensi
+  data/                    Salinan cadangan daftar layanan + pilihan otomatis
 
-knowledge-base/<divisi>.json  Dokumen SOP — sumber kebenaran, disunting manusia
-scripts/                   build-kb.js, akun.js, cadangkan.js
+knowledge-base/<divisi>.json  Dokumen SOP — SUMBER KEBENARAN, disunting manusia
+scripts/                   build-kb.js, periksa-kb.js, akun.js, cadangkan.js
+tests/                     Penjalan sendiri, tanpa Jest maupun Vitest
 skrip-windows/             Jalankan server & daftarkan ke Task Scheduler
 tests/                     Pengujian otomatis
 ```

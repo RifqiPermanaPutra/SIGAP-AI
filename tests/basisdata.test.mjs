@@ -214,6 +214,51 @@ cek('nomor lama tidak dipakai ulang',
   sesudahHapus.nomor_tiket !== nomorSblmHapus, [sesudahHapus.nomor_tiket, nomorSblmHapus]);
 catatan('tanpa ini, membersihkan basis data membuat pelapor berikutnya tidak bisa melapor');
 
+bagian('11. Backend tidak boleh bergantung pada frontend');
+
+// `src/` adalah pohon yang dipaketkan Vite untuk peramban. Backend yang
+// mengimpor dari sana tidak dapat dipindahkan maupun disebarkan sendiri, dan
+// perubahan yang dilakukan demi kebutuhan tampilan dapat mematahkan
+// pemeriksaan di server tanpa ada yang menduga. Pernah terjadi pada tiga
+// berkas; daftar tetap yang memang dipakai bersama kini tinggal di `bersama/`.
+const AKAR = path.join(path.dirname(new URL(import.meta.url).pathname.slice(1)), '..');
+
+function sisirJs(dir, kumpulan = []) {
+  for (const nama of fs.readdirSync(dir)) {
+    const jalur = path.join(dir, nama);
+    if (fs.statSync(jalur).isDirectory()) sisirJs(jalur, kumpulan);
+    else if (nama.endsWith('.js')) kumpulan.push(jalur);
+  }
+  return kumpulan;
+}
+
+const POLA_KE_FRONTEND = /from\s+['"][^'"]*\/src\//;
+const pelanggar = [];
+
+for (const jalur of [...sisirJs(path.join(AKAR, 'server')), path.join(AKAR, 'server.js')]) {
+  const isi = fs.readFileSync(jalur, 'utf-8');
+  for (const [i, baris] of isi.split('\n').entries()) {
+    if (POLA_KE_FRONTEND.test(baris)) {
+      pelanggar.push(`${path.relative(AKAR, jalur)}:${i + 1}  ${baris.trim()}`);
+    }
+  }
+}
+
+cek('tidak ada berkas backend yang mengimpor dari src/',
+  pelanggar.length === 0, pelanggar.slice(0, 5));
+
+// Kebalikannya juga: frontend tidak boleh menarik modul server, yang membawa
+// `fs` dan `node:sqlite` ke dalam bundel peramban.
+const pelanggarBalik = [];
+for (const jalur of sisirJs(path.join(AKAR, 'src'))) {
+  const isi = fs.readFileSync(jalur, 'utf-8');
+  if (/from\s+['"][^'"]*\/server\//.test(isi)) pelanggarBalik.push(path.relative(AKAR, jalur));
+}
+cek('tidak ada berkas frontend yang mengimpor dari server/',
+  pelanggarBalik.length === 0, pelanggarBalik);
+
+catatan('batas backend–frontend dijaga di sini, bukan hanya di dokumen');
+
 tutupDatabase();
 fs.rmSync(tmp, { recursive: true, force: true });
 selesai('basisdata');

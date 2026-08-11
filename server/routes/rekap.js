@@ -15,6 +15,7 @@ import {
 } from '../services/authService.js';
 import { buatXlsx } from '../services/xlsxUtil.js';
 import { DIVISIONS } from '../config/divisi.js';
+import { URGENSI_LIST } from '../../bersama/urgensi.js';
 
 export const rekapRouter = Router();
 
@@ -136,7 +137,8 @@ rekapRouter.get('/', wajibMasuk(), (req, res) => {
       pilihan: {
         divisi: DIVISIONS.map(({ id, name }) => ({ id, name })),
         area: nilaiUnik('area'),
-        urgensi: ['Rendah', 'Sedang', 'Tinggi', 'Kritis'],
+        // Diturunkan dari daftar bersama, bukan disalin — lihat chat.js
+        urgensi: URGENSI_LIST.map((u) => u.nilai),
         fungsi: nilaiUnik('fungsi')
       }
     });

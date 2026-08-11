@@ -12,7 +12,7 @@
 import { initDatabase, wajibSiap, tutupDatabase, tanggalWIB } from '../server/database/init.js';
 import { buatPengguna, cariPengguna, aturDivisi } from '../server/services/authService.js';
 import { areaDariLokasi } from '../server/config/divisi.js';
-import { FUNGSI_LIST } from '../src/data/fungsi.js';
+import { FUNGSI_LIST } from '../bersama/fungsi.js';
 
 export const AKUN_UJI = {
   admin: { namaAkun: 'admin', sandi: 'ujicoba123' },

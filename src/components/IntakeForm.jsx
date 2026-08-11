@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { IconArrowRight, IconClose, IconCheck, IconWhatsapp } from './Icons.jsx';
-import { LOKASI_GROUPS } from '../data/lokasi.js';
-import { FUNGSI_LIST } from '../data/fungsi.js';
-import { URGENSI_LIST } from '../data/urgensi.js';
+import { LOKASI_GROUPS } from '../../bersama/lokasi.js';
+import { FUNGSI_LIST } from '../../bersama/fungsi.js';
+import { URGENSI_LIST } from '../../bersama/urgensi.js';
 
 /**
  * Formulir pendataan pelapor — ditampilkan saat kendala akan diteruskan
