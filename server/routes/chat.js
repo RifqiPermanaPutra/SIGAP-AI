@@ -28,8 +28,9 @@ import { batasiLaju } from '../services/pembatasLaju.js';
 // Daftar pilihan dipakai bersama antarmuka dan server. Memeriksanya hanya di
 // antarmuka berarti tidak memeriksanya sama sekali — permintaan dapat dikirim
 // langsung ke API tanpa melewati formulir.
-import { FUNGSI_LIST } from '../../src/data/fungsi.js';
-import { LOKASI_ALL } from '../../src/data/lokasi.js';
+import { FUNGSI_LIST } from '../../bersama/fungsi.js';
+import { LOKASI_ALL } from '../../bersama/lokasi.js';
+import { URGENSI_LIST } from '../../bersama/urgensi.js';
 
 export const chatRouter = Router();
 
@@ -104,8 +105,16 @@ chatRouter.post('/new', batasSesiBaru, (req, res) => {
   }
 });
 
-/** Tingkat urgensi yang diakui — harus sama dengan src/data/urgensi.js */
-const URGENSI_VALID = ['Rendah', 'Sedang', 'Tinggi', 'Kritis'];
+/**
+ * Tingkat urgensi yang diakui.
+ *
+ * Diturunkan dari daftar bersama, bukan dituliskan ulang. Sebelumnya keempat
+ * nilainya disalin ke sini dengan komentar "harus sama dengan urgensi.js" —
+ * dan komentar bukan penjaga: menambah satu tingkat di daftar bersama akan
+ * membuat formulir menawarkannya sementara server menolaknya, tanpa ada yang
+ * menyadarinya sampai ada pelapor yang gagal mengirim.
+ */
+const URGENSI_VALID = URGENSI_LIST.map((u) => u.nilai);
 
 /**
  * POST /api/chat/reporter

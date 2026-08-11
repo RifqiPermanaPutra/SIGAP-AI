@@ -107,10 +107,10 @@ Hanya terisi untuk laporan berstatus `diteruskan`.
 | Kolom | Tipe | Sumber | Keterangan |
 |---|---|---|---|
 | `nama` | teks | formulir | Nama lengkap pelapor |
-| `fungsi` | enum 7 | formulir | `src/data/fungsi.js` |
-| `lokasi` | enum 29 | formulir | `src/data/lokasi.js` |
+| `fungsi` | enum 7 | formulir | `bersama/fungsi.js` |
+| `lokasi` | enum 29 | formulir | `bersama/lokasi.js` |
 | `area` | enum 3 | **turunan** | Buatan \| Ukui \| Lirik |
-| `urgensi` | enum 4 | formulir | `src/data/urgensi.js` |
+| `urgensi` | enum 4 | formulir | `bersama/urgensi.js` |
 | `engineer_tujuan` | teks | otomatis | Engineer penerima laporan |
 | `diteruskan_pada` | timestamp | otomatis | Saat tombol WhatsApp ditekan |
 

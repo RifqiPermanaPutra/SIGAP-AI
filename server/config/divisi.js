@@ -5,7 +5,7 @@
  * dibutuhkan juga oleh routing chat (untuk mencatat engineer tujuan) dan
  * layanan rekap (untuk menampilkan nama divisi).
  */
-import { LOKASI_GROUPS } from '../../src/data/lokasi.js';
+import { LOKASI_GROUPS } from '../../bersama/lokasi.js';
 
 // Instalasi lama mungkin masih membawa nama variabel lingkungan sebelum
 // penyeragaman FTTH. Nilainya disalin di memori agar nomor engineer tidak
