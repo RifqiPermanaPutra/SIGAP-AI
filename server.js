@@ -2,8 +2,12 @@ import 'dotenv/config';
 import express from 'express';
 import compression from 'compression';
 import cors from 'cors';
+import fs from 'fs';
+import http from 'http';
+import https from 'https';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { headerKeamanan } from './server/services/headerKeamanan.js';
 import { chatRouter } from './server/routes/chat.js';
 import { kbRouter } from './server/routes/knowledgebase.js';
 import { authRouter } from './server/routes/auth.js';
@@ -28,7 +32,44 @@ const PORT = process.env.PORT || 3000;
 // menahan semua orang sekaligus begitu satu pengguna melampaui batas.
 if (process.env.TRUST_PROXY === '1') app.set('trust proxy', 1);
 
+/* ────────────────────────────────────────────────────────────────
+   HTTPS
+   ──────────────────────────────────────────────────────────────── */
+
+/**
+ * Sambungan aman dinyalakan bila `HTTPS_KEY` dan `HTTPS_CERT` menunjuk ke
+ * berkas yang benar-benar ada. Tanpa keduanya, server tetap berjalan di atas
+ * HTTP seperti sebelumnya — supaya memutakhirkan kode tidak pernah membuat
+ * server berhenti menyala hanya karena sertifikatnya belum disiapkan.
+ *
+ * Selama masih HTTP, token sesi melintas di jaringan dalam bentuk terbaca.
+ * Siapa pun di WiFi yang sama dapat mengambil sesi engineer atau admin tanpa
+ * perlu mengetahui kata sandinya — dan itu melemahkan seluruh penjagaan lain,
+ * sekuat apa pun kata sandinya disimpan.
+ */
+const BERKAS_KUNCI = (process.env.HTTPS_KEY || '').trim();
+const BERKAS_SERTIFIKAT = (process.env.HTTPS_CERT || '').trim();
+
+const pakaiHttps =
+  Boolean(BERKAS_KUNCI && BERKAS_SERTIFIKAT) &&
+  fs.existsSync(BERKAS_KUNCI) &&
+  fs.existsSync(BERKAS_SERTIFIKAT);
+
+if (BERKAS_KUNCI && BERKAS_SERTIFIKAT && !pakaiHttps) {
+  console.warn('⚠️  HTTPS_KEY / HTTPS_CERT diisi tetapi berkasnya tidak ditemukan.');
+  console.warn(`   kunci      : ${BERKAS_KUNCI}`);
+  console.warn(`   sertifikat : ${BERKAS_SERTIFIKAT}`);
+  console.warn('   Server dijalankan di atas HTTP.\n');
+}
+
+// Kuki sesi wajib bertanda Secure begitu halamannya disajikan lewat HTTPS.
+// Disetel di sini, bukan menuntut admin mengingat mengisi dua variabel yang
+// harus selalu sejalan — variabel yang lupa diisi menghasilkan sistem yang
+// tampak aman sementara kukinya masih boleh melintas di atas HTTP.
+if (pakaiHttps) process.env.COOKIE_SECURE = '1';
+
 app.use(compression());
+app.use(headerKeamanan({ https: pakaiHttps }));
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
 
@@ -108,16 +149,33 @@ async function start() {
     // pembersihan berkas lama — seluruhnya di server/services/pemeliharaan.js
     mulaiPemeliharaan();
 
-    app.listen(PORT, () => {
+    const pelayan = pakaiHttps
+      ? https.createServer(
+          { key: fs.readFileSync(BERKAS_KUNCI), cert: fs.readFileSync(BERKAS_SERTIFIKAT) },
+          app
+        )
+      : http.createServer(app);
+
+    pelayan.listen(PORT, () => {
+      const skema = pakaiHttps ? 'https' : 'http';
       console.log(`
 ╔══════════════════════════════════════════════════╗
 ║   SIGAP — Layanan Bantuan ICT                    ║
 ║   Pertamina EP Asset 1 Regional 1 Field Lirik    ║
 ║                                                  ║
-║   Server: http://localhost:${PORT}                  ║
+║   Server: ${`${skema}://localhost:${PORT}`.padEnd(38)}║
 ║   Status: Running ✅                             ║
 ╚══════════════════════════════════════════════════╝
       `);
+
+      if (pakaiHttps) {
+        console.log('🔒 HTTPS aktif — kuki sesi bertanda Secure, HSTS dipasang.\n');
+      } else {
+        console.warn('⚠️  Berjalan di atas HTTP. Token sesi melintas dalam bentuk terbaca:');
+        console.warn('   siapa pun di jaringan yang sama dapat mengambil sesi engineer');
+        console.warn('   maupun admin tanpa mengetahui kata sandinya.');
+        console.warn('   Siapkan sertifikat: skrip-windows\\buat-sertifikat.ps1\n');
+      }
 
       // Eskalasi adalah jalur akhir pengaduan, jadi divisi yang belum punya
       // nomor engineer sendiri perlu terlihat jelas saat server dijalankan.

@@ -280,6 +280,56 @@ cek('area diturunkan dari lokasi', riwayat.session.area === 'Ukui', riwayat.sess
 cek('engineer tujuan tercatat', Boolean(riwayat.session.engineer_tujuan), riwayat.session.engineer_tujuan);
 cek('mode divisi tercatat', riwayat.session.mode_divisi === 'swalayan', riwayat.session.mode_divisi);
 
+bagian('8d. Header keamanan');
+
+// Lapis kedua, bukan lapis pertama: penjagaan sesungguhnya ada pada
+// pemeriksaan masukan, kueri berparameter, dan jawaban yang disusun sebagai
+// elemen React. Header di sini menjawab pertanyaan lain — kalau suatu hari
+// salah satu penjagaan itu jebol, seberapa jauh akibatnya menyebar.
+const kepalaHalaman = await fetch(`http://localhost:${PORT}/`);
+const hdr = (n) => kepalaHalaman.headers.get(n) || '';
+const csp = hdr('content-security-policy');
+
+cek('Content-Security-Policy terkirim', csp.length > 50, csp.slice(0, 60));
+
+// Yang paling menentukan. Seluruh skrip berupa berkas terpaket, tidak ada satu
+// pun skrip sebaris — sehingga 'unsafe-inline' tidak diperlukan, dan skrip
+// yang disuntikkan lewat celah XSS tidak akan pernah dijalankan.
+cek("script-src 'self' TANPA unsafe-inline",
+  /script-src 'self'(;|$)/.test(csp), csp);
+
+cek('halaman tidak boleh dibingkai situs lain',
+  csp.includes("frame-ancestors 'none'") && hdr('x-frame-options') === 'DENY',
+  [csp.includes("frame-ancestors 'none'"), hdr('x-frame-options')]);
+cek('peramban dilarang menebak tipe berkas',
+  hdr('x-content-type-options') === 'nosniff', hdr('x-content-type-options'));
+
+// Alamat /rekap memuat rentang tanggal dan kata pencarian pada query string.
+// Tanpa ini keduanya ikut terkirim ke setiap situs luar yang dibuka dari sini.
+cek('Referrer-Policy menahan alamat bocor keluar',
+  hdr('referrer-policy') === 'same-origin', hdr('referrer-policy'));
+
+// Dipasang di atas HTTP, HSTS diabaikan peramban — tetapi memasangnya sebelum
+// sertifikat benar-benar ada berarti mengunci pengguna dari halaman yang belum
+// dapat disajikan secara aman.
+cek('HSTS tidak dipasang selama masih HTTP',
+  !hdr('strict-transport-security'), hdr('strict-transport-security'));
+
+cek('API ikut menerima header yang sama',
+  (await fetch(`${API}/health`)).headers.get('x-content-type-options') === 'nosniff', 'tidak');
+
+// CSP yang terlalu ketat mematikan halaman, dan halaman yang mati membuat
+// orang mematikan CSP-nya seluruhnya. Sumber daya yang benar-benar dipakai
+// wajib tetap lolos.
+const halaman = await kepalaHalaman.text();
+const bundelJs = halaman.match(/src="(\/assets\/[^"]+\.js)"/)?.[1];
+cek('bundel JS tetap tersaji di balik CSP',
+  Boolean(bundelJs) && (await fetch(`http://localhost:${PORT}${bundelJs}`)).ok, bundelJs);
+cek('tidak ada skrip sebaris pada halaman terbangun',
+  !/<script(?![^>]*\bsrc=)[^>]*>[\s\S]*?\S[\s\S]*?<\/script>/.test(halaman),
+  'ada skrip sebaris — CSP akan memblokirnya');
+catatan("script-src tanpa 'unsafe-inline' hanya mungkin selama halaman tetap bebas skrip sebaris");
+
 bagian('9. Rute yang mengubah keadaan wajib berwenang');
 cek('muat ulang basis pengetahuan ditolak tanpa masuk',
   (await fetch(`${API}/kb/reload`, { method: 'POST' })).status === 401, 'bukan 401');
