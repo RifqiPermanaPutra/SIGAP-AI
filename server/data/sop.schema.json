@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sigap.pertamina-ep.local/skema/sop.json",
+  "title": "Berkas SOP satu layanan — SUMBER KEBENARAN",
+
+  "description": "Kontrak berkas knowledge-base/<divisi>.json. Delapan berkas seperti ini adalah satu-satunya tempat isi SOP ditulis; `server/data/knowledge-base.json` adalah HASIL BANGUNNYA dan boleh dihapus lalu dibuat ulang kapan saja dengan `npm run build:kb`. Menyunting hasil bangun langsung tidak ada gunanya — pembangunan berikutnya menimpanya. Dua medan sengaja TIDAK ada di sini karena keduanya turunan: `divisi` pada tiap masalah (disalin dari kepala berkas) dan `kataKunci` (hasil penyeragaman bahasa atas judul, gejala, dan penyebab).",
+
+  "type": "object",
+  "required": ["divisi", "nama", "catatanKonfirmasi", "masalah"],
+
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Penunjuk ke berkas skema ini. Membuat penyunting teks memberi pelengkapan dan peringatan saat berkas disunting tangan."
+    },
+
+    "divisi": {
+      "enum": ["printer", "windows", "cctv", "telepon", "radio", "ftth", "lan", "wan"],
+      "description": "Id layanan. WAJIB sama dengan nama berkasnya — `printer.json` wajib berisi divisi 'printer'. Ketidakcocokan membuat masalah tersimpan di bawah layanan yang salah dan tidak pernah tercocokkan."
+    },
+
+    "nama": {
+      "type": "string",
+      "description": "Nama layanan sebagaimana ditampilkan, mis. 'Radio Komunikasi'. Hanya untuk keterbacaan berkas; yang dipakai antarmuka adalah nama di server/config/divisi.js."
+    },
+
+    "catatanKonfirmasi": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Hal yang HANYA engineer lapangan yang tahu — merek perangkat, nama jaringan, prosedur internal. BUKAN langkah SOP, dan sengaja dipisahkan supaya tidak ikut terbaca sebagai instruksi. Ditampilkan baca-saja di penyunting; isinya harus datang dari jawaban engineer, bukan dari tebakan. Boleh kosong."
+    },
+
+    "masalah": {
+      "type": "array",
+      "description": "Seluruh masalah pada layanan ini. Urutannya bebas — pencocokan memakai skor, bukan urutan.",
+      "items": { "$ref": "#/$defs/masalah" }
+    }
+  },
+
+  "$defs": {
+    "masalah": {
+      "type": "object",
+      "required": ["id", "judul", "gejala", "kategori", "penyebab", "solusi", "penanganan"],
+
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^(printer|windows|cctv|telepon|radio|ftth|lan|wan)-[a-z0-9-]+$",
+          "description": "Penanda TETAP dan permanen. Disimpan pada kolom `sesi.masalah_cocok` di basis data, sehingga mengubahnya memutus rujukan seluruh laporan lama pada halaman rekap. Dibuat sekali saat masalah lahir — diturunkan dari lima kata pertama judulnya — lalu TIDAK PERNAH ikut berubah meski judulnya diperbaiki. Justru inilah yang membuat judul boleh dirawat."
+        },
+
+        "judul": {
+          "type": "string",
+          "minLength": 8,
+          "description": "Nama masalah sebagaimana dikenali manusia. Ikut dicocokkan dengan bobot PALING BERAT (3×), sehingga kata di sini paling menentukan apakah masalah ini ditemukan. BOLEH diperbaiki kapan saja — id tidak ikut berubah."
+        },
+
+        "gejala": {
+          "type": "string",
+          "description": "Apa yang DIRASAKAN pengguna, memakai kata sehari-hari yang benar-benar dipakai pekerja — bukan istilah teknis. Bobot 2×. Pengguna menulis 'kertas nyangkut', bukan 'paper jam'; medan inilah yang menjembatani keduanya. Mengosongkannya membuat masalah jauh lebih sulit dikenali."
+        },
+
+        "kategori": {
+          "enum": ["ringan", "berat"],
+          "description": "'ringan' = dipandu langkah SOP lebih dulu, wajib punya `solusi`, `penanganan` null. 'berat' = langsung diteruskan ke engineer, `solusi` wajib kosong, `penanganan` wajib berisi."
+        },
+
+        "penyebab": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Kemungkinan penyebab, satu kalimat per butir. Bobot 1× — paling ringan, tetapi tetap menyumbang kata kunci. Boleh kosong."
+        },
+
+        "solusi": {
+          "type": "array",
+          "maxItems": 3,
+          "description": "Langkah penyelesaian bertahap, dicoba berurutan. MAKSIMAL TIGA karena antarmuka menjanjikan tiga percobaan sebelum menyerah ke engineer; solusi keempat akan tersimpan rapi lalu tidak pernah dibacakan kepada siapa pun.",
+          "items": { "$ref": "#/$defs/solusi" }
+        },
+
+        "penanganan": {
+          "type": ["string", "null"],
+          "description": "Keterangan untuk masalah 'berat': mengapa perlu engineer, dan tindakan pengamanan apa yang boleh dilakukan pengguna lebih dulu. null untuk masalah 'ringan'."
+        }
+      },
+
+      "allOf": [
+        {
+          "if": { "properties": { "kategori": { "const": "ringan" } }, "required": ["kategori"] },
+          "then": { "properties": { "solusi": { "minItems": 1 }, "penanganan": { "const": null } } }
+        },
+        {
+          "if": { "properties": { "kategori": { "const": "berat" } }, "required": ["kategori"] },
+          "then": { "properties": { "solusi": { "maxItems": 0 }, "penanganan": { "type": "string", "minLength": 20 } } }
+        }
+      ]
+    },
+
+    "solusi": {
+      "type": "object",
+      "required": ["judul", "pengantar", "langkah"],
+
+      "properties": {
+        "judul": {
+          "type": "string",
+          "description": "Nama solusi, tersimpan APA ADANYA — yang tertulis di sini itulah yang dibacakan kepada pengguna. Kesepakatan penamaan: bila sebuah masalah punya SATU solusi, judulnya 'Langkah Penyelesaian'; bila lebih dari satu, berawalan 'Solusi Pertama: ', 'Solusi Kedua: ', 'Solusi Ketiga: ' sesuai urutannya dalam larik. Kesepakatan ini urusan keterbacaan, bukan aturan pengurai — tetapi bila solusi diurutkan ulang, awalannya harus ikut disesuaikan."
+        },
+        "pengantar": {
+          "type": ["string", "null"],
+          "description": "Satu kalimat pembuka opsional sebelum daftar langkah, mis. menjelaskan kapan solusi ini dipakai. null bila tidak ada."
+        },
+        "langkah": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" },
+          "description": "Langkah bernomor, satu tindakan per butir. Ditulis untuk orang yang TIDAK paham teknis: sebutkan tombol dan menu yang benar-benar terlihat di layar, bukan istilah umum. Contoh yang baik: 'Lihat pojok kanan bawah layar, tepat di sebelah kiri jam.'"
+        }
+      }
+    }
+  },
+
+  "x-alur-kerja": {
+    "menyunting": [
+      "Sunting knowledge-base/<divisi>.json — langsung, atau lewat halaman /sop-editor",
+      "npm run build:kb        — susun ulang server/data/knowledge-base.json",
+      "npm run periksa-kb      — pastikan tidak ada yang cacat",
+      "npm test                — pastikan pencocokan tidak rusak"
+    ],
+    "catatan": "Lewat /sop-editor ketiga langkah pertama berjalan sendiri, termasuk pencadangan berkas lama ke data/cadangan-sop/."
+  }
+}

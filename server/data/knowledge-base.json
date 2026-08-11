@@ -1,988 +1,6 @@
 {
-  "dibuatPada": "2026-08-07T01:39:45.919Z",
+  "dibuatPada": "2026-08-11T02:01:43.021Z",
   "masalah": [
-    {
-      "id": "cctv-salah-satu-kamera-tidak-tampil",
-      "divisi": "cctv",
-      "judul": "Salah Satu Kamera Tidak Tampil di Layar",
-      "gejala": "Salah satu kotak tampilan pada layar pemantauan berwarna hitam, atau bertuliskan \"No Video\" atau \"No Signal\".",
-      "kategori": "ringan",
-      "penyebab": [
-        "Kabel kamera terlepas pada sisi perangkat perekam",
-        "Sumber listrik kamera terputus",
-        "Saluran kamera pada perangkat perekam tidak aktif",
-        "Kamera kehilangan sambungan jaringan"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Penyelesaian",
-          "pengantar": null,
-          "langkah": [
-            "Perhatikan layar pemantauan. Hitung berapa kotak tampilan yang hitam. Bila hanya satu, berarti masalahnya pada kamera tersebut saja.",
-            "Catat nomor atau nama kamera yang bermasalah. Biasanya tertulis kecil di sudut kotak tampilannya. Catatan ini penting untuk dilaporkan.",
-            "Periksa layar pemantauan itu sendiri. Pastikan monitornya menyala dan tampilan kamera lain terlihat normal.",
-            "Temukan kotak perangkat perekam. Bentuknya kotak pipih, biasanya diletakkan di rak atau lemari di ruang pemantauan.",
-            "Perhatikan lampu di bagian depan perangkat perekam. Pastikan ada lampu yang menyala, menandakan perangkat hidup.",
-            "Lihat bagian belakang perangkat perekam. Perhatikan apakah ada kabel yang terlihat longgar atau terlepas dari lubangnya.",
-            "Bila ada kabel yang jelas terlepas, dorong masuk perlahan ke lubang tempatnya semula. Jangan mencabut kabel lain yang sudah terpasang.",
-            "Tunggu sekitar 1 menit, lalu perhatikan apakah tampilan kamera sudah muncul kembali.",
-            "Bila kamera tetap tidak tampil, laporkan kepada Engineer ICT. Sebutkan nomor atau nama kamera yang Anda catat pada langkah 2."
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "salah",
-        "satu",
-        "kamera",
-        "tidak",
-        "tampil",
-        "layar",
-        "kotak",
-        "tampilan",
-        "pemantauan",
-        "berwarna",
-        "hitam",
-        "bertuliskan",
-        "video",
-        "sinyal",
-        "kabel",
-        "terlepas",
-        "sisi",
-        "perangkat",
-        "perekam",
-        "sumber",
-        "listrik",
-        "putus",
-        "saluran",
-        "aktif",
-        "kehilangan",
-        "sambungan",
-        "jaringan"
-      ]
-    },
-    {
-      "id": "cctv-gambar-kamera-gelap-buram-atau",
-      "divisi": "cctv",
-      "judul": "Gambar Kamera Gelap, Buram, atau Berkabut",
-      "gejala": "Tampilan kamera terlihat kabur, berkabut, terlalu gelap, atau silau sehingga objek tidak terlihat jelas.",
-      "kategori": "ringan",
-      "penyebab": [
-        "Bagian depan kamera kotor, berdebu, atau berembun",
-        "Ada sarang laba-laba atau kotoran menempel di depan kamera",
-        "Penerangan di area tersebut kurang",
-        "Kamera menghadap langsung ke sumber cahaya terang"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Penyelesaian",
-          "pengantar": null,
-          "langkah": [
-            "Perhatikan tampilan kamera tersebut selama beberapa menit.",
-            "Catat apakah gambar buram sepanjang hari, atau hanya pada malam hari, atau hanya pada jam tertentu saat matahari menyilaukan.",
-            "Bandingkan dengan tampilan kamera lain di area sekitarnya. Bila hanya satu kamera yang buram, berarti masalahnya pada kamera itu.",
-            "Bila memungkinkan dan aman, lihat kamera tersebut dari lantai. Jangan naik tangga, kursi, atau apa pun.",
-            "Dari posisi berdiri di lantai, perhatikan apakah bagian depan kamera terlihat kotor, berdebu, atau tertutup sarang laba-laba.",
-            "Periksa apakah lampu penerangan di area tersebut menyala normal, terutama bila keluhan muncul pada malam hari.",
-            "Catat nomor kamera, waktu munculnya masalah, dan hasil pengamatan Anda.",
-            "Laporkan kepada Engineer ICT. Pembersihan atau penyetelan arah kamera akan dilakukan oleh petugas yang berwenang."
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "gambar",
-        "kamera",
-        "gelap",
-        "buram",
-        "berkabut",
-        "tampilan",
-        "terlihat",
-        "terlalu",
-        "silau",
-        "sehingga",
-        "objek",
-        "tidak",
-        "jelas",
-        "bagian",
-        "depan",
-        "kotor",
-        "berdebu",
-        "berembun",
-        "sarang",
-        "laba",
-        "kotoran",
-        "menempel",
-        "penerangan",
-        "area",
-        "tersebut",
-        "kurang",
-        "menghadap",
-        "langsung",
-        "sumber",
-        "cahaya",
-        "terang"
-      ]
-    },
-    {
-      "id": "cctv-rekaman-tidak-ditemukan-atau-tidak",
-      "divisi": "cctv",
-      "judul": "Rekaman Tidak Ditemukan atau Tidak Bisa Diputar",
-      "gejala": "Rekaman pada tanggal tertentu tidak ditemukan, atau saat diputar ulang tidak muncul gambar apa pun.",
-      "kategori": "ringan",
-      "penyebab": [
-        "Rekaman lama sudah tertimpa sesuai batas masa simpan",
-        "Media penyimpanan perangkat perekam penuh atau bermasalah",
-        "Tanggal atau jam yang dicari keliru",
-        "Kamera sempat tidak aktif pada rentang waktu tersebut"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Penyelesaian",
-          "pengantar": null,
-          "langkah": [
-            "Periksa kembali tanggal yang Anda cari. Pastikan bulan dan tahunnya benar, bukan hanya tanggalnya.",
-            "Periksa kembali jam yang Anda cari. Perhatikan apakah sistem memakai format 24 jam, sehingga jam 2 siang ditulis 14.00.",
-            "Perluas rentang waktu pencarian. Bila mencari kejadian pukul 10.00, coba cari mulai pukul 09.00 sampai 11.00.",
-            "Coba cari rekaman pada kamera lain di area yang sama pada waktu tersebut, untuk memastikan apakah masalahnya pada satu kamera saja.",
-            "Coba cari rekaman pada tanggal kemarin untuk memastikan sistem perekaman berjalan normal.",
-            "Bila rekaman kemarin ada tetapi rekaman lama tidak ada, kemungkinan rekaman tersebut sudah tertimpa sesuai masa simpan.",
-            "Catat tanggal, jam, dan nama kamera yang Anda butuhkan.",
-            "Laporkan kepada Engineer ICT beserta keperluan permintaan rekaman tersebut."
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "rekaman",
-        "tidak",
-        "ditemukan",
-        "bisa",
-        "diputar",
-        "tanggal",
-        "tertentu",
-        "ulang",
-        "tampil",
-        "gambar",
-        "pun",
-        "lama",
-        "tertimpa",
-        "sesuai",
-        "batas",
-        "masa",
-        "simpan",
-        "media",
-        "penyimpanan",
-        "perangkat",
-        "perekam",
-        "penuh",
-        "bermasa",
-        "macet",
-        "dicari",
-        "keliru",
-        "kamera",
-        "sempat",
-        "aktif",
-        "rentang",
-        "tersebut"
-      ]
-    },
-    {
-      "id": "cctv-seluruh-kamera-hilang-dan-perangkat",
-      "divisi": "cctv",
-      "judul": "Seluruh Kamera Hilang dan Perangkat Perekam Mati",
-      "gejala": "Seluruh kotak tampilan pada layar menjadi hitam bersamaan. Lampu pada perangkat perekam padam.",
-      "kategori": "berat",
-      "penyebab": [
-        "Kerusakan pada perangkat perekam",
-        "Kerusakan media penyimpanan di dalam perangkat",
-        "Gangguan pasokan listrik pada ruang perangkat"
-      ],
-      "solusi": [],
-      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Bila memungkinkan, periksa terlebih dahulu apakah listrik di ruangan tersebut menyala normal, lalu sampaikan hasilnya kepada engineer. Silakan hubungi Engineer melalui tombol WhatsApp.",
-      "kataKunci": [
-        "seluruh",
-        "kamera",
-        "hilang",
-        "perangkat",
-        "perekam",
-        "mati",
-        "kotak",
-        "tampilan",
-        "layar",
-        "menjadi",
-        "hitam",
-        "bersamaan",
-        "lampu",
-        "kerusakan",
-        "media",
-        "penyimpanan",
-        "gangguan",
-        "pasokan",
-        "listrik",
-        "ruang"
-      ]
-    },
-    {
-      "id": "cctv-kamera-rusak-menggantung-atau-berubah",
-      "divisi": "cctv",
-      "judul": "Kamera Rusak, Menggantung, atau Berubah Arah",
-      "gejala": "Badan kamera terlihat rusak, menggantung, miring, atau arah pandangnya bergeser dari area yang seharusnya diawasi.",
-      "kategori": "berat",
-      "penyebab": [
-        "Kamera terbentur atau tertiup angin kencang",
-        "Dudukan kamera longgar",
-        "Kerusakan fisik pada perangkat"
-      ],
-      "solusi": [],
-      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Jangan mencoba membetulkan sendiri karena melibatkan pekerjaan di ketinggian. Bila kamera terlihat menggantung dan berisiko jatuh, jauhkan orang dari area di bawahnya. Silakan hubungi Engineer melalui tombol WhatsApp.",
-      "kataKunci": [
-        "kamera",
-        "rusak",
-        "menggantung",
-        "berubah",
-        "arah",
-        "badan",
-        "terlihat",
-        "miring",
-        "pandang",
-        "bergeser",
-        "area",
-        "seharus",
-        "diawasi",
-        "terbentur",
-        "tertiup",
-        "angin",
-        "kencang",
-        "dudukan",
-        "longgar",
-        "kerusakan",
-        "fisik",
-        "perangkat"
-      ]
-    },
-    {
-      "id": "cctv-permintaan-salinan-rekaman-cctv",
-      "divisi": "cctv",
-      "judul": "Permintaan Salinan Rekaman CCTV",
-      "gejala": "Membutuhkan salinan rekaman untuk keperluan penyelidikan, pelaporan, atau dokumentasi kejadian.",
-      "kategori": "berat",
-      "penyebab": [
-        "Kebutuhan dokumentasi kejadian",
-        "Permintaan resmi dari fungsi terkait"
-      ],
-      "solusi": [],
-      "penanganan": "Akses dan penyalinan rekaman CCTV memerlukan izin serta prosedur resmi, sehingga tidak dapat dilakukan sendiri. Siapkan terlebih dahulu tanggal, jam, lokasi, dan nama kamera yang dibutuhkan. Silakan hubungi Engineer melalui tombol WhatsApp untuk memproses permintaan.",
-      "kataKunci": [
-        "permintaan",
-        "salinan",
-        "rekaman",
-        "cctv",
-        "membutuhkan",
-        "keperluan",
-        "penyelidikan",
-        "pelaporan",
-        "dokumentasi",
-        "kejadian",
-        "kebutuhan",
-        "resmi",
-        "fungsi",
-        "terkait"
-      ]
-    },
-    {
-      "id": "ftth-lampu-los-menyala-merah-pada",
-      "divisi": "ftth",
-      "judul": "Lampu LOS Menyala Merah pada Perangkat Internet",
-      "gejala": "Pada kotak perangkat internet terdapat lampu bertuliskan LOS yang menyala atau berkedip merah. Internet mati total.",
-      "kategori": "ringan",
-      "penyebab": [
-        "Kabel fiber terlepas dari perangkat",
-        "Kabel fiber tertekuk tajam, terjepit, atau tertindih barang",
-        "Gangguan pada jalur kabel di luar ruangan",
-        "Gangguan dari penyedia layanan internet"
-      ],
-      "solusi": [
-        {
-          "judul": "Solusi Pertama: Periksa Posisi Kabel Fiber",
-          "pengantar": null,
-          "langkah": [
-            "Temukan kotak perangkat internet Anda. Bentuknya kotak kecil berwarna putih atau hitam dengan beberapa lampu kecil di bagian depan.",
-            "Perhatikan deretan lampu di bagian depan. Cari lampu yang di bawahnya tertulis LOS. Bila menyala merah, berarti sambungan kabel fiber terputus.",
-            "Lihat bagian belakang perangkat. Cari kabel yang sangat kecil dan tipis, biasanya berwarna kuning atau hijau, jauh lebih kecil daripada kabel lain. Itulah kabel fiber.",
-            "JANGAN mencabut kabel fiber tersebut. Cukup periksa apakah ujungnya masih terpasang rapat pada perangkat.",
-            "Telusuri kabel fiber itu perlahan. Perhatikan apakah ada bagian yang tertindih kaki meja, terjepit pintu, atau tertekuk membentuk sudut tajam.",
-            "Bila ada yang tertindih, angkat benda tersebut dengan hati-hati dan rapikan posisi kabelnya. Jangan menarik kabelnya.",
-            "Tunggu sekitar 1 menit, lalu perhatikan kembali apakah lampu LOS sudah padam."
-          ]
-        },
-        {
-          "judul": "Solusi Kedua: Matikan dan Nyalakan Ulang Perangkat",
-          "pengantar": "Dipakai bila lampu LOS tetap merah setelah posisi kabel dirapikan. Mematikan\r perangkat memaksa sambungan ke penyedia layanan dibangun ulang dari awal.",
-          "langkah": [
-            "Cari kabel listrik perangkat, yaitu kabel yang menuju stopkontak di dinding.",
-            "Cabut kabel tersebut dari stopkontak.",
-            "Bila perangkat memiliki tombol bertuliskan Power atau ON/OFF, tekan juga ke posisi mati.",
-            "Tunggu sekitar 60 detik. Jangan terburu-buru, perangkat memerlukan waktu untuk benar-benar mati.",
-            "Pasang kembali kabel listrik ke stopkontak, lalu tekan tombol daya ke posisi menyala.",
-            "Tunggu sekitar 3 menit tanpa melakukan apa pun. Lampu akan berkedip-kedip, dan ini normal.",
-            "Setelah 3 menit, perhatikan lampu LOS. Bila sudah padam, coba buka satu situs untuk menguji.",
-            "Bila lampu LOS masih merah, ulangi sekali lagi dari langkah 2, namun kali ini tunggu 5 menit."
-          ]
-        },
-        {
-          "judul": "Solusi Ketiga: Pastikan Gangguan Bersifat Menyeluruh",
-          "pengantar": "Dipakai bila lampu LOS tetap merah. Langkah ini bukan untuk memperbaiki, melainkan\r mengumpulkan keterangan agar engineer dapat menangani lebih cepat.",
-          "langkah": [
-            "Tanyakan kepada rekan di ruangan lain, apakah internet mereka juga mati.",
-            "Perhatikan apakah ada pekerjaan penggalian, perbaikan jalan, atau alat berat di sekitar area belakangan ini.",
-            "Catat sejak kapan internet mati, sebutkan jam bila masih ingat.",
-            "Catat lokasi Anda, misalnya nama gedung atau ruangan.",
-            "Catat lampu apa saja yang menyala dan warnanya pada perangkat internet.",
-            "Laporkan kepada Engineer ICT beserta seluruh catatan tersebut. Lampu LOS merah yang menetap menandakan gangguan pada jalur kabel di luar ruangan yang hanya dapat ditangani engineer."
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "lampu",
-        "los",
-        "menyala",
-        "merah",
-        "perangkat",
-        "internet",
-        "kotak",
-        "terdapat",
-        "bertuliskan",
-        "berkedip",
-        "mati",
-        "total",
-        "kabel",
-        "fiber",
-        "terlepas",
-        "tertekuk",
-        "tajam",
-        "terjepit",
-        "tertindih",
-        "barang",
-        "gangguan",
-        "jalur",
-        "luar",
-        "ruangan",
-        "penyedia",
-        "layanan"
-      ]
-    },
-    {
-      "id": "ftth-perangkat-internet-tidak-menyala-sama",
-      "divisi": "ftth",
-      "judul": "Perangkat Internet Tidak Menyala Sama Sekali",
-      "gejala": "Seluruh lampu pada kotak perangkat internet padam. Tidak ada internet sama sekali.",
-      "kategori": "ringan",
-      "penyebab": [
-        "Kabel listrik perangkat terlepas",
-        "Stopkontak tidak dialiri listrik",
-        "Tombol daya perangkat dalam posisi mati"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Penyelesaian",
-          "pengantar": null,
-          "langkah": [
-            "Temukan kotak perangkat internet Anda, lalu perhatikan bagian depannya. Pastikan benar-benar tidak ada satu pun lampu yang menyala.",
-            "Lihat bagian belakang atau samping perangkat. Cari tombol kecil bertuliskan Power atau ON/OFF. Pastikan tombol tersebut dalam posisi ditekan atau menyala.",
-            "Telusuri kabel listrik perangkat sampai ke stopkontak di dinding.",
-            "Pastikan kepala kabel tertancap penuh ke stopkontak, tidak longgar atau setengah masuk.",
-            "Untuk memastikan stopkontak berfungsi, coba colokkan perangkat lain seperti pengisi daya ponsel ke stopkontak yang sama.",
-            "Bila perangkat lain juga tidak menyala, berarti masalahnya pada aliran listrik ruangan tersebut, bukan pada perangkat internet.",
-            "Bila stopkontak berfungsi normal, cabut kabel listrik perangkat internet, tunggu 30 detik, lalu pasang kembali.",
-            "Tunggu sekitar 2 menit dan perhatikan apakah lampu mulai menyala.",
-            "Bila seluruh lampu tetap padam, laporkan kepada Engineer ICT. Sebutkan bahwa perangkat tidak menyala sama sekali meski listrik normal."
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "perangkat",
-        "internet",
-        "tidak",
-        "menyala",
-        "sama",
-        "seluruh",
-        "lampu",
-        "kotak",
-        "mati",
-        "kabel",
-        "listrik",
-        "terlepas",
-        "stopkontak",
-        "dialiri",
-        "tombol",
-        "daya",
-        "posisi"
-      ]
-    },
-    {
-      "id": "ftth-lampu-pon-berkedip-terus-menerus",
-      "divisi": "ftth",
-      "judul": "Lampu PON Berkedip Terus Menerus",
-      "gejala": "Lampu bertuliskan PON pada perangkat berkedip terus dan tidak pernah menyala tetap. Internet tidak bisa dipakai.",
-      "kategori": "ringan",
-      "penyebab": [
-        "Perangkat sedang berusaha menyambung ke penyedia layanan",
-        "Data perangkat belum terdaftar di sistem penyedia layanan",
-        "Sedang ada gangguan dari penyedia layanan"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Penyelesaian",
-          "pengantar": null,
-          "langkah": [
-            "Perhatikan deretan lampu pada perangkat. Cari lampu bertuliskan PON dan lampu bertuliskan LOS.",
-            "Pastikan lampu LOS tidak menyala merah. Bila LOS merah, ikuti panduan untuk lampu LOS merah terlebih dahulu.",
-            "Bila hanya PON yang berkedip, tunggu sekitar 5 menit tanpa melakukan apa pun. Proses penyambungan memang memerlukan waktu.",
-            "Bila setelah 5 menit masih berkedip, cabut kabel listrik perangkat dari stopkontak.",
-            "Tunggu sekitar 30 detik.",
-            "Pasang kembali kabel listrik ke stopkontak.",
-            "Tunggu sampai 5 menit lagi sambil memperhatikan lampu PON.",
-            "Bila lampu PON akhirnya menyala tetap dan tidak berkedip, internet seharusnya sudah dapat digunakan. Coba buka satu situs untuk memastikan.",
-            "Bila lampu PON tetap berkedip setelah semua langkah ini, laporkan kepada Engineer ICT untuk diperiksa ke penyedia layanan."
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "lampu",
-        "pon",
-        "berkedip",
-        "menerus",
-        "bertuliskan",
-        "perangkat",
-        "tidak",
-        "menyala",
-        "tetap",
-        "internet",
-        "bisa",
-        "dipakai",
-        "sedang",
-        "berusaha",
-        "menyambung",
-        "penyedia",
-        "layanan",
-        "data",
-        "terdaftar",
-        "sistem",
-        "gangguan"
-      ]
-    },
-    {
-      "id": "ftth-internet-dari-fiber-terasa-lambat",
-      "divisi": "ftth",
-      "judul": "Internet dari Fiber Terasa Lambat",
-      "gejala": "Internet tetap tersambung, tetapi membuka halaman terasa lama dan mengunduh berkas berjalan lambat.",
-      "kategori": "ringan",
-      "penyebab": [
-        "Banyak perangkat memakai jaringan bersamaan",
-        "Ada unduhan besar berjalan tanpa disadari",
-        "Perangkat sudah berminggu-minggu menyala tanpa pernah dimatikan"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Penyelesaian",
-          "pengantar": null,
-          "langkah": [
-            "Tutup aplikasi yang sedang mengunduh berkas berukuran besar pada komputer Anda.",
-            "Tanyakan kepada rekan di ruangan yang sama, apakah mereka juga merasakan internet lambat.",
-            "Bila hanya Anda yang merasakannya, kemungkinan masalahnya pada komputer Anda, bukan pada perangkat internet.",
-            "Bila semua orang merasakannya, lanjutkan ke langkah berikut.",
-            "Cabut kabel listrik perangkat internet dari stopkontak.",
-            "Tunggu sekitar 30 detik.",
-            "Pasang kembali kabel listrik, lalu tunggu sekitar 2 menit sampai lampu berhenti berkedip.",
-            "Coba buka dua atau tiga situs berbeda untuk menguji kecepatannya.",
-            "Bila internet tetap lambat sepanjang hari, laporkan kepada Engineer ICT beserta keterangan berapa banyak orang yang terdampak."
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "internet",
-        "fiber",
-        "terasa",
-        "lambat",
-        "tetap",
-        "terhubung",
-        "membuka",
-        "halaman",
-        "lama",
-        "mengunduh",
-        "berkas",
-        "berjalan",
-        "banyak",
-        "perangkat",
-        "memakai",
-        "jaringan",
-        "bersamaan",
-        "unduhan",
-        "besar",
-        "tanpa",
-        "disadari",
-        "berminggu",
-        "minggu",
-        "menyala",
-        "dimatikan"
-      ]
-    },
-    {
-      "id": "ftth-kabel-fiber-optik-putus-atau",
-      "divisi": "ftth",
-      "judul": "Kabel Fiber Optik Putus atau Rusak",
-      "gejala": "Kabel fiber terlihat putus, terpotong, atau rusak. Bisa terjadi akibat pekerjaan penggalian atau alat berat di sekitar area.",
-      "kategori": "berat",
-      "penyebab": [
-        "Kabel terkena alat berat atau pekerjaan penggalian",
-        "Kabel tertarik hingga putus",
-        "Kerusakan pada ujung sambungan kabel"
-      ],
-      "solusi": [],
-      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Kabel fiber optik tidak boleh disambung sendiri karena memerlukan alat khusus, dan ujung kabel yang patah dapat melukai mata bila ditatap langsung. Jangan menyentuh atau menatap ujung kabel yang putus. Silakan hubungi Engineer melalui tombol WhatsApp.",
-      "kataKunci": [
-        "kabel",
-        "fiber",
-        "optik",
-        "putus",
-        "rusak",
-        "terlihat",
-        "terpotong",
-        "bisa",
-        "terjadi",
-        "akibat",
-        "pekerjaan",
-        "penggalian",
-        "alat",
-        "lambat",
-        "sekitar",
-        "area",
-        "terkena",
-        "tertarik",
-        "hingga",
-        "kerusakan",
-        "ujung",
-        "sambungan"
-      ]
-    },
-    {
-      "id": "ftth-perangkat-internet-rusak-atau-berbau",
-      "divisi": "ftth",
-      "judul": "Perangkat Internet Rusak atau Berbau Terbakar",
-      "gejala": "Perangkat terasa sangat panas, tercium bau terbakar, keluar asap, atau lampu menyala dengan pola yang tidak wajar.",
-      "kategori": "berat",
-      "penyebab": [
-        "Kerusakan akibat lonjakan listrik atau sambaran petir",
-        "Kerusakan pada bagian pengubah daya",
-        "Perangkat telah melewati usia pakai"
-      ],
-      "solusi": [],
-      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Bila tercium bau terbakar atau keluar asap, segera cabut kabel listrik perangkat dari stopkontak dan jauhkan barang mudah terbakar. Silakan hubungi Engineer melalui tombol WhatsApp.",
-      "kataKunci": [
-        "perangkat",
-        "internet",
-        "rusak",
-        "berbau",
-        "terbakar",
-        "terasa",
-        "panas",
-        "tercium",
-        "bau",
-        "keluar",
-        "asap",
-        "lampu",
-        "menyala",
-        "pola",
-        "tidak",
-        "wajar",
-        "kerusakan",
-        "akibat",
-        "lonjakan",
-        "listrik",
-        "sambaran",
-        "petir",
-        "bagian",
-        "pengubah",
-        "daya",
-        "telah",
-        "melewati",
-        "usia",
-        "pakai"
-      ]
-    },
-    {
-      "id": "lan-tidak-bisa-terhubung-ke-wifi",
-      "divisi": "lan",
-      "judul": "Tidak Bisa Terhubung ke WiFi Kantor",
-      "gejala": "Nama WiFi tidak muncul di daftar, atau muncul tetapi gagal tersambung. Bisa juga sudah tersambung tetapi tidak bisa membuka situs apa pun.",
-      "kategori": "ringan",
-      "penyebab": [
-        "Fitur WiFi pada komputer sedang dimatikan",
-        "Mode pesawat (Airplane mode) tidak sengaja menyala",
-        "Posisi terlalu jauh dari alat pemancar WiFi",
-        "Kata sandi WiFi telah diperbarui oleh Fungsi ICT"
-      ],
-      "solusi": [
-        {
-          "judul": "Solusi Pertama: Nyalakan Ulang WiFi dan Sambungkan Kembali",
-          "pengantar": null,
-          "langkah": [
-            "Lihat pojok kanan bawah layar komputer Anda, tepat di sebelah kiri jam. Di sana ada beberapa ikon kecil.",
-            "Cari ikon WiFi. Bentuknya seperti kipas atau gelombang bertingkat tiga. Klik satu kali pada ikon tersebut.",
-            "Akan muncul kotak kecil di atasnya. Perhatikan tombol bergambar pesawat terbang bertuliskan \"Airplane mode\". Bila tombol itu berwarna biru artinya sedang menyala. Klik satu kali agar warnanya berubah menjadi abu-abu.",
-            "Pada kotak yang sama, cari tombol bergambar WiFi. Bila warnanya abu-abu, klik satu kali agar berubah menjadi biru. Ini menandakan WiFi sudah dinyalakan.",
-            "Setelah itu akan muncul daftar nama-nama WiFi yang tertangkap. Tunggu sekitar 10 detik hingga daftarnya terisi penuh.",
-            "Cari nama WiFi kantor pada daftar tersebut, lalu klik satu kali.",
-            "Klik tombol bertuliskan \"Connect\". Bila ada kotak kecil bertuliskan \"Connect automatically\", beri centang terlebih dahulu.",
-            "Bila diminta memasukkan kata sandi, ketik kata sandi WiFi kantor, lalu klik \"Next\".",
-            "Tunggu sekitar 15 detik. Bila berhasil, di bawah nama WiFi akan tertulis \"Connected\"."
-          ]
-        },
-        {
-          "judul": "Solusi Kedua: Lupakan Jaringan lalu Sambungkan Ulang",
-          "pengantar": "Dipakai bila WiFi tetap gagal tersambung padahal kata sandi sudah benar. Cara ini\r menghapus data sambungan lama yang mungkin sudah tidak sesuai.",
-          "langkah": [
-            "Klik tombol Start di bagian bawah layar, lalu klik ikon roda gigi bertuliskan \"Settings\".",
-            "Pada daftar di sisi kiri, klik \"Network & internet\".",
-            "Klik \"Wi-Fi\", lalu klik \"Manage known networks\".",
-            "Akan muncul daftar nama WiFi yang pernah tersambung. Cari nama WiFi kantor.",
-            "Klik nama WiFi kantor tersebut, lalu klik tombol \"Forget\".",
-            "Kembali ke pojok kanan bawah layar, klik ikon WiFi.",
-            "Cari kembali nama WiFi kantor pada daftar, lalu klik \"Connect\".",
-            "Masukkan kata sandi WiFi kantor saat diminta, lalu klik \"Next\".",
-            "Tunggu sekitar 15 detik hingga muncul tulisan \"Connected\"."
-          ]
-        },
-        {
-          "judul": "Solusi Ketiga: Jalankan Perbaikan Otomatis Windows",
-          "pengantar": "Dipakai bila kedua cara di atas belum berhasil. Windows memiliki alat perbaikan\r jaringan bawaan yang memeriksa dan memperbaiki sendiri.",
-          "langkah": [
-            "Klik tombol Start di bagian bawah layar.",
-            "Ketik kata \"Get Help\" pada kotak pencarian, lalu tekan Enter.",
-            "Setelah aplikasi Get Help terbuka, ketik \"network troubleshooter\" pada kotak pertanyaannya.",
-            "Ikuti petunjuk yang muncul di layar. Alat ini akan memeriksa jaringan secara otomatis.",
-            "Bila diminta izin melakukan perbaikan, pilih \"Yes\" atau \"Apply this fix\".",
-            "Tunggu sampai pemeriksaan selesai, biasanya sekitar 2 sampai 3 menit.",
-            "Setelah selesai, restart komputer melalui tombol Start, ikon daya, lalu \"Restart\".",
-            "Setelah komputer menyala, coba sambungkan kembali ke WiFi kantor.",
-            "Bila tetap gagal, laporkan kepada Engineer ICT dan sebutkan bahwa ketiga cara sudah dicoba."
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "tidak",
-        "bisa",
-        "terhubung",
-        "wifi",
-        "kantor",
-        "nama",
-        "tampil",
-        "daftar",
-        "gagal",
-        "membuka",
-        "situs",
-        "pun",
-        "fitur",
-        "komputer",
-        "sedang",
-        "dimatikan",
-        "mode",
-        "pesawat",
-        "airplane",
-        "sengaja",
-        "menyala",
-        "posisi",
-        "terlalu",
-        "jauh",
-        "alat",
-        "pemancar",
-        "kata",
-        "sandi",
-        "telah",
-        "diperbarui",
-        "fungsi",
-        "ict"
-      ]
-    },
-    {
-      "id": "lan-tidak-ada-koneksi-internet-melalui",
-      "divisi": "lan",
-      "judul": "Tidak Ada Koneksi Internet melalui Kabel LAN",
-      "gejala": "Tidak bisa membuka situs apa pun. Ikon jaringan di pojok kanan bawah bertanda silang atau berbentuk bola dunia.",
-      "kategori": "ringan",
-      "penyebab": [
-        "Kabel jaringan terlepas dari komputer atau dari lubang di dinding",
-        "Kabel jaringan rusak atau tertekuk",
-        "Lubang jaringan di dinding sedang tidak aktif",
-        "Gangguan jaringan pada area tersebut"
-      ],
-      "solusi": [
-        {
-          "judul": "Solusi Pertama: Periksa dan Pasang Ulang Kabel Jaringan",
-          "pengantar": null,
-          "langkah": [
-            "Lihat bagian belakang atau samping komputer Anda. Cari kabel yang ujungnya mirip colokan telepon tetapi lebih lebar, berwarna bening dengan pengait kecil. Itulah kabel jaringan.",
-            "Pegang ujung kabel tersebut, lalu tekan masuk perlahan sampai terdengar bunyi klik. Bunyi klik menandakan kabel sudah terkunci.",
-            "Telusuri kabel itu sampai ujung satunya, biasanya menuju lubang kecil di dinding atau di bawah meja. Tekan juga ujung tersebut sampai berbunyi klik.",
-            "Perhatikan lubang tempat kabel masuk di komputer. Di sisinya ada lampu sangat kecil yang seharusnya menyala hijau atau berkedip.",
-            "Bila lampu kecil itu mati, cabut kabel, tunggu 10 detik, lalu pasang kembali sampai berbunyi klik.",
-            "Perhatikan apakah ada bagian kabel yang tertindih kaki meja, terjepit pintu, atau tertekuk tajam. Bila ada, rapikan posisinya perlahan.",
-            "Tunggu sekitar 1 menit, lalu periksa ikon jaringan di pojok kanan bawah layar.",
-            "Coba buka satu situs untuk menguji koneksi."
-          ]
-        },
-        {
-          "judul": "Solusi Kedua: Restart Komputer",
-          "pengantar": "Dipakai bila kabel sudah terpasang benar tetapi internet tetap tidak jalan. Restart\r menyegarkan sambungan jaringan pada komputer.",
-          "langkah": [
-            "Simpan seluruh pekerjaan Anda yang belum tersimpan.",
-            "Klik tombol Start di bagian bawah layar.",
-            "Klik ikon tombol daya, lalu pilih \"Restart\".",
-            "Tunggu sampai komputer menyala kembali dan masuk ke layar utama.",
-            "Tunggu tambahan 2 menit agar sambungan jaringan siap sepenuhnya.",
-            "Lihat ikon jaringan di pojok kanan bawah layar. Pastikan tidak ada tanda silang atau tanda seru.",
-            "Coba buka dua situs berbeda untuk menguji koneksi."
-          ]
-        },
-        {
-          "judul": "Solusi Ketiga: Jalankan Perbaikan Otomatis Windows",
-          "pengantar": "Dipakai bila kedua cara di atas belum berhasil.",
-          "langkah": [
-            "Klik tombol Start di bagian bawah layar.",
-            "Ketik kata \"Get Help\" pada kotak pencarian, lalu tekan Enter.",
-            "Setelah aplikasi Get Help terbuka, ketik \"network troubleshooter\" pada kotak pertanyaannya.",
-            "Ikuti petunjuk yang muncul di layar.",
-            "Bila diminta izin melakukan perbaikan, pilih \"Yes\" atau \"Apply this fix\".",
-            "Tunggu sampai pemeriksaan selesai, biasanya 2 sampai 3 menit.",
-            "Coba buka satu situs untuk menguji koneksi.",
-            "Bila tetap gagal, tanyakan kepada rekan di ruangan yang sama apakah mereka juga terputus.",
-            "Laporkan kepada Engineer ICT beserta jawaban rekan Anda, karena keterangan itu membantu menentukan apakah gangguannya menyeluruh."
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "tidak",
-        "koneksi",
-        "internet",
-        "melalui",
-        "kabel",
-        "lan",
-        "bisa",
-        "membuka",
-        "situs",
-        "pun",
-        "ikon",
-        "jaringan",
-        "pojok",
-        "kanan",
-        "bawah",
-        "bertanda",
-        "silang",
-        "berbentuk",
-        "bola",
-        "dunia",
-        "terlepas",
-        "komputer",
-        "lubang",
-        "dinding",
-        "rusak",
-        "tertekuk",
-        "sedang",
-        "aktif",
-        "gangguan",
-        "area",
-        "tersebut"
-      ]
-    },
-    {
-      "id": "lan-lampu-pada-lubang-kabel-jaringan",
-      "divisi": "lan",
-      "judul": "Lampu pada Lubang Kabel Jaringan Tidak Menyala",
-      "gejala": "Kabel jaringan sudah terpasang, tetapi lampu kecil di sebelah lubang kabel pada komputer tidak menyala sama sekali.",
-      "kategori": "ringan",
-      "penyebab": [
-        "Kabel jaringan putus di bagian dalam meski luarnya terlihat baik",
-        "Pengait plastik pada ujung kabel patah sehingga tidak terkunci",
-        "Lubang jaringan di dinding sedang tidak aktif"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Penyelesaian",
-          "pengantar": null,
-          "langkah": [
-            "Cabut kabel jaringan dari komputer, lalu perhatikan ujungnya.",
-            "Periksa pengait plastik kecil di ujung kabel. Bila pengait itu patah, kabel tidak akan terkunci dan perlu diganti.",
-            "Pasang kembali kabel, tekan sampai berbunyi klik, lalu perhatikan lampu kecil di sisi lubang.",
-            "Bila masih mati, coba pindahkan ujung kabel yang di dinding ke lubang jaringan lain di dekat meja Anda.",
-            "Perhatikan kembali lampu kecil di komputer setelah pemindahan tersebut.",
-            "Bila tersedia kabel jaringan cadangan, coba ganti dengan kabel tersebut untuk memastikan apakah kabel lama yang bermasalah.",
-            "Bila lampu tetap mati pada semua percobaan, catat lokasi meja Anda, lalu laporkan kepada Engineer ICT."
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "lampu",
-        "lubang",
-        "kabel",
-        "jaringan",
-        "tidak",
-        "menyala",
-        "terpasang",
-        "kecil",
-        "sebe",
-        "komputer",
-        "sama",
-        "putus",
-        "bagian",
-        "meski",
-        "luar",
-        "terlihat",
-        "baik",
-        "pengait",
-        "plastik",
-        "ujung",
-        "patah",
-        "sehingga",
-        "terkunci",
-        "dinding",
-        "sedang",
-        "aktif"
-      ]
-    },
-    {
-      "id": "lan-koneksi-jaringan-terasa-lambat",
-      "divisi": "lan",
-      "judul": "Koneksi Jaringan Terasa Lambat",
-      "gejala": "Internet tetap tersambung, tetapi membuka halaman terasa lama dan mengunduh berkas berjalan lambat.",
-      "kategori": "ringan",
-      "penyebab": [
-        "Banyak aplikasi memakai jaringan secara bersamaan",
-        "Pembaruan sistem sedang berjalan tanpa disadari",
-        "Pemakaian jaringan sedang padat pada jam sibuk"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Penyelesaian",
-          "pengantar": null,
-          "langkah": [
-            "Lihat bagian bawah layar Anda. Tutup aplikasi yang tidak sedang dipakai dengan mengklik tanda silang di pojok kanan atas setiap jendela.",
-            "Pada aplikasi peramban seperti Chrome atau Edge, tutup tab yang tidak diperlukan. Tab adalah kotak-kotak judul yang berjajar di bagian atas.",
-            "Perhatikan apakah ada aplikasi yang sedang mengunduh berkas besar. Biasanya terlihat bar biru berjalan di bagian bawah peramban.",
-            "Restart komputer. Klik tombol Start di bawah layar, klik ikon tombol daya, lalu pilih \"Restart\".",
-            "Setelah menyala kembali, tunggu sekitar 3 menit sebelum mulai bekerja, karena komputer masih menyiapkan sambungan.",
-            "Coba buka dua atau tiga situs yang berbeda untuk memastikan apakah lambatnya terjadi pada semua situs atau hanya satu situs.",
-            "Tanyakan kepada rekan di ruangan yang sama apakah mereka merasakan hal serupa.",
-            "Bila lambat berlangsung sepanjang hari dan dialami banyak orang, laporkan kepada Engineer ICT."
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "koneksi",
-        "jaringan",
-        "terasa",
-        "lambat",
-        "internet",
-        "tetap",
-        "terhubung",
-        "membuka",
-        "halaman",
-        "lama",
-        "mengunduh",
-        "berkas",
-        "berjalan",
-        "banyak",
-        "aplikasi",
-        "memakai",
-        "secara",
-        "bersamaan",
-        "pembaruan",
-        "sistem",
-        "sedang",
-        "tanpa",
-        "disadari",
-        "pemakaian",
-        "padat",
-        "macet",
-        "sibuk"
-      ]
-    },
-    {
-      "id": "lan-seluruh-komputer-di-satu-ruangan",
-      "divisi": "lan",
-      "judul": "Seluruh Komputer di Satu Ruangan Terputus Bersamaan",
-      "gejala": "Semua orang di ruangan kehilangan koneksi pada waktu yang sama. Lampu pada perangkat jaringan di ruangan mati.",
-      "kategori": "berat",
-      "penyebab": [
-        "Kerusakan pada perangkat pembagi jaringan",
-        "Gangguan pasokan listrik pada perangkat jaringan",
-        "Kerusakan jalur kabel utama"
-      ],
-      "solusi": [],
-      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Silakan hubungi Engineer melalui tombol WhatsApp. Sebutkan nama ruangan dan perkiraan jumlah komputer yang terdampak.",
-      "kataKunci": [
-        "seluruh",
-        "komputer",
-        "satu",
-        "ruangan",
-        "putus",
-        "bersamaan",
-        "orang",
-        "kehilangan",
-        "koneksi",
-        "sama",
-        "lampu",
-        "perangkat",
-        "jaringan",
-        "mati",
-        "kerusakan",
-        "pembagi",
-        "gangguan",
-        "pasokan",
-        "listrik",
-        "jalur",
-        "kabel",
-        "utama"
-      ]
-    },
-    {
-      "id": "lan-diminta-mengubah-pengaturan-jaringan",
-      "divisi": "lan",
-      "judul": "Diminta Mengubah Pengaturan Jaringan",
-      "gejala": "Ada permintaan atau petunjuk untuk mengganti alamat IP, DNS, atau pengaturan jaringan lainnya.",
-      "kategori": "berat",
-      "penyebab": [
-        "Pengaturan jaringan komputer berubah",
-        "Diperlukan penyesuaian konfigurasi jaringan"
-      ],
-      "solusi": [],
-      "penanganan": "Perubahan pengaturan jaringan memerlukan hak administrator serta pengetahuan mengenai skema jaringan Field Lirik. Tindakan ini tidak boleh dilakukan sendiri karena dapat memutus koneksi pengguna lain. Silakan hubungi Engineer melalui tombol WhatsApp.",
-      "kataKunci": [
-        "diminta",
-        "mengubah",
-        "pengaturan",
-        "jaringan",
-        "permintaan",
-        "petunjuk",
-        "mengganti",
-        "alamat",
-        "dns",
-        "lain",
-        "komputer",
-        "berubah",
-        "diperlukan",
-        "penyesuaian",
-        "konfigurasi"
-      ]
-    },
     {
       "id": "printer-printer-offline-atau-tidak-terdeteksi",
       "divisi": "printer",
@@ -1459,508 +477,6 @@
         "penggerak",
         "usia",
         "benturan"
-      ]
-    },
-    {
-      "id": "radio-radio-tidak-ada-suara",
-      "divisi": "radio",
-      "judul": "Radio Tidak Ada Suara",
-      "gejala": "",
-      "kategori": "ringan",
-      "penyebab": [
-        "Volume radio disetel terlalu kecil atau mute",
-        "Baterai radio habis atau lemah",
-        "Channel atau frekuensi radio tidak sesuai",
-        "Antena radio tidak terpasang dengan baik"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Penyelesaian",
-          "pengantar": null,
-          "langkah": [
-            "Periksa volume radio, pastikan tidak dalam kondisi mute dan naikkan volume ke level yang cukup",
-            "Periksa indikator baterai, jika lemah segera charge atau ganti dengan baterai yang penuh",
-            "Pastikan channel radio yang digunakan sesuai dengan channel yang digunakan rekan kerja lainnya",
-            "Periksa antena radio, pastikan terpasang erat dan tidak rusak atau bengkok",
-            "Coba restart radio dengan mematikan lalu menyalakan kembali"
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "radio",
-        "tidak",
-        "suara",
-        "volume",
-        "disetel",
-        "terlalu",
-        "kecil",
-        "mute",
-        "baterai",
-        "habis",
-        "lemah",
-        "channel",
-        "frekuensi",
-        "sesuai",
-        "antena",
-        "terpasang",
-        "baik"
-      ]
-    },
-    {
-      "id": "radio-radio-suara-tidak-jelas-atau",
-      "divisi": "radio",
-      "judul": "Radio Suara Tidak Jelas atau Ada Noise",
-      "gejala": "",
-      "kategori": "ringan",
-      "penyebab": [
-        "Jarak komunikasi terlalu jauh dari repeater",
-        "Antena tidak terpasang dengan baik",
-        "Gangguan interferensi dari perangkat lain",
-        "Squelch level tidak sesuai"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Penyelesaian",
-          "pengantar": null,
-          "langkah": [
-            "Coba pindah ke lokasi yang lebih terbuka atau lebih dekat dengan area jangkauan",
-            "Pastikan antena radio terpasang dengan benar dan dalam posisi tegak",
-            "Jauhkan radio dari perangkat elektronik yang bisa menyebabkan interferensi",
-            "Periksa pengaturan squelch, sesuaikan ke level yang tepat agar noise berkurang",
-            "Jika masih bermasalah, coba gunakan radio HT lain untuk memastikan bukan masalah perangkat"
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "radio",
-        "suara",
-        "tidak",
-        "jelas",
-        "noise",
-        "jarak",
-        "komunikasi",
-        "terlalu",
-        "jauh",
-        "repeater",
-        "antena",
-        "terpasang",
-        "baik",
-        "gangguan",
-        "interferensi",
-        "perangkat",
-        "lain",
-        "squelch",
-        "level",
-        "sesuai"
-      ]
-    },
-    {
-      "id": "radio-radio-tidak-bisa-transmit-tidak",
-      "divisi": "radio",
-      "judul": "Radio Tidak Bisa Transmit (Tidak Bisa Kirim Suara)",
-      "gejala": "",
-      "kategori": "ringan",
-      "penyebab": [
-        "Tombol PTT (Push-To-Talk) bermasalah",
-        "Baterai lemah sehingga daya transmit tidak cukup",
-        "Frekuensi terblokir atau ada gangguan"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Penyelesaian",
-          "pengantar": null,
-          "langkah": [
-            "Tekan tombol PTT dan pastikan indikator transmit menyala (biasanya lampu merah)",
-            "Periksa baterai, pastikan terisi penuh karena transmit membutuhkan daya lebih besar",
-            "Minta rekan kerja untuk mengkonfirmasi apakah suara Anda terdengar di channel yang sama",
-            "Coba restart radio dan ulangi percobaan transmit",
-            "Jika indikator transmit tidak menyala sama sekali, kemungkinan ada kerusakan hardware"
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "radio",
-        "tidak",
-        "bisa",
-        "transmit",
-        "kirim",
-        "suara",
-        "tombol",
-        "ptt",
-        "push",
-        "talk",
-        "bermasa",
-        "baterai",
-        "lemah",
-        "sehingga",
-        "daya",
-        "frekuensi",
-        "terblokir",
-        "gangguan"
-      ]
-    },
-    {
-      "id": "radio-kerusakan-perangkat-radio-repeater",
-      "divisi": "radio",
-      "judul": "Kerusakan Perangkat Radio / Repeater",
-      "gejala": "",
-      "kategori": "berat",
-      "penyebab": [
-        "Kerusakan fisik pada perangkat radio",
-        "Repeater mengalami gangguan",
-        "Antena base station rusak atau tersambar petir"
-      ],
-      "solusi": [],
-      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Silakan hubungi Engineer melalui tombol WhatsApp.",
-      "kataKunci": [
-        "kerusakan",
-        "perangkat",
-        "radio",
-        "repeater",
-        "fisik",
-        "mengalami",
-        "gangguan",
-        "antena",
-        "base",
-        "station",
-        "rusak",
-        "tersambar",
-        "petir"
-      ]
-    },
-    {
-      "id": "telepon-telepon-tidak-ada-nada-no",
-      "divisi": "telepon",
-      "judul": "Telepon Tidak Ada Nada (No Dial Tone)",
-      "gejala": "",
-      "kategori": "ringan",
-      "penyebab": [
-        "Kabel telepon terlepas dari port di dinding atau di belakang pesawat telepon",
-        "Pesawat telepon tidak terhubung dengan baik",
-        "Gangguan pada line telepon internal"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Penyelesaian",
-          "pengantar": null,
-          "langkah": [
-            "Periksa kabel telepon yang terhubung dari pesawat telepon ke port dinding (jack RJ-11), pastikan terpasang erat",
-            "Cabut dan pasang kembali kabel telepon di kedua ujungnya",
-            "Coba ganti pesawat telepon dengan yang lain untuk memastikan bukan masalah di pesawat teleponnya",
-            "Tekan tombol di pesawat telepon lalu angkat gagang, dengarkan apakah nada sudah muncul",
-            "Jika masih tidak ada nada, kemungkinan gangguan pada line dan perlu penanganan engineer"
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "telepon",
-        "tidak",
-        "nada",
-        "dial",
-        "tone",
-        "kabel",
-        "terlepas",
-        "port",
-        "dinding",
-        "belakang",
-        "pesawat",
-        "terhubung",
-        "baik",
-        "gangguan",
-        "line",
-        "internal"
-      ]
-    },
-    {
-      "id": "telepon-telepon-tidak-bisa-menghubungi-nomor",
-      "divisi": "telepon",
-      "judul": "Telepon Tidak Bisa Menghubungi Nomor Tertentu",
-      "gejala": "",
-      "kategori": "ringan",
-      "penyebab": [
-        "Nomor extension yang dituju salah",
-        "Nomor tujuan sedang sibuk atau tidak aktif",
-        "Pembatasan panggilan (call restriction) aktif pada extension tersebut"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Penyelesaian",
-          "pengantar": null,
-          "langkah": [
-            "Pastikan nomor extension atau nomor tujuan yang Anda hubungi sudah benar",
-            "Coba hubungi nomor extension lain untuk memastikan pesawat telepon Anda berfungsi normal",
-            "Periksa apakah ada nada sibuk (busy tone) saat menghubungi - jika ya, coba beberapa saat lagi",
-            "Pastikan Anda menggunakan kode akses yang benar jika menelepon keluar (misalnya tekan 9 atau 0 dulu)",
-            "Jika tetap tidak bisa, kemungkinan ada pembatasan panggilan yang perlu diperiksa engineer"
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "telepon",
-        "tidak",
-        "bisa",
-        "menghubungi",
-        "nomor",
-        "tertentu",
-        "extension",
-        "dituju",
-        "salah",
-        "tujuan",
-        "sedang",
-        "sibuk",
-        "aktif",
-        "pembatasan",
-        "panggilan",
-        "call",
-        "restriction",
-        "tersebut"
-      ]
-    },
-    {
-      "id": "telepon-suara-telepon-putusputus-atau-berisik",
-      "divisi": "telepon",
-      "judul": "Suara Telepon Putus-Putus atau Berisik",
-      "gejala": "",
-      "kategori": "ringan",
-      "penyebab": [
-        "Kabel telepon rusak atau longgar",
-        "Gangguan interferensi dari perangkat elektronik di sekitar",
-        "Port jack telepon bermasalah"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Penyelesaian",
-          "pengantar": null,
-          "langkah": [
-            "Periksa dan pastikan kabel telepon dalam kondisi baik, tidak ada bagian yang terkelupas",
-            "Cabut dan pasang kembali kabel telepon pada kedua ujungnya",
-            "Jauhkan kabel telepon dari sumber interferensi seperti speaker atau perangkat listrik besar",
-            "Coba pindahkan pesawat telepon ke port jack yang berbeda jika tersedia",
-            "Jika suara masih bermasalah, kemungkinan gangguan pada jalur kabel dan perlu penanganan engineer"
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "suara",
-        "telepon",
-        "putus",
-        "berisik",
-        "kabel",
-        "rusak",
-        "longgar",
-        "gangguan",
-        "interferensi",
-        "perangkat",
-        "elektronik",
-        "sekitar",
-        "port",
-        "jack",
-        "bermasa"
-      ]
-    },
-    {
-      "id": "telepon-gangguan-sistem-pabx-ip-phone",
-      "divisi": "telepon",
-      "judul": "Gangguan Sistem PABX / IP Phone",
-      "gejala": "",
-      "kategori": "berat",
-      "penyebab": [
-        "Kerusakan pada sistem PABX pusat",
-        "Gangguan konfigurasi IP Phone",
-        "Masalah server telepon"
-      ],
-      "solusi": [],
-      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Silakan hubungi Engineer melalui tombol WhatsApp.",
-      "kataKunci": [
-        "gangguan",
-        "sistem",
-        "pabx",
-        "phone",
-        "kerusakan",
-        "pusat",
-        "konfigurasi",
-        "masa",
-        "server",
-        "telepon"
-      ]
-    },
-    {
-      "id": "wan-wan-putus-sesaat-koneksi-internet",
-      "divisi": "wan",
-      "judul": "WAN Putus Sesaat (Koneksi Internet Terputus Sementara)",
-      "gejala": "",
-      "kategori": "ringan",
-      "penyebab": [
-        "Gangguan sementara pada jalur koneksi WAN",
-        "Router perlu di-restart",
-        "Kabel koneksi longgar",
-        "Interferensi pada jalur wireless (jika menggunakan wireless link)"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Penyelesaian",
-          "pengantar": null,
-          "langkah": [
-            "Tunggu 2-3 menit, karena koneksi WAN yang putus sesaat biasanya akan kembali otomatis",
-            "Periksa lampu indikator pada router/modem, pastikan lampu WAN dan Internet menyala hijau",
-            "Restart router/modem dengan mematikan, tunggu 30 detik, lalu nyalakan kembali",
-            "Periksa kabel yang terhubung ke router, pastikan semuanya terpasang erat",
-            "Coba akses internet kembali setelah router selesai booting (tunggu 1-2 menit)"
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "wan",
-        "putus",
-        "sesaat",
-        "koneksi",
-        "internet",
-        "sementara",
-        "gangguan",
-        "jalur",
-        "router",
-        "restart",
-        "kabel",
-        "longgar",
-        "interferensi",
-        "wifi",
-        "menggunakan",
-        "link"
-      ]
-    },
-    {
-      "id": "wan-vpn-tidak-bisa-connect",
-      "divisi": "wan",
-      "judul": "VPN Tidak Bisa Connect",
-      "gejala": "",
-      "kategori": "ringan",
-      "penyebab": [
-        "Koneksi internet dasar tidak tersedia",
-        "Credential VPN salah atau expired",
-        "Aplikasi VPN client bermasalah"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Penyelesaian",
-          "pengantar": null,
-          "langkah": [
-            "Pastikan koneksi internet dasar berjalan normal terlebih dahulu (coba buka website)",
-            "Periksa username dan password VPN, pastikan diketik dengan benar",
-            "Tutup aplikasi VPN, tunggu beberapa detik, lalu buka dan connect kembali",
-            "Restart komputer lalu coba connect VPN kembali",
-            "Jika masih tidak bisa, kemungkinan akun VPN perlu di-reset oleh Engineer"
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "vpn",
-        "tidak",
-        "bisa",
-        "terhubung",
-        "koneksi",
-        "internet",
-        "dasar",
-        "tersedia",
-        "credential",
-        "salah",
-        "expired",
-        "aplikasi",
-        "client",
-        "bermasa"
-      ]
-    },
-    {
-      "id": "wan-internet-kantor-down-seluruh-kantor",
-      "divisi": "wan",
-      "judul": "Internet Kantor Down (Seluruh Kantor Tidak Ada Internet)",
-      "gejala": "",
-      "kategori": "ringan",
-      "penyebab": [
-        "Gangguan dari provider/ISP",
-        "Router utama bermasalah",
-        "Gangguan pada link WAN utama"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Penyelesaian",
-          "pengantar": null,
-          "langkah": [
-            "Konfirmasi dengan rekan kerja di area lain apakah internet juga mati",
-            "Periksa router utama jika bisa dijangkau, lihat apakah lampu indikator normal",
-            "Jika router terlihat mati atau lampu tidak normal, restart router",
-            "Tunggu 5-10 menit setelah restart untuk koneksi kembali stabil",
-            "Jika internet seluruh kantor masih down, segera laporkan ke Engineer ICT"
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "internet",
-        "kantor",
-        "down",
-        "seluruh",
-        "tidak",
-        "gangguan",
-        "provider",
-        "isp",
-        "router",
-        "utama",
-        "bermasa",
-        "link",
-        "wan"
-      ]
-    },
-    {
-      "id": "wan-gangguan-wan-yang-berkepanjangan",
-      "divisi": "wan",
-      "judul": "Gangguan WAN yang Berkepanjangan",
-      "gejala": "",
-      "kategori": "berat",
-      "penyebab": [
-        "Kerusakan pada perangkat jaringan inti",
-        "Gangguan pada jalur fiber backbone",
-        "Masalah pada sisi provider/ISP"
-      ],
-      "solusi": [],
-      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Silakan hubungi Engineer melalui tombol WhatsApp.",
-      "kataKunci": [
-        "gangguan",
-        "wan",
-        "berkepanjangan",
-        "kerusakan",
-        "perangkat",
-        "jaringan",
-        "inti",
-        "jalur",
-        "fiber",
-        "backbone",
-        "masa",
-        "sisi",
-        "provider",
-        "isp"
-      ]
-    },
-    {
-      "id": "wan-konfigurasi-router-firewall",
-      "divisi": "wan",
-      "judul": "Konfigurasi Router / Firewall",
-      "gejala": "",
-      "kategori": "berat",
-      "penyebab": [],
-      "solusi": [],
-      "penanganan": "Konfigurasi router dan firewall memerlukan hak administrator dan penanganan langsung oleh Engineer ICT. Silakan hubungi Engineer melalui tombol WhatsApp.",
-      "kataKunci": [
-        "konfigurasi",
-        "router",
-        "firewall"
       ]
     },
     {
@@ -2463,6 +979,1490 @@
         "pembaruan",
         "putus",
         "sebelum"
+      ]
+    },
+    {
+      "id": "cctv-salah-satu-kamera-tidak-tampil",
+      "divisi": "cctv",
+      "judul": "Salah Satu Kamera Tidak Tampil di Layar",
+      "gejala": "Salah satu kotak tampilan pada layar pemantauan berwarna hitam, atau bertuliskan \"No Video\" atau \"No Signal\".",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kabel kamera terlepas pada sisi perangkat perekam",
+        "Sumber listrik kamera terputus",
+        "Saluran kamera pada perangkat perekam tidak aktif",
+        "Kamera kehilangan sambungan jaringan"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Perhatikan layar pemantauan. Hitung berapa kotak tampilan yang hitam. Bila hanya satu, berarti masalahnya pada kamera tersebut saja.",
+            "Catat nomor atau nama kamera yang bermasalah. Biasanya tertulis kecil di sudut kotak tampilannya. Catatan ini penting untuk dilaporkan.",
+            "Periksa layar pemantauan itu sendiri. Pastikan monitornya menyala dan tampilan kamera lain terlihat normal.",
+            "Temukan kotak perangkat perekam. Bentuknya kotak pipih, biasanya diletakkan di rak atau lemari di ruang pemantauan.",
+            "Perhatikan lampu di bagian depan perangkat perekam. Pastikan ada lampu yang menyala, menandakan perangkat hidup.",
+            "Lihat bagian belakang perangkat perekam. Perhatikan apakah ada kabel yang terlihat longgar atau terlepas dari lubangnya.",
+            "Bila ada kabel yang jelas terlepas, dorong masuk perlahan ke lubang tempatnya semula. Jangan mencabut kabel lain yang sudah terpasang.",
+            "Tunggu sekitar 1 menit, lalu perhatikan apakah tampilan kamera sudah muncul kembali.",
+            "Bila kamera tetap tidak tampil, laporkan kepada Engineer ICT. Sebutkan nomor atau nama kamera yang Anda catat pada langkah 2."
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "salah",
+        "satu",
+        "kamera",
+        "tidak",
+        "tampil",
+        "layar",
+        "kotak",
+        "tampilan",
+        "pemantauan",
+        "berwarna",
+        "hitam",
+        "bertuliskan",
+        "video",
+        "sinyal",
+        "kabel",
+        "terlepas",
+        "sisi",
+        "perangkat",
+        "perekam",
+        "sumber",
+        "listrik",
+        "putus",
+        "saluran",
+        "aktif",
+        "kehilangan",
+        "sambungan",
+        "jaringan"
+      ]
+    },
+    {
+      "id": "cctv-gambar-kamera-gelap-buram-atau",
+      "divisi": "cctv",
+      "judul": "Gambar Kamera Gelap, Buram, atau Berkabut",
+      "gejala": "Tampilan kamera terlihat kabur, berkabut, terlalu gelap, atau silau sehingga objek tidak terlihat jelas.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Bagian depan kamera kotor, berdebu, atau berembun",
+        "Ada sarang laba-laba atau kotoran menempel di depan kamera",
+        "Penerangan di area tersebut kurang",
+        "Kamera menghadap langsung ke sumber cahaya terang"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Perhatikan tampilan kamera tersebut selama beberapa menit.",
+            "Catat apakah gambar buram sepanjang hari, atau hanya pada malam hari, atau hanya pada jam tertentu saat matahari menyilaukan.",
+            "Bandingkan dengan tampilan kamera lain di area sekitarnya. Bila hanya satu kamera yang buram, berarti masalahnya pada kamera itu.",
+            "Bila memungkinkan dan aman, lihat kamera tersebut dari lantai. Jangan naik tangga, kursi, atau apa pun.",
+            "Dari posisi berdiri di lantai, perhatikan apakah bagian depan kamera terlihat kotor, berdebu, atau tertutup sarang laba-laba.",
+            "Periksa apakah lampu penerangan di area tersebut menyala normal, terutama bila keluhan muncul pada malam hari.",
+            "Catat nomor kamera, waktu munculnya masalah, dan hasil pengamatan Anda.",
+            "Laporkan kepada Engineer ICT. Pembersihan atau penyetelan arah kamera akan dilakukan oleh petugas yang berwenang."
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "gambar",
+        "kamera",
+        "gelap",
+        "buram",
+        "berkabut",
+        "tampilan",
+        "terlihat",
+        "terlalu",
+        "silau",
+        "sehingga",
+        "objek",
+        "tidak",
+        "jelas",
+        "bagian",
+        "depan",
+        "kotor",
+        "berdebu",
+        "berembun",
+        "sarang",
+        "laba",
+        "kotoran",
+        "menempel",
+        "penerangan",
+        "area",
+        "tersebut",
+        "kurang",
+        "menghadap",
+        "langsung",
+        "sumber",
+        "cahaya",
+        "terang"
+      ]
+    },
+    {
+      "id": "cctv-rekaman-tidak-ditemukan-atau-tidak",
+      "divisi": "cctv",
+      "judul": "Rekaman Tidak Ditemukan atau Tidak Bisa Diputar",
+      "gejala": "Rekaman pada tanggal tertentu tidak ditemukan, atau saat diputar ulang tidak muncul gambar apa pun.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Rekaman lama sudah tertimpa sesuai batas masa simpan",
+        "Media penyimpanan perangkat perekam penuh atau bermasalah",
+        "Tanggal atau jam yang dicari keliru",
+        "Kamera sempat tidak aktif pada rentang waktu tersebut"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Periksa kembali tanggal yang Anda cari. Pastikan bulan dan tahunnya benar, bukan hanya tanggalnya.",
+            "Periksa kembali jam yang Anda cari. Perhatikan apakah sistem memakai format 24 jam, sehingga jam 2 siang ditulis 14.00.",
+            "Perluas rentang waktu pencarian. Bila mencari kejadian pukul 10.00, coba cari mulai pukul 09.00 sampai 11.00.",
+            "Coba cari rekaman pada kamera lain di area yang sama pada waktu tersebut, untuk memastikan apakah masalahnya pada satu kamera saja.",
+            "Coba cari rekaman pada tanggal kemarin untuk memastikan sistem perekaman berjalan normal.",
+            "Bila rekaman kemarin ada tetapi rekaman lama tidak ada, kemungkinan rekaman tersebut sudah tertimpa sesuai masa simpan.",
+            "Catat tanggal, jam, dan nama kamera yang Anda butuhkan.",
+            "Laporkan kepada Engineer ICT beserta keperluan permintaan rekaman tersebut."
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "rekaman",
+        "tidak",
+        "ditemukan",
+        "bisa",
+        "diputar",
+        "tanggal",
+        "tertentu",
+        "ulang",
+        "tampil",
+        "gambar",
+        "pun",
+        "lama",
+        "tertimpa",
+        "sesuai",
+        "batas",
+        "masa",
+        "simpan",
+        "media",
+        "penyimpanan",
+        "perangkat",
+        "perekam",
+        "penuh",
+        "bermasa",
+        "macet",
+        "dicari",
+        "keliru",
+        "kamera",
+        "sempat",
+        "aktif",
+        "rentang",
+        "tersebut"
+      ]
+    },
+    {
+      "id": "cctv-seluruh-kamera-hilang-dan-perangkat",
+      "divisi": "cctv",
+      "judul": "Seluruh Kamera Hilang dan Perangkat Perekam Mati",
+      "gejala": "Seluruh kotak tampilan pada layar menjadi hitam bersamaan. Lampu pada perangkat perekam padam.",
+      "kategori": "berat",
+      "penyebab": [
+        "Kerusakan pada perangkat perekam",
+        "Kerusakan media penyimpanan di dalam perangkat",
+        "Gangguan pasokan listrik pada ruang perangkat"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Bila memungkinkan, periksa terlebih dahulu apakah listrik di ruangan tersebut menyala normal, lalu sampaikan hasilnya kepada engineer. Silakan hubungi Engineer melalui tombol WhatsApp.",
+      "kataKunci": [
+        "seluruh",
+        "kamera",
+        "hilang",
+        "perangkat",
+        "perekam",
+        "mati",
+        "kotak",
+        "tampilan",
+        "layar",
+        "menjadi",
+        "hitam",
+        "bersamaan",
+        "lampu",
+        "kerusakan",
+        "media",
+        "penyimpanan",
+        "gangguan",
+        "pasokan",
+        "listrik",
+        "ruang"
+      ]
+    },
+    {
+      "id": "cctv-kamera-rusak-menggantung-atau-berubah",
+      "divisi": "cctv",
+      "judul": "Kamera Rusak, Menggantung, atau Berubah Arah",
+      "gejala": "Badan kamera terlihat rusak, menggantung, miring, atau arah pandangnya bergeser dari area yang seharusnya diawasi.",
+      "kategori": "berat",
+      "penyebab": [
+        "Kamera terbentur atau tertiup angin kencang",
+        "Dudukan kamera longgar",
+        "Kerusakan fisik pada perangkat"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Jangan mencoba membetulkan sendiri karena melibatkan pekerjaan di ketinggian. Bila kamera terlihat menggantung dan berisiko jatuh, jauhkan orang dari area di bawahnya. Silakan hubungi Engineer melalui tombol WhatsApp.",
+      "kataKunci": [
+        "kamera",
+        "rusak",
+        "menggantung",
+        "berubah",
+        "arah",
+        "badan",
+        "terlihat",
+        "miring",
+        "pandang",
+        "bergeser",
+        "area",
+        "seharus",
+        "diawasi",
+        "terbentur",
+        "tertiup",
+        "angin",
+        "kencang",
+        "dudukan",
+        "longgar",
+        "kerusakan",
+        "fisik",
+        "perangkat"
+      ]
+    },
+    {
+      "id": "cctv-permintaan-salinan-rekaman-cctv",
+      "divisi": "cctv",
+      "judul": "Permintaan Salinan Rekaman CCTV",
+      "gejala": "Membutuhkan salinan rekaman untuk keperluan penyelidikan, pelaporan, atau dokumentasi kejadian.",
+      "kategori": "berat",
+      "penyebab": [
+        "Kebutuhan dokumentasi kejadian",
+        "Permintaan resmi dari fungsi terkait"
+      ],
+      "solusi": [],
+      "penanganan": "Akses dan penyalinan rekaman CCTV memerlukan izin serta prosedur resmi, sehingga tidak dapat dilakukan sendiri. Siapkan terlebih dahulu tanggal, jam, lokasi, dan nama kamera yang dibutuhkan. Silakan hubungi Engineer melalui tombol WhatsApp untuk memproses permintaan.",
+      "kataKunci": [
+        "permintaan",
+        "salinan",
+        "rekaman",
+        "cctv",
+        "membutuhkan",
+        "keperluan",
+        "penyelidikan",
+        "pelaporan",
+        "dokumentasi",
+        "kejadian",
+        "kebutuhan",
+        "resmi",
+        "fungsi",
+        "terkait"
+      ]
+    },
+    {
+      "id": "telepon-telepon-tidak-ada-nada-no",
+      "divisi": "telepon",
+      "judul": "Telepon Tidak Ada Nada (No Dial Tone)",
+      "gejala": "",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kabel telepon terlepas dari port di dinding atau di belakang pesawat telepon",
+        "Pesawat telepon tidak terhubung dengan baik",
+        "Gangguan pada line telepon internal"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Periksa kabel telepon yang terhubung dari pesawat telepon ke port dinding (jack RJ-11), pastikan terpasang erat",
+            "Cabut dan pasang kembali kabel telepon di kedua ujungnya",
+            "Coba ganti pesawat telepon dengan yang lain untuk memastikan bukan masalah di pesawat teleponnya",
+            "Tekan tombol di pesawat telepon lalu angkat gagang, dengarkan apakah nada sudah muncul",
+            "Jika masih tidak ada nada, kemungkinan gangguan pada line dan perlu penanganan engineer"
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "telepon",
+        "tidak",
+        "nada",
+        "dial",
+        "tone",
+        "kabel",
+        "terlepas",
+        "port",
+        "dinding",
+        "belakang",
+        "pesawat",
+        "terhubung",
+        "baik",
+        "gangguan",
+        "line",
+        "internal"
+      ]
+    },
+    {
+      "id": "telepon-telepon-tidak-bisa-menghubungi-nomor",
+      "divisi": "telepon",
+      "judul": "Telepon Tidak Bisa Menghubungi Nomor Tertentu",
+      "gejala": "",
+      "kategori": "ringan",
+      "penyebab": [
+        "Nomor extension yang dituju salah",
+        "Nomor tujuan sedang sibuk atau tidak aktif",
+        "Pembatasan panggilan (call restriction) aktif pada extension tersebut"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Pastikan nomor extension atau nomor tujuan yang Anda hubungi sudah benar",
+            "Coba hubungi nomor extension lain untuk memastikan pesawat telepon Anda berfungsi normal",
+            "Periksa apakah ada nada sibuk (busy tone) saat menghubungi - jika ya, coba beberapa saat lagi",
+            "Pastikan Anda menggunakan kode akses yang benar jika menelepon keluar (misalnya tekan 9 atau 0 dulu)",
+            "Jika tetap tidak bisa, kemungkinan ada pembatasan panggilan yang perlu diperiksa engineer"
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "telepon",
+        "tidak",
+        "bisa",
+        "menghubungi",
+        "nomor",
+        "tertentu",
+        "extension",
+        "dituju",
+        "salah",
+        "tujuan",
+        "sedang",
+        "sibuk",
+        "aktif",
+        "pembatasan",
+        "panggilan",
+        "call",
+        "restriction",
+        "tersebut"
+      ]
+    },
+    {
+      "id": "telepon-suara-telepon-putusputus-atau-berisik",
+      "divisi": "telepon",
+      "judul": "Suara Telepon Putus-Putus atau Berisik",
+      "gejala": "",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kabel telepon rusak atau longgar",
+        "Gangguan interferensi dari perangkat elektronik di sekitar",
+        "Port jack telepon bermasalah"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Periksa dan pastikan kabel telepon dalam kondisi baik, tidak ada bagian yang terkelupas",
+            "Cabut dan pasang kembali kabel telepon pada kedua ujungnya",
+            "Jauhkan kabel telepon dari sumber interferensi seperti speaker atau perangkat listrik besar",
+            "Coba pindahkan pesawat telepon ke port jack yang berbeda jika tersedia",
+            "Jika suara masih bermasalah, kemungkinan gangguan pada jalur kabel dan perlu penanganan engineer"
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "suara",
+        "telepon",
+        "putus",
+        "berisik",
+        "kabel",
+        "rusak",
+        "longgar",
+        "gangguan",
+        "interferensi",
+        "perangkat",
+        "elektronik",
+        "sekitar",
+        "port",
+        "jack",
+        "bermasa"
+      ]
+    },
+    {
+      "id": "telepon-gangguan-sistem-pabx-ip-phone",
+      "divisi": "telepon",
+      "judul": "Gangguan Sistem PABX / IP Phone",
+      "gejala": "",
+      "kategori": "berat",
+      "penyebab": [
+        "Kerusakan pada sistem PABX pusat",
+        "Gangguan konfigurasi IP Phone",
+        "Masalah server telepon"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Silakan hubungi Engineer melalui tombol WhatsApp.",
+      "kataKunci": [
+        "gangguan",
+        "sistem",
+        "pabx",
+        "phone",
+        "kerusakan",
+        "pusat",
+        "konfigurasi",
+        "masa",
+        "server",
+        "telepon"
+      ]
+    },
+    {
+      "id": "radio-radio-tidak-ada-suara",
+      "divisi": "radio",
+      "judul": "Radio Tidak Ada Suara",
+      "gejala": "",
+      "kategori": "ringan",
+      "penyebab": [
+        "Volume radio disetel terlalu kecil atau mute",
+        "Baterai radio habis atau lemah",
+        "Channel atau frekuensi radio tidak sesuai",
+        "Antena radio tidak terpasang dengan baik"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Periksa volume radio, pastikan tidak dalam kondisi mute dan naikkan volume ke level yang cukup",
+            "Periksa indikator baterai, jika lemah segera charge atau ganti dengan baterai yang penuh",
+            "Pastikan channel radio yang digunakan sesuai dengan channel yang digunakan rekan kerja lainnya",
+            "Periksa antena radio, pastikan terpasang erat dan tidak rusak atau bengkok",
+            "Coba restart radio dengan mematikan lalu menyalakan kembali"
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "radio",
+        "tidak",
+        "suara",
+        "volume",
+        "disetel",
+        "terlalu",
+        "kecil",
+        "mute",
+        "baterai",
+        "habis",
+        "lemah",
+        "channel",
+        "frekuensi",
+        "sesuai",
+        "antena",
+        "terpasang",
+        "baik"
+      ]
+    },
+    {
+      "id": "radio-radio-suara-tidak-jelas-atau",
+      "divisi": "radio",
+      "judul": "Radio Suara Tidak Jelas atau Ada Noise",
+      "gejala": "",
+      "kategori": "ringan",
+      "penyebab": [
+        "Jarak komunikasi terlalu jauh dari repeater",
+        "Antena tidak terpasang dengan baik",
+        "Gangguan interferensi dari perangkat lain",
+        "Squelch level tidak sesuai"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Coba pindah ke lokasi yang lebih terbuka atau lebih dekat dengan area jangkauan",
+            "Pastikan antena radio terpasang dengan benar dan dalam posisi tegak",
+            "Jauhkan radio dari perangkat elektronik yang bisa menyebabkan interferensi",
+            "Periksa pengaturan squelch, sesuaikan ke level yang tepat agar noise berkurang",
+            "Jika masih bermasalah, coba gunakan radio HT lain untuk memastikan bukan masalah perangkat"
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "radio",
+        "suara",
+        "tidak",
+        "jelas",
+        "noise",
+        "jarak",
+        "komunikasi",
+        "terlalu",
+        "jauh",
+        "repeater",
+        "antena",
+        "terpasang",
+        "baik",
+        "gangguan",
+        "interferensi",
+        "perangkat",
+        "lain",
+        "squelch",
+        "level",
+        "sesuai"
+      ]
+    },
+    {
+      "id": "radio-radio-tidak-bisa-transmit-tidak",
+      "divisi": "radio",
+      "judul": "Radio Tidak Bisa Transmit (Tidak Bisa Kirim Suara)",
+      "gejala": "",
+      "kategori": "ringan",
+      "penyebab": [
+        "Tombol PTT (Push-To-Talk) bermasalah",
+        "Baterai lemah sehingga daya transmit tidak cukup",
+        "Frekuensi terblokir atau ada gangguan"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Tekan tombol PTT dan pastikan indikator transmit menyala (biasanya lampu merah)",
+            "Periksa baterai, pastikan terisi penuh karena transmit membutuhkan daya lebih besar",
+            "Minta rekan kerja untuk mengkonfirmasi apakah suara Anda terdengar di channel yang sama",
+            "Coba restart radio dan ulangi percobaan transmit",
+            "Jika indikator transmit tidak menyala sama sekali, kemungkinan ada kerusakan hardware"
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "radio",
+        "tidak",
+        "bisa",
+        "transmit",
+        "kirim",
+        "suara",
+        "tombol",
+        "ptt",
+        "push",
+        "talk",
+        "bermasa",
+        "baterai",
+        "lemah",
+        "sehingga",
+        "daya",
+        "frekuensi",
+        "terblokir",
+        "gangguan"
+      ]
+    },
+    {
+      "id": "radio-kerusakan-perangkat-radio-repeater",
+      "divisi": "radio",
+      "judul": "Kerusakan Perangkat Radio / Repeater",
+      "gejala": "",
+      "kategori": "berat",
+      "penyebab": [
+        "Kerusakan fisik pada perangkat radio",
+        "Repeater mengalami gangguan",
+        "Antena base station rusak atau tersambar petir"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Silakan hubungi Engineer melalui tombol WhatsApp.",
+      "kataKunci": [
+        "kerusakan",
+        "perangkat",
+        "radio",
+        "repeater",
+        "fisik",
+        "mengalami",
+        "gangguan",
+        "antena",
+        "base",
+        "station",
+        "rusak",
+        "tersambar",
+        "petir"
+      ]
+    },
+    {
+      "id": "ftth-lampu-los-menyala-merah-pada",
+      "divisi": "ftth",
+      "judul": "Lampu LOS Menyala Merah pada Perangkat Internet",
+      "gejala": "Pada kotak perangkat internet terdapat lampu bertuliskan LOS yang menyala atau berkedip merah. Internet mati total.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kabel fiber terlepas dari perangkat",
+        "Kabel fiber tertekuk tajam, terjepit, atau tertindih barang",
+        "Gangguan pada jalur kabel di luar ruangan",
+        "Gangguan dari penyedia layanan internet"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Periksa Posisi Kabel Fiber",
+          "pengantar": null,
+          "langkah": [
+            "Temukan kotak perangkat internet Anda. Bentuknya kotak kecil berwarna putih atau hitam dengan beberapa lampu kecil di bagian depan.",
+            "Perhatikan deretan lampu di bagian depan. Cari lampu yang di bawahnya tertulis LOS. Bila menyala merah, berarti sambungan kabel fiber terputus.",
+            "Lihat bagian belakang perangkat. Cari kabel yang sangat kecil dan tipis, biasanya berwarna kuning atau hijau, jauh lebih kecil daripada kabel lain. Itulah kabel fiber.",
+            "JANGAN mencabut kabel fiber tersebut. Cukup periksa apakah ujungnya masih terpasang rapat pada perangkat.",
+            "Telusuri kabel fiber itu perlahan. Perhatikan apakah ada bagian yang tertindih kaki meja, terjepit pintu, atau tertekuk membentuk sudut tajam.",
+            "Bila ada yang tertindih, angkat benda tersebut dengan hati-hati dan rapikan posisi kabelnya. Jangan menarik kabelnya.",
+            "Tunggu sekitar 1 menit, lalu perhatikan kembali apakah lampu LOS sudah padam."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Matikan dan Nyalakan Ulang Perangkat",
+          "pengantar": "Dipakai bila lampu LOS tetap merah setelah posisi kabel dirapikan. Mematikan\r perangkat memaksa sambungan ke penyedia layanan dibangun ulang dari awal.",
+          "langkah": [
+            "Cari kabel listrik perangkat, yaitu kabel yang menuju stopkontak di dinding.",
+            "Cabut kabel tersebut dari stopkontak.",
+            "Bila perangkat memiliki tombol bertuliskan Power atau ON/OFF, tekan juga ke posisi mati.",
+            "Tunggu sekitar 60 detik. Jangan terburu-buru, perangkat memerlukan waktu untuk benar-benar mati.",
+            "Pasang kembali kabel listrik ke stopkontak, lalu tekan tombol daya ke posisi menyala.",
+            "Tunggu sekitar 3 menit tanpa melakukan apa pun. Lampu akan berkedip-kedip, dan ini normal.",
+            "Setelah 3 menit, perhatikan lampu LOS. Bila sudah padam, coba buka satu situs untuk menguji.",
+            "Bila lampu LOS masih merah, ulangi sekali lagi dari langkah 2, namun kali ini tunggu 5 menit."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Pastikan Gangguan Bersifat Menyeluruh",
+          "pengantar": "Dipakai bila lampu LOS tetap merah. Langkah ini bukan untuk memperbaiki, melainkan\r mengumpulkan keterangan agar engineer dapat menangani lebih cepat.",
+          "langkah": [
+            "Tanyakan kepada rekan di ruangan lain, apakah internet mereka juga mati.",
+            "Perhatikan apakah ada pekerjaan penggalian, perbaikan jalan, atau alat berat di sekitar area belakangan ini.",
+            "Catat sejak kapan internet mati, sebutkan jam bila masih ingat.",
+            "Catat lokasi Anda, misalnya nama gedung atau ruangan.",
+            "Catat lampu apa saja yang menyala dan warnanya pada perangkat internet.",
+            "Laporkan kepada Engineer ICT beserta seluruh catatan tersebut. Lampu LOS merah yang menetap menandakan gangguan pada jalur kabel di luar ruangan yang hanya dapat ditangani engineer."
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "lampu",
+        "los",
+        "menyala",
+        "merah",
+        "perangkat",
+        "internet",
+        "kotak",
+        "terdapat",
+        "bertuliskan",
+        "berkedip",
+        "mati",
+        "total",
+        "kabel",
+        "fiber",
+        "terlepas",
+        "tertekuk",
+        "tajam",
+        "terjepit",
+        "tertindih",
+        "barang",
+        "gangguan",
+        "jalur",
+        "luar",
+        "ruangan",
+        "penyedia",
+        "layanan"
+      ]
+    },
+    {
+      "id": "ftth-perangkat-internet-tidak-menyala-sama",
+      "divisi": "ftth",
+      "judul": "Perangkat Internet Tidak Menyala Sama Sekali",
+      "gejala": "Seluruh lampu pada kotak perangkat internet padam. Tidak ada internet sama sekali.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kabel listrik perangkat terlepas",
+        "Stopkontak tidak dialiri listrik",
+        "Tombol daya perangkat dalam posisi mati"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Temukan kotak perangkat internet Anda, lalu perhatikan bagian depannya. Pastikan benar-benar tidak ada satu pun lampu yang menyala.",
+            "Lihat bagian belakang atau samping perangkat. Cari tombol kecil bertuliskan Power atau ON/OFF. Pastikan tombol tersebut dalam posisi ditekan atau menyala.",
+            "Telusuri kabel listrik perangkat sampai ke stopkontak di dinding.",
+            "Pastikan kepala kabel tertancap penuh ke stopkontak, tidak longgar atau setengah masuk.",
+            "Untuk memastikan stopkontak berfungsi, coba colokkan perangkat lain seperti pengisi daya ponsel ke stopkontak yang sama.",
+            "Bila perangkat lain juga tidak menyala, berarti masalahnya pada aliran listrik ruangan tersebut, bukan pada perangkat internet.",
+            "Bila stopkontak berfungsi normal, cabut kabel listrik perangkat internet, tunggu 30 detik, lalu pasang kembali.",
+            "Tunggu sekitar 2 menit dan perhatikan apakah lampu mulai menyala.",
+            "Bila seluruh lampu tetap padam, laporkan kepada Engineer ICT. Sebutkan bahwa perangkat tidak menyala sama sekali meski listrik normal."
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "perangkat",
+        "internet",
+        "tidak",
+        "menyala",
+        "sama",
+        "seluruh",
+        "lampu",
+        "kotak",
+        "mati",
+        "kabel",
+        "listrik",
+        "terlepas",
+        "stopkontak",
+        "dialiri",
+        "tombol",
+        "daya",
+        "posisi"
+      ]
+    },
+    {
+      "id": "ftth-lampu-pon-berkedip-terus-menerus",
+      "divisi": "ftth",
+      "judul": "Lampu PON Berkedip Terus Menerus",
+      "gejala": "Lampu bertuliskan PON pada perangkat berkedip terus dan tidak pernah menyala tetap. Internet tidak bisa dipakai.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Perangkat sedang berusaha menyambung ke penyedia layanan",
+        "Data perangkat belum terdaftar di sistem penyedia layanan",
+        "Sedang ada gangguan dari penyedia layanan"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Perhatikan deretan lampu pada perangkat. Cari lampu bertuliskan PON dan lampu bertuliskan LOS.",
+            "Pastikan lampu LOS tidak menyala merah. Bila LOS merah, ikuti panduan untuk lampu LOS merah terlebih dahulu.",
+            "Bila hanya PON yang berkedip, tunggu sekitar 5 menit tanpa melakukan apa pun. Proses penyambungan memang memerlukan waktu.",
+            "Bila setelah 5 menit masih berkedip, cabut kabel listrik perangkat dari stopkontak.",
+            "Tunggu sekitar 30 detik.",
+            "Pasang kembali kabel listrik ke stopkontak.",
+            "Tunggu sampai 5 menit lagi sambil memperhatikan lampu PON.",
+            "Bila lampu PON akhirnya menyala tetap dan tidak berkedip, internet seharusnya sudah dapat digunakan. Coba buka satu situs untuk memastikan.",
+            "Bila lampu PON tetap berkedip setelah semua langkah ini, laporkan kepada Engineer ICT untuk diperiksa ke penyedia layanan."
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "lampu",
+        "pon",
+        "berkedip",
+        "menerus",
+        "bertuliskan",
+        "perangkat",
+        "tidak",
+        "menyala",
+        "tetap",
+        "internet",
+        "bisa",
+        "dipakai",
+        "sedang",
+        "berusaha",
+        "menyambung",
+        "penyedia",
+        "layanan",
+        "data",
+        "terdaftar",
+        "sistem",
+        "gangguan"
+      ]
+    },
+    {
+      "id": "ftth-internet-dari-fiber-terasa-lambat",
+      "divisi": "ftth",
+      "judul": "Internet dari Fiber Terasa Lambat",
+      "gejala": "Internet tetap tersambung, tetapi membuka halaman terasa lama dan mengunduh berkas berjalan lambat.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Banyak perangkat memakai jaringan bersamaan",
+        "Ada unduhan besar berjalan tanpa disadari",
+        "Perangkat sudah berminggu-minggu menyala tanpa pernah dimatikan"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Tutup aplikasi yang sedang mengunduh berkas berukuran besar pada komputer Anda.",
+            "Tanyakan kepada rekan di ruangan yang sama, apakah mereka juga merasakan internet lambat.",
+            "Bila hanya Anda yang merasakannya, kemungkinan masalahnya pada komputer Anda, bukan pada perangkat internet.",
+            "Bila semua orang merasakannya, lanjutkan ke langkah berikut.",
+            "Cabut kabel listrik perangkat internet dari stopkontak.",
+            "Tunggu sekitar 30 detik.",
+            "Pasang kembali kabel listrik, lalu tunggu sekitar 2 menit sampai lampu berhenti berkedip.",
+            "Coba buka dua atau tiga situs berbeda untuk menguji kecepatannya.",
+            "Bila internet tetap lambat sepanjang hari, laporkan kepada Engineer ICT beserta keterangan berapa banyak orang yang terdampak."
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "internet",
+        "fiber",
+        "terasa",
+        "lambat",
+        "tetap",
+        "terhubung",
+        "membuka",
+        "halaman",
+        "lama",
+        "mengunduh",
+        "berkas",
+        "berjalan",
+        "banyak",
+        "perangkat",
+        "memakai",
+        "jaringan",
+        "bersamaan",
+        "unduhan",
+        "besar",
+        "tanpa",
+        "disadari",
+        "berminggu",
+        "minggu",
+        "menyala",
+        "dimatikan"
+      ]
+    },
+    {
+      "id": "ftth-kabel-fiber-optik-putus-atau",
+      "divisi": "ftth",
+      "judul": "Kabel Fiber Optik Putus atau Rusak",
+      "gejala": "Kabel fiber terlihat putus, terpotong, atau rusak. Bisa terjadi akibat pekerjaan penggalian atau alat berat di sekitar area.",
+      "kategori": "berat",
+      "penyebab": [
+        "Kabel terkena alat berat atau pekerjaan penggalian",
+        "Kabel tertarik hingga putus",
+        "Kerusakan pada ujung sambungan kabel"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Kabel fiber optik tidak boleh disambung sendiri karena memerlukan alat khusus, dan ujung kabel yang patah dapat melukai mata bila ditatap langsung. Jangan menyentuh atau menatap ujung kabel yang putus. Silakan hubungi Engineer melalui tombol WhatsApp.",
+      "kataKunci": [
+        "kabel",
+        "fiber",
+        "optik",
+        "putus",
+        "rusak",
+        "terlihat",
+        "terpotong",
+        "bisa",
+        "terjadi",
+        "akibat",
+        "pekerjaan",
+        "penggalian",
+        "alat",
+        "lambat",
+        "sekitar",
+        "area",
+        "terkena",
+        "tertarik",
+        "hingga",
+        "kerusakan",
+        "ujung",
+        "sambungan"
+      ]
+    },
+    {
+      "id": "ftth-perangkat-internet-rusak-atau-berbau",
+      "divisi": "ftth",
+      "judul": "Perangkat Internet Rusak atau Berbau Terbakar",
+      "gejala": "Perangkat terasa sangat panas, tercium bau terbakar, keluar asap, atau lampu menyala dengan pola yang tidak wajar.",
+      "kategori": "berat",
+      "penyebab": [
+        "Kerusakan akibat lonjakan listrik atau sambaran petir",
+        "Kerusakan pada bagian pengubah daya",
+        "Perangkat telah melewati usia pakai"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Bila tercium bau terbakar atau keluar asap, segera cabut kabel listrik perangkat dari stopkontak dan jauhkan barang mudah terbakar. Silakan hubungi Engineer melalui tombol WhatsApp.",
+      "kataKunci": [
+        "perangkat",
+        "internet",
+        "rusak",
+        "berbau",
+        "terbakar",
+        "terasa",
+        "panas",
+        "tercium",
+        "bau",
+        "keluar",
+        "asap",
+        "lampu",
+        "menyala",
+        "pola",
+        "tidak",
+        "wajar",
+        "kerusakan",
+        "akibat",
+        "lonjakan",
+        "listrik",
+        "sambaran",
+        "petir",
+        "bagian",
+        "pengubah",
+        "daya",
+        "telah",
+        "melewati",
+        "usia",
+        "pakai"
+      ]
+    },
+    {
+      "id": "lan-tidak-bisa-terhubung-ke-wifi",
+      "divisi": "lan",
+      "judul": "Tidak Bisa Terhubung ke WiFi Kantor",
+      "gejala": "Nama WiFi tidak muncul di daftar, atau muncul tetapi gagal tersambung. Bisa juga sudah tersambung tetapi tidak bisa membuka situs apa pun.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Fitur WiFi pada komputer sedang dimatikan",
+        "Mode pesawat (Airplane mode) tidak sengaja menyala",
+        "Posisi terlalu jauh dari alat pemancar WiFi",
+        "Kata sandi WiFi telah diperbarui oleh Fungsi ICT"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Nyalakan Ulang WiFi dan Sambungkan Kembali",
+          "pengantar": null,
+          "langkah": [
+            "Lihat pojok kanan bawah layar komputer Anda, tepat di sebelah kiri jam. Di sana ada beberapa ikon kecil.",
+            "Cari ikon WiFi. Bentuknya seperti kipas atau gelombang bertingkat tiga. Klik satu kali pada ikon tersebut.",
+            "Akan muncul kotak kecil di atasnya. Perhatikan tombol bergambar pesawat terbang bertuliskan \"Airplane mode\". Bila tombol itu berwarna biru artinya sedang menyala. Klik satu kali agar warnanya berubah menjadi abu-abu.",
+            "Pada kotak yang sama, cari tombol bergambar WiFi. Bila warnanya abu-abu, klik satu kali agar berubah menjadi biru. Ini menandakan WiFi sudah dinyalakan.",
+            "Setelah itu akan muncul daftar nama-nama WiFi yang tertangkap. Tunggu sekitar 10 detik hingga daftarnya terisi penuh.",
+            "Cari nama WiFi kantor pada daftar tersebut, lalu klik satu kali.",
+            "Klik tombol bertuliskan \"Connect\". Bila ada kotak kecil bertuliskan \"Connect automatically\", beri centang terlebih dahulu.",
+            "Bila diminta memasukkan kata sandi, ketik kata sandi WiFi kantor, lalu klik \"Next\".",
+            "Tunggu sekitar 15 detik. Bila berhasil, di bawah nama WiFi akan tertulis \"Connected\"."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Lupakan Jaringan lalu Sambungkan Ulang",
+          "pengantar": "Dipakai bila WiFi tetap gagal tersambung padahal kata sandi sudah benar. Cara ini menghapus data sambungan lama yang mungkin sudah tidak sesuai.",
+          "langkah": [
+            "Klik tombol Start di bagian bawah layar, lalu klik ikon roda gigi bertuliskan \"Settings\".",
+            "Pada daftar di sisi kiri, klik \"Network & internet\".",
+            "Klik \"Wi-Fi\", lalu klik \"Manage known networks\".",
+            "Akan muncul daftar nama WiFi yang pernah tersambung. Cari nama WiFi kantor.",
+            "Klik nama WiFi kantor tersebut, lalu klik tombol \"Forget\".",
+            "Kembali ke pojok kanan bawah layar, klik ikon WiFi.",
+            "Cari kembali nama WiFi kantor pada daftar, lalu klik \"Connect\".",
+            "Masukkan kata sandi WiFi kantor saat diminta, lalu klik \"Next\".",
+            "Tunggu sekitar 15 detik hingga muncul tulisan \"Connected\"."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Jalankan Perbaikan Otomatis Windows",
+          "pengantar": "Dipakai bila kedua cara di atas belum berhasil. Windows memiliki alat perbaikan jaringan bawaan yang memeriksa dan memperbaiki sendiri.",
+          "langkah": [
+            "Klik tombol Start di bagian bawah layar.",
+            "Ketik kata \"Get Help\" pada kotak pencarian, lalu tekan Enter.",
+            "Setelah aplikasi Get Help terbuka, ketik \"network troubleshooter\" pada kotak pertanyaannya.",
+            "Ikuti petunjuk yang muncul di layar. Alat ini akan memeriksa jaringan secara otomatis.",
+            "Bila diminta izin melakukan perbaikan, pilih \"Yes\" atau \"Apply this fix\".",
+            "Tunggu sampai pemeriksaan selesai, biasanya sekitar 2 sampai 3 menit.",
+            "Setelah selesai, restart komputer melalui tombol Start, ikon daya, lalu \"Restart\".",
+            "Setelah komputer menyala, coba sambungkan kembali ke WiFi kantor.",
+            "Bila tetap gagal, laporkan kepada Engineer ICT dan sebutkan bahwa ketiga cara sudah dicoba."
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "tidak",
+        "bisa",
+        "terhubung",
+        "wifi",
+        "kantor",
+        "nama",
+        "tampil",
+        "daftar",
+        "gagal",
+        "membuka",
+        "situs",
+        "pun",
+        "fitur",
+        "komputer",
+        "sedang",
+        "dimatikan",
+        "mode",
+        "pesawat",
+        "airplane",
+        "sengaja",
+        "menyala",
+        "posisi",
+        "terlalu",
+        "jauh",
+        "alat",
+        "pemancar",
+        "kata",
+        "sandi",
+        "telah",
+        "diperbarui",
+        "fungsi",
+        "ict"
+      ]
+    },
+    {
+      "id": "lan-tidak-ada-koneksi-internet-melalui",
+      "divisi": "lan",
+      "judul": "Tidak Ada Koneksi Internet melalui Kabel LAN",
+      "gejala": "Tidak bisa membuka situs apa pun. Ikon jaringan di pojok kanan bawah bertanda silang atau berbentuk bola dunia.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kabel jaringan terlepas dari komputer atau dari lubang di dinding",
+        "Kabel jaringan rusak atau tertekuk",
+        "Lubang jaringan di dinding sedang tidak aktif",
+        "Gangguan jaringan pada area tersebut"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Periksa dan Pasang Ulang Kabel Jaringan",
+          "pengantar": null,
+          "langkah": [
+            "Lihat bagian belakang atau samping komputer Anda. Cari kabel yang ujungnya mirip colokan telepon tetapi lebih lebar, berwarna bening dengan pengait kecil. Itulah kabel jaringan.",
+            "Pegang ujung kabel tersebut, lalu tekan masuk perlahan sampai terdengar bunyi klik. Bunyi klik menandakan kabel sudah terkunci.",
+            "Telusuri kabel itu sampai ujung satunya, biasanya menuju lubang kecil di dinding atau di bawah meja. Tekan juga ujung tersebut sampai berbunyi klik.",
+            "Perhatikan lubang tempat kabel masuk di komputer. Di sisinya ada lampu sangat kecil yang seharusnya menyala hijau atau berkedip.",
+            "Bila lampu kecil itu mati, cabut kabel, tunggu 10 detik, lalu pasang kembali sampai berbunyi klik.",
+            "Perhatikan apakah ada bagian kabel yang tertindih kaki meja, terjepit pintu, atau tertekuk tajam. Bila ada, rapikan posisinya perlahan.",
+            "Tunggu sekitar 1 menit, lalu periksa ikon jaringan di pojok kanan bawah layar.",
+            "Coba buka satu situs untuk menguji koneksi."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Restart Komputer",
+          "pengantar": "Dipakai bila kabel sudah terpasang benar tetapi internet tetap tidak jalan. Restart menyegarkan sambungan jaringan pada komputer.",
+          "langkah": [
+            "Simpan seluruh pekerjaan Anda yang belum tersimpan.",
+            "Klik tombol Start di bagian bawah layar.",
+            "Klik ikon tombol daya, lalu pilih \"Restart\".",
+            "Tunggu sampai komputer menyala kembali dan masuk ke layar utama.",
+            "Tunggu tambahan 2 menit agar sambungan jaringan siap sepenuhnya.",
+            "Lihat ikon jaringan di pojok kanan bawah layar. Pastikan tidak ada tanda silang atau tanda seru.",
+            "Coba buka dua situs berbeda untuk menguji koneksi."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Jalankan Perbaikan Otomatis Windows",
+          "pengantar": "Dipakai bila kedua cara di atas belum berhasil.",
+          "langkah": [
+            "Klik tombol Start di bagian bawah layar.",
+            "Ketik kata \"Get Help\" pada kotak pencarian, lalu tekan Enter.",
+            "Setelah aplikasi Get Help terbuka, ketik \"network troubleshooter\" pada kotak pertanyaannya.",
+            "Ikuti petunjuk yang muncul di layar.",
+            "Bila diminta izin melakukan perbaikan, pilih \"Yes\" atau \"Apply this fix\".",
+            "Tunggu sampai pemeriksaan selesai, biasanya 2 sampai 3 menit.",
+            "Coba buka satu situs untuk menguji koneksi.",
+            "Bila tetap gagal, tanyakan kepada rekan di ruangan yang sama apakah mereka juga terputus.",
+            "Laporkan kepada Engineer ICT beserta jawaban rekan Anda, karena keterangan itu membantu menentukan apakah gangguannya menyeluruh."
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "tidak",
+        "koneksi",
+        "internet",
+        "melalui",
+        "kabel",
+        "lan",
+        "bisa",
+        "membuka",
+        "situs",
+        "pun",
+        "ikon",
+        "jaringan",
+        "pojok",
+        "kanan",
+        "bawah",
+        "bertanda",
+        "silang",
+        "berbentuk",
+        "bola",
+        "dunia",
+        "terlepas",
+        "komputer",
+        "lubang",
+        "dinding",
+        "rusak",
+        "tertekuk",
+        "sedang",
+        "aktif",
+        "gangguan",
+        "area",
+        "tersebut"
+      ]
+    },
+    {
+      "id": "lan-lampu-pada-lubang-kabel-jaringan",
+      "divisi": "lan",
+      "judul": "Lampu pada Lubang Kabel Jaringan Tidak Menyala",
+      "gejala": "Kabel jaringan sudah terpasang, tetapi lampu kecil di sebelah lubang kabel pada komputer tidak menyala sama sekali.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kabel jaringan putus di bagian dalam meski luarnya terlihat baik",
+        "Pengait plastik pada ujung kabel patah sehingga tidak terkunci",
+        "Lubang jaringan di dinding sedang tidak aktif"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Cabut kabel jaringan dari komputer, lalu perhatikan ujungnya.",
+            "Periksa pengait plastik kecil di ujung kabel. Bila pengait itu patah, kabel tidak akan terkunci dan perlu diganti.",
+            "Pasang kembali kabel, tekan sampai berbunyi klik, lalu perhatikan lampu kecil di sisi lubang.",
+            "Bila masih mati, coba pindahkan ujung kabel yang di dinding ke lubang jaringan lain di dekat meja Anda.",
+            "Perhatikan kembali lampu kecil di komputer setelah pemindahan tersebut.",
+            "Bila tersedia kabel jaringan cadangan, coba ganti dengan kabel tersebut untuk memastikan apakah kabel lama yang bermasalah.",
+            "Bila lampu tetap mati pada semua percobaan, catat lokasi meja Anda, lalu laporkan kepada Engineer ICT."
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "lampu",
+        "lubang",
+        "kabel",
+        "jaringan",
+        "tidak",
+        "menyala",
+        "terpasang",
+        "kecil",
+        "sebe",
+        "komputer",
+        "sama",
+        "putus",
+        "bagian",
+        "meski",
+        "luar",
+        "terlihat",
+        "baik",
+        "pengait",
+        "plastik",
+        "ujung",
+        "patah",
+        "sehingga",
+        "terkunci",
+        "dinding",
+        "sedang",
+        "aktif"
+      ]
+    },
+    {
+      "id": "lan-koneksi-jaringan-terasa-lambat",
+      "divisi": "lan",
+      "judul": "Koneksi Jaringan Terasa Lambat",
+      "gejala": "Internet tetap tersambung, tetapi membuka halaman terasa lama dan mengunduh berkas berjalan lambat.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Banyak aplikasi memakai jaringan secara bersamaan",
+        "Pembaruan sistem sedang berjalan tanpa disadari",
+        "Pemakaian jaringan sedang padat pada jam sibuk"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Lihat bagian bawah layar Anda. Tutup aplikasi yang tidak sedang dipakai dengan mengklik tanda silang di pojok kanan atas setiap jendela.",
+            "Pada aplikasi peramban seperti Chrome atau Edge, tutup tab yang tidak diperlukan. Tab adalah kotak-kotak judul yang berjajar di bagian atas.",
+            "Perhatikan apakah ada aplikasi yang sedang mengunduh berkas besar. Biasanya terlihat bar biru berjalan di bagian bawah peramban.",
+            "Restart komputer. Klik tombol Start di bawah layar, klik ikon tombol daya, lalu pilih \"Restart\".",
+            "Setelah menyala kembali, tunggu sekitar 3 menit sebelum mulai bekerja, karena komputer masih menyiapkan sambungan.",
+            "Coba buka dua atau tiga situs yang berbeda untuk memastikan apakah lambatnya terjadi pada semua situs atau hanya satu situs.",
+            "Tanyakan kepada rekan di ruangan yang sama apakah mereka merasakan hal serupa.",
+            "Bila lambat berlangsung sepanjang hari dan dialami banyak orang, laporkan kepada Engineer ICT."
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "koneksi",
+        "jaringan",
+        "terasa",
+        "lambat",
+        "internet",
+        "tetap",
+        "terhubung",
+        "membuka",
+        "halaman",
+        "lama",
+        "mengunduh",
+        "berkas",
+        "berjalan",
+        "banyak",
+        "aplikasi",
+        "memakai",
+        "secara",
+        "bersamaan",
+        "pembaruan",
+        "sistem",
+        "sedang",
+        "tanpa",
+        "disadari",
+        "pemakaian",
+        "padat",
+        "macet",
+        "sibuk"
+      ]
+    },
+    {
+      "id": "lan-seluruh-komputer-di-satu-ruangan",
+      "divisi": "lan",
+      "judul": "Seluruh Komputer di Satu Ruangan Terputus Bersamaan",
+      "gejala": "Semua orang di ruangan kehilangan koneksi pada waktu yang sama. Lampu pada perangkat jaringan di ruangan mati.",
+      "kategori": "berat",
+      "penyebab": [
+        "Kerusakan pada perangkat pembagi jaringan",
+        "Gangguan pasokan listrik pada perangkat jaringan",
+        "Kerusakan jalur kabel utama"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Silakan hubungi Engineer melalui tombol WhatsApp. Sebutkan nama ruangan dan perkiraan jumlah komputer yang terdampak.",
+      "kataKunci": [
+        "seluruh",
+        "komputer",
+        "satu",
+        "ruangan",
+        "putus",
+        "bersamaan",
+        "orang",
+        "kehilangan",
+        "koneksi",
+        "sama",
+        "lampu",
+        "perangkat",
+        "jaringan",
+        "mati",
+        "kerusakan",
+        "pembagi",
+        "gangguan",
+        "pasokan",
+        "listrik",
+        "jalur",
+        "kabel",
+        "utama"
+      ]
+    },
+    {
+      "id": "lan-diminta-mengubah-pengaturan-jaringan",
+      "divisi": "lan",
+      "judul": "Diminta Mengubah Pengaturan Jaringan",
+      "gejala": "Ada permintaan atau petunjuk untuk mengganti alamat IP, DNS, atau pengaturan jaringan lainnya.",
+      "kategori": "berat",
+      "penyebab": [
+        "Pengaturan jaringan komputer berubah",
+        "Diperlukan penyesuaian konfigurasi jaringan"
+      ],
+      "solusi": [],
+      "penanganan": "Perubahan pengaturan jaringan memerlukan hak administrator serta pengetahuan mengenai skema jaringan Field Lirik. Tindakan ini tidak boleh dilakukan sendiri karena dapat memutus koneksi pengguna lain. Silakan hubungi Engineer melalui tombol WhatsApp.",
+      "kataKunci": [
+        "diminta",
+        "mengubah",
+        "pengaturan",
+        "jaringan",
+        "permintaan",
+        "petunjuk",
+        "mengganti",
+        "alamat",
+        "dns",
+        "lain",
+        "komputer",
+        "berubah",
+        "diperlukan",
+        "penyesuaian",
+        "konfigurasi"
+      ]
+    },
+    {
+      "id": "wan-wan-putus-sesaat-koneksi-internet",
+      "divisi": "wan",
+      "judul": "WAN Putus Sesaat (Koneksi Internet Terputus Sementara)",
+      "gejala": "",
+      "kategori": "ringan",
+      "penyebab": [
+        "Gangguan sementara pada jalur koneksi WAN",
+        "Router perlu di-restart",
+        "Kabel koneksi longgar",
+        "Interferensi pada jalur wireless (jika menggunakan wireless link)"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Tunggu 2-3 menit, karena koneksi WAN yang putus sesaat biasanya akan kembali otomatis",
+            "Periksa lampu indikator pada router/modem, pastikan lampu WAN dan Internet menyala hijau",
+            "Restart router/modem dengan mematikan, tunggu 30 detik, lalu nyalakan kembali",
+            "Periksa kabel yang terhubung ke router, pastikan semuanya terpasang erat",
+            "Coba akses internet kembali setelah router selesai booting (tunggu 1-2 menit)"
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "wan",
+        "putus",
+        "sesaat",
+        "koneksi",
+        "internet",
+        "sementara",
+        "gangguan",
+        "jalur",
+        "router",
+        "restart",
+        "kabel",
+        "longgar",
+        "interferensi",
+        "wifi",
+        "menggunakan",
+        "link"
+      ]
+    },
+    {
+      "id": "wan-vpn-tidak-bisa-connect",
+      "divisi": "wan",
+      "judul": "VPN Tidak Bisa Connect",
+      "gejala": "",
+      "kategori": "ringan",
+      "penyebab": [
+        "Koneksi internet dasar tidak tersedia",
+        "Credential VPN salah atau expired",
+        "Aplikasi VPN client bermasalah"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Pastikan koneksi internet dasar berjalan normal terlebih dahulu (coba buka website)",
+            "Periksa username dan password VPN, pastikan diketik dengan benar",
+            "Tutup aplikasi VPN, tunggu beberapa detik, lalu buka dan connect kembali",
+            "Restart komputer lalu coba connect VPN kembali",
+            "Jika masih tidak bisa, kemungkinan akun VPN perlu di-reset oleh Engineer"
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "vpn",
+        "tidak",
+        "bisa",
+        "terhubung",
+        "koneksi",
+        "internet",
+        "dasar",
+        "tersedia",
+        "credential",
+        "salah",
+        "expired",
+        "aplikasi",
+        "client",
+        "bermasa"
+      ]
+    },
+    {
+      "id": "wan-internet-kantor-down-seluruh-kantor",
+      "divisi": "wan",
+      "judul": "Internet Kantor Down (Seluruh Kantor Tidak Ada Internet)",
+      "gejala": "",
+      "kategori": "ringan",
+      "penyebab": [
+        "Gangguan dari provider/ISP",
+        "Router utama bermasalah",
+        "Gangguan pada link WAN utama"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Konfirmasi dengan rekan kerja di area lain apakah internet juga mati",
+            "Periksa router utama jika bisa dijangkau, lihat apakah lampu indikator normal",
+            "Jika router terlihat mati atau lampu tidak normal, restart router",
+            "Tunggu 5-10 menit setelah restart untuk koneksi kembali stabil",
+            "Jika internet seluruh kantor masih down, segera laporkan ke Engineer ICT"
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "internet",
+        "kantor",
+        "down",
+        "seluruh",
+        "tidak",
+        "gangguan",
+        "provider",
+        "isp",
+        "router",
+        "utama",
+        "bermasa",
+        "link",
+        "wan"
+      ]
+    },
+    {
+      "id": "wan-gangguan-wan-yang-berkepanjangan",
+      "divisi": "wan",
+      "judul": "Gangguan WAN yang Berkepanjangan",
+      "gejala": "",
+      "kategori": "berat",
+      "penyebab": [
+        "Kerusakan pada perangkat jaringan inti",
+        "Gangguan pada jalur fiber backbone",
+        "Masalah pada sisi provider/ISP"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Silakan hubungi Engineer melalui tombol WhatsApp.",
+      "kataKunci": [
+        "gangguan",
+        "wan",
+        "berkepanjangan",
+        "kerusakan",
+        "perangkat",
+        "jaringan",
+        "inti",
+        "jalur",
+        "fiber",
+        "backbone",
+        "masa",
+        "sisi",
+        "provider",
+        "isp"
+      ]
+    },
+    {
+      "id": "wan-konfigurasi-router-firewall",
+      "divisi": "wan",
+      "judul": "Konfigurasi Router / Firewall",
+      "gejala": "",
+      "kategori": "berat",
+      "penyebab": [],
+      "solusi": [],
+      "penanganan": "Konfigurasi router dan firewall memerlukan hak administrator dan penanganan langsung oleh Engineer ICT. Silakan hubungi Engineer melalui tombol WhatsApp.",
+      "kataKunci": [
+        "konfigurasi",
+        "router",
+        "firewall"
       ]
     }
   ]

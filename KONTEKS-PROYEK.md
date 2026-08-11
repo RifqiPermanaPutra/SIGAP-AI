@@ -100,7 +100,7 @@ Seluruh modul AI sudah dihapus: `ragService.js`, `embeddingService.js`,
 ## 5. Cara Kerja Sekarang (tanpa AI)
 
 ```
-knowledge-base/<divisi>/sop-*.md          (sumber, ditulis manusia)
+knowledge-base/<divisi>.json              (sumber, ditulis manusia)
         │
         │  npm run build:kb
         ▼
@@ -117,7 +117,7 @@ Keluhan pengguna ──> teksUtil.js ──> answerService.js ──> jawaban
 |---|---|
 | `server/services/teksUtil.js` | Penyeragam bahasa: sinonim, kata umum, akhiran |
 | `server/services/answerService.js` | Pencocokan keluhan + penyusun jawaban |
-| `scripts/build-kb.js` | Pengurai Markdown SOP → JSON |
+| `scripts/build-kb.js` | Penggabung SOP per layanan → satu basis pengetahuan |
 | `server/data/knowledge-base.json` | Hasil bangun (jangan disunting manual) |
 
 **Cara pencocokan** (tanpa AI, murni kata kunci):
@@ -252,7 +252,7 @@ Seluruhnya ada **29 penanda**. Yang benar-benar mendesak hanya **11 penanda
 pada Printer dan Windows**, karena hanya kedua divisi itu yang isinya sampai ke
 pengguna.
 
-Panduan pengumpulan data dari engineer: `knowledge-base/_TEMPLATE-PENGISIAN.md`
+Kontrak berkas SOP beserta penjelasan tiap medan: `server/data/sop.schema.json`
 
 Sejak ada halaman `/sop-editor`, SOP dapat disunting langsung lewat peramban
 oleh admin — tidak perlu lagi menyunting Markdown, menjalankan `npm run

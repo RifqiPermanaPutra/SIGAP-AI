@@ -140,3 +140,20 @@ export function tokenisasi(teks) {
 
   return hasil;
 }
+
+/**
+ * Kata kunci sebuah masalah — inilah yang dicocokkan dengan kalimat keluhan.
+ *
+ * Diambil dari judul, gejala, dan penyebab; langkah penyelesaian SENGAJA tidak
+ * ikut. Langkah berisi kata-kata tindakan ("tekan", "buka", "cabut") yang
+ * muncul di hampir semua masalah, sehingga menyertakannya justru mengaburkan
+ * pembeda antar masalah alih-alih mempertajamnya.
+ *
+ * Dipakai `scripts/build-kb.js` saat membangun basis pengetahuan. Hasilnya
+ * TIDAK disimpan di berkas SOP: ia turunan, dan turunan yang ikut tersimpan
+ * dapat bergeser diam-diam dari kalimat yang menurunkannya.
+ */
+export function kataKunciMasalah(masalah) {
+  const sumber = [masalah.judul, masalah.gejala, ...(masalah.penyebab || [])].join(' ');
+  return [...new Set(tokenisasi(sumber))];
+}

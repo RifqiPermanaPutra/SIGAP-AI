@@ -1,0 +1,182 @@
+{
+  "$schema": "../server/data/sop.schema.json",
+  "divisi": "ftth",
+  "nama": "FTTH",
+  "catatanKonfirmasi": [
+    "Merek dan tipe perangkat yang digunakan di tiap lokasi",
+    "Penyedia layanan fiber serta kontak gangguannya",
+    "Arti pasti setiap lampu pada perangkat yang dipakai",
+    "Letak pemasangan perangkat di tiap area",
+    "Apakah pengguna diperbolehkan mematikan dan menyalakan perangkat sendiri",
+    "Prosedur pelaporan gangguan yang berdampak satu area"
+  ],
+  "masalah": [
+    {
+      "id": "ftth-lampu-los-menyala-merah-pada",
+      "judul": "Lampu LOS Menyala Merah pada Perangkat Internet",
+      "gejala": "Pada kotak perangkat internet terdapat lampu bertuliskan LOS yang menyala atau berkedip merah. Internet mati total.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kabel fiber terlepas dari perangkat",
+        "Kabel fiber tertekuk tajam, terjepit, atau tertindih barang",
+        "Gangguan pada jalur kabel di luar ruangan",
+        "Gangguan dari penyedia layanan internet"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Periksa Posisi Kabel Fiber",
+          "pengantar": null,
+          "langkah": [
+            "Temukan kotak perangkat internet Anda. Bentuknya kotak kecil berwarna putih atau hitam dengan beberapa lampu kecil di bagian depan.",
+            "Perhatikan deretan lampu di bagian depan. Cari lampu yang di bawahnya tertulis LOS. Bila menyala merah, berarti sambungan kabel fiber terputus.",
+            "Lihat bagian belakang perangkat. Cari kabel yang sangat kecil dan tipis, biasanya berwarna kuning atau hijau, jauh lebih kecil daripada kabel lain. Itulah kabel fiber.",
+            "JANGAN mencabut kabel fiber tersebut. Cukup periksa apakah ujungnya masih terpasang rapat pada perangkat.",
+            "Telusuri kabel fiber itu perlahan. Perhatikan apakah ada bagian yang tertindih kaki meja, terjepit pintu, atau tertekuk membentuk sudut tajam.",
+            "Bila ada yang tertindih, angkat benda tersebut dengan hati-hati dan rapikan posisi kabelnya. Jangan menarik kabelnya.",
+            "Tunggu sekitar 1 menit, lalu perhatikan kembali apakah lampu LOS sudah padam."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Matikan dan Nyalakan Ulang Perangkat",
+          "pengantar": "Dipakai bila lampu LOS tetap merah setelah posisi kabel dirapikan. Mematikan\r perangkat memaksa sambungan ke penyedia layanan dibangun ulang dari awal.",
+          "langkah": [
+            "Cari kabel listrik perangkat, yaitu kabel yang menuju stopkontak di dinding.",
+            "Cabut kabel tersebut dari stopkontak.",
+            "Bila perangkat memiliki tombol bertuliskan Power atau ON/OFF, tekan juga ke posisi mati.",
+            "Tunggu sekitar 60 detik. Jangan terburu-buru, perangkat memerlukan waktu untuk benar-benar mati.",
+            "Pasang kembali kabel listrik ke stopkontak, lalu tekan tombol daya ke posisi menyala.",
+            "Tunggu sekitar 3 menit tanpa melakukan apa pun. Lampu akan berkedip-kedip, dan ini normal.",
+            "Setelah 3 menit, perhatikan lampu LOS. Bila sudah padam, coba buka satu situs untuk menguji.",
+            "Bila lampu LOS masih merah, ulangi sekali lagi dari langkah 2, namun kali ini tunggu 5 menit."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Pastikan Gangguan Bersifat Menyeluruh",
+          "pengantar": "Dipakai bila lampu LOS tetap merah. Langkah ini bukan untuk memperbaiki, melainkan\r mengumpulkan keterangan agar engineer dapat menangani lebih cepat.",
+          "langkah": [
+            "Tanyakan kepada rekan di ruangan lain, apakah internet mereka juga mati.",
+            "Perhatikan apakah ada pekerjaan penggalian, perbaikan jalan, atau alat berat di sekitar area belakangan ini.",
+            "Catat sejak kapan internet mati, sebutkan jam bila masih ingat.",
+            "Catat lokasi Anda, misalnya nama gedung atau ruangan.",
+            "Catat lampu apa saja yang menyala dan warnanya pada perangkat internet.",
+            "Laporkan kepada Engineer ICT beserta seluruh catatan tersebut. Lampu LOS merah yang menetap menandakan gangguan pada jalur kabel di luar ruangan yang hanya dapat ditangani engineer."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "ftth-perangkat-internet-tidak-menyala-sama",
+      "judul": "Perangkat Internet Tidak Menyala Sama Sekali",
+      "gejala": "Seluruh lampu pada kotak perangkat internet padam. Tidak ada internet sama sekali.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kabel listrik perangkat terlepas",
+        "Stopkontak tidak dialiri listrik",
+        "Tombol daya perangkat dalam posisi mati"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Temukan kotak perangkat internet Anda, lalu perhatikan bagian depannya. Pastikan benar-benar tidak ada satu pun lampu yang menyala.",
+            "Lihat bagian belakang atau samping perangkat. Cari tombol kecil bertuliskan Power atau ON/OFF. Pastikan tombol tersebut dalam posisi ditekan atau menyala.",
+            "Telusuri kabel listrik perangkat sampai ke stopkontak di dinding.",
+            "Pastikan kepala kabel tertancap penuh ke stopkontak, tidak longgar atau setengah masuk.",
+            "Untuk memastikan stopkontak berfungsi, coba colokkan perangkat lain seperti pengisi daya ponsel ke stopkontak yang sama.",
+            "Bila perangkat lain juga tidak menyala, berarti masalahnya pada aliran listrik ruangan tersebut, bukan pada perangkat internet.",
+            "Bila stopkontak berfungsi normal, cabut kabel listrik perangkat internet, tunggu 30 detik, lalu pasang kembali.",
+            "Tunggu sekitar 2 menit dan perhatikan apakah lampu mulai menyala.",
+            "Bila seluruh lampu tetap padam, laporkan kepada Engineer ICT. Sebutkan bahwa perangkat tidak menyala sama sekali meski listrik normal."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "ftth-lampu-pon-berkedip-terus-menerus",
+      "judul": "Lampu PON Berkedip Terus Menerus",
+      "gejala": "Lampu bertuliskan PON pada perangkat berkedip terus dan tidak pernah menyala tetap. Internet tidak bisa dipakai.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Perangkat sedang berusaha menyambung ke penyedia layanan",
+        "Data perangkat belum terdaftar di sistem penyedia layanan",
+        "Sedang ada gangguan dari penyedia layanan"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Perhatikan deretan lampu pada perangkat. Cari lampu bertuliskan PON dan lampu bertuliskan LOS.",
+            "Pastikan lampu LOS tidak menyala merah. Bila LOS merah, ikuti panduan untuk lampu LOS merah terlebih dahulu.",
+            "Bila hanya PON yang berkedip, tunggu sekitar 5 menit tanpa melakukan apa pun. Proses penyambungan memang memerlukan waktu.",
+            "Bila setelah 5 menit masih berkedip, cabut kabel listrik perangkat dari stopkontak.",
+            "Tunggu sekitar 30 detik.",
+            "Pasang kembali kabel listrik ke stopkontak.",
+            "Tunggu sampai 5 menit lagi sambil memperhatikan lampu PON.",
+            "Bila lampu PON akhirnya menyala tetap dan tidak berkedip, internet seharusnya sudah dapat digunakan. Coba buka satu situs untuk memastikan.",
+            "Bila lampu PON tetap berkedip setelah semua langkah ini, laporkan kepada Engineer ICT untuk diperiksa ke penyedia layanan."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "ftth-internet-dari-fiber-terasa-lambat",
+      "judul": "Internet dari Fiber Terasa Lambat",
+      "gejala": "Internet tetap tersambung, tetapi membuka halaman terasa lama dan mengunduh berkas berjalan lambat.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Banyak perangkat memakai jaringan bersamaan",
+        "Ada unduhan besar berjalan tanpa disadari",
+        "Perangkat sudah berminggu-minggu menyala tanpa pernah dimatikan"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Tutup aplikasi yang sedang mengunduh berkas berukuran besar pada komputer Anda.",
+            "Tanyakan kepada rekan di ruangan yang sama, apakah mereka juga merasakan internet lambat.",
+            "Bila hanya Anda yang merasakannya, kemungkinan masalahnya pada komputer Anda, bukan pada perangkat internet.",
+            "Bila semua orang merasakannya, lanjutkan ke langkah berikut.",
+            "Cabut kabel listrik perangkat internet dari stopkontak.",
+            "Tunggu sekitar 30 detik.",
+            "Pasang kembali kabel listrik, lalu tunggu sekitar 2 menit sampai lampu berhenti berkedip.",
+            "Coba buka dua atau tiga situs berbeda untuk menguji kecepatannya.",
+            "Bila internet tetap lambat sepanjang hari, laporkan kepada Engineer ICT beserta keterangan berapa banyak orang yang terdampak."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "ftth-kabel-fiber-optik-putus-atau",
+      "judul": "Kabel Fiber Optik Putus atau Rusak",
+      "gejala": "Kabel fiber terlihat putus, terpotong, atau rusak. Bisa terjadi akibat pekerjaan penggalian atau alat berat di sekitar area.",
+      "kategori": "berat",
+      "penyebab": [
+        "Kabel terkena alat berat atau pekerjaan penggalian",
+        "Kabel tertarik hingga putus",
+        "Kerusakan pada ujung sambungan kabel"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Kabel fiber optik tidak boleh disambung sendiri karena memerlukan alat khusus, dan ujung kabel yang patah dapat melukai mata bila ditatap langsung. Jangan menyentuh atau menatap ujung kabel yang putus. Silakan hubungi Engineer melalui tombol WhatsApp."
+    },
+    {
+      "id": "ftth-perangkat-internet-rusak-atau-berbau",
+      "judul": "Perangkat Internet Rusak atau Berbau Terbakar",
+      "gejala": "Perangkat terasa sangat panas, tercium bau terbakar, keluar asap, atau lampu menyala dengan pola yang tidak wajar.",
+      "kategori": "berat",
+      "penyebab": [
+        "Kerusakan akibat lonjakan listrik atau sambaran petir",
+        "Kerusakan pada bagian pengubah daya",
+        "Perangkat telah melewati usia pakai"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Bila tercium bau terbakar atau keluar asap, segera cabut kabel listrik perangkat dari stopkontak dan jauhkan barang mudah terbakar. Silakan hubungi Engineer melalui tombol WhatsApp."
+    }
+  ]
+}

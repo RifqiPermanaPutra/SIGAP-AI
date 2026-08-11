@@ -17,7 +17,7 @@ import {
   tambahMasalah, hapusMasalah
 } from '../services/sopBerkas.js';
 import { cariMasalah, kandidatTeratas, AMBANG_COCOK } from '../services/answerService.js';
-import { DIVISI_KE_FOLDER } from '../services/sopParser.js';
+import { jalurSopDivisi } from '../services/sopJson.js';
 import { DIVISIONS } from '../config/divisi.js';
 
 export const sopRouter = Router();
@@ -25,7 +25,7 @@ export const sopRouter = Router();
 /** Seluruh rute penyunting SOP mengubah atau memperlihatkan sumber kebenaran */
 sopRouter.use(wajibMasuk('admin'));
 
-const divisiSah = (divisi) => Boolean(DIVISI_KE_FOLDER[divisi]);
+const divisiSah = (divisi) => Boolean(jalurSopDivisi(divisi));
 
 /**
  * GET /api/sop
@@ -77,12 +77,14 @@ sopRouter.get('/:divisi', (req, res) => {
 
 /**
  * POST /api/sop/:divisi/:masalahId/pratinjau
- * Susun Markdown dan urai kembali tanpa menulis apa pun.
+ * Susun bentuk akhir masalah tanpa menulis apa pun.
  *
  * Wajib dilihat admin sebelum menimpa berkas asli: yang menentukan apakah SOP
- * ini akan pernah ditemukan pengguna bukan bentuk formulirnya, melainkan hasil
- * urainya — kata kunci apa yang terkumpul, dan berapa solusi yang benar-benar
- * terbaca.
+ * ini akan pernah ditemukan pengguna bukan bentuk formulirnya, melainkan
+ * KATA KUNCI yang terkumpul darinya. Judul dan gejala yang terdengar wajar
+ * bagi manusia bisa saja tidak pernah menembus ambang pencocokan.
+ *
+ * `masalahId` boleh berisi penanda 'baru' untuk masalah yang belum ada.
  */
 sopRouter.post('/:divisi/:masalahId/pratinjau', (req, res) => {
   const { divisi, masalahId } = req.params;
@@ -98,8 +100,7 @@ sopRouter.post('/:divisi/:masalahId/pratinjau', (req, res) => {
 
   res.json({
     success: true,
-    markdown: hasil.markdown,
-    // Hasil urai apa adanya — inilah yang akan masuk ke basis pengetahuan
+    // Bentuk akhir apa adanya — inilah yang akan masuk ke basis pengetahuan
     hasil: {
       id: hasil.hasil.id,
       judul: hasil.hasil.judul,

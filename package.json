@@ -14,7 +14,8 @@
     "cadangkan": "node scripts/cadangkan.js",
     "perbaiki-status": "node scripts/perbaiki-status-diteruskan.js",
     "test": "node tests/jalankan.mjs",
-    "bersihkan-sesi": "node scripts/bersihkan-sesi-kosong.js"
+    "bersihkan-sesi": "node scripts/bersihkan-sesi-kosong.js",
+    "periksa-kb": "node scripts/periksa-kb.js"
   },
   "keywords": [
     "helpdesk",

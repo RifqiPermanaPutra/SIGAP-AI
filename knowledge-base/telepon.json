@@ -1,0 +1,96 @@
+{
+  "$schema": "../server/data/sop.schema.json",
+  "divisi": "telepon",
+  "nama": "Telepon",
+  "catatanKonfirmasi": [],
+  "masalah": [
+    {
+      "id": "telepon-telepon-tidak-ada-nada-no",
+      "judul": "Telepon Tidak Ada Nada (No Dial Tone)",
+      "gejala": "",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kabel telepon terlepas dari port di dinding atau di belakang pesawat telepon",
+        "Pesawat telepon tidak terhubung dengan baik",
+        "Gangguan pada line telepon internal"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Periksa kabel telepon yang terhubung dari pesawat telepon ke port dinding (jack RJ-11), pastikan terpasang erat",
+            "Cabut dan pasang kembali kabel telepon di kedua ujungnya",
+            "Coba ganti pesawat telepon dengan yang lain untuk memastikan bukan masalah di pesawat teleponnya",
+            "Tekan tombol di pesawat telepon lalu angkat gagang, dengarkan apakah nada sudah muncul",
+            "Jika masih tidak ada nada, kemungkinan gangguan pada line dan perlu penanganan engineer"
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "telepon-telepon-tidak-bisa-menghubungi-nomor",
+      "judul": "Telepon Tidak Bisa Menghubungi Nomor Tertentu",
+      "gejala": "",
+      "kategori": "ringan",
+      "penyebab": [
+        "Nomor extension yang dituju salah",
+        "Nomor tujuan sedang sibuk atau tidak aktif",
+        "Pembatasan panggilan (call restriction) aktif pada extension tersebut"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Pastikan nomor extension atau nomor tujuan yang Anda hubungi sudah benar",
+            "Coba hubungi nomor extension lain untuk memastikan pesawat telepon Anda berfungsi normal",
+            "Periksa apakah ada nada sibuk (busy tone) saat menghubungi - jika ya, coba beberapa saat lagi",
+            "Pastikan Anda menggunakan kode akses yang benar jika menelepon keluar (misalnya tekan 9 atau 0 dulu)",
+            "Jika tetap tidak bisa, kemungkinan ada pembatasan panggilan yang perlu diperiksa engineer"
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "telepon-suara-telepon-putusputus-atau-berisik",
+      "judul": "Suara Telepon Putus-Putus atau Berisik",
+      "gejala": "",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kabel telepon rusak atau longgar",
+        "Gangguan interferensi dari perangkat elektronik di sekitar",
+        "Port jack telepon bermasalah"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Periksa dan pastikan kabel telepon dalam kondisi baik, tidak ada bagian yang terkelupas",
+            "Cabut dan pasang kembali kabel telepon pada kedua ujungnya",
+            "Jauhkan kabel telepon dari sumber interferensi seperti speaker atau perangkat listrik besar",
+            "Coba pindahkan pesawat telepon ke port jack yang berbeda jika tersedia",
+            "Jika suara masih bermasalah, kemungkinan gangguan pada jalur kabel dan perlu penanganan engineer"
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "telepon-gangguan-sistem-pabx-ip-phone",
+      "judul": "Gangguan Sistem PABX / IP Phone",
+      "gejala": "",
+      "kategori": "berat",
+      "penyebab": [
+        "Kerusakan pada sistem PABX pusat",
+        "Gangguan konfigurasi IP Phone",
+        "Masalah server telepon"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Silakan hubungi Engineer melalui tombol WhatsApp."
+    }
+  ]
+}

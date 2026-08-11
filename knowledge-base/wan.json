@@ -1,0 +1,106 @@
+{
+  "$schema": "../server/data/sop.schema.json",
+  "divisi": "wan",
+  "nama": "WAN",
+  "catatanKonfirmasi": [],
+  "masalah": [
+    {
+      "id": "wan-wan-putus-sesaat-koneksi-internet",
+      "judul": "WAN Putus Sesaat (Koneksi Internet Terputus Sementara)",
+      "gejala": "",
+      "kategori": "ringan",
+      "penyebab": [
+        "Gangguan sementara pada jalur koneksi WAN",
+        "Router perlu di-restart",
+        "Kabel koneksi longgar",
+        "Interferensi pada jalur wireless (jika menggunakan wireless link)"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Tunggu 2-3 menit, karena koneksi WAN yang putus sesaat biasanya akan kembali otomatis",
+            "Periksa lampu indikator pada router/modem, pastikan lampu WAN dan Internet menyala hijau",
+            "Restart router/modem dengan mematikan, tunggu 30 detik, lalu nyalakan kembali",
+            "Periksa kabel yang terhubung ke router, pastikan semuanya terpasang erat",
+            "Coba akses internet kembali setelah router selesai booting (tunggu 1-2 menit)"
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "wan-vpn-tidak-bisa-connect",
+      "judul": "VPN Tidak Bisa Connect",
+      "gejala": "",
+      "kategori": "ringan",
+      "penyebab": [
+        "Koneksi internet dasar tidak tersedia",
+        "Credential VPN salah atau expired",
+        "Aplikasi VPN client bermasalah"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Pastikan koneksi internet dasar berjalan normal terlebih dahulu (coba buka website)",
+            "Periksa username dan password VPN, pastikan diketik dengan benar",
+            "Tutup aplikasi VPN, tunggu beberapa detik, lalu buka dan connect kembali",
+            "Restart komputer lalu coba connect VPN kembali",
+            "Jika masih tidak bisa, kemungkinan akun VPN perlu di-reset oleh Engineer"
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "wan-internet-kantor-down-seluruh-kantor",
+      "judul": "Internet Kantor Down (Seluruh Kantor Tidak Ada Internet)",
+      "gejala": "",
+      "kategori": "ringan",
+      "penyebab": [
+        "Gangguan dari provider/ISP",
+        "Router utama bermasalah",
+        "Gangguan pada link WAN utama"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Konfirmasi dengan rekan kerja di area lain apakah internet juga mati",
+            "Periksa router utama jika bisa dijangkau, lihat apakah lampu indikator normal",
+            "Jika router terlihat mati atau lampu tidak normal, restart router",
+            "Tunggu 5-10 menit setelah restart untuk koneksi kembali stabil",
+            "Jika internet seluruh kantor masih down, segera laporkan ke Engineer ICT"
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "wan-gangguan-wan-yang-berkepanjangan",
+      "judul": "Gangguan WAN yang Berkepanjangan",
+      "gejala": "",
+      "kategori": "berat",
+      "penyebab": [
+        "Kerusakan pada perangkat jaringan inti",
+        "Gangguan pada jalur fiber backbone",
+        "Masalah pada sisi provider/ISP"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Silakan hubungi Engineer melalui tombol WhatsApp."
+    },
+    {
+      "id": "wan-konfigurasi-router-firewall",
+      "judul": "Konfigurasi Router / Firewall",
+      "gejala": "",
+      "kategori": "berat",
+      "penyebab": [],
+      "solusi": [],
+      "penanganan": "Konfigurasi router dan firewall memerlukan hak administrator dan penanganan langsung oleh Engineer ICT. Silakan hubungi Engineer melalui tombol WhatsApp."
+    }
+  ]
+}

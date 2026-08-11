@@ -20,10 +20,6 @@ import fs from 'fs';
 import path from 'path';
 import { bagian, cek, catatan, selesai } from './bantu.mjs';
 import { AKUN_UJI } from './benih.mjs';
-import {
-  uraiBerkas, susunBerkas, susunBlok, uraiBlok,
-  berpemisah, bentukUntukPenyunting
-} from '../server/services/sopParser.js';
 
 const PORT = process.env.UJI_PORT || 3999;
 const API = `http://localhost:${PORT}/api`;
@@ -83,8 +79,14 @@ cek('ambang pencocokan ikut dikirim', printer.ambangCocok === 0.4, printer.amban
 
 const macet = printer.masalah.find((m) => /Kertas Macet/i.test(m.judul));
 cek('masalah ringan punya tiga solusi', macet.solusi.length === 3, macet.solusi.length);
-cek('awalan "Solusi Pertama:" dilepas dari judul solusi',
-  !/^Solusi (Pertama|Kedua|Ketiga)/i.test(macet.solusi[0].judul), macet.solusi[0].judul);
+// Sejak sumbernya JSON, judul solusi tersimpan apa adanya — yang dilihat
+// penyunting sama persis dengan yang tersimpan. Dulu awalan "Solusi Pertama:"
+// dilepas saat mengurai lalu ditambahkan kembali saat menyimpan; dua tafsiran
+// atas satu teks yang dapat bergeser sendiri-sendiri, dan sempat benar-benar
+// bergeser — tujuh belas blok tertulis ulang dengan judul keliru.
+cek('judul solusi tersimpan apa adanya, tanpa penguraian',
+  typeof macet.solusi[0].judul === 'string' && macet.solusi[0].judul.trim().length > 0,
+  macet.solusi[0].judul);
 
 const berat = printer.masalah.find((m) => m.kategori === 'berat');
 cek('masalah berat memakai penanganan, bukan daftar solusi',
@@ -95,37 +97,47 @@ cek('penanda [KONFIRMASI] tidak bocor ke dalam blok masalah',
   !JSON.stringify(printer.masalah).includes('[KONFIRMASI]'), 'ada yang bocor');
 catatan(`${printer.catatan.butir.length} penanda [KONFIRMASI] pada SOP printer`);
 
-bagian('3. Markdown hasil penyunting dapat diurai ulang');
+bagian('3. Seluruh berkas sumber sah dan lengkap');
 
-let blokDiperiksa = 0;
-let blokGagal = 0;
-let berkasGagal = 0;
+// Dulu bagian ini menguji perjalanan bolak-balik Markdown: urai lalu susun
+// kembali harus menghasilkan berkas yang identik. Perjalanan itu tidak ada
+// lagi — yang ditulis adalah bentuk yang sama persis dengan yang dibaca.
+// Yang tersisa untuk dijaga: setiap berkas sumber benar-benar sah dan tidak
+// kehilangan medan yang dibutuhkan pembangun basis pengetahuan.
 
-for (const folder of fs.readdirSync(SOP_DIR)) {
-  const dir = path.join(SOP_DIR, folder);
-  if (!fs.statSync(dir).isDirectory()) continue;
-  const divisi = folder === 'radio-komunikasi' ? 'radio' : folder;
+let berkasDiperiksa = 0;
+let masalahDiperiksa = 0;
+const cacatSumber = [];
 
-  for (const berkas of fs.readdirSync(dir).filter((f) => f.endsWith('.md'))) {
-    const isi = fs.readFileSync(path.join(dir, berkas), 'utf-8');
-    const dokumen = uraiBerkas(divisi, isi);
+for (const berkas of fs.readdirSync(SOP_DIR).filter((f) => f.endsWith('.json'))) {
+  const divisi = path.basename(berkas, '.json');
+  let isi;
+  try {
+    isi = JSON.parse(fs.readFileSync(path.join(SOP_DIR, berkas), 'utf-8'));
+  } catch (e) {
+    cacatSumber.push(`${berkas}: JSON tidak dapat diurai — ${e.message}`);
+    continue;
+  }
+  berkasDiperiksa++;
 
-    if (susunBerkas(dokumen) !== isi) berkasGagal++;
+  if (isi.divisi !== divisi) cacatSumber.push(`${berkas}: medan divisi "${isi.divisi}" tidak cocok nama berkas`);
+  if (!Array.isArray(isi.masalah)) { cacatSumber.push(`${berkas}: medan masalah bukan larik`); continue; }
 
-    for (const b of dokumen.blok) {
-      if (!b.masalah) continue;
-      blokDiperiksa++;
-      const markdownBaru = susunBlok(bentukUntukPenyunting(b.masalah), berpemisah(b.mentah));
-      if (JSON.stringify(uraiBlok(divisi, markdownBaru)) !== JSON.stringify(b.masalah)) {
-        blokGagal++;
-      }
-    }
+  for (const m of isi.masalah) {
+    masalahDiperiksa++;
+    if (!m.id) cacatSumber.push(`${berkas}: ada masalah tanpa id`);
+    else if (!m.id.startsWith(`${divisi}-`)) cacatSumber.push(`${m.id}: id tidak berawalan "${divisi}-"`);
+    if (!m.judul) cacatSumber.push(`${m.id}: judul kosong`);
+    if (!['ringan', 'berat'].includes(m.kategori)) cacatSumber.push(`${m.id}: kategori "${m.kategori}" tidak sah`);
+    if (m.kategori === 'ringan' && (m.solusi || []).length === 0) cacatSumber.push(`${m.id}: ringan tanpa solusi`);
+    if (m.kategori === 'berat' && (m.solusi || []).length > 0) cacatSumber.push(`${m.id}: berat tidak boleh punya solusi`);
+    if (m.kategori === 'berat' && !m.penanganan) cacatSumber.push(`${m.id}: berat tanpa penanganan`);
   }
 }
 
-cek('urai lalu susun menghasilkan berkas yang identik', berkasGagal === 0, `${berkasGagal} berkas berbeda`);
-cek('setiap blok masalah bertahan bolak-balik tanpa berubah', blokGagal === 0, `${blokGagal} blok berubah`);
-catatan(`${blokDiperiksa} blok masalah diperiksa bolak-balik`);
+cek('kedelapan berkas sumber terbaca', berkasDiperiksa === 8, berkasDiperiksa);
+cek('seluruh masalah pada berkas sumber sah', cacatSumber.length === 0, cacatSumber.slice(0, 5));
+catatan(`${masalahDiperiksa} masalah diperiksa pada ${berkasDiperiksa} berkas sumber JSON`);
 
 bagian('4. Menyimpan suntingan');
 
@@ -139,31 +151,35 @@ const sebelum = await uji(adm, KELUHAN_UJI);
 cek('sebelum disunting, keluhan itu belum dikenali', sebelum.dijawab === false, sebelum);
 
 const asli = JSON.parse(JSON.stringify(macet));
+const JUDUL_DIPERBAIKI = 'Kertas Macet di Dalam Printer (diperbaiki)';
 const disunting = {
   ...asli,
-  // Judul sengaja diubah untuk memastikan server MENGABAIKANNYA: judul
-  // menentukan id, dan id yang berubah diam-diam memutus rujukan rekap.
-  judul: 'Judul Yang Tidak Boleh Ikut Berubah',
+  // Judul sengaja diubah. Dulu server mengabaikannya karena judul menentukan
+  // id, sehingga memperbaiki satu kata memutus rujukan sesi.masalah_cocok pada
+  // seluruh laporan lama. Sejak id tersimpan di berkas sumber, judul boleh
+  // diperbaiki — dan justru itu yang membuat SOP dapat dirawat.
+  judul: JUDUL_DIPERBAIKI,
   gejala: `${asli.gejala} Pada layar printer muncul tulisan ${KATA_BARU}.`
 };
 
 const simpan = await kirim(`/sop/printer/${asli.id}`, adm, 'PUT', disunting).then((r) => r.json());
 cek('admin dapat menyimpan suntingan', simpan.success === true, simpan);
-cek('id masalah tidak ikut berubah', simpan.masalah.id === asli.id, simpan.masalah?.id);
-cek('judul tidak dapat diubah lewat penyunting',
-  simpan.masalah.judul === asli.judul, simpan.masalah?.judul);
+cek('id masalah TIDAK ikut berubah meski judul diperbaiki',
+  simpan.masalah.id === asli.id, simpan.masalah?.id);
+cek('judul kini boleh diperbaiki',
+  simpan.masalah.judul === JUDUL_DIPERBAIKI, simpan.masalah?.judul);
+catatan('id tersimpan di berkas sumber — rujukan rekap tidak lagi bergantung pada judul');
 cek('cadangan dibuat sebelum menimpa', Boolean(simpan.cadangan), simpan.cadangan);
 cek('basis pengetahuan dibangun ulang', simpan.kb.masalah === 44, simpan.kb);
 
-const berkasSop = path.join(SOP_DIR, 'printer', 'sop-printer.md');
+const berkasSop = path.join(SOP_DIR, 'printer.json');
 const isiBaru = fs.readFileSync(berkasSop, 'utf-8');
-cek('berkas Markdown benar-benar berubah', isiBaru.includes(KATA_BARU), 'kata baru tidak ada');
-cek('berkas tetap dapat diurai pengurai build-kb',
-  uraiBerkas('printer', isiBaru).blok.filter((b) => b.masalah).length === 6,
-  uraiBerkas('printer', isiBaru).blok.filter((b) => b.masalah).length);
-cek('blok lain tidak ikut diformat ulang',
-  isiBaru.includes('### Solusi Ketiga: Hapus Printer lalu Tambahkan Kembali'),
-  'blok tetangga berubah');
+cek('berkas sumber JSON benar-benar berubah', isiBaru.includes(KATA_BARU), 'kata baru tidak ada');
+cek('berkas sumber tetap JSON yang sah',
+  JSON.parse(isiBaru).masalah.length === 6, 'jumlah masalah berubah atau JSON rusak');
+cek('masalah lain tidak ikut tersentuh',
+  JSON.parse(isiBaru).masalah.filter((m) => m.id !== asli.id).every((m) => !JSON.stringify(m).includes(KATA_BARU)),
+  'masalah tetangga ikut berubah');
 
 const kbBaru = JSON.parse(fs.readFileSync(process.env.KB_FILE, 'utf-8'));
 cek('hasil bangun ikut diperbarui',
