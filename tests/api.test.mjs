@@ -456,12 +456,14 @@ bagian('9b. Ganti kata sandi sendiri');
 const gantiSandi = (kuki, badan) => ambil('/auth/ganti-sandi', kuki, {
   method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(badan)
 });
+/** Dipanggil dari halaman masuk — tanpa kuki sama sekali */
+const gantiTanpaSesi = (badan) => fetch(`${API}/auth/ganti-sandi`, {
+  method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(badan)
+});
 
-cek('ditolak tanpa masuk',
-  (await fetch(`${API}/auth/ganti-sandi`, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ sandiLama: 'ujicoba123', sandiBaru: 'SandiBaru12345' })
-  })).status === 401, 'bukan 401');
+cek('nama akun wajib disertakan',
+  (await gantiTanpaSesi({ sandiLama: 'ujicoba123', sandiBaru: 'SandiBaru12345' })).status === 400,
+  'bukan 400');
 
 // Akun tersendiri supaya penggantian sandi di sini tidak merusak sesi
 // pengujian lain yang masih memakai adm/eng/bud.
@@ -483,16 +485,38 @@ cek('sesi kedua akun yang sama berlaku',
   (await ambil('/tugas', g2.kuki)).status === 200, 'bukan 200');
 
 cek('sandi baru terlalu pendek ditolak',
-  (await gantiSandi(g1.kuki, { sandiLama: 'SandiAwal123', sandiBaru: 'pendek' })).status === 400, 'bukan 400');
+  (await gantiSandi(g1.kuki, { namaAkun: 'gantiuji', sandiLama: 'SandiAwal123', sandiBaru: 'pendek' })).status === 400, 'bukan 400');
 cek('sandi baru sama dengan lama ditolak',
-  (await gantiSandi(g1.kuki, { sandiLama: 'SandiAwal123', sandiBaru: 'SandiAwal123' })).status === 400, 'bukan 400');
+  (await gantiSandi(g1.kuki, { namaAkun: 'gantiuji', sandiLama: 'SandiAwal123', sandiBaru: 'SandiAwal123' })).status === 400, 'bukan 400');
 
 cek('sandi lama yang salah ditolak',
-  (await gantiSandi(g1.kuki, { sandiLama: 'SalahSekali99', sandiBaru: 'SandiBaru12345' })).status === 401, 'bukan 401');
-catatan('sesi yang dicuri saja tidak cukup untuk mengunci pemiliknya keluar dari akunnya sendiri');
+  (await gantiSandi(g1.kuki, { namaAkun: 'gantiuji', sandiLama: 'SalahSekali99', sandiBaru: 'SandiBaru12345' })).status === 401, 'bukan 401');
+catatan('kata sandi lama satu-satunya bukti kepemilikan yang diterima — sesi saja tidak cukup');
 
-const hasilGanti = await gantiSandi(g1.kuki, { sandiLama: 'SandiAwal123', sandiBaru: 'SandiBaru12345' });
-cek('penggantian yang sah berhasil', hasilGanti.status === 200, hasilGanti.status);
+/* Jalur ini dapat dipanggil dari halaman masuk, tanpa sesi sama sekali. Karena
+   itu pesan galatnya WAJIB sama untuk akun yang tidak ada maupun sandi yang
+   keliru: bila berbeda, ia menjadi alat memeriksa nama akun mana yang benar-
+   benar terdaftar — persis yang sudah dihindari halaman masuk. */
+const galatAkunAsing = await (await gantiTanpaSesi({
+  namaAkun: 'tidakadaorangini', sandiLama: 'apasaja123', sandiBaru: 'SandiBaru12345'
+})).json();
+const galatSandiKeliru = await (await gantiTanpaSesi({
+  namaAkun: 'gantiuji', sandiLama: 'SalahSekali99', sandiBaru: 'SandiBaru12345'
+})).json();
+cek('akun tak dikenal dan sandi keliru memberi pesan yang sama persis',
+  galatAkunAsing.error === galatSandiKeliru.error && /nama akun atau kata sandi salah/i.test(galatAkunAsing.error),
+  [galatAkunAsing.error, galatSandiKeliru.error]);
+catatan('pesan yang berbeda menjadikan jalur ini alat memeriksa akun mana yang ada');
+
+/* Dipanggil TANPA kuki — persis seperti dari halaman masuk. Yang membuktikan
+   kepemilikan adalah kata sandi lamanya, dan itu sekuat masuk. */
+const hasilGanti = await gantiTanpaSesi({ namaAkun: 'gantiuji', sandiLama: 'SandiAwal123', sandiBaru: 'SandiBaru12345' });
+cek('penggantian dari halaman masuk berhasil tanpa sesi', hasilGanti.status === 200, hasilGanti.status);
+
+const isiGanti = await hasilGanti.clone().json();
+cek('balasannya membawa data pengguna agar langsung masuk',
+  isiGanti.pengguna?.namaAkun === 'gantiuji' && isiGanti.pengguna?.peran === 'engineer',
+  isiGanti.pengguna);
 
 /* INTI PERUBAHAN INI. Sebelumnya token hanya memuat {akun, peran, exp} dan
    wajibMasuk hanya memeriksa akunnya masih ada — sehingga mengganti kata sandi

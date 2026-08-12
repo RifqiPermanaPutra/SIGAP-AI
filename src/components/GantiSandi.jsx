@@ -11,12 +11,11 @@ const PANJANG_MINIMUM = 8;
  * karena bilah merek yang dulu disalin ke lima berkas membuat satu cacat yang
  * sama muncul lima kali.
  *
- * TIDAK ADA "lupa kata sandi" di sini. Pemulihan mandiri menuntut jalur
- * pengiriman terverifikasi — surel atau SMS — dan sistem ini tidak punya
- * keduanya. Tanpa itu, "lupa kata sandi" hanyalah pintu pengambilalihan akun.
- * Yang lupa sandinya dibantu admin lewat `npm run akun -- ganti`.
+ * Memanggil jalur yang sama dengan mode ganti sandi pada halaman masuk
+ * (`Masuk.jsx`) — server tidak menuntut sesi, karena yang membuktikan
+ * kepemilikan adalah kata sandi lamanya.
  */
-export default function GantiSandi({ kelasTombol = '' }) {
+export default function GantiSandi({ namaAkun, kelasTombol = '' }) {
   const [terbuka, setTerbuka] = useState(false);
   const [lama, setLama] = useState('');
   const [baru, setBaru] = useState('');
@@ -57,7 +56,7 @@ export default function GantiSandi({ kelasTombol = '' }) {
       const r = await fetch('/api/auth/ganti-sandi', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sandiLama: lama, sandiBaru: baru })
+        body: JSON.stringify({ namaAkun, sandiLama: lama, sandiBaru: baru })
       });
       const d = await r.json();
 

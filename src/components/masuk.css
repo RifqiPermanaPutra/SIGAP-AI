@@ -152,6 +152,27 @@
   margin: 14px 0 0;
 }
 
+/* Tombol yang tampil sebagai tautan — berpindah antara mode masuk dan mode
+   ganti sandi. Ditulis sebagai <button>, bukan <a>, karena ia tidak menuju ke
+   mana pun: kartu yang sama berganti isi, dan yang sudah diketik tetap terisi. */
+.sg-masuk-isi button.sg-tautan {
+  margin-top: 12px;
+  padding: 8px;
+  min-height: 36px;
+  background: none;
+  border: none;
+  box-shadow: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--pt-blue-text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.sg-masuk-isi button.sg-tautan:hover:not(:disabled) {
+  background: none;
+  color: var(--pt-blue-dark);
+}
+
 .sg-masuk-kaki {
   margin: 16px 0 0;
   font-size: 0.74rem; color: var(--ink-4); line-height: 1.5;

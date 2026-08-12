@@ -546,7 +546,7 @@ export default function SopEditorPage() {
         </div>
         <div className="se-navbar-kanan">
           <a className="se-tombol-navbar" href="/rekap" aria-label="Buka halaman rekap"><IconChart size={15} /> <span className="gs-label">Rekap</span></a>
-          <GantiSandi kelasTombol="se-tombol-navbar" />
+          <GantiSandi namaAkun={pengguna.namaAkun} kelasTombol="se-tombol-navbar" />
           <button className="se-tombol-navbar" onClick={keluar}>
             <IconLogout size={15} /> Keluar
           </button>
