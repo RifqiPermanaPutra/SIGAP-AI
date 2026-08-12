@@ -447,6 +447,76 @@ cek('muat ulang ditolak untuk engineer',
 cek('muat ulang diizinkan untuk admin',
   (await ambil('/kb/reload', adm.kuki, { method: 'POST' })).status === 200, 'bukan 200');
 
+bagian('9b. Ganti kata sandi sendiri');
+
+/* Tidak ada jalur "lupa kata sandi" tanpa masuk — sistem ini tanpa surel
+   maupun SMS, sehingga pemulihan mandiri hanya akan menjadi pintu
+   pengambilalihan akun. Yang ada hanya mengganti sandi SENDIRI. */
+
+const gantiSandi = (kuki, badan) => ambil('/auth/ganti-sandi', kuki, {
+  method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(badan)
+});
+
+cek('ditolak tanpa masuk',
+  (await fetch(`${API}/auth/ganti-sandi`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ sandiLama: 'ujicoba123', sandiBaru: 'SandiBaru12345' })
+  })).status === 401, 'bukan 401');
+
+// Akun tersendiri supaya penggantian sandi di sini tidak merusak sesi
+// pengujian lain yang masih memakai adm/eng/bud.
+const authSvc = await import('../server/services/authService.js');
+const dbGanti = await import('../server/database/init.js');
+await dbGanti.initDatabase();
+authSvc.buatPengguna({
+  namaAkun: 'gantiuji', nama: 'Akun Ganti Sandi', peran: 'engineer',
+  sandi: 'SandiAwal123', divisi: ['printer']
+});
+
+const g1 = await masuk({ namaAkun: 'gantiuji', sandi: 'SandiAwal123' });
+cek('akun uji berhasil masuk', g1.data.success === true, g1.data);
+
+// Sesi KEDUA dari akun yang sama — mewakili perangkat lain, atau sesi yang
+// dicuri. Inilah yang harus gugur setelah sandinya diganti.
+const g2 = await masuk({ namaAkun: 'gantiuji', sandi: 'SandiAwal123' });
+cek('sesi kedua akun yang sama berlaku',
+  (await ambil('/tugas', g2.kuki)).status === 200, 'bukan 200');
+
+cek('sandi baru terlalu pendek ditolak',
+  (await gantiSandi(g1.kuki, { sandiLama: 'SandiAwal123', sandiBaru: 'pendek' })).status === 400, 'bukan 400');
+cek('sandi baru sama dengan lama ditolak',
+  (await gantiSandi(g1.kuki, { sandiLama: 'SandiAwal123', sandiBaru: 'SandiAwal123' })).status === 400, 'bukan 400');
+
+cek('sandi lama yang salah ditolak',
+  (await gantiSandi(g1.kuki, { sandiLama: 'SalahSekali99', sandiBaru: 'SandiBaru12345' })).status === 401, 'bukan 401');
+catatan('sesi yang dicuri saja tidak cukup untuk mengunci pemiliknya keluar dari akunnya sendiri');
+
+const hasilGanti = await gantiSandi(g1.kuki, { sandiLama: 'SandiAwal123', sandiBaru: 'SandiBaru12345' });
+cek('penggantian yang sah berhasil', hasilGanti.status === 200, hasilGanti.status);
+
+/* INTI PERUBAHAN INI. Sebelumnya token hanya memuat {akun, peran, exp} dan
+   wajibMasuk hanya memeriksa akunnya masih ada — sehingga mengganti kata sandi
+   TIDAK memutus sesi mana pun. Sesi yang terlanjur dicuri tetap hidup, justru
+   pada keadaan yang paling membutuhkan penggantian itu. */
+cek('sesi LAIN milik akun yang sama langsung gugur',
+  (await ambil('/tugas', g2.kuki)).status === 401, 'masih 200 — sesi lama belum diputus');
+cek('/auth/saya ikut melaporkan sesi lama sudah tidak berlaku',
+  (await json('/auth/saya', g2.kuki)).pengguna === null, 'masih dianggap masuk');
+
+// Perangkat yang dipakai mengganti tidak ikut terlempar keluar: kukinya
+// diperbarui pada balasan yang sama.
+const kukiBaru = hasilGanti.headers.get('set-cookie')?.split(';')[0] || '';
+cek('perangkat yang mengganti tetap masuk',
+  (await ambil('/tugas', kukiBaru)).status === 200, 'ikut terlempar keluar');
+
+cek('sandi lama tidak berlaku lagi',
+  (await masuk({ namaAkun: 'gantiuji', sandi: 'SandiAwal123' })).data.success === false, 'masih bisa masuk');
+cek('sandi baru berlaku',
+  (await masuk({ namaAkun: 'gantiuji', sandi: 'SandiBaru12345' })).data.success === true, 'tidak bisa masuk');
+
+authSvc.hapusPengguna('gantiuji');
+dbGanti.tutupDatabase();
+
 bagian('10. Sesi yang ditinggalkan lalu dilanjutkan');
 // Basis data yang sama dibuka dari proses uji — SQLite mode WAL mengizinkannya.
 const dbUji = await import('../server/database/init.js');

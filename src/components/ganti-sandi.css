@@ -1,0 +1,146 @@
+/* ================================================
+   Dialog ganti kata sandi — dipakai bersama halaman rekap, tugas, dan
+   penyunting SOP. Ditulis MOBILE-FIRST: menempel ke tepi bawah layar agar
+   dekat ibu jari, lalu memusat mulai 700px.
+   ================================================ */
+
+/* Tombol pemanggil: ikon saja di ponsel. Navbar /tugas memuat tiga tombol
+   plus bilah merek — dengan teks lengkap jumlahnya 505px pada layar 393px. */
+.gs-label { display: none; }
+
+@media (min-width: 700px) {
+  .gs-label { display: inline; }
+}
+
+.gs-latar {
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 23, 37, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: grid;
+  align-items: end;
+  z-index: 60;
+}
+
+.gs-dialog {
+  background: var(--surface);
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
+  width: 100%;
+  max-height: 92dvh;
+  overflow-y: auto;
+  color: var(--ink);
+}
+
+.gs-dialog h3 { margin: 0 0 4px; font-size: 1rem; }
+
+.gs-ket {
+  margin: 0 0 12px;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--ink-3);
+}
+
+.gs-dialog form { display: flex; flex-direction: column; }
+
+.gs-dialog label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-3);
+}
+.gs-dialog label small { font-weight: 400; color: var(--ink-4); }
+
+.gs-dialog input {
+  font: inherit;
+  /* 16px mencegah iOS Safari memperbesar halaman saat kolom disentuh */
+  font-size: 16px;
+  font-weight: 400;
+  padding: 11px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--ink);
+  min-width: 0;
+}
+.gs-dialog input:focus { outline: 2px solid var(--pt-blue); outline-offset: 1px; }
+
+.gs-galat {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--pt-red-text);
+  background: var(--pt-red-soft);
+  border: 1px solid #f7c4ca;
+  border-radius: var(--r-sm);
+}
+
+.gs-berhasil {
+  margin: 4px 0 0;
+  padding: 12px;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: #1d6b32;
+  background: #eaf6ec;
+  border: 1px solid #bfe3c6;
+  border-radius: var(--r-sm);
+}
+
+/* Tindakan utama paling bawah — paling dekat ibu jari di ponsel */
+.gs-aksi {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 8px;
+  margin-top: 16px;
+}
+.gs-aksi button {
+  width: 100%;
+  font: inherit;
+  font-weight: 600;
+  padding: 12px;
+  min-height: 46px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: background var(--ease), border-color var(--ease);
+}
+
+.gs-utama {
+  border: 1px solid var(--pt-blue);
+  background: var(--pt-blue);
+  color: #fff;
+}
+.gs-utama:hover:not(:disabled) { background: var(--pt-blue-mid); }
+.gs-utama:disabled { background: var(--ink-4); border-color: var(--ink-4); cursor: not-allowed; }
+
+.gs-samar {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-2);
+}
+.gs-samar:hover { border-color: var(--pt-blue); color: var(--pt-blue-text); }
+
+.gs-kaki {
+  margin: 16px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--line-2);
+  font-size: 0.74rem;
+  line-height: 1.55;
+  color: var(--ink-4);
+}
+
+@media (min-width: 700px) {
+  .gs-latar { place-items: center; padding: 20px; }
+  .gs-dialog {
+    width: min(100%, 420px);
+    border-radius: var(--r-lg);
+    padding: 24px;
+    max-height: 86dvh;
+  }
+  .gs-aksi { flex-direction: row; justify-content: flex-end; }
+  .gs-aksi button { width: auto; padding: 11px 20px; }
+}

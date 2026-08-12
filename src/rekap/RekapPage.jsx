@@ -7,6 +7,7 @@ import {
 } from '../components/Icons.jsx';
 import Markdown from '../components/Markdown.jsx';
 import Masuk from '../components/Masuk.jsx';
+import GantiSandi from '../components/GantiSandi.jsx';
 import './rekap.css';
 
 const API = '/api';
@@ -361,6 +362,7 @@ export default function RekapPage() {
             <strong>{pengguna.nama}</strong>
             <em>{pengguna.peran}</em>
           </span>
+          <GantiSandi kelasTombol="rk-tombol-navbar" />
           <button className="rk-tombol-navbar" onClick={keluar}>
             <IconLogout size={16} /> Keluar
           </button>

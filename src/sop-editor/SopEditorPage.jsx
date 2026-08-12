@@ -4,6 +4,7 @@ import {
   IconPlus, IconClose, IconChevronDown, IconTrash
 } from '../components/Icons.jsx';
 import Masuk from '../components/Masuk.jsx';
+import GantiSandi from '../components/GantiSandi.jsx';
 import './sop-editor.css';
 
 /**
@@ -544,7 +545,8 @@ export default function SopEditorPage() {
           </span>
         </div>
         <div className="se-navbar-kanan">
-          <a className="se-tombol-navbar" href="/rekap"><IconChart size={15} /> Rekap</a>
+          <a className="se-tombol-navbar" href="/rekap" aria-label="Buka halaman rekap"><IconChart size={15} /> <span className="gs-label">Rekap</span></a>
+          <GantiSandi kelasTombol="se-tombol-navbar" />
           <button className="se-tombol-navbar" onClick={keluar}>
             <IconLogout size={15} /> Keluar
           </button>
