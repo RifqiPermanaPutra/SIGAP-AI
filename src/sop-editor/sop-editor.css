@@ -53,14 +53,23 @@
     var(--pt-blue) 0 33%, var(--pt-green) 33% 66%, var(--pt-red) 66% 100%);
 }
 
-.se-merek { display: flex; align-items: center; gap: 10px; min-width: 0; }
-.se-merek-logo { height: 26px; width: auto; display: block; flex-shrink: 0; }
+.se-merek { display: flex; align-items: center; gap: 8px; min-width: 0; flex: 0 1 auto; }
 
+/* KEDUANYA BOLEH MENYUSUT — perbaikan yang sama seperti pada .rk-merek.
+   `min-width: 0` di atas dulu tidak berguna karena kedua logo memakai
+   `flex-shrink: 0`: induknya boleh menyempit sementara anaknya menolak,
+   sehingga logo menembus keluar dan tertimpa tombol navbar. */
+.se-merek-logo,
+.se-merek-logo-unit {
+  width: auto; display: block;
+  flex: 0 1 auto; min-width: 0;
+  object-fit: contain;
+}
+.se-merek-logo { height: 18px; }
 /* Varian logo untuk header gelap sudah memiliki alpha transparan dan elemen
    monokrom putih, sehingga tidak memerlukan panel, border, maupun padding. */
 .se-merek-logo-unit {
-  height: 28px; width: auto; display: block; flex-shrink: 0;
-  object-fit: contain;
+  height: 20px;
   filter: brightness(1.12) contrast(1.06) drop-shadow(0 1px 2px rgba(0, 27, 48, 0.35));
 }
 
@@ -110,17 +119,15 @@
 
 /* ── Pemilih divisi ───────────────────────────────────────────── */
 
-/* Di ponsel digulir mendatar dalam satu baris, sama seperti pintasan
-   periode pada halaman rekap. */
+/* MEMBUNGKUS, BUKAN MENGGULIR — sama seperti .rk-preset dan .tg-saringan.
+   Delapan layanan tidak muat dalam satu baris di ponsel, dan yang terdorong
+   melewati tepi layar praktis tidak pernah ditemukan. */
 .se-divisi {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 16px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  padding-bottom: 2px;
 }
-.se-divisi::-webkit-scrollbar { display: none; }
 
 .se-divisi button {
   position: relative;
@@ -522,16 +529,12 @@
   .se { padding: 20px 16px 56px; }
   .se-navbar { padding: 12px 20px; }
 
-  .se-merek-logo { height: 30px; }
-  .se-merek-logo-unit { height: 32px; }
-  .se-merek-garis { display: block; height: 30px; }
-  .se-merek-teks { display: flex; }
-  .se-merek-teks strong { font-size: 1rem; }
-  .se-merek-teks small { font-size: 0.65rem; }
+  /* 24/26px saja di sini; ukuran penuh dan teks merek menyusul pada 960px */
+  .se-merek { gap: 10px; }
+  .se-merek-logo { height: 24px; }
+  .se-merek-logo-unit { height: 26px; }
 
   .se-judul h1 { font-size: 1.5rem; }
-
-  .se-divisi { flex-wrap: wrap; overflow-x: visible; }
 
   .se-formulir { padding: 18px; }
   .se-masalah-kepala { padding: 14px 16px; }
@@ -557,4 +560,18 @@
   .se-dialog-aksi button { width: auto; }
 
   .se-pratinjau-kisi { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ────────────────────────────────────────────────────────────────
+   >= 960px — layar lebar
+   ──────────────────────────────────────────────────────────────── */
+
+@media (min-width: 960px) {
+  /* Baru di sini logo boleh sebesar aslinya dan nama halaman ikut tampil */
+  .se-merek-logo { height: 28px; }
+  .se-merek-logo-unit { height: 30px; }
+  .se-merek-garis { display: block; height: 28px; }
+  .se-merek-teks { display: flex; }
+  .se-merek-teks strong { font-size: 1rem; }
+  .se-merek-teks small { font-size: 0.65rem; }
 }

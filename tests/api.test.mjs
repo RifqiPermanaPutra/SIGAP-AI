@@ -56,10 +56,72 @@ cek('wewenang layanan ikut pada keduanya',
   [eng.data.pengguna.divisi, sayaEng.divisi]);
 
 bagian('2. Wewenang peran');
-cek('engineer TIDAK boleh mengunduh Excel', (await ambil('/rekap/excel', eng.kuki)).status === 403, 'bukan 403');
 cek('admin boleh mengunduh Excel', (await ambil('/rekap/excel', adm.kuki)).status === 200, 'bukan 200');
 cek('engineer boleh melihat rekap', (await ambil('/rekap', eng.kuki)).status === 200, 'bukan 200');
 cek('engineer TIDAK boleh melihat jejak akses', (await ambil('/rekap/akses', eng.kuki)).status === 403, 'bukan 403');
+
+// Dulu jalur ini terbatas admin. Penjagaannya tidak menahan apa-apa: halaman
+// rekap terbuka bagi siapa pun yang masuk, dan tombol "Cetak / Simpan PDF"
+// menghasilkan kolom yang praktis sama termasuk nama pelapor. Yang menjaga
+// sekarang batas divisinya — diuji pada bagian 2b di bawah.
+cek('engineer boleh mengunduh Excel', (await ambil('/rekap/excel', eng.kuki)).status === 200, 'bukan 200');
+
+bagian('2b. Batas layanan pada halaman rekap');
+
+const bud = await masuk(AKUN_UJI.engineerPrinter);
+cek('engineer terbatas berhasil masuk', bud.data.success === true, bud.data);
+
+const MILIK_BUDI = AKUN_UJI.engineerPrinter.divisi;   // ['printer', 'windows']
+const semuaAdmin = await json('/rekap?dari=2020-01-01', adm.kuki);
+
+const rekapBudi = await json('/rekap?dari=2020-01-01', bud.kuki);
+const rekapEka = await json('/rekap?dari=2020-01-01', eng.kuki);
+
+cek('rekap engineer terbatas hanya memuat layanannya',
+  rekapBudi.laporan.length > 0 && rekapBudi.laporan.every((l) => MILIK_BUDI.includes(l.divisi_id)),
+  [...new Set(rekapBudi.laporan.map((l) => l.divisi_id))]);
+
+cek('jumlahnya lebih kecil daripada milik admin',
+  rekapBudi.jumlah > 0 && rekapBudi.jumlah < semuaAdmin.jumlah,
+  [rekapBudi.jumlah, semuaAdmin.jumlah]);
+catatan('tanpa ini engineer Windows membaca seluruh laporan kedelapan layanan berikut nama pelapornya');
+
+// Ringkasan, grafik, dan sebaran memakai klausa WHERE yang sama. Bila
+// batasnya hanya dipasang pada tabel, angka besar di atas halaman tetap
+// membocorkan berapa banyak laporan divisi lain.
+cek('sebaran divisi ikut terbatas',
+  rekapBudi.sebaranDivisi.length > 0 &&
+    rekapBudi.sebaranDivisi.length <= MILIK_BUDI.length &&
+    rekapBudi.sebaranDivisi.length < semuaAdmin.sebaranDivisi.length,
+  { budi: rekapBudi.sebaranDivisi.map((s) => s.label), admin: semuaAdmin.sebaranDivisi.length });
+
+cek('ringkasan tidak menghitung laporan divisi lain',
+  rekapBudi.ringkasan.total === rekapBudi.jumlah,
+  [rekapBudi.ringkasan.total, rekapBudi.jumlah]);
+
+// Saringan dari query string TIDAK boleh melebarkan wewenang. Keduanya
+// digabung dengan AND, jadi memilih layanan orang lain menghasilkan nol.
+const budiCobaCctv = await json('/rekap?dari=2020-01-01&divisi=cctv', bud.kuki);
+cek('menyaring ke layanan orang lain menghasilkan nol, bukan datanya',
+  budiCobaCctv.jumlah === 0 && budiCobaCctv.laporan.length === 0,
+  [budiCobaCctv.jumlah, budiCobaCctv.laporan.length]);
+
+cek('daftar pilihan layanan ikut dipersempit',
+  rekapBudi.pilihan.divisi.length === MILIK_BUDI.length &&
+    rekapBudi.pilihan.divisi.every((d) => MILIK_BUDI.includes(d.id)),
+  rekapBudi.pilihan.divisi.map((d) => d.id));
+
+// Engineer bertanda '*' sengaja tidak dibatasi — penandanya eksplisit,
+// bukan kolom kosong yang kebetulan terbaca sebagai "tanpa batas".
+cek('engineer bertanda * tetap melihat seluruh layanan',
+  rekapEka.jumlah === semuaAdmin.jumlah, [rekapEka.jumlah, semuaAdmin.jumlah]);
+
+// Berkas unduhan memakai saringan yang sama. Bila batasnya hanya dipasang
+// pada tampilan, seluruh penjagaan di atas dapat dilewati dengan satu unduhan.
+const xlBudi = Buffer.from(await (await ambil('/rekap/excel?dari=2020-01-01', bud.kuki)).arrayBuffer());
+const xlAdmin = Buffer.from(await (await ambil('/rekap/excel?dari=2020-01-01', adm.kuki)).arrayBuffer());
+cek('berkas Excel engineer lebih kecil daripada milik admin',
+  xlBudi.length > 3000 && xlBudi.length < xlAdmin.length, [xlBudi.length, xlAdmin.length]);
 
 bagian('3. Berkas Excel');
 const xl = await ambil('/rekap/excel?dari=2020-01-01', adm.kuki);
@@ -194,6 +256,53 @@ const tombolBerhasil = await post('/chat', { sessionId: sesiC.sessionId, message
 cek('tombol "sudah berhasil" menutup percakapan', tombolBerhasil.isResolved === true, tombolBerhasil.isResolved);
 cek('tombol "sudah berhasil" tidak mengeskalasi', tombolBerhasil.shouldEscalate === false, tombolBerhasil.shouldEscalate);
 catatan('frasa tombol harus tetap cocok dengan FRASA_SUDAH / FRASA_BELUM di answerService');
+
+bagian('8e. Keluhan belum dikenali menawarkan masalah terdekat');
+
+/* Jalur ini yang paling sering menghasilkan tiket yang sebenarnya tidak perlu.
+   Pada data nyata, keluhan "kertas nyangkut di printer ruang admin" berskor
+   0,346 — di bawah ambang 0,40 — sehingga masuk ke sini DENGAN saran
+   "Kertas Macet di Dalam Printer" tepat di layar pelapor, lalu tetap
+   dieskalasi. Jawabannya menyuruh "tuliskan kembali dengan kalimat yang lebih
+   mendekati", sementara tombol Hubungi Engineer tersedia satu ketukan di
+   bawahnya. Mengetik ulang di ponsel kalah mudah. */
+
+const sesiKabur = await post('/chat/new', {});
+await post('/chat/division', { sessionId: sesiKabur.sessionId, division: 'printer' });
+const kabur = await post('/chat', { sessionId: sesiKabur.sessionId, message: 'printer di ruang admin kok begitu ya' });
+
+cek('keluhan kabur menawarkan masalah terdekat',
+  Array.isArray(kabur.saranMasalah) && kabur.saranMasalah.length > 0,
+  kabur.saranMasalah);
+cek('tiap saran membawa id dan judul',
+  (kabur.saranMasalah || []).every((s) => typeof s.id === 'string' && typeof s.judul === 'string'),
+  kabur.saranMasalah);
+catatan('tanpa ini sarannya hanya butir teks — pelapor harus mengetik ulang, dan praktis tidak ada yang mau');
+
+// Jalan keluar TETAP tersedia. Menahannya akan menjebak pelapor yang memang
+// membutuhkan orang, dan itu ongkos yang lebih besar daripada tiket yang dicegah.
+cek('tombol engineer tetap ditawarkan', kabur.shouldEscalate === true, kabur.shouldEscalate);
+
+// Menekan saran = mengirim judulnya sebagai pesan biasa. Judul berbobot 3×,
+// jadi ia harus mengenai masalah yang dimaksud, bukan sekadar mendekati.
+const judulDipilih = kabur.saranMasalah[0].judul;
+const setelahPilih = await post('/chat', { sessionId: sesiKabur.sessionId, message: judulDipilih });
+cek('menekan saran memberi langkah penyelesaian',
+  /^\s*1\./m.test(setelahPilih.response), setelahPilih.response?.slice(0, 90));
+cek('menekan saran tidak lagi mengeskalasi', setelahPilih.shouldEscalate === false, setelahPilih.shouldEscalate);
+
+/* JEBAKAN YANG DITUTUP: balasan "belum berhasil" memakai ulang keluhan awal.
+   Bila jangkarnya pesan PERTAMA, pencarian mengulang keluhan kabur yang sedari
+   awal tidak dikenali — pelapor dilempar balik ke daftar saran dan solusi 2
+   tidak pernah sampai. Berputar di tempat. Jangkarnya sekarang `masalah_cocok`
+   yang tersimpan pada sesi. */
+const lanjut = await post('/chat', { sessionId: sesiKabur.sessionId, message: 'belum berhasil' });
+cek('"belum berhasil" melanjutkan ke solusi berikutnya, bukan kembali ke saran',
+  /^\s*1\./m.test(lanjut.response) && lanjut.response !== setelahPilih.response,
+  lanjut.response?.slice(0, 90));
+cek('tidak dilempar balik ke daftar saran',
+  !lanjut.saranMasalah || lanjut.saranMasalah.length === 0, lanjut.saranMasalah);
+catatan('sebelum ini jangkarnya pesan pertama — keluhan kabur yang justru tidak dikenali');
 
 bagian('8b. Kelengkapan data divisi swalayan');
 const { readFileSync } = await import('fs');

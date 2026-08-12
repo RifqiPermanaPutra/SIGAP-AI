@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { GrafikPeriode, BatangSebaran } from './Grafik.jsx';
 import {
   DivisionIcon, IconChart, IconDownload, IconPrint, IconLogout, IconAlert,
-  IconClock, IconInbox, IconChevronDown, IconCheck, IconWhatsapp, IconWrench
+  IconClock, IconInbox, IconChevronDown, IconCheck, IconWhatsapp, IconWrench,
+  IconFilter, IconLock
 } from '../components/Icons.jsx';
 import Markdown from '../components/Markdown.jsx';
 import Masuk from '../components/Masuk.jsx';
@@ -175,6 +176,19 @@ export default function RekapPage() {
     cari: ''
   });
   const [satuan, setSatuan] = useState('hari');
+
+  /* Saringan selain rentang tanggal terlipat di ponsel.
+     Sebelumnya delapan kendali terbuka sekaligus menempati hampir seluruh
+     layar pertama, sehingga "Total laporan" — angka yang justru dicari
+     orang saat membuka halaman ini — baru muncul setelah digulir. */
+  const [saringanTerbuka, setSaringanTerbuka] = useState(false);
+
+  // Berapa saringan yang sedang membatasi hasil. Ditampilkan pada tombol
+  // pelipat supaya keadaan yang tersembunyi tetap terlihat — panel tertutup
+  // yang diam-diam menyaring data adalah cara termudah membuat orang salah
+  // membaca angkanya.
+  const jumlahSaringanAktif = [f.divisi, f.status, f.area, f.urgensi, f.cari]
+    .filter(Boolean).length;
 
   useEffect(() => {
     fetch(`${API}/auth/saya`)
@@ -360,6 +374,23 @@ export default function RekapPage() {
           <p>Periode {tanggalID(f.dari)} – {tanggalID(f.sampai)}</p>
         </div>
 
+        {/* Angka yang dibatasi diam-diam lebih berbahaya daripada angka yang
+            ditolak: engineer Printer yang membaca "Total laporan 4" tanpa
+            keterangan akan menyimpulkan seluruh Field Lirik hanya punya empat
+            laporan bulan ini. Batasnya harus tertulis di tempat angkanya
+            dibaca — sama seperti pada halaman /tugas. */}
+        {pengguna.divisi && (
+          <p className="rk-batas-wewenang">
+            <IconLock size={14} />
+            <span>
+              Hanya layanan yang Anda tangani yang ditampilkan
+              {data?.pilihan?.divisi?.length > 0 && (
+                <> — <strong>{data.pilihan.divisi.map((d) => d.name).join(', ')}</strong></>
+              )}.
+            </span>
+          </p>
+        )}
+
         {/* ── Saringan ── */}
         <section className="rk-saringan rk-sembunyi-cetak" aria-label="Saringan laporan">
           <div className="rk-preset">
@@ -380,13 +411,43 @@ export default function RekapPage() {
             ))}
           </div>
 
-          <div className="rk-kolom-saringan">
+          {/* Rentang tanggal TIDAK ikut terlipat. Ia yang paling sering
+              disesuaikan, dan nilainya perlu terbaca sekilas untuk tahu
+              angka di bawah sedang mewakili periode apa. */}
+          <div className="rk-tanggal">
             <label>Dari
               <input type="date" value={f.dari} onChange={(e) => setF({ ...f, dari: e.target.value })} />
             </label>
             <label>Sampai
               <input type="date" value={f.sampai} onChange={(e) => setF({ ...f, sampai: e.target.value })} />
             </label>
+          </div>
+
+          {/* Tombol pelipat hanya tampil di ponsel — lihat rekap.css.
+              Di layar lebar seluruh saringan tetap terbuka karena ruangnya
+              memang ada, dan melipatnya justru menambah satu ketukan. */}
+          <button
+            type="button"
+            className="rk-lipat"
+            aria-expanded={saringanTerbuka}
+            aria-controls="rk-saringan-lain"
+            onClick={() => setSaringanTerbuka((v) => !v)}
+          >
+            <IconFilter size={16} />
+            <span>Saringan lain</span>
+            {jumlahSaringanAktif > 0 && (
+              <span className="rk-lipat-jumlah">{jumlahSaringanAktif} aktif</span>
+            )}
+            <IconChevronDown
+              size={16}
+              className={`rk-lipat-panah${saringanTerbuka ? ' rk-terbuka' : ''}`}
+            />
+          </button>
+
+          <div
+            id="rk-saringan-lain"
+            className={`rk-kolom-saringan${saringanTerbuka ? ' rk-terbuka' : ''}`}
+          >
             <label>Layanan
               <select value={f.divisi} onChange={(e) => setF({ ...f, divisi: e.target.value })}>
                 <option value="">Semua</option>
@@ -417,12 +478,14 @@ export default function RekapPage() {
             </label>
           </div>
 
+          {/* Berkas unduhan mengikuti wewenang akun, jadi tombolnya tidak
+              perlu disembunyikan dari engineer. Menyembunyikannya dulu tidak
+              menjaga apa pun — tombol "Cetak / Simpan PDF" di sebelahnya
+              menghasilkan kolom yang praktis sama. */}
           <div className="rk-aksi">
-            {pengguna.peran === 'admin' && (
-              <button className="rk-tombol-utama" onClick={unduhExcel}>
-                <IconDownload size={17} /> Unduh Excel
-              </button>
-            )}
+            <button className="rk-tombol-utama" onClick={unduhExcel}>
+              <IconDownload size={17} /> Unduh Excel
+            </button>
             <button className="rk-tombol-samar" onClick={cetak}>
               <IconPrint size={17} /> Cetak / Simpan PDF
             </button>

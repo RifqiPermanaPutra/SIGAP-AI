@@ -48,6 +48,12 @@ export default function App() {
   // Berisi pilihan layanan bila penentuan otomatis belum cukup meyakinkan.
   // Menebak di antaranya berisiko mengirim laporan ke engineer yang salah.
   const [saranDivisi, setSaranDivisi] = useState(null);
+
+  // Masalah terdekat saat keluhan belum dikenali. Disajikan sebagai tombol,
+  // bukan butir teks: pelapor memakai ini dari ponsel sambil berdiri di depan
+  // perangkat, dan di situ satu ketukan jauh lebih mungkin dilakukan daripada
+  // mengetik ulang keluhannya "dengan kalimat yang lebih mendekati".
+  const [saranMasalah, setSaranMasalah] = useState(null);
   const [config, setConfig] = useState(null);
 
 
@@ -262,6 +268,7 @@ export default function App() {
     // jawaban berikutnya menentukan apakah perlu ditawarkan lagi.
     setMenungguKonfirmasi(false);
     setSaranDivisi(null);
+    setSaranMasalah(null);
 
     try {
       // Sesi bisa saja belum terbentuk bila server sempat tidak terjangkau
@@ -294,6 +301,7 @@ export default function App() {
 
         setMenungguKonfirmasi(data.menungguKonfirmasi === true);
         setSaranDivisi(data.saranDivisi?.length ? data.saranDivisi : null);
+        setSaranMasalah(data.saranMasalah?.length ? data.saranMasalah : null);
 
         // Layanan dapat baru ditentukan server pada balasan ini (pilihan
         // "Saya tidak yakin"). Keadaan di sini disamakan supaya kepala
@@ -351,6 +359,7 @@ export default function App() {
     setShowEngineerBtn(false);
     setMenungguKonfirmasi(false);
     setSaranDivisi(null);
+    setSaranMasalah(null);
     setShowDivisionSelector(true);
   };
 
@@ -448,6 +457,12 @@ export default function App() {
           const cocok = config?.divisions?.find((d) => d.id === id);
           if (cocok) { setSaranDivisi(null); handleDivisionSelect(cocok); }
         }}
+        saranMasalah={saranMasalah}
+        // Judulnya dikirim sebagai pesan biasa. Judul berbobot 3× pada
+        // pencocokan, sehingga mengirimnya utuh dipastikan mengenai masalah
+        // yang dimaksud — tanpa perlu jalur khusus "pilih menurut id" yang
+        // harus dijaga terpisah di sisi server.
+        onPilihMasalah={(judul) => { setSaranMasalah(null); handleSendMessage(judul); }}
       />
 
       <ChatInput

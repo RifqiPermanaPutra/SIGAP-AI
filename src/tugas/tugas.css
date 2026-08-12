@@ -52,14 +52,26 @@
     var(--pt-blue) 0 33%, var(--pt-green) 33% 66%, var(--pt-red) 66% 100%);
 }
 
-.tg-merek { display: flex; align-items: center; gap: 10px; min-width: 0; }
-.tg-merek-logo { height: 26px; width: auto; display: block; flex-shrink: 0; }
+.tg-merek { display: flex; align-items: center; gap: 8px; min-width: 0; flex: 0 1 auto; }
 
+/* KEDUANYA BOLEH MENYUSUT — perbaikan yang sama seperti pada .rk-merek.
+   `min-width: 0` di atas dulu tidak berguna karena kedua logo memakai
+   `flex-shrink: 0`: induknya boleh menyempit sementara anaknya menolak,
+   sehingga logo menembus keluar dan tertimpa tombol navbar.
+
+   Halaman ini bahkan lebih sempit ruangnya daripada rekap: navbar kanan
+   memuat DUA tombol (Rekap dan Keluar), bukan satu. */
+.tg-merek-logo,
+.tg-merek-logo-unit {
+  width: auto; display: block;
+  flex: 0 1 auto; min-width: 0;
+  object-fit: contain;
+}
+.tg-merek-logo { height: 18px; }
 /* Varian logo untuk header gelap sudah memiliki alpha transparan dan elemen
    monokrom putih, sehingga tidak memerlukan panel, border, maupun padding. */
 .tg-merek-logo-unit {
-  height: 28px; width: auto; display: block; flex-shrink: 0;
-  object-fit: contain;
+  height: 20px;
   filter: brightness(1.12) contrast(1.06) drop-shadow(0 1px 2px rgba(0, 27, 48, 0.35));
 }
 
@@ -118,17 +130,16 @@
 
 /* ── Saringan layanan ─────────────────────────────────────────── */
 
-/* Di ponsel digulir mendatar dalam satu baris — sama seperti pintasan periode
-   pada halaman rekap dan pemilih divisi pada penyunting SOP. */
+/* MEMBUNGKUS, BUKAN MENGGULIR — sama seperti .rk-preset pada halaman rekap.
+   Baris yang menggulir mendatar tanpa petunjuk visual menyembunyikan
+   pilihannya: bagi akun admin daftar ini memuat sembilan tombol, dan yang
+   melewati tepi layar praktis tidak pernah ditemukan. */
 .tg-saringan {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 14px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  padding-bottom: 2px;
 }
-.tg-saringan::-webkit-scrollbar { display: none; }
 
 .tg-saringan button {
   display: inline-flex; align-items: center; gap: 6px;
@@ -225,9 +236,12 @@
 .tg-urgensi.u-tinggi { background: #fdf0e8; color: #a8410f; }
 .tg-urgensi.u-kritis { background: var(--pt-red-soft); color: var(--pt-red-text); }
 
+/* Diketik pelapor — satu kata panjang tanpa spasi (jalur berkas, tautan,
+   kode galat) cukup untuk melebarkan kartunya melewati tepi layar. */
 .tg-keluhan {
   margin: 0;
   font-size: 0.9rem; line-height: 1.55; color: var(--ink);
+  overflow-wrap: anywhere;
 }
 
 .tg-rinci {
@@ -342,6 +356,7 @@
   font-size: 0.84rem; color: var(--ink-2); margin: 8px 0 12px;
   background: var(--canvas); padding: 10px 12px;
   border-radius: var(--r-sm); line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 .tg-dialog label { font-size: 0.78rem; font-weight: 600; color: var(--ink-3); margin-top: 8px; }
 .tg-dialog label small { color: var(--ink-4); font-weight: 400; }
@@ -396,16 +411,14 @@
   .tg { padding: 20px 16px 56px; }
   .tg-navbar { padding: 12px 20px; }
 
-  .tg-merek-logo { height: 30px; }
-  .tg-merek-logo-unit { height: 32px; }
-  /* Ada ruang: garis pemisah dan nama halaman kembali tampil */
-  .tg-merek-garis { display: block; height: 30px; }
-  .tg-merek-teks { display: flex; }
-  .tg-merek-teks strong { font-size: 1rem; }
-  .tg-merek-teks small { font-size: 0.65rem; }
+  /* 24px dan 26px saja. Garis pemisah dan teks merek menyusul pada 960px:
+     pada 700px, dua tombol navbar plus teks "SIGAP · TUGAS ENGINEER" masih
+     melampaui lebar yang tersedia. */
+  .tg-merek { gap: 10px; }
+  .tg-merek-logo { height: 24px; }
+  .tg-merek-logo-unit { height: 26px; }
 
   .tg-judul h1 { font-size: 1.5rem; }
-  .tg-saringan { flex-wrap: wrap; overflow-x: visible; }
 
   .tg-kartu { padding: 16px 18px; }
   .tg-rinci { grid-template-columns: repeat(4, 1fr); }
@@ -424,4 +437,18 @@
   }
   .tg-dialog-aksi { flex-direction: row; justify-content: flex-end; }
   .tg-dialog-aksi button { width: auto; }
+}
+
+/* ────────────────────────────────────────────────────────────────
+   >= 960px — layar lebar
+   ──────────────────────────────────────────────────────────────── */
+
+@media (min-width: 960px) {
+  /* Baru di sini logo boleh sebesar aslinya dan nama halaman ikut tampil */
+  .tg-merek-logo { height: 28px; }
+  .tg-merek-logo-unit { height: 30px; }
+  .tg-merek-garis { display: block; height: 28px; }
+  .tg-merek-teks { display: flex; }
+  .tg-merek-teks strong { font-size: 1rem; }
+  .tg-merek-teks small { font-size: 0.65rem; }
 }

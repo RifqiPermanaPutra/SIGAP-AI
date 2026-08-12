@@ -11,22 +11,17 @@
  */
 import fs from 'fs';
 import { tokenisasi } from './teksUtil.js';
-import { getChatMessages } from '../database/init.js';
+import { getChatMessages, getChatSession } from '../database/init.js';
 import { KB_FILE } from '../config/jalur.js';
 
 /** @type {{masalah: Array<object>}} */
 let KB = { masalah: [] };
 
 /**
- * Bobot kekhasan kata per divisi.
+ * Bobot kekhasan kata per divisi: makin sering sebuah kata muncul lintas
+ * masalah, makin kecil bobotnya. "printer" ada di mana-mana pada divisi
+ * Printer dan tidak membedakan apa pun; "macet" hanya pada satu masalah.
  *
- * Kata yang muncul di hampir semua masalah pada satu divisi hampir tidak
- * membedakan apa pun — pada divisi Printer, kata "printer" muncul di mana-mana,
- * sehingga keluhan "printer berwarna ungu" bisa keliru tercocokkan hanya karena
- * kata "printer". Sebaliknya kata seperti "macet" hanya muncul pada satu
- * masalah dan sangat menentukan.
- *
- * Bobot dihitung sekali saat basis pengetahuan dimuat.
  * @type {Map<string, Map<string, number>>} divisi -> kata -> bobot
  */
 const BOBOT_KATA = new Map();
@@ -54,7 +49,6 @@ function hitungBobotKata() {
 
     const bobot = new Map();
     for (const [kata, jumlah] of frekuensi) {
-      // Semakin sering sebuah kata muncul lintas masalah, semakin kecil bobotnya
       bobot.set(kata, Math.log((daftar.length + 1) / (jumlah + 0.5)));
     }
     BOBOT_KATA.set(divisi, bobot);
@@ -77,20 +71,43 @@ const DIVISION_LABELS = {
   windows: 'Windows', ftth: 'FTTH', lan: 'LAN', wan: 'WAN'
 };
 
-// Ambang skor minimum agar sebuah masalah dianggap cocok. Di bawah ini,
-// keluhan dianggap tidak dikenali dan diteruskan ke engineer — lebih baik
-// mengaku tidak tahu daripada memberi langkah yang keliru.
-// Ambang ini sengaja dipasang agak tinggi. Bagi layanan pengaduan, menjawab
-// "belum dikenali" lalu menawarkan bantuan engineer jauh lebih baik daripada
-// memberi langkah perbaikan untuk masalah yang keliru.
-// Diekspor agar penyunting SOP dapat menampilkan ambang yang sama dengan yang
-// benar-benar dipakai menjawab, bukan angka yang ditulis ulang di sisi lain.
+/* Ambang dan penjaga pencocokan.
+   Seluruh angka di bawah berasal dari tolok ukur di tests/akurasi.test.mjs —
+   mengubahnya tanpa menjalankan berkas itu berarti menebak. */
+
+// Skor minimum agar sebuah masalah dianggap cocok. Sengaja tinggi: mengaku
+// tidak tahu lebih baik daripada memberi langkah yang keliru.
+// Diekspor agar penyunting SOP menampilkan ambang yang sama dengan yang dipakai.
 export const AMBANG_COCOK = 0.4;
 
-// Kekhasan minimum yang harus dimiliki setidaknya satu kata yang cocok.
-// Nilainya menyesuaikan divisi terkecil (6 masalah), di mana kata yang muncul
-// pada 4 dari 6 masalah bernilai sekitar 0,44 dan memang belum membedakan.
+// Kekhasan minimum yang harus dimiliki setidaknya satu kata yang cocok, agar
+// kecocokan tidak bertumpu seluruhnya pada kata umum sedivisi.
 const KEKHASAN_MINIMUM = 0.4;
+
+// Kata yang tidak pernah muncul di basis pengetahuan divisi ini.
+const BOBOT_KATA_ASING = 1.2;
+
+/* SELURUH kata asing dihitung sebanyak ini, bukan satu per satu — yang menjadi
+   petunjuk adalah ADANYA kosakata asing, bukan banyaknya. Kata asing datang
+   dari dua sumber berlawanan: keluhan di luar cakupan, dan keterangan tempat
+   atau waktu yang justru menolong ("ruang admin", "lantai 2", "pagi tadi").
+
+   Dulu tiap kata menambah penyebut, sehingga keluhan yang sama merosot hanya
+   karena diterangkan lebih lengkap: 1,000 → 0,502 → 0,402 → 0,217. */
+const BATAS_KATA_ASING = 1;
+
+// Jumlah bobot kata yang cocok — mengukur apakah yang ditulis CUKUP untuk
+// disimpulkan. Tanpa ini keluhan berisi kata "printer" saja berskor 1,000.
+const BUKTI_MINIMUM = 1.0;
+
+/* Satu kata yang kebetulan kena bukan bukti; dua kata yang sepakat baru bukti.
+   "kursi kantor saya RUSAK" menyentuh kata "rusak" pada judul masalah di empat
+   divisi sekaligus — tanpa aturan ini laporan itu sampai ke engineer CCTV. */
+const COCOK_MINIMUM = 2;
+
+// Dikecualikan: bila pelapor hanya menulis "bluescreen", satu kata itulah
+// seluruh keterangan yang ada.
+const KELUHAN_PENDEK = 2;
 
 // Batas bawah untuk menawarkan kemungkinan. Di bawah ambang cocok tetapi masih
 // di atas nilai ini, keluhan dianggap bermakna ganda dan pengguna diminta
@@ -125,25 +142,40 @@ function hitungSkor(kataKeluhan, masalah) {
   let diperoleh = 0;
   let maksimum = 0;
   let kekhasanTertinggi = 0;
+  let bukti = 0;
+  let jumlahAsing = 0;
+  let jumlahCocok = 0;
 
   for (const kata of kataKeluhan) {
-    // Kata yang khas bernilai tinggi; kata umum sedivisi bernilai rendah.
-    // Kata yang tak dikenal sama sekali tetap diperhitungkan sebagai penyebut
-    // agar keluhan yang sebagian besar katanya asing tidak mudah lolos.
-    const khas = bobotDivisi?.get(kata) ?? 1.2;
-    maksimum += khas * 3;
+    const dikenal = Boolean(bobotDivisi?.has(kata));
+    const khas = dikenal ? bobotDivisi.get(kata) : BOBOT_KATA_ASING;
+
+    // Kata asing tidak langsung menambah penyebut — seluruhnya dihitung
+    // sekaligus setelah perulangan, lihat BATAS_KATA_ASING.
+    if (dikenal) maksimum += khas * 3;
+    else jumlahAsing++;
 
     const cocok = kataJudul.has(kata) ? 3 : kataGejala.has(kata) ? 2 : kataPenyebab.has(kata) ? 1 : 0;
     if (cocok > 0) {
       diperoleh += khas * cocok;
+      bukti += khas;
+      jumlahCocok++;
       if (khas > kekhasanTertinggi) kekhasanTertinggi = khas;
     }
   }
 
+  if (jumlahAsing > 0) {
+    maksimum += BOBOT_KATA_ASING * 3 * Math.min(jumlahAsing, BATAS_KATA_ASING);
+  }
+
   // Kecocokan yang seluruhnya bertumpu pada kata umum tidak dapat dipercaya.
-  // Pada divisi Printer, keluhan "printer berwarna ungu" hanya menyentuh kata
-  // "printer" yang muncul di hampir semua masalah — itu bukan petunjuk apa pun.
   if (kekhasanTertinggi < KEKHASAN_MINIMUM) return 0;
+
+  // Cukup relevan belum berarti cukup banyak — lihat BUKTI_MINIMUM.
+  if (bukti < BUKTI_MINIMUM) return 0;
+
+  // Satu kata yang kebetulan cocok dari keluhan panjang bukan bukti.
+  if (jumlahCocok < COCOK_MINIMUM && kataKeluhan.length > KELUHAN_PENDEK) return 0;
 
   return maksimum === 0 ? 0 : Math.min(diperoleh / maksimum, 1);
 }
@@ -184,12 +216,8 @@ export function cariMasalah(keluhan, divisi) {
 }
 
 /**
- * Kemungkinan terdekat untuk keluhan yang belum cukup meyakinkan.
- *
- * Dipakai ketika skor tertinggi berada di bawah ambang: alih-alih menolak
- * mentah, pengguna ditawari beberapa kemungkinan untuk dipilih. Ini menangani
- * keluhan bermakna ganda seperti "printernya tidak bisa ngeprint", yang
- * kata-katanya cocok dengan beberapa masalah sekaligus.
+ * Kemungkinan terdekat ketika skor tertinggi di bawah ambang — pengguna
+ * ditawari beberapa pilihan alih-alih ditolak mentah.
  */
 export function saranTerdekat(keluhan, divisi, maks = 3) {
   const kata = tokenisasi(keluhan);
@@ -208,15 +236,9 @@ export function saranTerdekat(keluhan, divisi, maks = 3) {
    ──────────────────────────────────────────────────────────────── */
 
 /**
- * Peringkat divisi yang paling mungkin sesuai dengan sebuah keluhan.
- *
- * Pekerja berpikir dalam **gejala**, sedangkan antarmuka meminta mereka
- * memilih **kategori**. "Internet saya mati" itu LAN, FTTH, WAN, atau
- * Windows? Salah pilih berarti laporannya masuk ke WhatsApp engineer yang
- * keliru — engineer CCTV menerima keluhan printer.
- *
- * Penebakan memakai mesin skor yang sama dengan pencocokan biasa, hanya
- * dijalankan lintas divisi lalu diambil skor terbaik pada tiap divisi.
+ * Peringkat divisi yang paling mungkin sesuai sebuah keluhan — dipakai saat
+ * pelapor memilih "Saya tidak yakin". Memakai mesin skor yang sama, hanya
+ * dijalankan lintas divisi.
  *
  * @returns {Array<{divisi: string, masalah: object, skor: number}>} urut menurun
  */
@@ -237,22 +259,10 @@ export function tebakDivisi(keluhan) {
     .sort((a, b) => b.skor - a.skor);
 }
 
-/**
- * Ambang untuk penebakan LINTAS divisi — sengaja lebih ketat daripada
- * AMBANG_COCOK yang dipakai di dalam satu divisi.
- *
- * Alasannya bukan kehati-hatian belaka. Skor tertinggi di sini diambil dari
- * delapan divisi sekaligus, dan mengambil nilai maksimum dari banyak kandidat
- * menaikkan puncaknya secara semu — semakin banyak yang dibandingkan, semakin
- * besar peluang salah satunya kebetulan tinggi. Terbukti nyata: keluhan
- * *"kursi kantor saya rusak"* — yang sama sekali bukan urusan ICT — mencapai
- * 0,391 pada divisi CCTV maupun Printer, nyaris menembus ambang 0,4.
- *
- * Ditambah lagi, akibat salah tebak di sini lebih mahal: laporan sampai ke
- * WhatsApp engineer yang keliru. Di dalam satu divisi, salah cocok hanya
- * berarti langkah yang tidak tepat, dan pengguna dapat menjawab
- * "belum berhasil".
- */
+/* Lebih ketat daripada AMBANG_COCOK. Skor di sini diambil dari delapan divisi
+   sekaligus, dan mengambil maksimum dari banyak kandidat menaikkan puncaknya
+   secara semu. Salah tebak juga lebih mahal: laporannya sampai ke WhatsApp
+   engineer yang keliru, bukan sekadar langkah yang tidak tepat. */
 const AMBANG_DIVISI_PASTI = 0.5;
 const AMBANG_DIVISI_RAGU = 0.4;
 
@@ -272,9 +282,8 @@ export function pilihDivisiOtomatis(keluhan) {
   const teratas = peringkat[0];
   const kedua = peringkat[1]?.skor ?? 0;
 
-  // Diputuskan sendiri hanya bila skornya tinggi DAN unggul jelas dari
-  // kandidat berikutnya. Dua divisi berskor setara berarti keluhannya memang
-  // bermakna ganda — melempar koin di situ sama saja menebak engineer.
+  // Tinggi saja tidak cukup — harus unggul jelas dari kandidat kedua. Dua
+  // divisi berskor setara berarti keluhannya memang bermakna ganda.
   if (teratas.skor >= AMBANG_DIVISI_PASTI && teratas.skor - kedua >= JARAK_MEYAKINKAN) {
     return { hasil: 'pasti', divisi: teratas.divisi, skor: teratas.skor, pilihan: [] };
   }
@@ -350,36 +359,49 @@ function susunJawabanBerat(masalah) {
 }
 
 /**
- * Jawaban saat keluhan belum cukup meyakinkan untuk dijawab langsung.
- * Bila ada kemungkinan yang mendekati, tawarkan agar pengguna memilih;
- * bila benar-benar tidak ada, tampilkan kendala yang paling sering dilaporkan.
+ * Jawaban untuk keluhan yang tidak dikenali.
+ *
+ * Mengembalikan teks DAN daftar masalah terdekat sebagai data, karena
+ * antarmuka menyajikannya sebagai tombol: meminta pelapor mengetik ulang
+ * sementara tombol Hubungi Engineer tersedia satu ketukan di bawahnya berarti
+ * praktis tidak ada yang mengetik ulang.
+ *
+ * @returns {{teks: string, saran: Array<{id: string, judul: string}>}}
  */
 function jawabanTidakDikenali(keluhan, divisi) {
-  const saran = saranTerdekat(keluhan, divisi, 3);
+  const terdekat = saranTerdekat(keluhan, divisi, 3);
 
-  if (saran.length > 0) {
-    return [
-      'Untuk memastikan, apakah kendala Anda termasuk salah satu berikut?',
-      '',
-      saran.map((s) => `- ${s.masalah.judul}`).join('\n'),
-      '',
-      'Silakan tuliskan kembali dengan kalimat yang lebih mendekati salah satu di atas. Bila tidak ada yang sesuai, tekan tombol **Hubungi Engineer** untuk dibantu langsung.'
-    ].join('\n');
+  if (terdekat.length > 0) {
+    return {
+      teks: [
+        'Untuk memastikan, apakah ini yang Anda alami?',
+        '',
+        'Silakan pilih salah satu di bawah. Bila tidak ada yang sesuai, tekan **Hubungi Engineer** untuk dibantu langsung.'
+      ].join('\n'),
+      saran: terdekat.map((s) => ({ id: s.masalah.id, judul: s.masalah.judul }))
+    };
   }
 
+  // Tidak ada yang mendekati — yang ditawarkan kendala paling sering pada
+  // layanan itu, tetap dapat ditekan.
   const contoh = daftarMasalahDivisi(divisi, 5);
-  const bagian = ['Mohon maaf, keluhan Anda belum dapat kami kenali secara otomatis.', ''];
 
-  if (contoh.length > 0) {
-    bagian.push('Berikut kendala yang paling sering dilaporkan pada layanan ini:');
-    bagian.push(contoh.map((c) => `- ${c.judul}`).join('\n'));
-    bagian.push('');
-    bagian.push('Silakan tuliskan kembali dengan kalimat lain, atau tekan tombol **Hubungi Engineer** untuk dibantu langsung.');
-  } else {
-    bagian.push('Silakan tekan tombol **Hubungi Engineer** untuk dibantu langsung.');
+  if (contoh.length === 0) {
+    return {
+      teks: 'Mohon maaf, keluhan Anda belum dapat kami kenali secara otomatis.\n\n' +
+        'Silakan tekan tombol **Hubungi Engineer** untuk dibantu langsung.',
+      saran: []
+    };
   }
 
-  return bagian.join('\n');
+  return {
+    teks: [
+      'Mohon maaf, keluhan Anda belum dapat kami kenali secara otomatis.',
+      '',
+      'Berikut kendala yang paling sering dilaporkan pada layanan ini — silakan pilih bila ada yang sesuai, atau tekan **Hubungi Engineer**.'
+    ].join('\n'),
+    saran: contoh.map((c) => ({ id: c.id, judul: c.judul }))
+  };
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -441,8 +463,17 @@ function jumlahSolusiDiberikan(sessionId) {
   }).length;
 }
 
-/** Keluhan pertama pengguna pada sesi ini */
+/**
+ * Keluhan yang dipakai ulang saat pengguna menjawab "belum berhasil".
+ *
+ * Masalah yang terakhir benar-benar cocok didahulukan, bukan pesan pertama:
+ * pelapor yang keluhan awalnya kabur lalu menekan saran akan dilempar balik ke
+ * daftar saran itu juga, dan solusi berikutnya tidak pernah sampai.
+ */
 function keluhanPertama(sessionId) {
+  const sesi = getChatSession(sessionId);
+  if (sesi?.masalah_cocok) return sesi.masalah_cocok;
+
   const pesan = getChatMessages(sessionId).find((m) => m.role === 'user');
   return pesan?.content?.trim() || null;
 }
@@ -501,10 +532,14 @@ export async function chat(sessionId, divisi, pesanPengguna) {
   };
 
   if (!cocok) {
+    const { teks, saran } = jawabanTidakDikenali(kueri, divisi);
     return {
-      response: jawabanTidakDikenali(kueri, divisi),
+      response: teks,
+      // Tombol Hubungi Engineer tetap muncul bersama saran — menahannya
+      // menjebak pelapor yang memang membutuhkan orang.
       shouldEscalate: true,
       isResolved: false,
+      saranMasalah: saran,
       ...telemetri
     };
   }
