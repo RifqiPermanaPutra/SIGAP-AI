@@ -1,10 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <defs>
-    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#3b82f6"/>
-      <stop offset="100%" style="stop-color:#06b6d4"/>
-    </linearGradient>
-  </defs>
-  <rect width="32" height="32" rx="8" fill="url(#g)"/>
-  <text x="16" y="22" text-anchor="middle" fill="white" font-size="16" font-family="Inter, sans-serif" font-weight="700">AI</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="SIGAP">
+  <!--
+    Sosok berlari dengan garis kecepatan — lambang utama logo SATU-IT SIGAP.
+
+    Hanya lambangnya yang diambil: wordmark logo berasio 4,57:1 dan sama sekali
+    tidak terbaca pada 16px. Guratannya tebal dan tanpa rincian halus, karena
+    favicon dibaca sebagai bentuk, bukan gambar.
+
+    Dua hal yang dicoba dan dibuang setelah dilihat hasil rendernya:
+      - badan tegak      → terbaca sedang berdiri, bukan bergegas
+      - lengan menekuk   → lengan menyatu dengan kepala jadi satu gumpalan
+
+    Sebelumnya berkas ini bertuliskan "AI" di atas gradien biru-sian generik —
+    dua kekeliruan sekaligus. Sistem ini tidak memuat AI sama sekali (lencana
+    "AI" pada gelembung chat sudah diganti "SG" karena alasan yang sama), dan
+    warnanya bukan warna Pertamina.
+  -->
+  <rect width="32" height="32" rx="7" fill="#006cb8"/>
+
+  <!-- Garis kecepatan, tertinggal di belakang -->
+  <g stroke="#ffffff" stroke-width="2.1" stroke-linecap="round" opacity="0.8">
+    <line x1="3" y1="11" x2="8.5" y2="11"/>
+    <line x1="2.5" y1="16" x2="7" y2="16"/>
+    <line x1="4" y1="21" x2="8" y2="21"/>
+  </g>
+
+  <circle cx="22.3" cy="8.3" r="2.9" fill="#ffffff"/>
+  <g stroke="#ffffff" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- badan condong ke depan: bahu ke pinggul -->
+    <path d="M21 12.4 L16 17.2"/>
+    <!-- tungkai depan menendang maju -->
+    <path d="M16 17.2 L20.5 19 L21.5 24.5"/>
+    <!-- tungkai belakang terjulur -->
+    <path d="M16 17.2 L11.8 19.8 L13 24.5"/>
+    <!-- lengan depan dan belakang -->
+    <path d="M20.2 13.6 L24.5 15.5"/>
+    <path d="M20.2 13.6 L16.3 11.6"/>
+  </g>
 </svg>
