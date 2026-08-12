@@ -322,7 +322,7 @@ export default function TugasPage() {
         </div>
         <div className="tg-navbar-kanan">
           <a className="tg-tombol-navbar" href="/rekap" aria-label="Buka halaman rekap"><IconChart size={15} /> <span className="gs-label">Rekap</span></a>
-          <GantiSandi kelasTombol="tg-tombol-navbar" />
+          <GantiSandi namaAkun={pengguna.namaAkun} kelasTombol="tg-tombol-navbar" />
           <button className="tg-tombol-navbar" onClick={keluar}>
             <IconLogout size={15} /> Keluar
           </button>

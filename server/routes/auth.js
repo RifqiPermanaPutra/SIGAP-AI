@@ -9,7 +9,7 @@ import { Router } from 'express';
 import {
   cariPengguna, periksaSandi, buatToken, bacaToken,
   pasangKuki, hapusKuki, catatMasuk, catatAkses, divisiAkun,
-  wajibMasuk, gantiSandi, PANJANG_SANDI_MINIMUM
+  gantiSandi, PANJANG_SANDI_MINIMUM
 } from '../services/authService.js';
 import { buatPenghitungMasuk } from '../services/pembatasLaju.js';
 import { info, peringatan } from '../services/logUtil.js';
@@ -98,31 +98,42 @@ authRouter.post('/keluar', (req, res) => {
 /**
  * POST /api/auth/ganti-sandi
  *
- * Mengganti kata sandi AKUN SENDIRI. Tidak ada jalur "lupa kata sandi" tanpa
- * masuk: sistem ini tidak punya jalur pengiriman terverifikasi (tanpa surel,
- * tanpa SMS), sehingga pemulihan mandiri hanya akan menjadi pintu pengambilalihan
- * akun. Yang lupa sandinya dibantu admin lewat `npm run akun -- ganti`.
+ * Mengganti kata sandi sebuah akun. TIDAK menuntut sesi — yang membuktikan
+ * kepemilikan adalah kata sandi lamanya, dan itu persis sekuat masuk. Karena
+ * itu ia dapat dipanggil dari halaman masuk maupun dari navbar oleh orang yang
+ * sudah masuk.
  *
- * Empat penjagaan, dan semuanya diperlukan:
+ * Yang dilonggarkan hanya sesinya, bukan penjagaannya:
  *
- *   1. wajibMasuk()   — hanya pemilik sesi yang dapat memanggilnya
- *   2. sandi lama     — sesi yang dicuri saja tidak cukup untuk mengunci
- *                       pemiliknya keluar dari akunnya sendiri
- *   3. pembatas laju  — menebak sandi lama lewat jalur ini dibatasi sama
- *                       ketatnya dengan menebak lewat halaman masuk
+ *   1. sandi lama     — satu-satunya bukti kepemilikan yang diterima
+ *   2. pembatas laju  — penghitung yang SAMA dengan halaman masuk, sehingga
+ *                       jalur ini tidak menjadi tempat menebak kata sandi tanpa
+ *                       batas setelah halaman masuk dikunci
+ *   3. galat samar    — "nama akun atau kata sandi salah", bentuk yang sama
+ *                       dengan halaman masuk, agar tidak dapat dipakai menebak
+ *                       nama akun mana yang benar-benar ada
  *   4. sesi diputus   — gantiSandi() menulis `sandi_diubah_pada`, sehingga
  *                       seluruh token lama ditolak. Tanpa ini, mengganti sandi
  *                       karena curiga sesi dicuri tidak mengusir siapa pun.
+ *
+ * TIDAK ADA "lupa kata sandi" di sini, dan itu bukan kelalaian: memulihkan akun
+ * tanpa kata sandi lama menuntut jalur pengiriman terverifikasi — surel atau
+ * SMS — dan sistem ini tidak punya keduanya. Server tidak pernah mengirim apa
+ * pun sendiri; pesan WhatsApp pun dibuka peramban pelapor lewat wa.me. Yang
+ * benar-benar lupa dibantu admin lewat `npm run akun -- ganti`.
  */
-authRouter.post('/ganti-sandi', wajibMasuk(), (req, res) => {
+authRouter.post('/ganti-sandi', (req, res) => {
   try {
+    const namaAkun = String(req.body?.namaAkun || '').trim().toLowerCase();
     const sandiLama = String(req.body?.sandiLama || '');
     const sandiBaru = String(req.body?.sandiBaru || '');
-    const namaAkun = req.pengguna.akun;
     const alamat = req.ip || req.socket?.remoteAddress || 'tidak-diketahui';
 
-    if (!sandiLama || !sandiBaru) {
-      return res.status(400).json({ success: false, error: 'Kata sandi lama dan baru wajib diisi' });
+    if (!namaAkun || !sandiLama || !sandiBaru) {
+      return res.status(400).json({
+        success: false,
+        error: 'Nama akun, kata sandi lama, dan kata sandi baru wajib diisi'
+      });
     }
     if (sandiBaru.length < PANJANG_SANDI_MINIMUM) {
       return res.status(400).json({
@@ -146,19 +157,23 @@ authRouter.post('/ganti-sandi', wajibMasuk(), (req, res) => {
     }
 
     const pengguna = cariPengguna(namaAkun);
+
+    // Pesan yang sama untuk akun tidak dikenal maupun sandi keliru — bentuknya
+    // disamakan dengan halaman masuk. Membedakan keduanya membuat jalur ini
+    // dapat dipakai memeriksa nama akun mana yang benar-benar ada.
     if (!pengguna || !periksaSandi(sandiLama, pengguna.sandi_hash)) {
       penghitung.catatGagal(namaAkun, alamat);
       peringatan('ganti-sandi-gagal', { akun: namaAkun, alamat });
-      return res.status(401).json({ success: false, error: 'Kata sandi lama salah' });
+      return res.status(401).json({ success: false, error: 'Nama akun atau kata sandi salah' });
     }
 
     gantiSandi(namaAkun, sandiBaru);
     penghitung.hapus(namaAkun, alamat);
 
-    // Seluruh token lama kini ditolak, termasuk milik peramban ini. Sesi
-    // berjalan diperbarui supaya orang yang baru saja mengganti sandinya tidak
-    // ikut terlempar keluar dari perangkat yang sedang ia pakai — perangkat
-    // LAIN tetap harus masuk ulang, dan itu memang tujuannya.
+    // Seluruh token lama kini ditolak. Yang mengganti diberi sesi baru supaya
+    // tidak ikut terlempar keluar dari perangkat yang sedang ia pakai —
+    // perangkat LAIN tetap harus masuk ulang, dan itu memang tujuannya.
+    // Dipanggil dari halaman masuk, ini sekaligus memasukkannya langsung.
     pasangKuki(res, buatToken(cariPengguna(namaAkun)));
 
     catatAkses(namaAkun, 'ganti-sandi', 'diganti sendiri lewat antarmuka');
@@ -166,7 +181,13 @@ authRouter.post('/ganti-sandi', wajibMasuk(), (req, res) => {
 
     res.json({
       success: true,
-      pesan: 'Kata sandi berhasil diganti. Perangkat lain yang masih masuk akan diminta masuk kembali.'
+      pesan: 'Kata sandi berhasil diganti. Perangkat lain yang masih masuk akan diminta masuk kembali.',
+      pengguna: {
+        namaAkun: pengguna.nama_akun,
+        nama: pengguna.nama,
+        peran: pengguna.peran,
+        divisi: divisiAkun(pengguna)
+      }
     });
   } catch (error) {
     console.error('Error ganti sandi:', error);

@@ -604,40 +604,62 @@ itu perlakukan ia sebagai sandi sementara:
 
 1. Buat akunnya dengan kata sandi awal
 2. Serahkan **langsung kepada orangnya** — jangan lewat grup WhatsApp
-3. **Minta ia menggantinya sendiri** lewat tombol **Kata Sandi** di navbar,
-   segera setelah berhasil masuk
+3. **Minta ia menggantinya sendiri** lewat tautan **"Ganti kata sandi"** di
+   halaman masuk — ia tidak perlu masuk lebih dulu, dan setelah diganti ia
+   langsung masuk dengan sandi barunya
 
 Langkah 3 itu yang membuat sandi awal tadi tidak lagi menjadi persoalan: nilai
 barunya hanya diketahui pemiliknya, tidak pernah melewati riwayat perintah
 maupun tangan Anda.
 
-### Ganti kata sandi sendiri lewat halaman
+### Ganti kata sandi sendiri
 
-Setiap orang yang sedang masuk dapat mengganti sandinya sendiri — tombol
-**Kata Sandi** di navbar halaman rekap, tugas, dan penyunting SOP. Di ponsel
-tombolnya berupa ikon gembok saja, karena navbar tidak cukup lebar untuk tiga
-tombol berteks.
+Ada dua jalan, dan keduanya memanggil jalur yang sama:
 
-Dialognya meminta **kata sandi sekarang**, lalu yang baru dua kali.
+**Dari halaman masuk** — tautan **"Ganti kata sandi"** di bawah tombol Masuk.
+Kartunya berganti isi di tempat, jadi nama akun dan kata sandi yang sudah
+diketik tetap terisi. Inilah yang dipakai orang yang baru menerima sandi
+sementara dari admin: ia mengganti lebih dulu, lalu **langsung masuk** dengan
+sandi barunya tanpa mengetik apa pun lagi.
 
-Empat penjagaan berlaku, dan semuanya di sisi server:
+**Dari dalam aplikasi** — tombol **Kata Sandi** di navbar halaman rekap, tugas,
+dan penyunting SOP. Di ponsel tombolnya berupa ikon gembok saja, karena navbar
+tidak cukup lebar untuk tiga tombol berteks.
+
+Keduanya meminta **kata sandi sekarang**, lalu yang baru dua kali.
+
+#### Kenapa jalur ini tidak menuntut sesi
+
+Yang membuktikan kepemilikan adalah **kata sandi lamanya**, dan itu persis
+sekuat masuk. Menuntut sesi lebih dulu hanya menambah langkah tanpa menambah
+penjagaan — sekaligus menutup keadaan yang paling sering terjadi: orang yang
+ingin mengganti sandinya justru saat sedang berada di halaman masuk.
+
+Empat penjagaan berlaku, seluruhnya di sisi server:
 
 | Penjagaan | Alasannya |
 |---|---|
-| Harus sudah masuk | Bukan jalur pemulihan, melainkan penggantian oleh pemilik |
-| **Wajib kata sandi lama** | Sesi yang dicuri saja tidak cukup untuk mengunci pemiliknya keluar dari akunnya sendiri |
-| Pembatas laju | Menebak sandi lama lewat jalur ini dibatasi seketat lewat halaman masuk |
+| **Wajib kata sandi lama** | Satu-satunya bukti kepemilikan yang diterima. Sesi yang dicuri saja tidak cukup untuk mengunci pemiliknya keluar dari akunnya sendiri |
+| **Pembatas laju** | Penghitung yang sama dengan halaman masuk, sehingga jalur ini tidak menjadi tempat menebak sandi tanpa batas setelah halaman masuk dikunci |
+| **Galat yang samar** | "Nama akun atau kata sandi salah" — bentuk yang sama dengan halaman masuk. Pesan berbeda akan menjadikannya alat memeriksa akun mana yang benar-benar ada |
 | **Seluruh sesi lama diputus** | Mengganti sandi karena curiga sesi dicuri harus benar-benar mengusir pencurinya |
+
+Baris terakhir sempat tidak berlaku. Token sesi dulu hanya memuat nama akun,
+peran, dan waktu kedaluwarsa — sehingga mengganti kata sandi **tidak memutus
+sesi mana pun**, dan sesi yang terlanjur dicuri tetap hidup. Sekarang token
+membawa waktu terbitnya dan ditolak bila lebih tua daripada penggantian
+terakhir.
 
 Perangkat yang dipakai mengganti **tidak ikut terlempar keluar** — kukinya
 diperbarui pada balasan yang sama. Perangkat lain harus masuk kembali, dan itu
 memang tujuannya.
 
-> **Tidak ada "lupa kata sandi" tanpa masuk, dan itu disengaja.** Pemulihan
-> mandiri menuntut jalur pengiriman terverifikasi — surel atau SMS — dan sistem
-> ini tidak punya keduanya (juga tidak boleh menambah dependensi). Tanpa jalur
-> itu, tombol "lupa kata sandi" hanyalah pintu pengambilalihan akun bagi siapa
-> pun yang tahu nama akun orang lain.
+> **Tidak ada "lupa kata sandi", dan itu disengaja.** Memulihkan akun tanpa
+> kata sandi lama menuntut jalur pengiriman terverifikasi — surel atau SMS —
+> dan sistem ini tidak punya keduanya. Server tidak pernah mengirim apa pun
+> sendiri; pesan WhatsApp pun dibuka peramban pelapor lewat `wa.me`. Tanpa
+> jalur itu, tombol "lupa kata sandi" hanyalah pintu pengambilalihan akun bagi
+> siapa pun yang tahu nama akun orang lain.
 >
 > Yang benar-benar lupa dibantu admin lewat `npm run akun -- ganti`.
 

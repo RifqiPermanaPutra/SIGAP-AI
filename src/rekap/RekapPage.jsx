@@ -362,7 +362,7 @@ export default function RekapPage() {
             <strong>{pengguna.nama}</strong>
             <em>{pengguna.peran}</em>
           </span>
-          <GantiSandi kelasTombol="rk-tombol-navbar" />
+          <GantiSandi namaAkun={pengguna.namaAkun} kelasTombol="rk-tombol-navbar" />
           <button className="rk-tombol-navbar" onClick={keluar}>
             <IconLogout size={16} /> Keluar
           </button>
