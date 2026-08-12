@@ -51,14 +51,23 @@
     var(--pt-blue) 0 33%, var(--pt-green) 33% 66%, var(--pt-red) 66% 100%);
 }
 
-.tk-merek { display: flex; align-items: center; gap: 10px; min-width: 0; }
-.tk-merek-logo { height: 26px; width: auto; display: block; flex-shrink: 0; }
+.tk-merek { display: flex; align-items: center; gap: 8px; min-width: 0; flex: 0 1 auto; }
 
+/* KEDUANYA BOLEH MENYUSUT — perbaikan yang sama seperti pada .rk-merek.
+   `min-width: 0` di atas dulu tidak berguna karena kedua logo memakai
+   `flex-shrink: 0`: induknya boleh menyempit sementara anaknya menolak,
+   sehingga logo menembus keluar dan tertimpa tombol Beranda. */
+.tk-merek-logo,
+.tk-merek-logo-unit {
+  width: auto; display: block;
+  flex: 0 1 auto; min-width: 0;
+  object-fit: contain;
+}
+.tk-merek-logo { height: 18px; }
 /* Varian logo untuk header gelap sudah memiliki alpha transparan dan elemen
    monokrom putih, sehingga tidak memerlukan panel, border, maupun padding. */
 .tk-merek-logo-unit {
-  height: 28px; width: auto; display: block; flex-shrink: 0;
-  object-fit: contain;
+  height: 20px;
   filter: brightness(1.12) contrast(1.06) drop-shadow(0 1px 2px rgba(0, 27, 48, 0.35));
 }
 
@@ -201,9 +210,12 @@
   .tk h1 { font-size: 1.5rem; }
   .tk-navbar { padding: 12px 20px; }
 
-  .tk-merek-logo { height: 30px; }
-  .tk-merek-logo-unit { height: 32px; }
-  .tk-merek-garis { display: block; height: 30px; }
+  /* Halaman ini navbar kanannya hanya satu tombol, jadi teks merek sudah
+     muat di sini — tetapi logonya tetap 24/26px, bukan 30/32px. */
+  .tk-merek { gap: 10px; }
+  .tk-merek-logo { height: 24px; }
+  .tk-merek-logo-unit { height: 26px; }
+  .tk-merek-garis { display: block; height: 24px; }
   .tk-merek-teks { display: flex; }
   .tk-merek-teks strong { font-size: 1rem; }
 
@@ -213,4 +225,14 @@
 
   .tk-hasil { padding: 20px; }
   .tk-rincian { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; }
+}
+
+/* ────────────────────────────────────────────────────────────────
+   >= 960px — layar lebar
+   ──────────────────────────────────────────────────────────────── */
+
+@media (min-width: 960px) {
+  .tk-merek-logo { height: 28px; }
+  .tk-merek-logo-unit { height: 30px; }
+  .tk-merek-garis { height: 28px; }
 }

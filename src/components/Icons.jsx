@@ -203,6 +203,11 @@ export const IconChevronDown = (p) => (
   <Svg {...p}><path d="m6 9.5 6 6 6-6" /></Svg>
 );
 
+/* Corong — penanda saringan tambahan yang dapat dibuka-tutup */
+export const IconFilter = (p) => (
+  <Svg {...p}><path d="M3 5h18l-7 8v5.5l-4 2V13z" /></Svg>
+);
+
 /* Kunci pas — "sedang dikerjakan", tahap sebelum tiket ditandai selesai */
 export const IconWrench = (p) => (
   <Svg {...p}>

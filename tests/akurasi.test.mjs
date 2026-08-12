@@ -151,7 +151,59 @@ cek('keluhan di luar cakupan tidak diarahkan ke layanan mana pun',
 cek('keluhan kosong tidak menghasilkan tebakan',
   pilihDivisiOtomatis('').hasil === 'tidak-dikenali', pilihDivisiOtomatis('').hasil);
 
-bagian('4. Ketahanan terhadap masukan aneh');
+bagian('4. Keterangan tambahan tidak boleh merusak pencocokan');
+
+/* Pelapor menyebut tempat, waktu, dan kata sopan. Skornya adalah rasio, dan
+   dulu SETIAP kata menambah penyebutnya — sehingga keluhan yang sama persis
+   merosot hanya karena diterangkan lebih lengkap:
+
+     kertas nyangkut di printer                            1,000
+     kertas nyangkut di printer ruang admin                0,502
+     kertas nyangkut di printer ruang admin lantai 2       0,402
+     + gedung utama pagi tadi                              0,217  → tidak dijawab
+
+   Terjadi sungguhan: keluhan "kertas nyangkut di printer ruang admin" pada
+   basis data berskor 0,346 dan diteruskan ke engineer, padahal SOP-nya ada.
+
+   Sistem pengaduan yang menghukum orang karena menerangkan keadaannya
+   mengajarkan mereka menulis sesingkat mungkin — kebalikan dari yang
+   dibutuhkan engineer ketika laporannya akhirnya sampai. */
+
+const BERKETERANGAN = [
+  ['kertas nyangkut di printer ruang admin', 'printer', 'Kertas Macet'],
+  ['kertas nyangkut di printer ruang admin lantai 2', 'printer', 'Kertas Macet'],
+  ['kertas nyangkut di printer ruang admin lantai 2 gedung utama pagi tadi', 'printer', 'Kertas Macet'],
+  ['mohon bantuannya pak printer di ruangan saya kertasnya macet terus dari kemarin', 'printer', 'Kertas Macet'],
+  ['laptop saya lemot sekali sejak kemarin sore di ruangan produksi lantai dua', 'windows', 'Lambat']
+];
+
+const rusakOlehKeterangan = [];
+for (const [keluhan, divisi, diharapkan] of BERKETERANGAN) {
+  const hasil = cariMasalah(keluhan, divisi);
+  if (!hasil || !hasil.masalah.judul.includes(diharapkan)) {
+    rusakOlehKeterangan.push(`"${keluhan}" → ${hasil ? hasil.masalah.judul : 'tidak dikenali'}`);
+  }
+}
+cek('keterangan tempat dan waktu tidak menjatuhkan skor di bawah ambang',
+  rusakOlehKeterangan.length === 0, rusakOlehKeterangan);
+catatan('seluruh kata asing dihitung sekali, bukan satu per satu — lihat BATAS_KATA_ASING');
+
+/* Sisi sebaliknya, dan ia yang membuat perbaikan di atas tidak berubah menjadi
+   kebocoran: melonggarkan penyebut membuat keluhan yang menyentuh SATU kata
+   umum ikut naik. "kursi kantor saya rusak" menyentuh "rusak" pada empat judul
+   masalah sekaligus di empat divisi berbeda. */
+cek('satu kata yang kebetulan cocok tetap tidak cukup',
+  cariMasalah('kursi kantor saya rusak', 'printer') === null, 'malah dijawab');
+cek('keluhan berisi satu kata umum tidak dijawab yakin',
+  cariMasalah('printer', 'printer') === null, 'malah dijawab');
+catatan('sebelumnya keluhan "printer" saja berskor 1,000 — rasio sempurna dari satu kata');
+
+// Pengecualian yang disengaja: bila hanya itu yang ditulis, kata itulah
+// seluruh keterangan yang ada.
+const pendek = cariMasalah('bluescreen', 'windows');
+cek('keluhan satu kata yang khas tetap dikenali', pendek !== null, 'ditolak juga');
+
+bagian('5. Ketahanan terhadap masukan aneh');
 cek('teks kosong tidak dicocokkan', cariMasalah('', 'printer') === null, 'ada hasil');
 cek('spasi saja tidak dicocokkan', cariMasalah('     ', 'printer') === null, 'ada hasil');
 cek('tanda baca saja tidak dicocokkan', cariMasalah('???!!!', 'printer') === null, 'ada hasil');

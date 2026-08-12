@@ -45,21 +45,34 @@
 
 /* ── Merek ────────────────────────────────────────────────────── */
 
-.sg-merek { display: flex; align-items: center; gap: 10px; min-width: 0; }
-.sg-merek-logo { height: 26px; width: auto; display: block; flex-shrink: 0; }
-/* Varian logo untuk header gelap sudah memiliki alpha transparan dan elemen
-   monokrom putih, sehingga tidak memerlukan panel, border, maupun padding.
+.sg-merek { display: flex; align-items: center; gap: 8px; min-width: 0; }
 
-   Tidak seperti navbar halaman lain, teks merek di sini TETAP tampil pada
-   ponsel: kartu masuk lebarnya 390px penuh dan tidak berbagi ruang dengan
-   tombol apa pun. */
+/* Kartu ini lebarnya min(100%, 390px) dan kepalanya berpadding 16px, jadi
+   pada ponsel 393px ruang yang tersedia hanya 329px. Dengan ukuran lama:
+
+     logo Pertamina EP   rasio 5,14:1 — pada 26px = 134px
+     logo ONE + SIGAP    rasio 4,57:1 — pada 28px = 128px
+     garis pemisah + tiga jarak                   =  31px
+     ────────────────────────────────────────────────────
+     tersisa untuk teks merek                        36px
+
+   Itulah sebabnya "SIGAP / TUGAS ENGINEER" terbaca "SIGAP TU...".
+   Pada 18px dan 20px sisanya menjadi 120px — cukup utuh. */
+.sg-merek-logo,
 .sg-merek-logo-unit {
-  height: 28px; width: auto; display: block; flex-shrink: 0;
+  width: auto; display: block;
+  flex: 0 1 auto; min-width: 0;
   object-fit: contain;
+}
+.sg-merek-logo { height: 18px; }
+/* Varian logo untuk header gelap sudah memiliki alpha transparan dan elemen
+   monokrom putih, sehingga tidak memerlukan panel, border, maupun padding. */
+.sg-merek-logo-unit {
+  height: 20px;
   filter: brightness(1.12) contrast(1.06) drop-shadow(0 1px 2px rgba(0, 27, 48, 0.35));
 }
 .sg-merek-garis {
-  width: 1px; height: 26px; flex-shrink: 0;
+  width: 1px; height: 20px; flex-shrink: 0;
   background: rgba(255, 255, 255, 0.3);
 }
 .sg-merek-teks { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
@@ -148,9 +161,12 @@
 .sg-masuk-kaki a { color: var(--pt-blue-text); font-weight: 600; }
 
 @media (min-width: 600px) {
-  .sg-merek-logo { height: 30px; }
-  .sg-merek-logo-unit { height: 32px; }
-  .sg-merek-garis { height: 30px; }
+  /* Kartunya tetap 390px berapa pun lebar layar, jadi ruangnya tidak
+     bertambah — yang berubah hanya padding isinya. Logo naik sedikit saja. */
+  .sg-merek { gap: 9px; }
+  .sg-merek-logo { height: 20px; }
+  .sg-merek-logo-unit { height: 22px; }
+  .sg-merek-garis { height: 22px; }
   .sg-merek-teks strong { font-size: 1rem; }
   .sg-merek-teks small { font-size: 0.65rem; }
 

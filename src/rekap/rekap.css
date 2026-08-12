@@ -49,13 +49,35 @@
 /* PENTING — logo Pertamina EP adalah varian untuk LATAR GELAP: wordmark
    "PERTAMINA" digambar putih. Bidang di belakangnya wajib biru; di atas
    putih tulisannya lenyap dan hanya menyisakan emblem. */
-.rk-merek { display: flex; align-items: center; gap: 10px; min-width: 0; }
-.rk-merek-logo { height: 26px; width: auto; display: block; flex-shrink: 0; }
+.rk-merek { display: flex; align-items: center; gap: 8px; min-width: 0; flex: 0 1 auto; }
+
+/* KEDUANYA BOLEH MENYUSUT — dan itu inti perbaikannya.
+   Sebelumnya `min-width: 0` di atas tidak berguna sama sekali karena kedua
+   logo memakai `flex-shrink: 0`: induknya diizinkan menyempit sementara
+   anaknya menolak, sehingga logo menembus keluar wadahnya dan tertimpa
+   tombol navbar.
+
+   Perhitungan pada ponsel 393px dengan ukuran lama:
+     logo Pertamina EP   rasio 5,14:1 — pada 26px = 134px
+     logo ONE + SIGAP    rasio 4,57:1 — pada 28px = 128px
+     tombol Keluar ±105px, jarak 22px, padding 24px
+     ──────────────────────────────────────────────
+     jumlah 413px   sedangkan layar hanya 393px    → tabrakan
+
+   Pada 18px dan 20px jumlahnya menjadi 309px, muat dengan sisa ruang.
+   `flex: 0 1 auto` menjadi jaring pengaman untuk layar 320px: logo mengecil
+   proporsional, bukan menabrak. */
+.rk-merek-logo,
+.rk-merek-logo-unit {
+  width: auto; display: block;
+  flex: 0 1 auto; min-width: 0;
+  object-fit: contain;
+}
+.rk-merek-logo { height: 18px; }
 /* Varian logo untuk header gelap sudah memiliki alpha transparan dan elemen
    monokrom putih, sehingga tidak memerlukan panel, border, maupun padding. */
 .rk-merek-logo-unit {
-  height: 28px; width: auto; display: block; flex-shrink: 0;
-  object-fit: contain;
+  height: 20px;
   filter: brightness(1.12) contrast(1.06) drop-shadow(0 1px 2px rgba(0, 27, 48, 0.35));
 }
 
@@ -190,15 +212,21 @@
 }
 
 /* Di ponsel pintasan periode digulir mendatar dalam satu baris */
+/* MEMBUNGKUS, BUKAN MENGGULIR.
+   Dulu baris ini `overflow-x: auto` tanpa satu pun petunjuk visual bahwa ia
+   dapat digulir — pada ponsel, pilihan aktif "Bulan ini" menggeser barisnya
+   sehingga "Hari ini" terpotong menjadi "i" di tepi kiri. Pilihan yang tidak
+   terlihat sama saja dengan pilihan yang tidak ada.
+
+   Lima chip pada 393px membutuhkan ±400px, jadi ia turun menjadi dua baris
+   setinggi ±76px. Tambahan 36px itu jauh lebih murah daripada ±400px yang
+   dihemat dengan melipat saringan lain di bawah. */
 .rk-preset {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 12px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  padding-bottom: 2px;
 }
-.rk-preset::-webkit-scrollbar { display: none; }
 
 .rk-preset button {
   font: inherit;
@@ -221,12 +249,88 @@
   font-weight: 600;
 }
 
-.rk-kolom-saringan {
+/* ── Batas wewenang akun ──────────────────────────────────────── */
+
+/* Tampil untuk engineer, tidak untuk admin. Ikut tercetak pada PDF: berkas
+   yang beredar tanpa keterangan bahwa isinya sebagian akan dibaca sebagai
+   berkas yang utuh. */
+.rk-batas-wewenang {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--pt-blue-text);
+  background: var(--pt-blue-soft);
+  border-radius: var(--r-sm);
+}
+.rk-batas-wewenang svg { flex-shrink: 0; margin-top: 2px; }
+
+/* Rentang tanggal — selalu tampil, tidak ikut terlipat */
+.rk-tanggal {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
 
+/* ── Pelipat saringan ─────────────────────────────────────────── */
+
+.rk-lipat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 11px 12px;
+  min-height: 44px;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  background: var(--canvas);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: border-color var(--ease), background var(--ease);
+}
+.rk-lipat:hover { border-color: var(--pt-blue); }
+
+/* Lencana penghitung didorong ke kanan bersama panahnya, supaya jumlah
+   saringan yang sedang aktif terbaca tanpa membuka panelnya. */
+.rk-lipat-jumlah {
+  margin-left: auto;
+  padding: 2px 9px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--pt-blue);
+  border-radius: var(--r-full);
+}
+.rk-lipat-panah {
+  margin-left: auto;
+  flex-shrink: 0;
+  transition: transform var(--ease);
+}
+/* Bila lencana ada, ia yang memakai margin otomatis — panahnya cukup
+   menempel di sebelahnya. */
+.rk-lipat-jumlah + .rk-lipat-panah { margin-left: 0; }
+.rk-lipat-panah.rk-terbuka { transform: rotate(180deg); }
+
+.rk-kolom-saringan {
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+.rk-kolom-saringan.rk-terbuka { display: grid; }
+
+/* Berlaku untuk KEDUA wadah — rentang tanggal yang selalu tampil maupun
+   saringan yang terlipat. Tanpa .rk-tanggal di sini, labelnya kehilangan
+   `flex-direction: column` dan tulisan "Dari" berdiri sejajar dengan
+   kolomnya, bukan di atasnya. */
+.rk-tanggal label,
 .rk-kolom-saringan label {
   display: flex; flex-direction: column; gap: 4px;
   font-size: 0.74rem; font-weight: 600;
@@ -234,6 +338,7 @@
   min-width: 0;
 }
 
+.rk-tanggal input,
 .rk-kolom-saringan input,
 .rk-kolom-saringan select {
   font: inherit;
@@ -248,6 +353,7 @@
   min-width: 0;
   width: 100%;
 }
+.rk-tanggal input:focus,
 .rk-kolom-saringan input:focus,
 .rk-kolom-saringan select:focus { outline: 2px solid var(--pt-blue); outline-offset: 1px; }
 
@@ -711,6 +817,7 @@
   font-size: 0.82rem; color: var(--ink-2); margin: 8px 0 12px;
   background: var(--canvas); padding: 10px 12px;
   border-radius: var(--r-sm); line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 .rk-dialog label { font-size: 0.78rem; font-weight: 600; color: var(--ink-3); }
 .rk-dialog label small { color: var(--ink-4); font-weight: 400; }
@@ -757,22 +864,22 @@
   .rk { padding: 20px 16px 56px; }
   .rk-navbar { padding: 12px 20px; }
 
-  .rk-merek-logo { height: 30px; }
-  .rk-merek-logo-unit { height: 32px; }
-  /* Keduanya disembunyikan di ponsel (lihat aturan dasarnya di atas) karena
-     logo gabungan berasio 4,9:1 — di layar sempit ia mendesak tombol navbar
-     keluar. Baru pada lebar ini ruangnya cukup. */
-  .rk-merek-garis { display: block; height: 30px; }
-  .rk-merek-teks { display: flex; }
-  .rk-merek-teks strong { font-size: 1rem; }
-  .rk-merek-teks small { font-size: 0.65rem; }
+  /* 24px dan 26px, bukan 30px dan 32px. Pada 600px ruang tersedia 560px,
+     sedangkan ukuran besar bersama garis pemisah dan teks merek menuntut
+     576px — masih menabrak, hanya lebih halus sehingga tidak terlihat.
+     Teks merek baru dimunculkan pada 900px di bawah, saat ruangnya nyata. */
+  .rk-merek { gap: 10px; }
+  .rk-merek-logo { height: 24px; }
+  .rk-merek-logo-unit { height: 26px; }
 
   .rk-pengguna { display: flex; }
 
   .rk-saringan, .rk-panel { padding: 16px; }
-  .rk-preset { flex-wrap: wrap; overflow-x: visible; }
 
-  .rk-kolom-saringan { grid-template-columns: repeat(3, 1fr); }
+  /* Ruangnya cukup: seluruh saringan tetap terbuka dan pelipatnya tidak
+     diperlukan. Melipat sesuatu yang muat hanya menambah satu ketukan. */
+  .rk-lipat { display: none; }
+  .rk-kolom-saringan { display: grid; grid-template-columns: repeat(3, 1fr); }
   .rk-cari { grid-column: span 2; }
 
   .rk-aksi { flex-direction: row; }
@@ -813,6 +920,16 @@
   .rk { padding: 24px 20px 60px; }
   .rk-navbar { padding: 13px clamp(20px, 4vw, 40px); }
 
+  /* Baru di sini logo boleh sebesar aslinya dan teks merek ikut tampil.
+     Sebelumnya keduanya dimunculkan pada 600px, lebar yang sebenarnya
+     belum cukup — lihat hitungannya pada aturan dasar .rk-merek. */
+  .rk-merek-logo { height: 28px; }
+  .rk-merek-logo-unit { height: 30px; }
+  .rk-merek-garis { display: block; height: 28px; }
+  .rk-merek-teks { display: flex; }
+  .rk-merek-teks strong { font-size: 1rem; }
+  .rk-merek-teks small { font-size: 0.65rem; }
+
   .rk-kolom-saringan {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 12px;
@@ -851,6 +968,7 @@
    memperbesar halaman begitu kolom disentuh — persis yang dicegah oleh
    `font-size: 16px` pada aturan dasarnya. */
 @media (min-width: 960px) and (pointer: fine) {
+  .rk-tanggal input,
   .rk-kolom-saringan input,
   .rk-kolom-saringan select { font-size: 0.88rem; }
 }

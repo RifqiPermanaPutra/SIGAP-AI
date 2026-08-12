@@ -95,10 +95,26 @@ const LABEL_KEADAAN = {
   diteruskan: 'Diteruskan'
 };
 
-/** Ambil saringan dari query string */
+/**
+ * Ambil saringan dari query string, lalu tempelkan batas wewenang akun.
+ *
+ * Batasnya diambil dari `req.pengguna` — sesi yang sudah diperiksa — dan
+ * TIDAK PERNAH dari query string. Ini yang membedakannya dari `divisi`:
+ * pengguna boleh memilih saringan apa pun, tetapi tidak boleh memilih
+ * seberapa luas wewenangnya sendiri.
+ *
+ * Sebelumnya batas ini tidak ada sama sekali di halaman rekap, sehingga
+ * engineer Windows dapat membaca seluruh laporan kedelapan layanan lengkap
+ * dengan nama pelapornya — padahal halaman /tugas sudah membatasi hal yang
+ * persis sama, dan justru menautkan ke sini.
+ */
 function saringan(req) {
   const { dari, sampai, divisi, status, area, urgensi, fungsi, cari } = req.query;
-  return { dari, sampai, divisi, status, area, urgensi, fungsi, cari };
+  return {
+    dari, sampai, divisi, status, area, urgensi, fungsi, cari,
+    // null untuk admin (dan engineer bertanda '*'); selain itu daftar divisi
+    divisiDiizinkan: req.pengguna.divisi
+  };
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -135,7 +151,13 @@ rekapRouter.get('/', wajibMasuk(), (req, res) => {
       // harus ditagih" tidak perlu diingat sendiri oleh admin.
       engineer: petaEngineer(),
       pilihan: {
-        divisi: DIVISIONS.map(({ id, name }) => ({ id, name })),
+        // Daftar layanan pada saringan ikut dipersempit. Menawarkan pilihan
+        // yang pasti menghasilkan nol baris bukan penjagaan, melainkan
+        // jebakan: yang memilihnya menyimpulkan datanya kosong, bukan bahwa
+        // ia memang tidak berwenang melihatnya.
+        divisi: DIVISIONS
+          .filter(({ id }) => !f.divisiDiizinkan || f.divisiDiizinkan.includes(id))
+          .map(({ id, name }) => ({ id, name })),
         area: nilaiUnik('area'),
         // Diturunkan dari daftar bersama, bukan disalin — lihat chat.js
         urgensi: URGENSI_LIST.map((u) => u.nilai),
@@ -158,9 +180,19 @@ const KOLOM_EXCEL = [
 
 /**
  * GET /api/rekap/excel
- * Unduh data rinci sebagai .xlsx. Terbatas untuk admin.
+ * Unduh data rinci sebagai .xlsx.
+ *
+ * Terbuka untuk admin dan engineer, tetapi isinya mengikuti batas wewenang
+ * masing-masing lewat `saringan(req)` — engineer Printer memperoleh berkas
+ * berisi laporan Printer saja.
+ *
+ * Sebelumnya jalur ini terbatas admin sementara halaman rekapnya sendiri
+ * terbuka bagi siapa pun yang masuk. Penjagaan itu tidak menahan apa-apa:
+ * tombol "Cetak / Simpan PDF" di sebelahnya menghasilkan berkas dengan
+ * kolom yang praktis sama, termasuk nama pelapor. Yang menjaga sekarang
+ * adalah batas divisinya, bukan format berkasnya.
  */
-rekapRouter.get('/excel', wajibMasuk('admin'), (req, res) => {
+rekapRouter.get('/excel', wajibMasuk('admin', 'engineer'), (req, res) => {
   try {
     const f = saringan(req);
 

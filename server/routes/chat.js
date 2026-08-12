@@ -470,6 +470,10 @@ chatRouter.post('/', batasPesan, async (req, res) => {
       shouldEscalate: result.shouldEscalate,
       isResolved: result.isResolved,
       menungguKonfirmasi: result.menungguKonfirmasi === true,
+      // Masalah terdekat saat keluhan belum dikenali. Disajikan antarmuka
+      // sebagai tombol: satu ketukan jauh lebih mungkin dilakukan daripada
+      // mengetik ulang keluhan di ponsel sambil berdiri di depan perangkat.
+      saranMasalah: result.saranMasalah || [],
       needsDivision: false
     });
   } catch (error) {

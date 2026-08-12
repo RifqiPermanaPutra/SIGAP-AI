@@ -19,20 +19,22 @@ export default function Header({ division, reporter, onNewChat, onBack }) {
         <IconArrowLeft size={18} />
       </button>
 
-      <div className="header-logo-container" id="logo-container" aria-label="Pertamina EP, Pertamina ONE, dan SATU-IT SIGAP">
-        <img src="/logo-pertamina-ep.svg" alt="Pertamina EP" className="pertamina-logo-img" />
-        <img
-          src="/logo-satu-it-sigap-dark.png"
-          alt="Pertamina ONE dan SATU-IT SIGAP"
-          className="satu-it-logo-img"
-        />
-      </div>
+      {/* Bilah logo sengaja TIDAK ada di sini.
+          Logo Pertamina EP + ONE + SIGAP berasio 4,57:1 — pada tinggi 28px ia
+          memakan 128px lebar, dan bersama tombol kembali serta tombol
+          percakapan baru jumlahnya melampaui lebar ponsel 393px. Dulu ia
+          dipaksa turun ke baris kedua, membuat kepala halaman setinggi ±90px
+          di layar yang ruang vertikalnya justru paling langka.
+
+          Merek sudah ditegaskan di beranda dan halaman masuk — dua pintu yang
+          pasti dilewati sebelum sampai ke sini. Mengulanginya di tiap layar
+          percakapan tidak menambah pengenalan, hanya mengurangi ruang baca. */}
 
       <div className="header-info">
         <h1 className="header-title">
-          SIGAP
+          <span className="header-nama">SIGAP</span>
           {division && (
-            <span className="division-badge">
+            <span className="division-badge" title={division.name}>
               <DivisionIcon id={division.id} size={14} />
               {division.name}
             </span>

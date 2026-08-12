@@ -2,13 +2,8 @@
  * Layanan Rekap — penyaringan dan peringkasan laporan.
  *
  * Seluruh penyaringan dan penghitungan dikerjakan SQLite, bukan dimuat ke
- * memori lebih dulu. Inilah alasan utama perpindahan dari berkas JSON: rekap
- * per periode pada penyimpanan lama berarti membaca seluruh riwayat setiap
- * kali halaman dibuka.
- *
- * Pengelompokan tanggal memakai kolom `tanggal_wib` yang sudah dihitung saat
- * sesi dibuat, sehingga tidak ada perhitungan zona waktu di dalam kueri —
- * lihat RANCANGAN-DATA.md §13b.
+ * memori lebih dulu. Pengelompokan tanggal memakai kolom `tanggal_wib` yang
+ * sudah dihitung saat sesi dibuat — lihat RANCANGAN-DATA.md §13b.
  */
 import { wajibSiap } from '../database/init.js';
 import { namaDivisi } from '../config/divisi.js';
@@ -30,15 +25,8 @@ const STATUS_SAH = ['aktif', 'selesai', 'diteruskan', 'ditinggalkan'];
 /**
  * Keadaan tampilan — apa yang dibaca manusia pada kolom "Status".
  *
- * `status` di basis data berhenti di 'diteruskan' begitu laporan berpindah
- * tangan, dan TIDAK pernah berubah lagi (RANCANGAN-DATA.md §8). Itu benar
- * sebagai catatan — nilainya menopang `persen_mandiri`, deret grafik, dan
- * seluruh saringan — tetapi salah sebagai bacaan: tiket yang sudah engineer
- * tuntaskan tetap tertulis "Diteruskan" selamanya, seolah tidak ada yang
- * mengerjakannya.
- *
- * Karena itu keadaannya DITURUNKAN, bukan disimpan. Empat nilai status tetap
- * utuh di basis data; yang bertambah hanya cara membacanya:
+ * DITURUNKAN, bukan disimpan: empat nilai `status` di basis data tetap utuh
+ * (RANCANGAN-DATA.md §8), yang bertambah hanya cara membacanya.
  *
  *   diteruskan + belum disentuh        → belum-dikerjakan
  *   diteruskan + mulai_dikerjakan_pada → dikerjakan
@@ -88,6 +76,32 @@ function bangunSaringan(f = {}) {
     syarat.push('(keluhan LIKE ? OR nama LIKE ? OR nomor_tiket LIKE ?)');
     const pola = `%${f.cari}%`;
     nilai.push(pola, pola, pola);
+  }
+
+  /* BATAS WEWENANG AKUN — bukan saringan yang dipilih pengguna.
+   *
+   * Berbeda dari `f.divisi` di atas dalam hal yang menentukan: `f.divisi`
+   * datang dari query string dan boleh apa saja, sedangkan yang ini datang
+   * dari sesi yang sudah diperiksa dan TIDAK PERNAH dari masukan pengguna.
+   * Keduanya digabung dengan AND, jadi engineer yang menyaring layanan di
+   * luar wewenangnya memperoleh nol baris — bukan baris milik orang lain.
+   *
+   * Dipasang di sini, di satu-satunya tempat seluruh kueri rekap membangun
+   * klausa WHERE-nya, supaya ringkasan, grafik, sebaran, tabel, dan ekspor
+   * Excel tidak mungkin terlewat satu pun.
+   *
+   * `null` berarti tanpa batas (admin, atau engineer bertanda `*`).
+   */
+  if (Array.isArray(f.divisiDiizinkan)) {
+    if (f.divisiDiizinkan.length === 0) {
+      // Belum diberi layanan apa pun berarti tidak boleh melihat apa pun.
+      // Ditulis begini karena `divisi_id IN ()` bukan SQL yang sah — dan
+      // karena jawabannya memang harus kosong, bukan seluruhnya.
+      syarat.push('1 = 0');
+    } else {
+      syarat.push(`divisi_id IN (${f.divisiDiizinkan.map(() => '?').join(', ')})`);
+      nilai.push(...f.divisiDiizinkan);
+    }
   }
 
   return {
