@@ -4,6 +4,7 @@ import {
   IconAlert, IconWrench, IconUndo, IconUser
 } from '../components/Icons.jsx';
 import Masuk from '../components/Masuk.jsx';
+import GantiSandi from '../components/GantiSandi.jsx';
 import './tugas.css';
 
 /**
@@ -320,7 +321,8 @@ export default function TugasPage() {
           </span>
         </div>
         <div className="tg-navbar-kanan">
-          <a className="tg-tombol-navbar" href="/rekap"><IconChart size={15} /> Rekap</a>
+          <a className="tg-tombol-navbar" href="/rekap" aria-label="Buka halaman rekap"><IconChart size={15} /> <span className="gs-label">Rekap</span></a>
+          <GantiSandi kelasTombol="tg-tombol-navbar" />
           <button className="tg-tombol-navbar" onClick={keluar}>
             <IconLogout size={15} /> Keluar
           </button>

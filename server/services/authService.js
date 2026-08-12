@@ -17,6 +17,11 @@ import { wajibSiap } from '../database/init.js';
 
 const SCRYPT_N = 16384;
 const PANJANG_KUNCI = 64;
+
+// Panjang minimum kata sandi. Diekspor agar antarmuka menampilkan batas yang
+// sama dengan yang benar-benar diberlakukan server, bukan angka yang ditulis
+// ulang di sisi lain lalu menyimpang tanpa ada yang menyadarinya.
+export const PANJANG_SANDI_MINIMUM = 8;
 const UMUR_SESI_JAM = 12;
 
 /**
@@ -89,6 +94,10 @@ export function buatToken(pengguna, ingatSaya = false) {
   const isi = b64(JSON.stringify({
     akun: pengguna.nama_akun,
     peran: pengguna.peran,
+    // Waktu terbit. Dibandingkan dengan `sandi_diubah_pada` pada setiap
+    // permintaan, dan itulah yang membuat penggantian kata sandi memutus
+    // seluruh sesi lama — lihat wajibMasuk().
+    iat: Date.now(),
     exp: Date.now() + jam * 60 * 60 * 1000
   }));
   return `${isi}.${tandaTangan(isi)}`;
@@ -188,6 +197,26 @@ export function wajibMasuk(...peranDiizinkan) {
       // Akun dihapus setelah tokennya terbit
       hapusKuki(res);
       return res.status(401).json({ success: false, error: 'Akun Anda sudah tidak berlaku. Silakan masuk kembali.' });
+    }
+
+    /* Token yang terbit SEBELUM kata sandi terakhir diganti ditolak.
+     *
+     * Inilah yang membuat penggantian kata sandi bermakna. Tanpa pemeriksaan
+     * ini, sesi yang terlanjur dicuri tetap hidup meski pemiliknya sudah
+     * mengganti sandinya — dan penggantian itu sia-sia, justru pada keadaan
+     * yang paling membutuhkannya.
+     *
+     * Akun yang belum pernah mengganti sandi tidak punya nilai ini, sehingga
+     * tokennya tetap berlaku. */
+    if (akun.sandi_diubah_pada) {
+      const terbit = Number(data.iat) || 0;
+      if (terbit < Date.parse(akun.sandi_diubah_pada)) {
+        hapusKuki(res);
+        return res.status(401).json({
+          success: false,
+          error: 'Kata sandi akun ini baru diganti. Silakan masuk kembali.'
+        });
+      }
     }
 
     if (peranDiizinkan.length > 0 && !peranDiizinkan.includes(akun.peran)) {
@@ -290,8 +319,8 @@ export function buatPengguna({ namaAkun, nama, peran, sandi, divisi = [] }) {
   if (!['admin', 'engineer'].includes(peran)) {
     throw new Error(`Peran tidak dikenal: ${peran}. Pilihan: admin, engineer`);
   }
-  if (String(sandi || '').length < 8) {
-    throw new Error('Kata sandi minimal 8 karakter');
+  if (String(sandi || '').length < PANJANG_SANDI_MINIMUM) {
+    throw new Error(`Kata sandi minimal ${PANJANG_SANDI_MINIMUM} karakter`);
   }
 
   // Layanan disimpan saat akun dibuat, bukan sebagai langkah kedua yang
@@ -310,11 +339,21 @@ export function buatPengguna({ namaAkun, nama, peran, sandi, divisi = [] }) {
   return cariPengguna(namaAkun);
 }
 
+/**
+ * Ganti kata sandi sebuah akun.
+ *
+ * `sandi_diubah_pada` ikut ditulis, dan itu yang memutus seluruh sesi lama:
+ * wajibMasuk() menolak token yang terbit sebelum waktu ini. Keduanya harus
+ * selalu berubah bersamaan — mengganti hash tanpa cap waktunya membuat sesi
+ * yang terlanjur dicuri tetap hidup.
+ */
 export function gantiSandi(namaAkun, sandiBaru) {
-  if (String(sandiBaru || '').length < 8) throw new Error('Kata sandi minimal 8 karakter');
+  if (String(sandiBaru || '').length < PANJANG_SANDI_MINIMUM) {
+    throw new Error(`Kata sandi minimal ${PANJANG_SANDI_MINIMUM} karakter`);
+  }
   const { changes } = wajibSiap()
-    .prepare('UPDATE pengguna SET sandi_hash = ? WHERE nama_akun = ?')
-    .run(hashSandi(sandiBaru), namaAkun);
+    .prepare('UPDATE pengguna SET sandi_hash = ?, sandi_diubah_pada = ? WHERE nama_akun = ?')
+    .run(hashSandi(sandiBaru), new Date().toISOString(), namaAkun);
   return changes > 0;
 }
 

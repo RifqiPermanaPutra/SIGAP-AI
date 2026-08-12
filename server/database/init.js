@@ -197,7 +197,15 @@ const KOLOM_TAMBAHAN = [
   // tidak diketahui kapan mulai dikerjakannya, dan menebaknya lebih buruk
   // daripada mengaku tidak tahu.
   ['sesi', 'mulai_dikerjakan_pada', 'TEXT'],
-  ['sesi', 'dikerjakan_oleh', 'TEXT']
+  ['sesi', 'dikerjakan_oleh', 'TEXT'],
+  // Kapan kata sandi terakhir diganti. Token sesi membawa waktu terbitnya, dan
+  // token yang terbit SEBELUM waktu ini ditolak — itulah yang membuat
+  // penggantian kata sandi memutus seluruh sesi lama.
+  //
+  // Kosong pada akun lama, dan memang harus begitu: mengisinya dengan waktu
+  // migrasi akan melempar keluar semua orang yang sedang bekerja hanya karena
+  // servernya dimutakhirkan.
+  ['pengguna', 'sandi_diubah_pada', 'TEXT']
 ];
 
 function terapkanMigrasi() {

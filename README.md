@@ -337,8 +337,10 @@ Sistem ini tidak dapat memelihara dirinya sendiri dalam dua hal:
 1. **Isi SOP akan basi lebih cepat daripada kodenya.** Printer diganti model
    baru, Windows berganti versi. Perlu **satu orang yang bertanggung jawab**
    memperbaruinya lewat [/sop-editor](#penyunting-sop).
-2. **Kata sandi tidak dapat diganti sendiri oleh pemiliknya.** Belum ada
-   halaman ganti sandi mandiri; semuanya lewat admin — lihat
+2. **Kata sandi yang benar-benar lupa hanya dapat dibantu admin.** Pemiliknya
+   dapat menggantinya sendiri selama masih ingat sandi lamanya — tombol
+   **Kata Sandi** di navbar. Yang sudah tidak ingat sama sekali menghubungi
+   admin, karena tidak ada jalur pemulihan mandiri — lihat
    [Akun dan kata sandi](#akun-dan-kata-sandi).
 
 ---
@@ -602,13 +604,42 @@ itu perlakukan ia sebagai sandi sementara:
 
 1. Buat akunnya dengan kata sandi awal
 2. Serahkan **langsung kepada orangnya** — jangan lewat grup WhatsApp
-3. Setelah ia berhasil masuk sekali, ganti dengan nilai baru yang tidak pernah
-   diketik di mana pun kecuali sekali di perintah `ganti`
+3. **Minta ia menggantinya sendiri** lewat tombol **Kata Sandi** di navbar,
+   segera setelah berhasil masuk
 
-> Belum ada halaman "ganti kata sandi sendiri" di aplikasi. Satu-satunya jalan
-> adalah perintah di komputer server, jadi engineer yang lupa sandinya harus
-> menghubungi admin. Untuk sekitar sepuluh akun itu masih wajar; bila kelak
-> jumlahnya bertambah banyak, halaman mandiri layak dibuat.
+Langkah 3 itu yang membuat sandi awal tadi tidak lagi menjadi persoalan: nilai
+barunya hanya diketahui pemiliknya, tidak pernah melewati riwayat perintah
+maupun tangan Anda.
+
+### Ganti kata sandi sendiri lewat halaman
+
+Setiap orang yang sedang masuk dapat mengganti sandinya sendiri — tombol
+**Kata Sandi** di navbar halaman rekap, tugas, dan penyunting SOP. Di ponsel
+tombolnya berupa ikon gembok saja, karena navbar tidak cukup lebar untuk tiga
+tombol berteks.
+
+Dialognya meminta **kata sandi sekarang**, lalu yang baru dua kali.
+
+Empat penjagaan berlaku, dan semuanya di sisi server:
+
+| Penjagaan | Alasannya |
+|---|---|
+| Harus sudah masuk | Bukan jalur pemulihan, melainkan penggantian oleh pemilik |
+| **Wajib kata sandi lama** | Sesi yang dicuri saja tidak cukup untuk mengunci pemiliknya keluar dari akunnya sendiri |
+| Pembatas laju | Menebak sandi lama lewat jalur ini dibatasi seketat lewat halaman masuk |
+| **Seluruh sesi lama diputus** | Mengganti sandi karena curiga sesi dicuri harus benar-benar mengusir pencurinya |
+
+Perangkat yang dipakai mengganti **tidak ikut terlempar keluar** — kukinya
+diperbarui pada balasan yang sama. Perangkat lain harus masuk kembali, dan itu
+memang tujuannya.
+
+> **Tidak ada "lupa kata sandi" tanpa masuk, dan itu disengaja.** Pemulihan
+> mandiri menuntut jalur pengiriman terverifikasi — surel atau SMS — dan sistem
+> ini tidak punya keduanya (juga tidak boleh menambah dependensi). Tanpa jalur
+> itu, tombol "lupa kata sandi" hanyalah pintu pengambilalihan akun bagi siapa
+> pun yang tahu nama akun orang lain.
+>
+> Yang benar-benar lupa dibantu admin lewat `npm run akun -- ganti`.
 
 ### Bila kata sandi admin hilang
 
