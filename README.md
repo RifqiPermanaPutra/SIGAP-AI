@@ -15,6 +15,33 @@ WhatsApp beserta data pelapor dan keluhannya.
 
 ---
 
+## Mulai dari mana
+
+Dokumen ini panjang karena memuat semuanya. Cari peran Anda:
+
+| Anda adalah | Mulai dari |
+|---|---|
+| **Menerima sistem ini untuk pertama kali** | [Serah terima ke Fungsi ICT](#serah-terima-ke-fungsi-ict) — kerjakan berurutan dari atas |
+| **Pengelola harian (admin ICT)** | [Akun dan kata sandi](#akun-dan-kata-sandi) · [Tugas rutin pengelola](#tugas-rutin-pengelola) |
+| **Engineer yang menangani tiket** | [Tugas engineer](#tugas-engineer) |
+| **Memperbarui langkah SOP** | [Penyunting SOP](#penyunting-sop) |
+| **Sedang menghadapi masalah** | [Bila terjadi masalah](#bila-terjadi-masalah) |
+| **Akan mengubah kodenya** | [Cara kerja](#cara-kerja) — lalu **wajib** baca [KONTEKS-PROYEK.md](KONTEKS-PROYEK.md) |
+
+### Daftar isi
+
+- [Menjalankan](#menjalankan) — pasang dan nyalakan
+- [Serah terima ke Fungsi ICT](#serah-terima-ke-fungsi-ict) — daftar periksa penyerahan
+- [Akun dan kata sandi](#akun-dan-kata-sandi) — buat, ganti, cabut
+- [Tugas rutin pengelola](#tugas-rutin-pengelola) — bulanan dan tahunan
+- [Bila terjadi masalah](#bila-terjadi-masalah) — gejala, sebab, tindakan
+- [Halaman laporan rekap](#halaman-laporan-rekap) · [Cek status laporan](#cek-status-laporan-pelapor) · [Tugas engineer](#tugas-engineer)
+- [Penyunting SOP](#penyunting-sop) — memperbarui pengetahuan tanpa menyentuh kode
+- [Pemeliharaan otomatis](#pemeliharaan-otomatis) — cadangan, retensi, log
+- [Perintah yang tersedia](#perintah-yang-tersedia) · [Konfigurasi (.env)](#konfigurasi-env) · [Struktur](#struktur)
+
+---
+
 ## Menjalankan
 
 ### Prasyarat
@@ -174,6 +201,145 @@ powershell -ExecutionPolicy Bypass -File .\skrip-windows\lepas-tugas-terjadwal.p
 > `SYSTEM`, yang hanya melihat PATH sistem — bukan PATH milik akun Anda. Node
 > yang dipasang hanya untuk satu pengguna tidak akan ditemukan. Skrip
 > pemasangnya memeriksa hal ini dan memperingatkan bila mencurigakan.
+
+---
+
+## Serah terima ke Fungsi ICT
+
+Bagian ini untuk **orang yang baru menerima sistem ini**. Kerjakan berurutan;
+tiap langkah punya cara memastikan ia benar-benar berhasil.
+
+### Langkah 0: menyiapkan paket penyerahan
+
+*Dikerjakan oleh pihak yang menyerahkan, bukan penerima.*
+
+Jangan menyerahkan salinan folder kerja. Folder itu memuat `node_modules`
+(ratusan megabita), berkas `.env` berisi nomor WhatsApp asli, dan basis data
+berisi **nama pegawai sungguhan** dari masa uji coba.
+
+```bash
+git archive HEAD --format=zip -o SIGAP-serahterima.zip
+```
+
+Menghasilkan ±100 berkas: kode, seluruh SOP, dokumentasi, dan `.env.example` —
+tanpa satu pun dari ketiga hal di atas. Penerima memulai dengan data bersih.
+
+> Pastikan seluruh pekerjaan sudah di-commit lebih dulu. `git archive HEAD`
+> mengambil dari commit terakhir, bukan dari berkas yang ada di layar Anda.
+> Periksa dengan `git status` — harus kosong.
+
+### Langkah 1: memasang
+
+Ikuti [Menjalankan](#menjalankan) di atas sampai `npm start` berhasil.
+
+**Cara memastikan berhasil:** buka `http://localhost:3000`, halaman beranda
+SIGAP muncul.
+
+Basis data **tidak perlu disiapkan sama sekali** — tidak ada MySQL, XAMPP,
+phpMyAdmin, atau impor `.sql`. Folder `data/`, berkas basis data, seluruh
+tabel, akun admin pertama, dan folder cadangan dibuat sendiri saat `npm start`
+pertama kali dijalankan.
+
+### Langkah 2: mencatat kata sandi admin
+
+`npm start` yang pertama menampilkan kata sandi admin **satu kali saja**.
+Catat saat itu juga — lihat [Akun admin pertama](#akun-admin-pertama).
+
+Bila terlewat, tidak apa-apa: [ganti saja](#mengganti-kata-sandi).
+
+### Langkah 3: mengisi empat hal wajib di .env
+
+Sistem tetap menyala tanpa keempatnya, hanya dengan peringatan di konsol —
+dan justru itu bahayanya. Peringatan yang muncul tiap hari berhenti terbaca.
+
+| Variabel | Bila dibiarkan kosong |
+|---|---|
+| `SESSION_SECRET` | Semua orang terlempar keluar setiap server dinyalakan ulang |
+| `WHATSAPP_<DIVISI>` | Seluruh eskalasi kedelapan layanan lari ke satu nomor cadangan |
+| `CADANGAN_LUAR` | Disk rusak → basis data **dan seluruh cadangannya** hilang bersamaan |
+| `ALAMAT_PUBLIK` | Boleh kosong. Isi hanya bila memakai nama domain atau reverse proxy |
+
+Membuat `SESSION_SECRET`:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+**Cara memastikan berhasil:** jalankan ulang `npm start`. Konsol harus
+menampilkan `✅ Seluruh divisi sudah punya nomor WhatsApp engineer sendiri`
+dan **tidak lagi** menampilkan peringatan `CADANGAN_LUAR belum diisi`.
+
+### Langkah 4: membuat akun engineer
+
+Satu akun per penanggung jawab layanan — lihat
+[Membuat akun engineer](#membuat-akun-engineer).
+
+**Cara memastikan berhasil:** `npm run akun -- daftar` menampilkan seluruh
+akun, dan **tidak ada** kolom LAYANAN yang bertanda `⚠ belum diberi`.
+
+### Langkah 5: membuka porta di firewall
+
+Tanpa ini halaman hanya dapat dibuka dari komputer server itu sendiri. Dari
+ponsel atau komputer meja lain, halamannya **tidak pernah termuat — tanpa
+pesan galat apa pun**. Itu yang paling sering membingungkan.
+
+PowerShell **sebagai Administrator**:
+
+```powershell
+New-NetFirewallRule -DisplayName "SIGAP - porta 3000 (HTTP masuk)" `
+  -Direction Inbound -Action Allow -Protocol TCP -LocalPort 3000 `
+  -Profile Private,Domain
+```
+
+Profil `Public` sengaja tidak disertakan: bila laptop ini suatu saat tersambung
+WiFi kafe atau bandara, halaman pelaporan tidak ikut terbuka bagi orang di
+jaringan itu.
+
+**Cara memastikan berhasil:** cari alamat IP komputer dengan
+`ipconfig | findstr IPv4`, lalu buka `http://<alamat-itu>:3000` dari ponsel
+yang sewifi.
+
+### Langkah 6: menyalakan otomatis saat komputer menyala
+
+Lihat [Jalan otomatis saat komputer menyala](#jalan-otomatis-saat-komputer-menyala-windows).
+Skripnya sekaligus membuat aturan firewall langkah 5, jadi langkah itu boleh
+dilewati bila skrip penuh ini yang dipakai.
+
+**Cara memastikan berhasil:**
+
+```powershell
+Get-ScheduledTask -TaskName SIGAP-Server
+Start-ScheduledTask -TaskName SIGAP-Server
+```
+
+lalu periksa `http://localhost:3000` terbuka.
+
+### Langkah 7: menyiapkan HTTPS
+
+Selama masih HTTP, kata sandi dan token sesi melintas di jaringan dalam bentuk
+**terbaca**. Siapa pun di WiFi yang sama dapat membacanya dengan penyadap paket
+sederhana.
+
+**Tanyakan lebih dulu kepada Fungsi ICT pusat: apakah ada Certificate Authority
+internal?** Bila ada, pakai itu — sertifikatnya otomatis dipercaya seluruh
+komputer domain tanpa memasang apa pun satu per satu. Bila tidak ada, jalankan
+`skrip-windows\buat-sertifikat.ps1` sebagai Administrator.
+
+> ⚠️ **Sertifikat mandiri berlaku 3 tahun.** Dibuat 2026 berarti kedaluwarsa
+> 2029, dan saat itu **semua orang tiba-tiba melihat peringatan merah** tanpa
+> ada yang tahu sebabnya. Catat tanggalnya di kalender pemeliharaan sekarang
+> juga — lihat [Tugas rutin pengelola](#tugas-rutin-pengelola).
+
+### Yang tetap menjadi tanggung jawab manusia
+
+Sistem ini tidak dapat memelihara dirinya sendiri dalam dua hal:
+
+1. **Isi SOP akan basi lebih cepat daripada kodenya.** Printer diganti model
+   baru, Windows berganti versi. Perlu **satu orang yang bertanggung jawab**
+   memperbaruinya lewat [/sop-editor](#penyunting-sop).
+2. **Kata sandi tidak dapat diganti sendiri oleh pemiliknya.** Belum ada
+   halaman ganti sandi mandiri; semuanya lewat admin — lihat
+   [Akun dan kata sandi](#akun-dan-kata-sandi).
 
 ---
 
@@ -347,6 +513,302 @@ membukanya.
 
 ---
 
+## Akun dan kata sandi
+
+Seluruh pengelolaan akun lewat satu perintah di komputer server. Sengaja berupa
+perkakas baris perintah, bukan halaman web: akunnya hanya sekitar sepuluh dan
+tetap, sehingga halaman pendaftaran hanya menambah pintu masuk tanpa manfaat.
+
+```bash
+npm run akun -- daftar
+```
+
+```
+8 akun terdaftar:
+
+  NAMA AKUN     PERAN      NAMA                    LAYANAN         MASUK TERAKHIR
+  ─────────────────────────────────────────────────────────────────────────────
+  admin         admin      Administrator           seluruhnya      2026-08-11 04:07
+  amirul        engineer   Amirul Mukminin         printer         belum pernah
+  feri          engineer   Feri Saputra            windows         2026-08-10 02:16
+```
+
+Kolom **MASUK TERAKHIR** berguna saat serah terima: akun bertanda
+`belum pernah` berarti orangnya belum pernah benar-benar memakai sistem ini.
+
+### Kata sandi tidak dapat dilihat, hanya diganti
+
+Yang tersimpan di basis data **bukan kata sandinya**, melainkan hasil
+pengacakan satu arah dengan scrypt:
+
+```
+admin    scrypt$bb56c568efa9ca43fc3896c4724ef728$8a8549df15791dd102ad1f...
+```
+
+Saat seseorang masuk, sistem mengacak apa yang ia ketik lalu membandingkan
+hasilnya. Kata sandi aslinya tidak pernah disimpan, sehingga **tidak ada yang
+bisa membacanya kembali — termasuk admin.**
+
+Itu bukan keterbatasan, itu tujuannya. Bila berkas basis data suatu saat
+tercuri atau ikut tersalin ke tempat yang salah, pencurinya tetap tidak
+memperoleh satu pun kata sandi. Sistem yang bisa *menampilkan* kata sandi
+berarti menyimpannya dalam bentuk terbaca — dan itu cacat, bukan fitur.
+
+**Akibat praktisnya:** bila ada yang lupa kata sandi, jalan satu-satunya adalah
+menggantinya. Tidak ada "lihat kata sandi" dan tidak akan pernah ada.
+
+### Mengganti kata sandi
+
+```bash
+npm run akun -- ganti admin SandiBaruYangPanjang2026
+```
+
+Berlaku seketika. **Seluruh sesi lama akun itu langsung gugur**, jadi orang
+yang sedang membuka halaman di ponselnya akan diminta masuk lagi.
+
+Kata sandi minimal 8 karakter. Bila mengandung spasi atau tanda seperti `@` dan
+`&`, apit dengan tanda kutip:
+
+```bash
+npm run akun -- ganti feri "sandi baru saya"
+```
+
+### Membuat akun engineer
+
+```bash
+npm run akun -- buat amirul "Amirul Mukminin" engineer SandiAwal2026 printer
+```
+
+Urutannya: `buat` · nama akun · nama lengkap · peran · kata sandi · layanan.
+
+Layanan yang dapat diisi: `printer`, `windows`, `cctv`, `telepon`, `radio`,
+`ftth`, `lan`, `wan` — dipisahkan koma tanpa spasi. Untuk beberapa layanan:
+
+```bash
+npm run akun -- buat jalu "Jalu Rendi Saputra" engineer SandiAwal2026 wan,radio
+```
+
+Membuat akun admin (tanpa argumen layanan — admin tidak dibatasi):
+
+```bash
+npm run akun -- buat budi "Budi Santoso" admin SandiAwal2026
+```
+
+### Menyerahkan kata sandi kepada orangnya
+
+Kata sandi awal yang Anda ketik di perintah `buat` **ada di riwayat perintah
+PowerShell Anda**, dan bisa dibaca siapa pun yang membuka komputer itu. Karena
+itu perlakukan ia sebagai sandi sementara:
+
+1. Buat akunnya dengan kata sandi awal
+2. Serahkan **langsung kepada orangnya** — jangan lewat grup WhatsApp
+3. Setelah ia berhasil masuk sekali, ganti dengan nilai baru yang tidak pernah
+   diketik di mana pun kecuali sekali di perintah `ganti`
+
+> Belum ada halaman "ganti kata sandi sendiri" di aplikasi. Satu-satunya jalan
+> adalah perintah di komputer server, jadi engineer yang lupa sandinya harus
+> menghubungi admin. Untuk sekitar sepuluh akun itu masih wajar; bila kelak
+> jumlahnya bertambah banyak, halaman mandiri layak dibuat.
+
+### Bila kata sandi admin hilang
+
+Tidak perlu memasang ulang apa pun. Di komputer server:
+
+```bash
+npm run akun -- ganti admin SandiBaruYangPanjang2026
+```
+
+Perintah ini bekerja langsung di basis data dan **tidak memerlukan sandi lama**
+— siapa pun yang dapat membuka komputer server dapat menjalankannya. Itulah
+sebabnya akses fisik ke komputer server perlu dijaga.
+
+Bila akun `admin` sendiri yang terhapus, buat admin baru:
+
+```bash
+npm run akun -- buat admin2 "Administrator" admin SandiBaruYangPanjang2026
+```
+
+### Bila ada pegawai yang pindah atau keluar
+
+```bash
+npm run akun -- hapus feri
+```
+
+Sesinya langsung gugur — token yang masih tersimpan di ponselnya **ditolak pada
+permintaan berikutnya**, bukan menunggu 30 hari sampai kedaluwarsa.
+
+Tiket yang pernah ia tandai selesai **tetap tercatat atas namanya** di riwayat.
+Itu disengaja: catatan siapa mengerjakan apa tidak boleh hilang hanya karena
+orangnya berpindah tugas.
+
+Akun admin terakhir tidak dapat dihapus — sistem menolak, karena halaman rekap
+akan menjadi tidak dapat dibuka siapa pun.
+
+### Mengubah layanan yang ditangani
+
+```bash
+npm run akun -- divisi amirul printer,windows
+npm run akun -- divisi amirul semua
+```
+
+### Wewenang per layanan
+
+**Akun engineer wajib menyebutkan layanan yang ditanganinya sejak dibuat.**
+Tanpa argumen terakhir itu, perintah `buat` menolak — dan itu disengaja.
+
+Ada delapan layanan dengan engineer berbeda-beda (KONTEKS-PROYEK.md §8), dan
+seorang engineer Printer tidak seharusnya dapat menutup tiket Radio Komunikasi.
+Pembatasannya berlaku di **sisi server** pada seluruh jalan: halaman `/tugas`,
+halaman `/rekap`, maupun ekspor Excel — sehingga tidak dapat dilewati dengan
+berpindah halaman atau mengirim nomor tiket secara langsung.
+
+| Nilai kolom `divisi` | Artinya |
+|---|---|
+| `printer,windows` | Hanya kedua layanan itu |
+| `semua` | Seluruh layanan — **penetapan yang disengaja** |
+| kosong | **Belum diberi layanan apa pun** — tidak dapat menandai apa pun |
+
+> Baris terakhir itu penting. Sebelumnya kolom kosong dibaca sebagai "tanpa
+> batas", sehingga setiap akun engineer yang baru dibuat berwenang atas
+> kedelapan layanan sampai ada yang **ingat** mengaturnya. Kelalaian itu tidak
+> menghasilkan pesan galat apa pun — hanya wewenang berlebih yang diam.
+> Sekarang kebalikannya: yang lupa diatur tidak bisa apa-apa, dan engineer
+> yang bersangkutan melihat pesan yang menjelaskan sebabnya.
+
+Batas ini juga menentukan **apa yang terlihat di halaman rekap**: engineer
+Windows hanya melihat laporan Windows, dan berkas Excel yang ia unduh pun hanya
+berisi itu. Admin tidak dibatasi — ia yang menutup tiket saat engineer
+berhalangan.
+
+---
+
+## Tugas rutin pengelola
+
+Sistem mengurus cadangan, retensi, dan pembersihan log sendiri. Yang tersisa
+untuk manusia hanya lima hal, dan semuanya singkat.
+
+### Setiap bulan — memperbaiki jawaban yang meleset
+
+Buka `/rekap`, gulir ke panel **"Keluhan tak dikenali"**. Isinya keluhan yang
+nyaris dikenali sistem tetapi tidak cukup meyakinkan.
+
+**Itu daftar tugas Anda.** Bukan menebak pengetahuan apa yang kurang — sistem
+memberi tahu. Bila sebuah keluhan muncul berulang, buka
+[/sop-editor](#penyunting-sop) dan tambahkan kata-kata yang dipakai pelapor
+ke kolom **Gejala** masalah yang bersangkutan.
+
+Biarkan kalimat asli pegawai yang menentukan kosakatanya — bukan tebakan Anda
+tentang bagaimana orang akan menulis.
+
+### Setiap bulan — memastikan cadangan luar benar-benar jalan
+
+```bash
+npm run akun -- daftar     # sekaligus memastikan server sehat
+```
+
+Lalu periksa folder `CADANGAN_LUAR` — harus ada berkas bertanggal hari ini atau
+kemarin. Bila tujuannya sedang tidak terhubung, server tetap berjalan dan hanya
+mencatat peringatan, sehingga kegagalan bisa berlangsung berminggu-minggu tanpa
+ada yang menyadarinya.
+
+### Setiap kali ada pegawai masuk atau keluar
+
+Lihat [Akun dan kata sandi](#akun-dan-kata-sandi).
+
+### Setiap tahun — meninjau retensi
+
+Nama pelapor dikosongkan otomatis setelah 2 tahun (`TAHUN_RETENSI`), sedangkan
+barisnya tetap disimpan untuk perbandingan tren antar tahun. Pastikan angka itu
+masih sesuai kebijakan perusahaan.
+
+### 2029 — memperbarui sertifikat HTTPS
+
+Sertifikat mandiri yang dibuat `buat-sertifikat.ps1` berlaku **3 tahun**.
+Setelah kedaluwarsa, semua orang tiba-tiba melihat peringatan merah tanpa ada
+yang tahu sebabnya. Jalankan ulang skrip itu, lalu pasang ulang sertifikatnya
+di perangkat-perangkat yang bersangkutan.
+
+**Tulis tanggalnya di kalender pemeliharaan sekarang, bukan nanti.**
+
+---
+
+## Bila terjadi masalah
+
+### Server menolak menyala: `EADDRINUSE`
+
+```
+Error: listen EADDRINUSE: address already in use :::3000
+```
+
+Sudah ada server SIGAP lain yang berjalan — biasanya dari jendela PowerShell
+yang tertutup tanpa dihentikan, atau dari tugas terjadwal.
+
+```powershell
+Get-NetTCPConnection -LocalPort 3000 -State Listen
+Stop-Process -Id <PID-dari-perintah-di-atas> -Force
+```
+
+Bila yang memegangnya tugas terjadwal, hentikan lewat
+`Stop-ScheduledTask -TaskName SIGAP-Server`.
+
+### Halaman tidak dapat dibuka dari ponsel
+
+Gejalanya khas: memuat terus lalu menyerah, **tanpa pesan galat apa pun**.
+
+1. Pastikan ponsel dan komputer berada di **WiFi yang sama**
+2. Pakai alamat IP, bukan `localhost` — di ponsel `localhost` menunjuk ke
+   ponsel itu sendiri
+3. Periksa aturan firewall sudah ada (lihat
+   [Langkah 5](#langkah-5-membuka-porta-di-firewall))
+4. Periksa profil jaringannya:
+
+```powershell
+Get-NetConnectionProfile | Select-Object Name, NetworkCategory
+```
+
+Bila hasilnya `Public`, ubah ke `Private`. **Jangan** menambahkan profil
+`Public` ke aturan firewall.
+
+### Semua orang tiba-tiba diminta masuk ulang
+
+`SESSION_SECRET` di `.env` kosong, sehingga server memakai kunci acak baru
+setiap kali dijalankan. Isi variabel itu lalu nyalakan ulang — lihat
+[Langkah 3](#langkah-3-mengisi-empat-hal-wajib-di-env).
+
+### Chatbot menjawab "belum dapat kami kenali" untuk keluhan yang jelas
+
+Kosakata pelapor belum ada di SOP. Buka
+[/sop-editor](#penyunting-sop), tambahkan kata-kata yang ia pakai ke kolom
+**Gejala** — kolom itu berbobot paling menentukan setelah judul.
+
+Setelah menyunting, jalankan `npm run build:kb` lalu nyalakan ulang server.
+
+### Chatbot memberi langkah untuk masalah yang keliru
+
+Lebih serius daripada tidak menjawab. Periksa apakah ada dua masalah pada
+layanan yang sama dengan kata kunci saling tumpang tindih, lalu pertajam
+judul dan gejalanya agar berbeda jelas.
+
+```bash
+npm run periksa-kb     # memeriksa seluruh berkas SOP terhadap kontraknya
+npm test               # memastikan perubahan tidak merusak pencocokan lain
+```
+
+### Halaman kosong / putih setelah memperbarui kode
+
+Folder `dist/` belum dibangun ulang.
+
+```bash
+npm run build
+```
+
+### Basis data rusak atau data hilang
+
+Lihat [Memulihkan dari cadangan](#cadangan-ke-luar-mesin-wajib-untuk-pemakaian-nyata).
+Ingat menghapus juga berkas `-wal` dan `-shm` yang menyertainya.
+
+---
+
 ## Penyunting SOP
 
 Berada di **`/sop-editor`** — misalnya http://localhost:3000/sop-editor.
@@ -407,7 +869,7 @@ Cadangan dibuat dengan `VACUUM INTO`, bukan menyalin berkasnya. Menyalin berkas
 SQLite yang sedang dipakai menghasilkan **salinan rusak** — sebagian perubahan
 masih berada di berkas WAL terpisah.
 
-### Cadangan ke luar mesin — wajib untuk pemakaian nyata
+### Cadangan ke luar mesin (wajib untuk pemakaian nyata)
 
 Cadangan di `data/cadangan/` berada pada **disk yang sama** dengan basis
 datanya. Itu melindungi dari salah hapus dan berkas rusak, tetapi **tidak
@@ -498,53 +960,8 @@ terbentuk setiap kali halaman dibuka, sehingga "Total laporan" pada rekap
 menghitung kunjungan alih-alih laporan. Sumbernya sudah ditutup; perintah ini
 untuk membereskan yang terlanjur tersimpan.
 
-### Mengelola akun
-
-```bash
-npm run akun -- daftar
-```
-
-```bash
-npm run akun -- buat eka "Eka Maulana" engineer katasandi123 printer,windows
-```
-
-```bash
-npm run akun -- ganti admin katasandibaru123
-```
-
-```bash
-npm run akun -- divisi eka printer,windows,cctv
-```
-
-Peran yang tersedia: `admin` dan `engineer`. Kata sandi minimal 8 karakter.
-
-#### Wewenang per layanan
-
-**Akun engineer wajib menyebutkan layanan yang ditanganinya sejak dibuat.**
-Tanpa argumen terakhir itu, perintah `buat` menolak — dan itu disengaja.
-
-Ada delapan layanan dengan engineer berbeda-beda (KONTEKS-PROYEK.md §8), dan
-seorang engineer Printer tidak seharusnya dapat menutup tiket Radio Komunikasi.
-Pembatasannya berlaku di **sisi server** pada kedua jalan menuju penandaan
-selesai — halaman `/tugas` maupun `/rekap` — sehingga tidak dapat dilewati
-dengan berpindah halaman atau mengirim nomor tiket secara langsung.
-
-| Nilai kolom `divisi` | Artinya |
-|---|---|
-| `printer,windows` | Hanya kedua layanan itu |
-| `semua` | Seluruh layanan — **penetapan yang disengaja** |
-| kosong | **Belum diberi layanan apa pun** — tidak dapat menandai apa pun |
-
-> Baris terakhir itu penting. Sebelumnya kolom kosong dibaca sebagai "tanpa
-> batas", sehingga setiap akun engineer yang baru dibuat berwenang atas
-> kedelapan layanan sampai ada yang **ingat** mengaturnya. Kelalaian itu tidak
-> menghasilkan pesan galat apa pun — hanya wewenang berlebih yang diam.
-> Sekarang kebalikannya: yang lupa diatur tidak bisa apa-apa, dan engineer
-> yang bersangkutan melihat pesan yang menjelaskan sebabnya.
-
-Admin tidak dibatasi per layanan — ia yang menutup tiket saat engineer
-berhalangan. `npm run akun -- daftar` menampilkan kolom **LAYANAN**, dan akun
-yang belum diatur ditandai `⚠ belum diberi`.
+Pengelolaan akun dibahas terpisah di
+[Akun dan kata sandi](#akun-dan-kata-sandi).
 
 ### Pengujian
 
@@ -552,10 +969,11 @@ yang belum diatur ditandai `⚠ belum diberi`.
 npm test
 ```
 
-Menjalankan 295 pemeriksaan di atas basis data sementara — data nyata tidak
+Menjalankan 365 pemeriksaan di atas basis data sementara — data nyata tidak
 tersentuh. Mencakup lapisan penyimpanan, akurasi pencocokan keluhan,
-autentikasi, wewenang peran, penyaringan rekap, ekspor Excel, kelengkapan data
-SOP, penyunting SOP, daftar tugas engineer, dan kedua alur percakapan.
+autentikasi, wewenang peran, batas layanan per akun, penyaringan rekap, ekspor
+Excel, kelengkapan data SOP, penyunting SOP, daftar tugas engineer, dan kedua
+alur percakapan.
 
 Berkas SOP juga disalin ke folder sementara lebih dulu: pengujian penyunting
 SOP benar-benar menulis ke berkas sumber, dan `npm test` tidak boleh
