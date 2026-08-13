@@ -115,23 +115,38 @@
 .tg-judul { margin: 16px 0; }
 .tg-judul h1 { font-size: 1.3rem; margin: 0 0 6px; letter-spacing: -0.02em; }
 
-/* Siapa yang sedang masuk. Sengaja tenang — biru muda, bukan kotak peringatan:
-   ia keterangan yang perlu terlihat sekilas, bukan sesuatu yang menuntut
-   tindakan. */
+/* Siapa yang sedang masuk. Ukurannya disamakan dengan <h1> di atasnya: ponsel
+   kerap dipakai bergantian di lapangan, dan tiket yang ditandai selesai
+   tercatat atas nama pemilik sesi — bukan atas nama orang yang sedang
+   memegang ponselnya. Keterangan sepenting itu tidak boleh berupa baris kecil
+   yang terlewat. */
 .tg-siapa {
   display: flex;
   align-items: flex-start;
-  gap: 7px;
-  margin: 0 0 8px;
-  padding: 8px 11px;
-  font-size: 0.79rem;
-  line-height: 1.5;
+  gap: 9px;
+  margin: 0 0 10px;
+  padding: 11px 13px;
+  font-size: 1.3rem;               /* sama dengan .tg-judul h1 */
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
   color: var(--pt-blue-text);
   background: var(--pt-blue-soft);
   border-radius: var(--r-sm);
 }
-.tg-siapa svg { flex-shrink: 0; margin-top: 2px; }
+.tg-siapa svg { flex-shrink: 0; margin-top: 5px; }
 .tg-siapa strong { font-weight: 700; }
+
+/* Cakupan layanan tetap kecil — ia keterangan bagi namanya, bukan sejajar
+   dengan namanya. */
+.tg-siapa .tg-cakupan {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--ink-3);
+}
 
 /* Peringatan tiket menganggur — kuning/oranye, bukan merah: ini bukan galat,
    melainkan pekerjaan yang tertinggal. */
@@ -437,6 +452,7 @@
   .tg-merek-logo-unit { height: 26px; }
 
   .tg-judul h1 { font-size: 1.5rem; }
+  .tg-siapa { font-size: 1.5rem; }   /* tetap sejajar dengan judulnya */
 
   .tg-kartu { padding: 16px 18px; }
   .tg-rinci { grid-template-columns: repeat(4, 1fr); }
