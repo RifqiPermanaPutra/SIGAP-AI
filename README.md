@@ -464,7 +464,7 @@ Pelapor tekan Hubungi Engineer
 Pesan WhatsApp memuat  Nomor Tiket  +  tautan /tugas?tiket=SGP-…
         │
         ▼
-Engineer buka tautan di ponsel  →  masuk sekali ("ingat saya" 30 hari)
+  Engineer buka tautan di ponsel  →  masuk (sesi 12 jam)
         │
         ▼
 Dialog terbuka pada tiket itu  →  kapan beres? + catatan  →  Selesai

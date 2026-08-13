@@ -115,6 +115,24 @@
 .tg-judul { margin: 16px 0; }
 .tg-judul h1 { font-size: 1.3rem; margin: 0 0 6px; letter-spacing: -0.02em; }
 
+/* Siapa yang sedang masuk. Sengaja tenang — biru muda, bukan kotak peringatan:
+   ia keterangan yang perlu terlihat sekilas, bukan sesuatu yang menuntut
+   tindakan. */
+.tg-siapa {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  margin: 0 0 8px;
+  padding: 8px 11px;
+  font-size: 0.79rem;
+  line-height: 1.5;
+  color: var(--pt-blue-text);
+  background: var(--pt-blue-soft);
+  border-radius: var(--r-sm);
+}
+.tg-siapa svg { flex-shrink: 0; margin-top: 2px; }
+.tg-siapa strong { font-weight: 700; }
+
 /* Peringatan tiket menganggur — kuning/oranye, bukan merah: ini bukan galat,
    melainkan pekerjaan yang tertinggal. */
 .tg-peringatan {

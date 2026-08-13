@@ -20,7 +20,6 @@ const PANJANG_SANDI_MINIMUM = 8;
 export default function Masuk({ judul, sub, label = 'AKSES TERBATAS', kaki, onBerhasil }) {
   const [namaAkun, setNamaAkun] = useState('');
   const [sandi, setSandi] = useState('');
-  const [ingatSaya, setIngatSaya] = useState(false);
   const [galat, setGalat] = useState('');
   const [sibuk, setSibuk] = useState(false);
 
@@ -47,7 +46,7 @@ export default function Masuk({ judul, sub, label = 'AKSES TERBATAS', kaki, onBe
       const res = await fetch('/api/auth/masuk', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ namaAkun, sandi, ingatSaya })
+        body: JSON.stringify({ namaAkun, sandi })
       });
       const data = await res.json();
       if (data.success) onBerhasil(data.pengguna);
@@ -138,7 +137,7 @@ export default function Masuk({ judul, sub, label = 'AKSES TERBATAS', kaki, onBe
           <KolomSandi id="sg-sandi" value={sandi} autoComplete="current-password"
                       onChange={(e) => setSandi(e.target.value)} />
 
-          {sedangGanti ? (
+          {sedangGanti && (
             <>
               <label htmlFor="sg-sandi-baru">
                 Kata sandi baru <small>minimal {PANJANG_SANDI_MINIMUM} karakter</small>
@@ -150,17 +149,12 @@ export default function Masuk({ judul, sub, label = 'AKSES TERBATAS', kaki, onBe
               <KolomSandi id="sg-sandi-ulang" value={ulangi} autoComplete="new-password"
                           onChange={(e) => setUlangi(e.target.value)} />
             </>
-          ) : (
-            /* Tanpa ini, engineer yang menandai tiket selesai dari ponsel harus
-               memasukkan kata sandi hampir setiap kali — sesi biasa hanya
-               bertahan 12 jam. Pekerjaan yang menuntut masuk ulang setiap kali
-               tidak akan dikerjakan. */
-            <label className="sg-ingat">
-              <input type="checkbox" checked={ingatSaya}
-                     onChange={(e) => setIngatSaya(e.target.checked)} />
-              <span>Ingat saya di perangkat ini <small>(30 hari)</small></span>
-            </label>
           )}
+
+          {/* Pilihan "Ingat saya 30 hari" pernah ada di sini, lalu dihapus:
+              selama server berjalan di atas HTTP, token melintas dalam bentuk
+              terbaca, dan token berumur 30 hari berarti sesi yang tercuri
+              berlaku sebulan penuh. Sesi kini 12 jam untuk semua orang. */}
 
           {galat && <p className="sg-galat" role="alert">{galat}</p>}
 

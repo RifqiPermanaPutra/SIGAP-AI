@@ -22,18 +22,18 @@ const PANJANG_KUNCI = 64;
 // sama dengan yang benar-benar diberlakukan server, bukan angka yang ditulis
 // ulang di sisi lain lalu menyimpang tanpa ada yang menyadarinya.
 export const PANJANG_SANDI_MINIMUM = 8;
-const UMUR_SESI_JAM = 12;
-
 /**
- * Umur sesi bagi yang mencentang "ingat saya".
+ * Umur sesi — satu-satunya, tanpa pilihan "ingat saya".
  *
- * Dua belas jam masuk akal untuk admin yang membuka rekap dari komputer kantor.
- * Bagi engineer yang menandai tiket selesai dari ponsel di lapangan, itu berarti
- * memasukkan kata sandi hampir setiap kali — dan pekerjaan yang menuntut masuk
- * ulang setiap kali tidak akan dikerjakan. Bukti bahwa hambatan sekecil itu
- * sudah cukup: tombol "Tandai Selesai" ada sejak awal dan belum pernah ditekan.
+ * Pilihan 30 hari pernah ada agar engineer tidak perlu memasukkan kata sandi
+ * hampir setiap kali menandai tiket dari ponsel. Dihapus karena selama server
+ * berjalan di atas HTTP, token melintas di jaringan dalam bentuk terbaca — dan
+ * token berumur 30 hari berarti sesi yang tercuri berlaku sebulan penuh.
+ *
+ * Ongkosnya nyata dan disadari: engineer masuk lebih sering. Yang ditukar
+ * adalah kenyamanan yang terukur dengan paparan yang tidak terukur.
  */
-const UMUR_SESI_PANJANG_JAM = 30 * 24;
+const UMUR_SESI_JAM = 12;
 
 /* ────────────────────────────────────────────────────────────────
    Kata sandi
@@ -87,10 +87,9 @@ function tandaTangan(data) {
 /**
  * Terbitkan token sesi untuk satu pengguna.
  * @param {object} pengguna
- * @param {boolean} [ingatSaya] Pakai umur sesi panjang
  */
-export function buatToken(pengguna, ingatSaya = false) {
-  const jam = ingatSaya ? UMUR_SESI_PANJANG_JAM : UMUR_SESI_JAM;
+export function buatToken(pengguna) {
+  const jam = UMUR_SESI_JAM;
   const isi = b64(JSON.stringify({
     akun: pengguna.nama_akun,
     peran: pengguna.peran,
@@ -131,11 +130,11 @@ export function bacaToken(token) {
 
 const NAMA_KUKI = 'sigap_sesi';
 
-export function pasangKuki(res, token, ingatSaya = false) {
+export function pasangKuki(res, token) {
   // Umur kuki disamakan dengan umur token. Bila kukinya lebih pendek, pengguna
   // terlempar keluar meski tokennya masih sah; bila lebih panjang, ia mengirim
   // token kedaluwarsa lalu ditolak tanpa penjelasan.
-  const jam = ingatSaya ? UMUR_SESI_PANJANG_JAM : UMUR_SESI_JAM;
+  const jam = UMUR_SESI_JAM;
   const bagian = [
     `${NAMA_KUKI}=${token}`,
     'HttpOnly',                                   // tidak terbaca JavaScript
@@ -176,8 +175,7 @@ function bacaKuki(req) {
  * Alasannya: token ini bertanda tangan HMAC dan tidak disimpan di server,
  * sehingga tidak ada daftar yang dapat dicabut. Tanpa pemeriksaan ulang,
  * akun yang sudah DIHAPUS atau yang perannya sudah DITURUNKAN tetap dapat
- * dipakai sampai tokennya kedaluwarsa dengan sendirinya. Sejak ada pilihan
- * "ingat saya", kedaluwarsa itu 30 hari — jauh terlalu lama untuk sebuah
+ * dipakai sampai tokennya kedaluwarsa dengan sendirinya — hingga 12 jam bagi
  * akun yang sudah sengaja dicabut.
  *
  * Biayanya satu pencarian berindeks unik per permintaan, pada sistem yang

@@ -23,10 +23,10 @@ import { AKUN_UJI } from './benih.mjs';
 const PORT = process.env.UJI_PORT || 3999;
 const API = `http://localhost:${PORT}/api`;
 
-async function masuk({ namaAkun, sandi }, ingatSaya = false) {
+async function masuk({ namaAkun, sandi }) {
   const r = await fetch(`${API}/auth/masuk`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ namaAkun, sandi, ingatSaya })
+    body: JSON.stringify({ namaAkun, sandi })
   });
   await r.json();
   return { kuki: r.headers.get('set-cookie')?.split(';')[0] || '', set: r.headers.get('set-cookie') || '' };
@@ -181,18 +181,28 @@ catatan('"Jam Berakhir" = laporan berpindah tangan · "Ditangani" = kendala bere
 cek('tiket hilang dari daftar tugas setelah ditandai',
   !(await json('/tugas', eng)).tugas.some((t) => t.nomor_tiket === tiket), tiket);
 
-bagian('5. Sesi panjang "ingat saya"');
+bagian('5. Umur sesi');
 
-const biasa = await masuk(AKUN_UJI.engineer, false);
-const panjang = await masuk(AKUN_UJI.engineer, true);
+/* Pilihan "ingat saya" 30 hari pernah ada di sini. Dihapus karena selama
+   server berjalan di atas HTTP token melintas dalam bentuk terbaca, dan token
+   berumur 30 hari berarti sesi yang tercuri berlaku sebulan penuh.
 
+   Uji ini menjaga agar pilihan itu tidak kembali diam-diam: mengirim
+   `ingatSaya: true` sekarang harus TIDAK berpengaruh apa pun. */
+
+const biasa = await masuk(AKUN_UJI.engineer);
 const umur = (set) => Number(/Max-Age=(\d+)/.exec(set)?.[1] || 0);
 
-cek('sesi biasa berumur 12 jam', umur(biasa.set) === 12 * 3600, umur(biasa.set));
-cek('"ingat saya" berumur 30 hari', umur(panjang.set) === 30 * 24 * 3600, umur(panjang.set));
-cek('sesi panjang tetap dapat dipakai',
-  (await ambil('/tugas', panjang.kuki)).status === 200, 'bukan 200');
-catatan('tanpa ini engineer memasukkan kata sandi hampir setiap kali membuka tautan dari WhatsApp');
+cek('sesi berumur 12 jam', umur(biasa.set) === 12 * 3600, umur(biasa.set));
+
+const cobaPanjang = await fetch(`${API}/auth/masuk`, {
+  method: 'POST', headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ ...AKUN_UJI.engineer, ingatSaya: true })
+});
+cek('kiriman "ingatSaya" diabaikan, umurnya tetap 12 jam',
+  umur(cobaPanjang.headers.get('set-cookie') || '') === 12 * 3600,
+  umur(cobaPanjang.headers.get('set-cookie') || ''));
+catatan('token 30 hari di atas HTTP berarti sesi yang tercuri berlaku sebulan penuh');
 
 bagian('6. Wewenang per layanan');
 
@@ -641,13 +651,13 @@ bagian('7. Token tidak berlaku lagi setelah akunnya dicabut');
 // Token bertanda tangan HMAC tidak disimpan di server, sehingga tidak ada
 // daftar yang dapat dicabut. Tanpa pemeriksaan ulang ke basis data, akun yang
 // sudah dihapus tetap dapat dipakai sampai tokennya kedaluwarsa sendiri — dan
-// sejak ada "ingat saya", itu berarti 30 hari.
+// itu berarti sampai 12 jam ke depan.
 const dbAuth = await import('../server/database/init.js');
 await dbAuth.initDatabase();
 const { buatPengguna, hapusPengguna } = await import('../server/services/authService.js');
 
 buatPengguna({ namaAkun: 'sementara', nama: 'Akun Sementara', peran: 'engineer', sandi: 'ujicoba123' });
-const kukiSementara = (await masuk({ namaAkun: 'sementara', sandi: 'ujicoba123' }, true)).kuki;
+const kukiSementara = (await masuk({ namaAkun: 'sementara', sandi: 'ujicoba123' })).kuki;
 
 cek('akun baru dapat membuka daftar tugas',
   (await ambil('/tugas', kukiSementara)).status === 200, 'bukan 200');
@@ -656,7 +666,7 @@ hapusPengguna('sementara');
 
 cek('token akun yang sudah dihapus langsung ditolak',
   (await ambil('/tugas', kukiSementara)).status === 401, 'masih diterima');
-catatan('tanpa ini akun yang dicabut tetap hidup sampai 30 hari ke depan');
+catatan('tanpa ini akun yang dicabut tetap hidup sampai tokennya kedaluwarsa sendiri');
 
 dbAuth.tutupDatabase();
 
