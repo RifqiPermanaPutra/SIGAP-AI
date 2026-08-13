@@ -341,13 +341,15 @@ export default function TugasPage() {
               lapangan, dan tiket yang ditandai selesai tercatat atas nama
               pemilik sesi — bukan atas nama orang yang memegang ponselnya. */}
           <p className="tg-siapa">
-            <IconUser size={14} />
+            <IconUser size={20} />
             <span>
               Masuk sebagai <strong>{pengguna.nama}</strong>
               {data && (
-                <> · {data.seluruhDivisi
-                  ? 'seluruh layanan'
-                  : `menangani ${data.pilihanDivisi.map((d) => d.name).join(', ')}`}</>
+                <span className="tg-cakupan">
+                  {data.seluruhDivisi
+                    ? 'Seluruh layanan ditampilkan'
+                    : `Menangani ${data.pilihanDivisi.map((d) => d.name).join(', ')}`}
+                </span>
               )}
             </span>
           </p>
