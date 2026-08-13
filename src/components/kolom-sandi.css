@@ -1,0 +1,71 @@
+/* ================================================
+   Kolom kata sandi dengan tombol tampilkan/sembunyikan.
+
+   Gaya kotak isiannya sendiri — garis tepi, sudut, warna — sengaja TIDAK
+   ditulis di sini. Ia diwarisi dari halaman pemakainya (`.sg-masuk-isi input`
+   pada halaman masuk, `.gs-dialog input` pada dialog navbar), sehingga kolom
+   sandi tidak pernah tampak berbeda dari kolom di sebelahnya. Yang diatur di
+   sini hanya ruang bagi tombolnya dan letak tombol itu.
+   ================================================ */
+
+.ks-bungkus {
+  position: relative;
+  display: flex;
+  min-width: 0;
+}
+
+/* Dua kelas agar lebih khusus daripada `.sg-masuk-isi input` dan
+   `.gs-dialog input` yang menetapkan padding — tanpa itu, menang atau
+   kalahnya hanya bergantung pada urutan berkas gaya termuat, dan urutan itu
+   berubah diam-diam saat bundelnya dibangun ulang. */
+.ks-bungkus > input.ks-input {
+  flex: 1;
+  min-width: 0;
+  /* Ruang di kanan untuk tombolnya. Tanpa ini teks sandi yang panjang
+     berjalan di bawah ikon dan tidak terbaca. */
+  padding-right: 46px;
+}
+
+.ks-bungkus > button.ks-tombol {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  /* 44px penuh — sasaran sentuh, bukan sekadar ikon 18px. Dipakai dari ponsel
+     di lapangan, kerap sambil berdiri. */
+  width: 44px;
+  display: grid;
+  place-items: center;
+  /* Nol-kan seluruh gaya tombol milik halaman pemakainya. `masuk.css`
+     menetapkan `.sg-masuk-isi button { margin-top: 18px; min-height: 46px }`
+     untuk tombol Masuk — dan pada elemen berposisi absolut, margin itu
+     menggeser tombol mata 18px ke bawah dari tengah kolom. */
+  margin: 0;
+  min-height: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+  color: var(--ink-4);
+  cursor: pointer;
+  border-radius: var(--r-sm);
+  transition: color var(--ease);
+}
+
+.ks-bungkus > button.ks-tombol:hover { color: var(--pt-blue); background: none; }
+.ks-bungkus > button.ks-tombol:focus-visible {
+  outline: 2px solid var(--pt-blue);
+  outline-offset: -2px;
+  color: var(--pt-blue);
+}
+
+/* Saat sandinya sedang terlihat, tombolnya ikut menegaskan keadaan itu —
+   ikon tercoret saja mudah terlewat pada layar kecil. */
+.ks-bungkus > button.ks-tombol[aria-pressed='true'] { color: var(--pt-blue); }
+
+/* Kolom sandi di halaman masuk mewarisi `margin-top` dari `.sg-masuk-isi
+   input`. Karena inputnya kini berada di dalam pembungkus, marginnya berlaku
+   pada input — bukan pada pembungkus — sehingga tombolnya ikut turun. Yang
+   diberi jarak pembungkusnya, dan inputnya dikembalikan ke nol. */
+.sg-masuk-isi .ks-bungkus { margin-top: 4px; }
+.sg-masuk-isi .ks-bungkus > input.ks-input { margin-top: 0; }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { IconLock } from './Icons.jsx';
+import KolomSandi from './KolomSandi.jsx';
 import './masuk.css';
 
 /**
@@ -134,20 +135,20 @@ export default function Masuk({ judul, sub, label = 'AKSES TERBATAS', kaki, onBe
           <label htmlFor="sg-sandi">
             {sedangGanti ? 'Kata sandi sekarang' : 'Kata sandi'}
           </label>
-          <input id="sg-sandi" type="password" value={sandi} autoComplete="current-password"
-                 onChange={(e) => setSandi(e.target.value)} />
+          <KolomSandi id="sg-sandi" value={sandi} autoComplete="current-password"
+                      onChange={(e) => setSandi(e.target.value)} />
 
           {sedangGanti ? (
             <>
               <label htmlFor="sg-sandi-baru">
                 Kata sandi baru <small>minimal {PANJANG_SANDI_MINIMUM} karakter</small>
               </label>
-              <input id="sg-sandi-baru" type="password" value={sandiBaru} autoComplete="new-password"
-                     onChange={(e) => setSandiBaru(e.target.value)} />
+              <KolomSandi id="sg-sandi-baru" value={sandiBaru} autoComplete="new-password"
+                          onChange={(e) => setSandiBaru(e.target.value)} />
 
               <label htmlFor="sg-sandi-ulang">Ketik ulang kata sandi baru</label>
-              <input id="sg-sandi-ulang" type="password" value={ulangi} autoComplete="new-password"
-                     onChange={(e) => setUlangi(e.target.value)} />
+              <KolomSandi id="sg-sandi-ulang" value={ulangi} autoComplete="new-password"
+                          onChange={(e) => setUlangi(e.target.value)} />
             </>
           ) : (
             /* Tanpa ini, engineer yang menandai tiket selesai dari ponsel harus
