@@ -208,6 +208,24 @@ export const IconFilter = (p) => (
   <Svg {...p}><path d="M3 5h18l-7 8v5.5l-4 2V13z" /></Svg>
 );
 
+/* Mata — kata sandi sedang tersembunyi, tekan untuk menampilkannya */
+export const IconMata = (p) => (
+  <Svg {...p}>
+    <path d="M2 12s3.8-6.5 10-6.5S22 12 22 12s-3.8 6.5-10 6.5S2 12 2 12z" />
+    <circle cx="12" cy="12" r="3" />
+  </Svg>
+);
+
+/* Mata tercoret — kata sandi sedang terlihat, tekan untuk menyembunyikannya */
+export const IconMataTutup = (p) => (
+  <Svg {...p}>
+    <path d="M10.7 6.2A9.9 9.9 0 0 1 12 5.5c6.2 0 10 6.5 10 6.5a18 18 0 0 1-3 3.8" />
+    <path d="M6.5 7.9A17.6 17.6 0 0 0 2 12s3.8 6.5 10 6.5a9.9 9.9 0 0 0 4-.8" />
+    <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" />
+    <path d="M3 3l18 18" />
+  </Svg>
+);
+
 /* Kunci pas — "sedang dikerjakan", tahap sebelum tiket ditandai selesai */
 export const IconWrench = (p) => (
   <Svg {...p}>

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IconLock } from './Icons.jsx';
+import KolomSandi from './KolomSandi.jsx';
 import './ganti-sandi.css';
 
 const PANJANG_MINIMUM = 8;
@@ -114,9 +115,8 @@ export default function GantiSandi({ namaAkun, kelasTombol = '' }) {
                 </p>
 
                 <label>Kata sandi sekarang
-                  <input
-                    ref={kolomPertama}
-                    type="password"
+                  <KolomSandi
+                    inputRef={kolomPertama}
                     value={lama}
                     autoComplete="current-password"
                     onChange={(e) => setLama(e.target.value)}
@@ -124,8 +124,7 @@ export default function GantiSandi({ namaAkun, kelasTombol = '' }) {
                 </label>
 
                 <label>Kata sandi baru <small>minimal {PANJANG_MINIMUM} karakter</small>
-                  <input
-                    type="password"
+                  <KolomSandi
                     value={baru}
                     autoComplete="new-password"
                     onChange={(e) => setBaru(e.target.value)}
@@ -133,8 +132,7 @@ export default function GantiSandi({ namaAkun, kelasTombol = '' }) {
                 </label>
 
                 <label>Ketik ulang kata sandi baru
-                  <input
-                    type="password"
+                  <KolomSandi
                     value={ulang}
                     autoComplete="new-password"
                     onChange={(e) => setUlang(e.target.value)}
