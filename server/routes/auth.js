@@ -61,13 +61,11 @@ authRouter.post('/masuk', (req, res) => {
       return res.status(401).json({ success: false, error: 'Nama akun atau kata sandi salah' });
     }
 
-    const ingatSaya = req.body?.ingatSaya === true;
-
     penghitung.hapus(namaAkun, alamat);
-    info('masuk-berhasil', { akun: namaAkun, peran: pengguna.peran, alamat, ingatSaya });
+    info('masuk-berhasil', { akun: namaAkun, peran: pengguna.peran, alamat });
     catatMasuk(namaAkun);
-    catatAkses(namaAkun, 'masuk', ingatSaya ? 'sesi panjang' : null);
-    pasangKuki(res, buatToken(pengguna, ingatSaya), ingatSaya);
+    catatAkses(namaAkun, 'masuk');
+    pasangKuki(res, buatToken(pengguna));
 
     // Bentuknya WAJIB sama persis dengan GET /auth/saya. Antarmuka menyimpan
     // keduanya ke keadaan yang sama: hasil masuk dipakai langsung, hasil /saya

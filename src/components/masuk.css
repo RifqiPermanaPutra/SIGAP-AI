@@ -126,22 +126,6 @@
 .sg-masuk-isi button:hover:not(:disabled) { background: var(--pt-blue-mid); }
 .sg-masuk-isi button:disabled { background: var(--ink-4); box-shadow: none; cursor: not-allowed; }
 
-/* Sasaran sentuhnya seluruh baris, bukan hanya kotak centangnya.
-   Ditulis `.sg-masuk-isi label.sg-ingat` agar lebih khusus daripada aturan
-   label di atas — bukan dengan !important, yang hanya memindahkan masalahnya
-   ke aturan berikutnya yang perlu menimpanya. */
-.sg-masuk-isi label.sg-ingat {
-  display: flex; align-items: center; gap: 9px;
-  margin-top: 14px;
-  min-height: 44px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--ink-2);
-  cursor: pointer;
-}
-.sg-ingat input { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--pt-blue); }
-.sg-ingat small { color: var(--ink-4); font-weight: 400; }
-
 .sg-galat {
   background: var(--pt-red-soft);
   color: var(--pt-red-text);

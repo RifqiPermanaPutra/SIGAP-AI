@@ -332,12 +332,29 @@ export default function TugasPage() {
       <div className="tg">
         <div className="tg-judul">
           <h1>Menunggu ditangani</h1>
+
+          {/* Siapa yang sedang masuk. Diletakkan di sini, bukan di navbar:
+              navbar sudah memuat tiga tombol plus bilah merek, dan menambah
+              teks di sana mendesak logonya keluar pada layar ponsel.
+
+              Bukan sekadar hiasan. Ponsel kerap dipakai bergantian di
+              lapangan, dan tiket yang ditandai selesai tercatat atas nama
+              pemilik sesi — bukan atas nama orang yang memegang ponselnya. */}
+          <p className="tg-siapa">
+            <IconUser size={14} />
+            <span>
+              Masuk sebagai <strong>{pengguna.nama}</strong>
+              {data && (
+                <> · {data.seluruhDivisi
+                  ? 'seluruh layanan'
+                  : `menangani ${data.pilihanDivisi.map((d) => d.name).join(', ')}`}</>
+              )}
+            </span>
+          </p>
+
           <p className="tg-ket">
             Laporan yang sudah diteruskan kepada engineer dan belum ditandai
             selesai. Yang belum dipegang siapa pun berada di atas.
-            {data && !data.seluruhDivisi && (
-              <> Hanya layanan yang Anda tangani yang ditampilkan.</>
-            )}
           </p>
         </div>
 
