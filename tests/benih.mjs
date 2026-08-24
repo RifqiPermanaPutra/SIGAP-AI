@@ -154,7 +154,7 @@ export async function isiDataContoh(hari = 44) {
       );
 
       sisipPesan.run(id, 'user', keluhan, mulai.toISOString());
-      sisipPesan.run(id, 'assistant', masalah || 'Diteruskan ke Engineer ICT.', akhir.toISOString());
+      sisipPesan.run(id, 'assistant', masalah || 'Diteruskan ke Engineer IT.', akhir.toISOString());
       dibuat++;
     }
   }

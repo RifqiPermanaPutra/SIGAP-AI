@@ -48,7 +48,7 @@ const PENJELASAN = {
   },
   diteruskan: {
     label: 'Diteruskan ke engineer',
-    arti: 'Laporan Anda sudah berpindah tangan ke Engineer ICT dan sedang menunggu ditangani.'
+    arti: 'Laporan Anda sudah berpindah tangan ke Engineer IT dan sedang menunggu ditangani.'
   },
   ditinggalkan: {
     label: 'Tidak dilanjutkan',

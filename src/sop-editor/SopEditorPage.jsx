@@ -12,7 +12,7 @@ import './sop-editor.css';
  *
  * Alasan halaman ini ada: mengubah satu langkah SOP sebelumnya menuntut
  * menyunting Markdown, menjalankan `npm run build:kb`, `npm run build`, lalu
- * menyalakan ulang server. Engineer ICT tidak akan melakukan itu — dan SOP
+ * menyalakan ulang server. Engineer IT tidak akan melakukan itu — dan SOP
  * yang tidak pernah diperbarui akan terus memberi langkah yang tidak lagi
  * cocok, disampaikan dengan percaya diri.
  *
@@ -532,10 +532,9 @@ export default function SopEditorPage() {
     <div className="se-halaman">
       <header className="se-navbar">
         <div className="se-merek">
-          <img src="/logo-pertamina-ep.svg" alt="Pertamina EP" className="se-merek-logo" />
           <img
-            src="/logo-satu-it-sigap-dark.png"
-            alt="Pertamina ONE dan SATU-IT SIGAP"
+            src="/logo-sigap.png"
+            alt="SATU-IT SIGAP"
             className="se-merek-logo-unit"
           />
           <span className="se-merek-garis" aria-hidden="true" />

@@ -5,13 +5,13 @@ import React from 'react';
  *
  * Tanpa ini, satu galat pada komponen mana pun membuat React melepas seluruh
  * pohon dan menyisakan **layar putih kosong** — tanpa pesan, tanpa tombol,
- * tanpa petunjuk apa pun. Bagi pekerja yang sedang mengalami kendala ICT,
+ * tanpa petunjuk apa pun. Bagi pekerja yang sedang mengalami kendala IT,
  * layar putih adalah jalan buntu yang paling buruk: ia datang justru karena
  * butuh bantuan.
  *
  * Karena itu tampilan cadangan di sini tidak berhenti pada permintaan maaf.
  * Ia tetap menyediakan dua jalan keluar: memuat ulang halaman, dan menghubungi
- * Engineer ICT langsung lewat WhatsApp.
+ * Engineer IT langsung lewat WhatsApp.
  *
  * Harus berupa komponen kelas — React hanya mengenali `componentDidCatch` dan
  * `getDerivedStateFromError` pada kelas, belum ada padanannya untuk fungsi.
@@ -46,7 +46,7 @@ export default class ErrorBoundary extends React.Component {
 
     const nomor = this.state.nomorWa;
     const pesanWa = encodeURIComponent(
-      'Halo Engineer ICT, saya tidak dapat memakai aplikasi SIGAP. ' +
+      'Halo Engineer IT, saya tidak dapat memakai aplikasi SIGAP. ' +
       'Halaman menampilkan pesan kesalahan.'
     );
 
@@ -56,7 +56,7 @@ export default class ErrorBoundary extends React.Component {
           <h1>Aplikasi mengalami gangguan</h1>
           <p>
             Maaf, terjadi kesalahan pada tampilan sehingga halaman tidak dapat
-            dilanjutkan. Kendala ICT Anda tetap dapat dilaporkan.
+            dilanjutkan. Kendala IT Anda tetap dapat dilaporkan.
           </p>
 
           <div className="galat-batas-aksi">
@@ -75,13 +75,13 @@ export default class ErrorBoundary extends React.Component {
                 target="_blank"
                 rel="noreferrer"
               >
-                Hubungi Engineer ICT
+                Hubungi Engineer IT
               </a>
             )}
           </div>
 
           <p className="galat-batas-teknis">
-            Bila gangguan berulang, sampaikan keterangan ini kepada Fungsi ICT:
+            Bila gangguan berulang, sampaikan keterangan ini kepada Fungsi IT:
             <code>{String(this.state.galat?.message || this.state.galat)}</code>
           </p>
         </div>

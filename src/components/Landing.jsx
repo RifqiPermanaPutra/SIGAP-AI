@@ -20,7 +20,7 @@ const STEPS = [
     no: '01',
     tone: 'blue',
     title: 'Pilih Layanan',
-    desc: 'Pilih divisi layanan ICT yang sedang mengalami kendala. Tidak perlu mengisi data apa pun terlebih dahulu.'
+    desc: 'Pilih divisi layanan IT yang sedang mengalami kendala. Tidak perlu mengisi data apa pun terlebih dahulu.'
   },
   {
     no: '02',
@@ -58,21 +58,16 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
     <div className="landing" id="landing">
       {/* ── Navigasi ───────────────────────────────── */}
       <nav className="lp-nav">
-        <a className="lp-brand" href="#landing" aria-label="SIGAP — Layanan ICT Pertamina EP Field Lirik">
+        <a className="lp-brand" href="#landing" aria-label="SIGAP — Layanan IT Pertamina EP Field Lirik">
           <img
-            src="/logo-pertamina-ep.svg"
-            alt="Pertamina EP"
-            className="lp-brand-logo"
-          />
-          <img
-            src="/logo-satu-it-sigap-dark.png"
-            alt="Pertamina ONE dan SATU-IT SIGAP"
+            src="/logo-sigap.png"
+            alt="SATU-IT SIGAP"
             className="lp-brand-logo-unit"
           />
           <span className="lp-brand-divider" aria-hidden="true" />
           <span className="lp-brand-text">
             <strong>SIGAP</strong>
-            <small>LAYANAN ICT · FIELD LIRIK</small>
+            <small>LAYANAN IT · FIELD LIRIK</small>
           </span>
         </a>
 
@@ -116,18 +111,18 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
         <div className="lp-hero-copy">
           <span className="lp-badge">
             <i className="lp-badge-dot" />
-            Siap Melayani 24 Jam
+            Siap Melayani Sepenuh Hati
           </span>
 
           <h1 className="lp-title">
-            Penanganan Kendala ICT
+            Penanganan Kendala IT
             <br />
             <span className="accent-text">yang Sigap dan Tepat.</span>
           </h1>
 
           <p className="lp-sub">
             SIGAP membantu seluruh pekerja Pertamina EP Asset 1 Regional 1 Field
-            Lirik menyelesaikan kendala layanan ICT. Sampaikan keluhan Anda, ikuti
+            Lirik menyelesaikan kendala layanan IT. Sampaikan keluhan Anda, ikuti
             panduan penanganan bertahap, dan bila diperlukan, laporan diteruskan
             langsung kepada engineer terkait.
           </p>
@@ -193,7 +188,7 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
       <section className="lp-stats" aria-label="Ringkasan layanan">
         <div className="lp-stat">
           <strong>8</strong>
-          <span>Divisi layanan ICT</span>
+          <span>Divisi layanan IT</span>
         </div>
         <div className="lp-stat">
           <strong>3</strong>
@@ -214,7 +209,7 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
         <div className="lp-section-head">
           <span className="lp-eyebrow">LAYANAN</span>
           <h2 className="lp-h2">
-            Delapan divisi ICT, <span className="accent-text">satu kanal layanan.</span>
+            Delapan divisi IT, <span className="accent-text">satu kanal layanan.</span>
           </h2>
           <p className="lp-section-sub">
             Pilih kategori yang paling sesuai dengan kendala Anda. Layanan bertanda
@@ -284,7 +279,7 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
       <section className="lp-cta" id="dukungan">
         <div className="lp-cta-inner">
           <div>
-            <h2 className="lp-cta-title">Sedang mengalami kendala ICT?</h2>
+            <h2 className="lp-cta-title">Sedang mengalami kendala IT?</h2>
             <p className="lp-cta-sub">
               Sampaikan sekarang. Engineer kami siap membantu apabila diperlukan
               penanganan lebih lanjut.
@@ -302,7 +297,7 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
         <div className="lp-footer-rule" aria-hidden="true" />
         <div className="lp-footer-text">
           <p>SIGAP · PT PERTAMINA EP ASSET 1 REGIONAL 1 FIELD LIRIK</p>
-          <p>Fungsi ICT · Untuk penggunaan internal perusahaan</p>
+          <p>Fungsi IT · Untuk penggunaan internal perusahaan</p>
         </div>
       </footer>
     </div>

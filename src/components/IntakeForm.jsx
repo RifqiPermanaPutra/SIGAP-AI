@@ -6,7 +6,7 @@ import { URGENSI_LIST } from '../../bersama/urgensi.js';
 
 /**
  * Formulir pendataan pelapor — ditampilkan saat kendala akan diteruskan
- * kepada Engineer ICT, bukan di awal percakapan.
+ * kepada Engineer IT, bukan di awal percakapan.
  *
  * Alasan penempatan: sebagian besar kendala selesai di percakapan. Meminta
  * data di awal membebani semua pengguna demi sebagian kecil yang benar-benar
@@ -123,7 +123,7 @@ export default function IntakeForm({ initial, onSubmit, onClose }) {
         <div className="intake-head">
           <h2 className="intake-title">Data Pelaporan ke Engineer</h2>
           <p className="intake-sub">
-            Kendala Anda akan diteruskan kepada Engineer ICT. Mohon lengkapi
+            Kendala Anda akan diteruskan kepada Engineer IT. Mohon lengkapi
             data berikut agar engineer dapat menindaklanjuti dengan tepat.
           </p>
         </div>

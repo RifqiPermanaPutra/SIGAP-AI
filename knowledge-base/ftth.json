@@ -8,7 +8,10 @@
     "Arti pasti setiap lampu pada perangkat yang dipakai",
     "Letak pemasangan perangkat di tiap area",
     "Apakah pengguna diperbolehkan mematikan dan menyalakan perangkat sendiri",
-    "Prosedur pelaporan gangguan yang berdampak satu area"
+    "Prosedur pelaporan gangguan yang berdampak satu area",
+    "[KONFIRMASI] Ruangan mana saja yang memakai sambungan fiber, bukan kabel LAN biasa",
+    "[KONFIRMASI] Nama penyedia jasa fiber dan nomor pelaporan gangguannya",
+    "[KONFIRMASI] Letak perangkat fiber di tiap ruangan"
   ],
   "masalah": [
     {
@@ -59,7 +62,7 @@
             "Catat sejak kapan internet mati, sebutkan jam bila masih ingat.",
             "Catat lokasi Anda, misalnya nama gedung atau ruangan.",
             "Catat lampu apa saja yang menyala dan warnanya pada perangkat internet.",
-            "Laporkan kepada Engineer ICT beserta seluruh catatan tersebut. Lampu LOS merah yang menetap menandakan gangguan pada jalur kabel di luar ruangan yang hanya dapat ditangani engineer."
+            "Laporkan kepada Engineer IT beserta seluruh catatan tersebut. Lampu LOS merah yang menetap menandakan gangguan pada jalur kabel di luar ruangan yang hanya dapat ditangani engineer."
           ]
         }
       ],
@@ -88,7 +91,7 @@
             "Bila perangkat lain juga tidak menyala, berarti masalahnya pada aliran listrik ruangan tersebut, bukan pada perangkat internet.",
             "Bila stopkontak berfungsi normal, cabut kabel listrik perangkat internet, tunggu 30 detik, lalu pasang kembali.",
             "Tunggu sekitar 2 menit dan perhatikan apakah lampu mulai menyala.",
-            "Bila seluruh lampu tetap padam, laporkan kepada Engineer ICT. Sebutkan bahwa perangkat tidak menyala sama sekali meski listrik normal."
+            "Bila seluruh lampu tetap padam, laporkan kepada Engineer IT. Sebutkan bahwa perangkat tidak menyala sama sekali meski listrik normal."
           ]
         }
       ],
@@ -117,7 +120,7 @@
             "Pasang kembali kabel listrik ke stopkontak.",
             "Tunggu sampai 5 menit lagi sambil memperhatikan lampu PON.",
             "Bila lampu PON akhirnya menyala tetap dan tidak berkedip, internet seharusnya sudah dapat digunakan. Coba buka satu situs untuk memastikan.",
-            "Bila lampu PON tetap berkedip setelah semua langkah ini, laporkan kepada Engineer ICT untuk diperiksa ke penyedia layanan."
+            "Bila lampu PON tetap berkedip setelah semua langkah ini, laporkan kepada Engineer IT untuk diperiksa ke penyedia layanan."
           ]
         }
       ],
@@ -146,7 +149,7 @@
             "Tunggu sekitar 30 detik.",
             "Pasang kembali kabel listrik, lalu tunggu sekitar 2 menit sampai lampu berhenti berkedip.",
             "Coba buka dua atau tiga situs berbeda untuk menguji kecepatannya.",
-            "Bila internet tetap lambat sepanjang hari, laporkan kepada Engineer ICT beserta keterangan berapa banyak orang yang terdampak."
+            "Bila internet tetap lambat sepanjang hari, laporkan kepada Engineer IT beserta keterangan berapa banyak orang yang terdampak."
           ]
         }
       ],
@@ -163,7 +166,7 @@
         "Kerusakan pada ujung sambungan kabel"
       ],
       "solusi": [],
-      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Kabel fiber optik tidak boleh disambung sendiri karena memerlukan alat khusus, dan ujung kabel yang patah dapat melukai mata bila ditatap langsung. Jangan menyentuh atau menatap ujung kabel yang putus. Silakan hubungi Engineer melalui tombol WhatsApp."
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Kabel fiber optik tidak boleh disambung sendiri karena memerlukan alat khusus, dan ujung kabel yang patah dapat melukai mata bila ditatap langsung. Jangan menyentuh atau menatap ujung kabel yang putus. Silakan hubungi Engineer melalui tombol WhatsApp."
     },
     {
       "id": "ftth-perangkat-internet-rusak-atau-berbau",
@@ -176,7 +179,138 @@
         "Perangkat telah melewati usia pakai"
       ],
       "solusi": [],
-      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Bila tercium bau terbakar atau keluar asap, segera cabut kabel listrik perangkat dari stopkontak dan jauhkan barang mudah terbakar. Silakan hubungi Engineer melalui tombol WhatsApp."
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Bila tercium bau terbakar atau keluar asap, segera cabut kabel listrik perangkat dari stopkontak dan jauhkan barang mudah terbakar. Silakan hubungi Engineer melalui tombol WhatsApp."
+    },
+    {
+      "id": "ftth-internet-fiber-putus-nyambung-sepanjang",
+      "judul": "Internet Fiber Putus Nyambung Sepanjang Hari",
+      "gejala": "Sambungan terputus beberapa kali sehari lalu pulih sendiri. Rapat daring terputus di tengah jalan, dan berkas gagal terkirim.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kabel fiber tertekuk sehingga sambungan terganggu sesekali",
+        "Sambungan pada perangkat fiber kotor",
+        "Perangkat fiber kepanasan",
+        "Gangguan berkala dari sisi penyedia jasa"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Gangguan yang datang dan pergi paling sulit ditangani bila tidak ada catatan waktunya. Catatan Anda itulah yang membuat pemeriksaan engineer terarah.",
+          "langkah": [
+            "Siapkan catatan kecil atau buka aplikasi catatan pada telepon genggam Anda.",
+            "Setiap kali sambungan terputus, catat jam berapa persisnya dan berapa lama sampai pulih.",
+            "Perhatikan lampu pada perangkat fiber saat sambungan terputus.",
+            "Catat lampu mana yang berubah warna atau berkedip pada saat itu — terutama lampu bertuliskan LOS, PON, dan Power.",
+            "Perhatikan apakah putusnya terjadi pada jam yang kira-kira sama setiap hari.",
+            "Perhatikan pula apakah putusnya bersamaan dengan hujan deras atau cuaca buruk.",
+            "Tanyakan kepada rekan di ruangan yang sama apakah mereka juga terganggu pada jam yang sama.",
+            "Kumpulkan catatan itu paling tidak selama satu hari kerja penuh.",
+            "Jangan mencabut atau memindahkan kabel fiber, karena serat kacanya mudah patah.",
+            "Laporkan kepada Engineer IT beserta catatan jam dan keadaan lampu yang Anda amati."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "ftth-lampu-perangkat-fiber-menyala-merah",
+      "judul": "Lampu Perangkat Fiber Menyala Merah atau Berkedip Tidak Wajar",
+      "gejala": "Ada lampu berwarna merah pada perangkat fiber, atau lampu yang biasanya diam kini berkedip terus.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Sambungan serat optik terputus di suatu titik",
+        "Perangkat fiber belum dikenali dari sisi penyedia jasa",
+        "Sambungan fiber pada perangkat longgar",
+        "Gangguan pada jalur fiber di luar gedung"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Susunan lampu pada perangkat fiber adalah keterangan paling berharga bagi engineer — dari situ dapat diperkirakan di titik mana sambungan terputus, bahkan sebelum engineer datang.",
+          "langkah": [
+            "Temukan perangkat fiber. Bentuknya kotak kecil putih, biasanya diletakkan di dinding atau rak dekat pintu masuk ruangan.",
+            "Perhatikan deretan lampu di bagian depannya. Di dekat tiap lampu biasanya ada tulisan kecil.",
+            "Catat keadaan lampu bertuliskan \"Power\" — menyala tetap, berkedip, atau padam.",
+            "Catat keadaan lampu bertuliskan \"PON\" dengan cara yang sama.",
+            "Catat keadaan lampu bertuliskan \"LOS\". Lampu ini yang paling menentukan; warnanya merah bila sambungan serat terputus.",
+            "Catat pula lampu bertuliskan \"LAN\" atau bernomor, yang menandakan sambungan ke komputer.",
+            "Bila memungkinkan, potret deretan lampu itu dengan telepon genggam Anda.",
+            "Perhatikan kabel tipis berwarna kuning atau putih yang masuk ke perangkat — itulah kabel fiber.",
+            "Perhatikan apakah kabel itu tertekuk tajam, terjepit, atau tertindih benda. Jangan menariknya.",
+            "Jangan mencabut kabel fiber dari perangkat, dan jangan menatap ujung serat optiknya.",
+            "Laporkan kepada Engineer IT beserta catatan atau foto keadaan lampu tersebut."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "ftth-perangkat-fiber-panas-atau-berbunyi",
+      "judul": "Perangkat Fiber Panas atau Berbunyi",
+      "gejala": "Badan perangkat fiber terasa panas berlebihan bila disentuh, atau terdengar bunyi berdengung dari dalamnya.",
+      "kategori": "berat",
+      "penyebab": [
+        "Lubang udara perangkat tertutup benda lain",
+        "Perangkat diletakkan di tempat yang terkena panas langsung",
+        "Adaptor daya perangkat bermasalah",
+        "Kerusakan bagian dalam perangkat"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Bila tercium bau hangus, segera cabut adaptor daya perangkat dari stopkontak dan jangan dipasang kembali. Bila hanya terasa hangat berlebihan, cukup singkirkan benda yang menutupi lubang udaranya, lalu laporkan. Jangan membuka badan perangkat dan jangan menyiramnya dengan apa pun. Silakan hubungi Engineer melalui tombol WhatsApp beserta lokasi ruangannya."
+    },
+    {
+      "id": "ftth-pindah-ruangan-dan-perlu-sambungan",
+      "judul": "Pindah Ruangan dan Perlu Sambungan Fiber",
+      "gejala": "Ruangan baru belum memiliki sambungan internet fiber, atau sambungan yang lama perlu dipindahkan.",
+      "kategori": "berat",
+      "penyebab": [
+        "Penataan ulang ruangan kerja",
+        "Pembukaan ruangan atau bangunan baru",
+        "Perpindahan fungsi antar lokasi"
+      ],
+      "solusi": [],
+      "penanganan": "Permintaan ini memerlukan penanganan Engineer IT. Pemindahan sambungan fiber berarti penarikan jalur serat optik baru, bukan sekadar memindahkan perangkatnya, sehingga memerlukan penjadwalan dan kerap melibatkan penyedia jasa. Silakan hubungi Engineer melalui tombol WhatsApp dengan menyebutkan ruangan asal, ruangan tujuan, berapa orang yang akan memakainya, dan kapan diperlukan."
+    },
+    {
+      "id": "ftth-kabel-fiber-tertarik-atau-tertindih",
+      "judul": "Kabel Fiber Tertarik atau Tertindih",
+      "gejala": "Kabel fiber tertarik saat memindahkan meja atau lemari, tertindih benda berat, atau terlihat tertekuk tajam.",
+      "kategori": "berat",
+      "penyebab": [
+        "Pemindahan perabot tanpa memperhatikan jalur kabel",
+        "Kabel dilewati orang atau kendaraan",
+        "Pekerjaan perbaikan gedung yang mengenai jalur kabel"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Serat optik di dalam kabel fiber terbuat dari kaca halus yang dapat retak meski selubung luarnya terlihat utuh, sehingga gangguannya kadang baru muncul kemudian. Jangan mencoba meluruskan, menyambung, atau menarik kabelnya. Bila kabel terlihat terkelupas, jauhkan orang dari ujungnya. Silakan hubungi Engineer melalui tombol WhatsApp beserta lokasi kejadiannya."
+    },
+    {
+      "id": "ftth-sambungan-fiber-melemah-berulang-saat",
+      "judul": "Sambungan Fiber Melemah Berulang saat Pemakai Ramai",
+      "gejala": "Sambungan fiber terasa normal ketika sepi, lalu melemah berulang ketika banyak pekerja memakainya bersamaan.",
+      "kategori": "berat",
+      "penyebab": [
+        "Banyak pemakai berbagi satu jalur fiber yang sama",
+        "Ada pengunduhan berukuran besar berjalan bersamaan",
+        "Pembagian kapasitas jalur perlu ditinjau",
+        "Gangguan berulang dari sisi penyedia jasa"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini memerlukan penanganan Engineer IT. Kelambatan yang berulang pada jam yang sama menunjukkan persoalan pembagian kapasitas jalur, dan itu hanya dapat ditinjau dari sisi perangkat jaringan. Bila memungkinkan, catat pada jam berapa saja kelambatan terjadi dan berapa lama berlangsung. Silakan hubungi Engineer melalui tombol WhatsApp beserta catatan tersebut dan nama ruangan Anda."
+    },
+    {
+      "id": "ftth-perangkat-fiber-menyala-ulang-sendiri",
+      "judul": "Perangkat Fiber Menyala Ulang Sendiri Berkali-kali",
+      "gejala": "Lampu pada perangkat fiber padam lalu menyala lagi dari awal berulang kali, tanpa ada yang menyentuhnya.",
+      "kategori": "berat",
+      "penyebab": [
+        "Adaptor daya perangkat melemah",
+        "Colokan listrik longgar pada stopkontak",
+        "Tegangan listrik pada titik itu tidak mantap",
+        "Perangkat kepanasan sehingga melindungi dirinya sendiri"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Perangkat yang menyala ulang berkali-kali dapat rusak permanen bila dibiarkan. Yang aman Anda kerjakan hanyalah memastikan colokan adaptornya tertancap rapat dan tidak ada benda yang menutupi lubang udara perangkat. Jangan membuka badan perangkat dan jangan menukar adaptornya dengan adaptor lain, sebab tegangannya belum tentu sama. Silakan hubungi Engineer melalui tombol WhatsApp beserta perkiraan berapa kali perangkat itu menyala ulang."
     }
   ]
 }

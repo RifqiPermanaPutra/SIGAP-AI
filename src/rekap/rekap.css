@@ -67,17 +67,15 @@
    Pada 18px dan 20px jumlahnya menjadi 309px, muat dengan sisa ruang.
    `flex: 0 1 auto` menjadi jaring pengaman untuk layar 320px: logo mengecil
    proporsional, bukan menabrak. */
-.rk-merek-logo,
 .rk-merek-logo-unit {
   width: auto; display: block;
   flex: 0 1 auto; min-width: 0;
   object-fit: contain;
 }
-.rk-merek-logo { height: 18px; }
 /* Varian logo untuk header gelap sudah memiliki alpha transparan dan elemen
    monokrom putih, sehingga tidak memerlukan panel, border, maupun padding. */
 .rk-merek-logo-unit {
-  height: 20px;
+  height: 28px;
   filter: brightness(1.12) contrast(1.06) drop-shadow(0 1px 2px rgba(0, 27, 48, 0.35));
 }
 
@@ -869,8 +867,7 @@
      576px — masih menabrak, hanya lebih halus sehingga tidak terlihat.
      Teks merek baru dimunculkan pada 900px di bawah, saat ruangnya nyata. */
   .rk-merek { gap: 10px; }
-  .rk-merek-logo { height: 24px; }
-  .rk-merek-logo-unit { height: 26px; }
+  .rk-merek-logo-unit { height: 34px; }
 
   .rk-pengguna { display: flex; }
 
@@ -923,8 +920,7 @@
   /* Baru di sini logo boleh sebesar aslinya dan teks merek ikut tampil.
      Sebelumnya keduanya dimunculkan pada 600px, lebar yang sebenarnya
      belum cukup — lihat hitungannya pada aturan dasar .rk-merek. */
-  .rk-merek-logo { height: 28px; }
-  .rk-merek-logo-unit { height: 30px; }
+  .rk-merek-logo-unit { height: 40px; }
   .rk-merek-garis { display: block; height: 28px; }
   .rk-merek-teks { display: flex; }
   .rk-merek-teks strong { font-size: 1rem; }

@@ -58,17 +58,15 @@
 
    Itulah sebabnya "SIGAP / TUGAS ENGINEER" terbaca "SIGAP TU...".
    Pada 18px dan 20px sisanya menjadi 120px — cukup utuh. */
-.sg-merek-logo,
 .sg-merek-logo-unit {
   width: auto; display: block;
   flex: 0 1 auto; min-width: 0;
   object-fit: contain;
 }
-.sg-merek-logo { height: 18px; }
 /* Varian logo untuk header gelap sudah memiliki alpha transparan dan elemen
    monokrom putih, sehingga tidak memerlukan panel, border, maupun padding. */
 .sg-merek-logo-unit {
-  height: 20px;
+  height: 28px;
   filter: brightness(1.12) contrast(1.06) drop-shadow(0 1px 2px rgba(0, 27, 48, 0.35));
 }
 .sg-merek-garis {
@@ -169,8 +167,7 @@
   /* Kartunya tetap 390px berapa pun lebar layar, jadi ruangnya tidak
      bertambah — yang berubah hanya padding isinya. Logo naik sedikit saja. */
   .sg-merek { gap: 9px; }
-  .sg-merek-logo { height: 20px; }
-  .sg-merek-logo-unit { height: 22px; }
+  .sg-merek-logo-unit { height: 30px; }
   .sg-merek-garis { height: 22px; }
   .sg-merek-teks strong { font-size: 1rem; }
   .sg-merek-teks small { font-size: 0.65rem; }

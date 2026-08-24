@@ -8,7 +8,10 @@
     "Skema alamat IP yang digunakan tiap area",
     "Lokasi perangkat jaringan di tiap gedung",
     "Apakah pengguna boleh memindahkan kabel antar lubang jaringan",
-    "Prosedur pelaporan gangguan yang berdampak satu ruangan"
+    "Prosedur pelaporan gangguan yang berdampak satu ruangan",
+    "[KONFIRMASI] Penomoran lubang jaringan di tiap ruangan",
+    "[KONFIRMASI] Nama resmi jaringan WiFi kantor, supaya yang menyerupai dapat dikenali",
+    "[KONFIRMASI] Daftar folder berkas bersama beserta siapa yang berhak membukanya"
   ],
   "masalah": [
     {
@@ -20,7 +23,7 @@
         "Fitur WiFi pada komputer sedang dimatikan",
         "Mode pesawat (Airplane mode) tidak sengaja menyala",
         "Posisi terlalu jauh dari alat pemancar WiFi",
-        "Kata sandi WiFi telah diperbarui oleh Fungsi ICT"
+        "Kata sandi WiFi telah diperbarui oleh Fungsi IT"
       ],
       "solusi": [
         {
@@ -65,7 +68,7 @@
             "Tunggu sampai pemeriksaan selesai, biasanya sekitar 2 sampai 3 menit.",
             "Setelah selesai, restart komputer melalui tombol Start, ikon daya, lalu \"Restart\".",
             "Setelah komputer menyala, coba sambungkan kembali ke WiFi kantor.",
-            "Bila tetap gagal, laporkan kepada Engineer ICT dan sebutkan bahwa ketiga cara sudah dicoba."
+            "Bila tetap gagal, laporkan kepada Engineer IT dan sebutkan bahwa ketiga cara sudah dicoba."
           ]
         }
       ],
@@ -122,7 +125,7 @@
             "Tunggu sampai pemeriksaan selesai, biasanya 2 sampai 3 menit.",
             "Coba buka satu situs untuk menguji koneksi.",
             "Bila tetap gagal, tanyakan kepada rekan di ruangan yang sama apakah mereka juga terputus.",
-            "Laporkan kepada Engineer ICT beserta jawaban rekan Anda, karena keterangan itu membantu menentukan apakah gangguannya menyeluruh."
+            "Laporkan kepada Engineer IT beserta jawaban rekan Anda, karena keterangan itu membantu menentukan apakah gangguannya menyeluruh."
           ]
         }
       ],
@@ -149,7 +152,7 @@
             "Bila masih mati, coba pindahkan ujung kabel yang di dinding ke lubang jaringan lain di dekat meja Anda.",
             "Perhatikan kembali lampu kecil di komputer setelah pemindahan tersebut.",
             "Bila tersedia kabel jaringan cadangan, coba ganti dengan kabel tersebut untuk memastikan apakah kabel lama yang bermasalah.",
-            "Bila lampu tetap mati pada semua percobaan, catat lokasi meja Anda, lalu laporkan kepada Engineer ICT."
+            "Bila lampu tetap mati pada semua percobaan, catat lokasi meja Anda, lalu laporkan kepada Engineer IT."
           ]
         }
       ],
@@ -177,7 +180,7 @@
             "Setelah menyala kembali, tunggu sekitar 3 menit sebelum mulai bekerja, karena komputer masih menyiapkan sambungan.",
             "Coba buka dua atau tiga situs yang berbeda untuk memastikan apakah lambatnya terjadi pada semua situs atau hanya satu situs.",
             "Tanyakan kepada rekan di ruangan yang sama apakah mereka merasakan hal serupa.",
-            "Bila lambat berlangsung sepanjang hari dan dialami banyak orang, laporkan kepada Engineer ICT."
+            "Bila lambat berlangsung sepanjang hari dan dialami banyak orang, laporkan kepada Engineer IT."
           ]
         }
       ],
@@ -194,7 +197,7 @@
         "Kerusakan jalur kabel utama"
       ],
       "solusi": [],
-      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Silakan hubungi Engineer melalui tombol WhatsApp. Sebutkan nama ruangan dan perkiraan jumlah komputer yang terdampak."
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Silakan hubungi Engineer melalui tombol WhatsApp. Sebutkan nama ruangan dan perkiraan jumlah komputer yang terdampak."
     },
     {
       "id": "lan-diminta-mengubah-pengaturan-jaringan",
@@ -207,6 +210,173 @@
       ],
       "solusi": [],
       "penanganan": "Perubahan pengaturan jaringan memerlukan hak administrator serta pengetahuan mengenai skema jaringan Field Lirik. Tindakan ini tidak boleh dilakukan sendiri karena dapat memutus koneksi pengguna lain. Silakan hubungi Engineer melalui tombol WhatsApp."
+    },
+    {
+      "id": "lan-wifi-sering-terputus-sendiri-lalu",
+      "judul": "WiFi Sering Terputus Sendiri lalu Tersambung Lagi",
+      "gejala": "Sambungan WiFi terputus beberapa saat lalu pulih sendiri, berulang kali sepanjang hari. Rapat daring terputus di tengah pembicaraan.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Berada di batas jangkauan pemancar WiFi",
+        "Komputer berpindah-pindah antara dua pemancar yang bertumpang tindih",
+        "Pengaturan hemat daya mematikan perangkat WiFi",
+        "Terlalu banyak perangkat pada satu pemancar"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Yang perlu dipastikan adalah apakah putusnya terikat pada tempat duduk Anda atau terjadi di mana pun. Keterangan ini menentukan apakah yang perlu ditangani pemancarnya atau komputernya.",
+          "langkah": [
+            "Perhatikan ikon WiFi di pojok kanan bawah layar. Hitung berapa batang sinyal yang terisi.",
+            "Catat jumlah batang sinyal itu saat Anda duduk di tempat biasa.",
+            "Setiap kali sambungan terputus, catat jam berapa dan berapa lama sampai pulih.",
+            "Pindahlah sementara ke tempat duduk lain yang lebih dekat ke pemancar WiFi.",
+            "Amati selama sekitar 30 menit, lalu catat apakah putusnya berkurang.",
+            "Perhatikan apakah ada benda logam besar, lemari besi, atau dinding tebal di antara Anda dan pemancar.",
+            "Tanyakan kepada rekan di ruangan yang sama apakah mereka juga terputus pada jam yang sama.",
+            "Catat nama jaringan WiFi yang Anda pakai, persis seperti yang tertulis.",
+            "Jangan mengubah pengaturan jaringan apa pun pada komputer Anda.",
+            "Laporkan kepada Engineer IT beserta catatan jam, jumlah batang sinyal, dan hasil pengamatan saat berpindah tempat."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "lan-tidak-bisa-membuka-berkas-bersama",
+      "judul": "Tidak Bisa Membuka Berkas Bersama atau Folder Jaringan",
+      "gejala": "Folder bersama tidak dapat dibuka meski internet berjalan normal. Dapat muncul permintaan nama pengguna dan kata sandi yang selalu ditolak.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Hak akses folder tersebut belum diberikan",
+        "Kata sandi akun kantor baru saja diganti",
+        "Komputer penyimpan berkas sedang tidak menyala",
+        "Alamat folder yang dipakai sudah berubah"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Hak akses berkas bersama diatur tersendiri dan tidak dapat dibuka sendiri. Yang perlu Anda kumpulkan adalah keterangan yang tepat supaya engineer dapat memeriksanya sekali jalan.",
+          "langkah": [
+            "Catat alamat folder yang Anda coba buka, persis seperti yang Anda ketik atau klik.",
+            "Alamat semacam ini biasanya diawali dua garis miring terbalik, diikuti nama komputer dan nama folder.",
+            "Perhatikan pesan kesalahan yang muncul, lalu catat kalimatnya secara lengkap.",
+            "Bila memungkinkan, potret pesan tersebut dengan telepon genggam Anda.",
+            "Catat nama akun kantor yang Anda pakai untuk masuk ke komputer.",
+            "Ingat-ingat apakah kata sandi akun kantor Anda baru saja diganti dalam beberapa hari terakhir.",
+            "Tanyakan kepada rekan yang biasa membuka folder yang sama, apakah mereka masih bisa membukanya.",
+            "Bila rekan Anda masih bisa, berarti persoalannya pada hak akses akun Anda.",
+            "Bila rekan Anda juga tidak bisa, berarti persoalannya pada komputer penyimpan berkasnya.",
+            "Laporkan kepada Engineer IT beserta alamat folder, pesan kesalahan, dan hasil perbandingan dengan rekan Anda."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "lan-komputer-mendapat-alamat-jaringan-yang",
+      "judul": "Komputer Mendapat Alamat Jaringan yang Salah",
+      "gejala": "Muncul tanda seru pada ikon jaringan dengan keterangan tidak ada internet, padahal kabel sudah terpasang dan lampu lubang jaringan menyala.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Komputer gagal memperoleh alamat jaringan dari perangkat pengatur",
+        "Alamat jaringan diisi sendiri secara manual sebelumnya",
+        "Lubang jaringan tersambung ke jalur yang salah",
+        "Perangkat pengatur alamat jaringan sedang terganggu"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Alamat jaringan yang diperoleh komputer memberi tahu banyak hal kepada engineer. Melihatnya tidak mengubah apa pun, jadi aman dikerjakan sendiri.",
+          "langkah": [
+            "Klik tombol Start, lalu ketik \"cmd\".",
+            "Klik \"Command Prompt\" yang muncul. Cukup klik biasa, tidak perlu sebagai administrator.",
+            "Setelah jendela hitam terbuka, ketik perintah berikut persis: ipconfig",
+            "Tekan Enter, lalu tunggu sampai daftar keterangan muncul.",
+            "Cari baris bertuliskan \"IPv4 Address\". Catat deretan angkanya.",
+            "Bila angka itu diawali 169.254, berarti komputer gagal memperoleh alamat dari jaringan. Catat keterangan ini.",
+            "Cari pula baris bertuliskan \"Default Gateway\", lalu catat angkanya.",
+            "Bila baris \"Default Gateway\" kosong, catat juga keterangan tersebut.",
+            "Ketik exit lalu tekan Enter untuk menutup jendela hitam.",
+            "Perhatikan lubang jaringan di dinding tempat kabel Anda tertancap. Catat nomor atau kodenya bila ada.",
+            "Jangan mengubah pengaturan alamat jaringan sendiri, meski Anda mengetahui caranya.",
+            "Laporkan kepada Engineer IT beserta angka-angka yang Anda catat dan nomor lubang jaringannya."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "lan-salinan-berkas-ke-folder-bersama",
+      "judul": "Salinan Berkas ke Folder Bersama Tersendat di Satu Meja",
+      "gejala": "Menyalin berkas ke folder bersama memakan waktu jauh lebih lama dari biasanya, sedangkan meja sebelah menyalin berkas yang sama dengan cepat.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kabel jaringan rusak sehingga kecepatannya turun",
+        "Lubang jaringan di dinding bermasalah",
+        "Sambungan bekerja pada kecepatan jauh di bawah semestinya",
+        "Ada pengunduhan besar berjalan tanpa disadari"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Menukar kabel dan lubang jaringan dengan komputer sebelah adalah cara paling cepat memastikan letak persoalannya, dan itu tidak mengubah pengaturan apa pun.",
+          "langkah": [
+            "Pastikan lebih dulu bahwa komputer sebelah memang berjalan normal.",
+            "Tekan Ctrl, Shift, dan Esc bersamaan untuk membuka Task Manager.",
+            "Klik tab \"Performance\", lalu klik \"Ethernet\" atau \"Wi-Fi\" pada daftar di sisi kiri.",
+            "Perhatikan angka \"Send\" dan \"Receive\". Bila terus tinggi padahal Anda tidak sedang mengunduh apa pun, catat keterangan itu.",
+            "Klik tab \"Processes\", lalu klik tulisan \"Network\" untuk mengurutkan menurut pemakaian jaringan.",
+            "Catat nama aplikasi yang berada di urutan teratas.",
+            "Tutup Task Manager.",
+            "Bila komputer Anda memakai kabel, cabut kabel jaringan dari komputer Anda dan dari komputer sebelah, lalu tukarkan keduanya.",
+            "Amati sekitar 10 menit, lalu catat apakah kelambatannya ikut berpindah ke komputer sebelah.",
+            "Bila kelambatannya ikut berpindah, berarti kabelnya yang bermasalah. Bila tetap di komputer Anda, berarti komputernya.",
+            "Kembalikan kabel ke tempat semula setelah pengujian.",
+            "Laporkan kepada Engineer IT beserta hasil pengujian tukar kabel tersebut."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "lan-perlu-menambah-lubang-jaringan-di",
+      "judul": "Perlu Menambah Lubang Jaringan di Ruangan",
+      "gejala": "Meja baru belum memiliki lubang jaringan, atau jumlah lubang yang tersedia tidak mencukupi untuk seluruh komputer di ruangan.",
+      "kategori": "berat",
+      "penyebab": [
+        "Penambahan meja kerja di ruangan",
+        "Penataan ulang tata letak ruangan",
+        "Penambahan perangkat yang memerlukan sambungan kabel"
+      ],
+      "solusi": [],
+      "penanganan": "Permintaan ini memerlukan penanganan Engineer IT. Penambahan lubang jaringan berarti penarikan kabel baru sampai ke lemari jaringan, sehingga memerlukan penjadwalan dan pemeriksaan kapasitas perangkat yang tersedia. Jangan memakai pembagi jaringan yang dibeli sendiri, karena dapat mengganggu jaringan seluruh ruangan. Silakan hubungi Engineer melalui tombol WhatsApp dengan menyebutkan nama ruangan, berapa lubang yang diperlukan, dan kapan dibutuhkan."
+    },
+    {
+      "id": "lan-ditemukan-perangkat-jaringan-yang-tidak",
+      "judul": "Ditemukan Perangkat Jaringan yang Tidak Dikenal",
+      "gejala": "Ada perangkat asing tertancap pada lubang jaringan, atau muncul nama jaringan WiFi baru yang menyerupai nama jaringan kantor.",
+      "kategori": "berat",
+      "penyebab": [
+        "Perangkat pribadi dipasang tanpa sepengetahuan Fungsi IT",
+        "Perangkat sisa pekerjaan sebelumnya tertinggal",
+        "Percobaan penyusupan ke jaringan kantor"
+      ],
+      "solusi": [],
+      "penanganan": "Keadaan ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Jangan mencabut, memindahkan, atau menyalakan perangkat tersebut — keadaannya perlu dilihat apa adanya. Jangan pula menyambungkan komputer Anda ke jaringan WiFi asing yang namanya menyerupai jaringan kantor. Bila memungkinkan, potret perangkat itu beserta lokasinya. Silakan hubungi Engineer melalui tombol WhatsApp sesegera mungkin."
+    },
+    {
+      "id": "lan-pengait-kabel-jaringan-patah-sehingga",
+      "judul": "Pengait Kabel Jaringan Patah sehingga Mudah Terlepas",
+      "gejala": "Ujung kabel jaringan tidak lagi terkunci pada lubangnya. Pengait plastik kecil pada ujungnya patah, sehingga kabel terlepas bila meja tersenggol.",
+      "kategori": "berat",
+      "penyebab": [
+        "Pengait plastik patah karena kabel tertarik",
+        "Bahan pengait getas karena usia",
+        "Kabel berulang kali dicabut pasang dengan kasar"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini memerlukan penanganan Engineer IT untuk pemasangan ujung kabel yang baru. Sambungan yang terlepas berulang menyebabkan gangguan yang datang dan pergi, dan itu jauh lebih menyulitkan ditelusuri daripada kabel yang putus sama sekali. Jangan menahan kabelnya dengan selotip atau mengganjalnya, sebab hal itu menyembunyikan gejalanya tanpa memperbaiki apa pun. Silakan hubungi Engineer melalui tombol WhatsApp beserta letak meja dan nomor lubang jaringannya bila ada."
     }
   ]
 }

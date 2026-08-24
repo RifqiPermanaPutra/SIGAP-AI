@@ -1,5 +1,5 @@
 /**
- * Daftar divisi layanan ICT beserta mode layanannya.
+ * Daftar divisi layanan IT beserta mode layanannya.
  *
  * Sebelumnya daftar ini berada di server.js. Dipindahkan ke sini karena kini
  * dibutuhkan juga oleh routing chat (untuk mencatat engineer tujuan) dan
@@ -23,7 +23,7 @@ if (!(process.env.WHATSAPP_FTTH || '').trim() && (process.env[ENV_FTTH_SEBELUMNY
  *                 muncul hanya bila ketiga solusi belum menuntaskan
  *  - `engineer` : tidak ada langkah SOP, keluhan langsung diteruskan
  *
- * Pembagian ini berasal dari masukan Engineer ICT (Eka Maulana): keluhan yang
+ * Pembagian ini berasal dari masukan Engineer IT (Eka Maulana): keluhan yang
  * cukup umum untuk dipandu sendiri hanya ada pada komputer dan printer.
  * Selebihnya — CCTV, jaringan, WAN, HT, telepon — memang harus ditangani
  * engineer, dan SOP-nya tidak boleh disusun dari sumber umum karena sangat

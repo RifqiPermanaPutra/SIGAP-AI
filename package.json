@@ -1,7 +1,7 @@
 {
   "name": "sigap-helpdesk-ict",
   "version": "1.0.0",
-  "description": "SIGAP - Layanan bantuan ICT Pertamina EP Field Lirik (berbasis data SOP, tanpa AI)",
+  "description": "SIGAP - Layanan bantuan IT Pertamina EP Field Lirik (berbasis data SOP, tanpa AI)",
   "type": "module",
   "scripts": {
     "dev": "node server.js",

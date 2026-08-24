@@ -3,7 +3,7 @@
  *
  * Mengubah satu langkah SOP sebelumnya menuntut: menyunting Markdown,
  * menjalankan `npm run build:kb`, menjalankan `npm run build`, lalu
- * menyalakan ulang server. Engineer ICT tidak akan melakukan itu — dan SOP
+ * menyalakan ulang server. Engineer IT tidak akan melakukan itu — dan SOP
  * yang tidak pernah diperbarui lebih berbahaya daripada tidak ada SOP sama
  * sekali, karena instruksinya keliru namun disampaikan dengan percaya diri.
  *

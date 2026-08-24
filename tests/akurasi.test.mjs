@@ -126,7 +126,7 @@ for (const [keluhan, diharapkan] of DIVISI_OTOMATIS) {
 }
 cek('keluhan jelas diarahkan ke layanan yang benar', salahArah.length === 0, salahArah);
 
-/* Keluhan di luar urusan ICT TIDAK BOLEH ditawari layanan mana pun.
+/* Keluhan di luar urusan IT TIDAK BOLEH ditawari layanan mana pun.
    Mengambil skor tertinggi dari delapan divisi menaikkan nilai puncak secara
    semu, sehingga "kursi kantor saya rusak" pernah mencapai 0,391 — nyaris
    menembus ambang. Salah arah di sini berarti laporan sampai ke WhatsApp
@@ -186,7 +186,7 @@ for (const [keluhan, divisi, diharapkan] of BERKETERANGAN) {
 }
 cek('keterangan tempat dan waktu tidak menjatuhkan skor di bawah ambang',
   rusakOlehKeterangan.length === 0, rusakOlehKeterangan);
-catatan('seluruh kata asing dihitung sekali, bukan satu per satu — lihat BATAS_KATA_ASING');
+catatan('kata yang tidak menjelaskan masalah ini dihitung sekali, bukan satu per satu — lihat BATAS_KATA_TAK_MENJELASKAN');
 
 /* Sisi sebaliknya, dan ia yang membuat perbaikan di atas tidak berubah menjadi
    kebocoran: melonggarkan penyebut membuat keluhan yang menyentuh SATU kata

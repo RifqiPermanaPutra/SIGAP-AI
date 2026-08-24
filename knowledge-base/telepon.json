@@ -2,7 +2,11 @@
   "$schema": "../server/data/sop.schema.json",
   "divisi": "telepon",
   "nama": "Telepon",
-  "catatanKonfirmasi": [],
+  "catatanKonfirmasi": [
+    "[KONFIRMASI] Awalan nomor untuk panggilan keluar kantor",
+    "[KONFIRMASI] Fungsi mana saja yang extension-nya diizinkan menelepon keluar",
+    "[KONFIRMASI] Daftar penomoran extension per ruangan dan per area"
+  ],
   "masalah": [
     {
       "id": "telepon-telepon-tidak-ada-nada-no",
@@ -90,7 +94,239 @@
         "Masalah server telepon"
       ],
       "solusi": [],
-      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Silakan hubungi Engineer melalui tombol WhatsApp."
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Silakan hubungi Engineer melalui tombol WhatsApp."
+    },
+    {
+      "id": "telepon-telepon-berdering-tetapi-suara-tidak",
+      "judul": "Telepon Berdering tetapi Suara Tidak Terdengar Saat Diangkat",
+      "gejala": "Telepon berbunyi seperti biasa, tetapi begitu gagang diangkat tidak terdengar suara apa pun dari lawan bicara.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kabel gagang telepon longgar pada badan pesawat",
+        "Kabel gagang tertekuk atau putus di dalam",
+        "Tombol pembisu suara sedang aktif",
+        "Kerusakan pada bagian pengeras suara gagang"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Sebagian besar keluhan semacam ini berpangkal pada kabel gagang, dan itu dapat dipastikan hanya dengan mengamati.",
+          "langkah": [
+            "Perhatikan kabel keriting yang menghubungkan gagang dengan badan telepon.",
+            "Tekan kedua ujung kabel tersebut sampai terdengar bunyi klik pada lubangnya.",
+            "Perhatikan apakah ada bagian kabel yang tertekuk tajam, terjepit meja, atau terkelupas.",
+            "Perhatikan badan telepon. Cari tombol bergambar mikrofon bersilang atau bertuliskan \"Mute\".",
+            "Bila lampu pada tombol tersebut menyala, tekan satu kali untuk mematikannya.",
+            "Bila tersedia telepon lain di dekat Anda, coba lakukan panggilan ke telepon itu untuk memastikan.",
+            "Catat nomor extension telepon yang bermasalah dan lokasinya.",
+            "Laporkan kepada Engineer IT beserta hasil pengamatan Anda."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "telepon-panggilan-masuk-tidak-pernah-sampai",
+      "judul": "Panggilan Masuk Tidak Pernah Sampai",
+      "gejala": "Rekan menyatakan sudah menelepon, tetapi telepon di meja tidak pernah berbunyi. Dapat pula langsung masuk ke nada sibuk.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Pengalihan panggilan aktif tanpa disadari",
+        "Suara dering disetel pada volume paling rendah",
+        "Nomor extension yang dihubungi keliru",
+        "Gagang telepon tidak diletakkan sempurna sehingga dianggap sedang dipakai"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Perlu dipastikan lebih dulu bahwa nomornya benar dan pesawatnya memang siap menerima, sebelum dianggap gangguan jaringan.",
+          "langkah": [
+            "Perhatikan gagang telepon. Pastikan terletak rapat pada dudukannya, tidak miring atau terganjal.",
+            "Angkat gagang, lalu dengarkan apakah ada nada sambung. Letakkan kembali dengan benar.",
+            "Perhatikan layar kecil pada telepon. Cari tanda panah atau tulisan yang menandakan pengalihan panggilan sedang aktif.",
+            "Catat nomor extension yang tertera pada stiker di badan telepon Anda.",
+            "Mintalah rekan menyebutkan nomor yang ia hubungi, lalu bandingkan dengan nomor Anda.",
+            "Mintalah rekan menelepon sekali lagi sementara Anda mengamati telepon.",
+            "Perhatikan apakah lampu pada telepon berkedip meski tidak berbunyi. Bila ya, berarti volume deringnya yang mati.",
+            "Catat pula apa yang terdengar oleh rekan Anda — nada sambung, nada sibuk, atau langsung terputus.",
+            "Laporkan kepada Engineer IT beserta nomor extension Anda dan keterangan tersebut."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "telepon-telepon-mati-total-tanpa-lampu",
+      "judul": "Telepon Mati Total Tanpa Lampu dan Tanpa Nada",
+      "gejala": "Layar telepon gelap, tidak ada lampu yang menyala, dan tidak terdengar nada apa pun saat gagang diangkat.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kabel jaringan atau kabel daya telepon terlepas",
+        "Perangkat penyedia daya lewat kabel jaringan tidak bekerja",
+        "Stopkontak di meja tidak beraliran listrik",
+        "Kerusakan pada pesawat telepon"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Yang perlu dipastikan adalah apakah gangguannya hanya pada satu meja atau menimpa seluruh ruangan, karena penanganannya berbeda.",
+          "langkah": [
+            "Perhatikan bagian bawah atau belakang telepon. Cari kabel yang menuju lubang di dinding atau lantai.",
+            "Tekan ujung kabel tersebut sampai terdengar bunyi klik pada lubangnya.",
+            "Bila telepon memakai adaptor listrik, pastikan adaptornya tertancap dan lampunya menyala.",
+            "Perhatikan telepon rekan di ruangan yang sama. Tanyakan apakah teleponnya menyala normal.",
+            "Bila seluruh telepon di ruangan itu mati, catat nama ruangannya — gangguannya bukan pada pesawat Anda.",
+            "Bila hanya telepon Anda yang mati, catat nomor extension dan letak mejanya.",
+            "Jangan menukar kabel dengan telepon lain untuk mencoba-coba.",
+            "Laporkan kepada Engineer IT beserta keterangan berapa telepon yang terganggu."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "telepon-suara-bergema-atau-terdengar-berulang",
+      "judul": "Suara Bergema atau Terdengar Berulang Saat Menelepon",
+      "gejala": "Lawan bicara mendengar suaranya sendiri kembali, atau percakapan terdengar bergema seperti di ruang kosong.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Fungsi pengeras suara aktif bersamaan dengan gagang",
+        "Volume pengeras suara terlalu tinggi sehingga terpantul ke mikrofon",
+        "Gangguan pada jalur sambungan telepon",
+        "Kerusakan pada gagang telepon"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Gema kerap berasal dari pengeras suara yang menyala bersamaan dengan gagang, dan itu mudah diperiksa sendiri.",
+          "langkah": [
+            "Perhatikan badan telepon saat sedang menelepon. Cari tombol bergambar pengeras suara.",
+            "Bila lampunya menyala padahal Anda memakai gagang, tekan satu kali untuk mematikannya.",
+            "Turunkan volume telepon dengan menekan tombol bertanda minus atau panah bawah.",
+            "Tanyakan kepada lawan bicara apakah gemanya berkurang.",
+            "Perhatikan apakah gema hanya terjadi pada panggilan ke nomor tertentu, atau ke semua nomor.",
+            "Catat nomor tujuan yang bergema, bila hanya terjadi pada nomor tertentu.",
+            "Coba lakukan panggilan dari telepon lain ke nomor yang sama, lalu bandingkan hasilnya.",
+            "Laporkan kepada Engineer IT beserta nomor extension Anda dan hasil perbandingan tersebut."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "telepon-seluruh-telepon-kantor-tidak-berfungsi",
+      "judul": "Seluruh Telepon Kantor Tidak Berfungsi",
+      "gejala": "Telepon di banyak ruangan mati atau tidak bernada bersamaan. Panggilan dari luar tidak dapat masuk sama sekali.",
+      "kategori": "berat",
+      "penyebab": [
+        "Gangguan pada perangkat pusat telepon kantor",
+        "Sambungan dari penyedia jasa telekomunikasi terputus",
+        "Pasokan listrik pada ruang perangkat telepon padam",
+        "Gangguan jaringan yang meluas"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Gangguan menyeluruh semacam ini berpangkal pada perangkat pusat, bukan pada pesawat di meja, sehingga tidak ada yang dapat dikerjakan dari sisi pengguna. Bila memungkinkan, catat kira-kira berapa ruangan yang terdampak dan sejak jam berapa. Silakan hubungi Engineer melalui tombol WhatsApp — bila telepon tidak dapat dipakai, gunakan telepon genggam."
+    },
+    {
+      "id": "telepon-permintaan-nomor-extension-baru-atau",
+      "judul": "Permintaan Nomor Extension Baru atau Pemindahan Telepon",
+      "gejala": "Ada pegawai baru yang memerlukan nomor extension, atau telepon perlu dipindahkan ke meja maupun ruangan lain.",
+      "kategori": "berat",
+      "penyebab": [
+        "Penambahan pegawai pada suatu fungsi",
+        "Penataan ulang ruangan kerja",
+        "Perpindahan tugas antar area"
+      ],
+      "solusi": [],
+      "penanganan": "Permintaan ini memerlukan penanganan Engineer IT. Nomor extension terikat pada penomoran kantor dan pada lubang jaringan tertentu, sehingga pemindahannya tidak cukup dengan memindahkan pesawat teleponnya. Silakan hubungi Engineer melalui tombol WhatsApp dengan menyebutkan nama pegawai, fungsinya, ruangan asal, dan ruangan tujuan."
+    },
+    {
+      "id": "telepon-tidak-bisa-menelepon-ke-luar",
+      "judul": "Tidak Bisa Menelepon ke Luar Kantor",
+      "gejala": "Panggilan antar extension di dalam kantor berjalan normal, tetapi panggilan ke nomor luar atau telepon genggam selalu gagal.",
+      "kategori": "berat",
+      "penyebab": [
+        "Izin panggilan keluar belum diberikan untuk extension tersebut",
+        "Awalan nomor panggilan keluar tidak dipakai",
+        "Jalur panggilan keluar sedang penuh",
+        "Gangguan pada sambungan penyedia jasa telekomunikasi"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini memerlukan penanganan Engineer IT. Izin panggilan keluar diatur pada perangkat pusat telepon dan berbeda-beda menurut fungsi, sehingga tidak dapat diubah dari pesawat di meja. Bila memungkinkan, catat nomor tujuan yang Anda hubungi dan bunyi nada atau pesan yang terdengar. Silakan hubungi Engineer melalui tombol WhatsApp beserta nomor extension Anda."
+    },
+    {
+      "id": "telepon-suara-lawan-bicara-terdengar-sangat",
+      "judul": "Suara Lawan Bicara Terdengar Sangat Pelan",
+      "gejala": "Percakapan terdengar tetapi harus disimak dengan sangat saksama. Menaikkan volume pesawat tidak banyak menolong.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Volume pesawat disetel pada tingkat terendah",
+        "Lubang suara pada gagang tertutup kotoran",
+        "Penguatan suara pada jalur melemah",
+        "Kerusakan pada bagian pengeras suara gagang"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Perlu dipastikan apakah pelannya terjadi pada semua panggilan atau hanya sebagian, sebab keduanya menunjuk pada penyebab yang berbeda.",
+          "langkah": [
+            "Angkat gagang, lalu cari tombol bertanda panah atas atau bertuliskan \"Volume\" pada badan pesawat.",
+            "Tekan beberapa kali sambil mendengarkan nada sambungnya.",
+            "Perhatikan apakah nada sambung itu sendiri terdengar wajar atau ikut pelan.",
+            "Perhatikan lubang suara pada gagang. Bila tampak tertutup debu, catat keadaannya.",
+            "Lakukan panggilan ke tiga nomor berbeda, lalu catat mana yang pelan dan mana yang wajar.",
+            "Bila hanya nomor tertentu yang pelan, catat nomor-nomor itu.",
+            "Bila seluruh panggilan pelan, coba dengarkan lewat pengeras suara dengan menekan tombol bergambar pengeras suara.",
+            "Catat apakah lewat pengeras suara terdengar lebih jelas — bila ya, berarti gagangnya yang bermasalah.",
+            "Catat nomor extension pesawat Anda.",
+            "Laporkan kepada Engineer IT beserta seluruh hasil pengamatan tersebut."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "telepon-nomor-kantor-tidak-dikenali-oleh",
+      "judul": "Nomor Kantor Tidak Dikenali oleh Penerima Panggilan",
+      "gejala": "Panggilan keluar berhasil tersambung, tetapi pada layar penerima nomor Anda tidak muncul, atau muncul sebagai nomor yang berbeda.",
+      "kategori": "berat",
+      "penyebab": [
+        "Penomoran pengenal panggilan keluar belum disetel",
+        "Panggilan keluar disalurkan melalui jalur bersama",
+        "Perubahan penomoran dari penyedia jasa belum diselaraskan"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini memerlukan penanganan Engineer IT. Pengenal nomor pada panggilan keluar disetel pada perangkat pusat telepon, sehingga tidak dapat diubah dari pesawat di meja. Bila memungkinkan, tanyakan kepada penerima panggilan nomor apa persisnya yang muncul pada layar mereka, lalu catat. Keterangan itu sangat menolong engineer menelusurinya. Silakan hubungi Engineer melalui tombol WhatsApp beserta nomor extension Anda dan catatan tersebut."
+    },
+    {
+      "id": "telepon-panggilan-berakhir-sendiri-sebelum-selesai",
+      "judul": "Panggilan Berakhir Sendiri Sebelum Selesai Bicara",
+      "gejala": "Percakapan berhenti dengan sendirinya setelah berjalan beberapa menit, tanpa ada yang menutup gagang di kedua sisi.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Batas lama percakapan pada perangkat pusat tercapai",
+        "Gagang tidak terletak sempurna sehingga sesaat dianggap ditutup",
+        "Gangguan pada jalur sambungan",
+        "Kabel gagang tertekuk sehingga sesaat terputus"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Lamanya percakapan bertahan sebelum berakhir adalah petunjuk paling menentukan. Berakhir pada durasi yang selalu sama menunjuk pada batas yang disetel, bukan kerusakan.",
+          "langkah": [
+            "Perhatikan layar pesawat telepon saat sedang berbicara. Umumnya lama percakapan ditampilkan di sana.",
+            "Catat berapa menit percakapan bertahan sebelum berakhir sendiri.",
+            "Ulangi pada panggilan berikutnya, lalu catat lagi lamanya.",
+            "Bandingkan keduanya. Bila selalu berakhir pada durasi yang kira-kira sama, catat angka itu.",
+            "Perhatikan apakah hal ini terjadi pada panggilan ke dalam kantor, ke luar kantor, atau keduanya.",
+            "Perhatikan kabel keriting gagang. Catat bila ada bagian yang tertekuk tajam atau terjepit.",
+            "Pastikan gagang terletak rapat pada dudukannya saat tidak dipakai.",
+            "Catat nomor extension pesawat Anda.",
+            "Laporkan kepada Engineer IT beserta catatan lama percakapan tersebut."
+          ]
+        }
+      ],
+      "penanganan": null
     }
   ]
 }

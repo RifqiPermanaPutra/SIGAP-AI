@@ -21,8 +21,8 @@ const jam = () =>
  * `server/services/answerService.js`.
  */
 const SAMBUTAN =
-  'Selamat datang di **SIGAP**, layanan bantuan ICT Pertamina EP Asset 1 Regional 1 Field Lirik.\n\n' +
-  'Saya siap membantu menyelesaikan kendala ICT Anda. Silakan pilih **layanan** yang ingin dilaporkan terlebih dahulu.';
+  'Selamat datang di **SIGAP**, layanan bantuan IT Pertamina EP Asset 1 Regional 1 Field Lirik.\n\n' +
+  'Saya siap membantu menyelesaikan kendala IT Anda. Silakan pilih **layanan** yang ingin dilaporkan terlebih dahulu.';
 
 const pesanSambutan = () => [{ role: 'assistant', content: SAMBUTAN, time: jam() }];
 
@@ -150,7 +150,7 @@ export default function App() {
       const namaDepan = reporter?.nama?.trim().split(/\s+/)[0];
       const sapaan = namaDepan ? `Baik, ${namaDepan}. ` : 'Baik. ';
       const lanjutan = selectedDivision.mode === 'engineer'
-        ? 'Kendala pada layanan ini memerlukan pemeriksaan langsung oleh Engineer ICT. Silakan uraikan kendala Anda terlebih dahulu.'
+        ? 'Kendala pada layanan ini memerlukan pemeriksaan langsung oleh Engineer IT. Silakan uraikan kendala Anda terlebih dahulu.'
         : 'Silakan uraikan kendala yang Anda alami. Semakin lengkap keterangannya, semakin cepat kami dapat membantu.';
       setMessages(prev => [...prev, {
         role: 'assistant',
@@ -321,7 +321,7 @@ export default function App() {
       } else {
         // Kegagalan sistem tidak boleh menutup jalan ke engineer. Tanpa tombol
         // ini pengguna terjebak pada pesan galat tanpa cara melanjutkan —
-        // padahal kendala ICT-nya masih ada dan justru itu tujuannya datang.
+        // padahal kendala IT-nya masih ada dan justru itu tujuannya datang.
         console.error('Server menolak pesan:', data.error);
         setMessages(prev => [...prev, {
           role: 'assistant',
@@ -381,7 +381,7 @@ export default function App() {
     if (!waNumber) {
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: 'Maaf, nomor WhatsApp engineer untuk layanan ini belum terdaftar. Silakan laporkan ke Fungsi ICT agar nomor engineer ditambahkan.',
+        content: 'Maaf, nomor WhatsApp engineer untuk layanan ini belum terdaftar. Silakan laporkan ke Fungsi IT agar nomor engineer ditambahkan.',
         time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
       }]);
       return;
@@ -402,7 +402,7 @@ export default function App() {
 
     const waMessage = encodeURIComponent(
       [
-        `Halo Engineer ${division?.name || 'ICT'}, saya membutuhkan bantuan lanjutan.`,
+        `Halo Engineer ${division?.name || 'IT'}, saya membutuhkan bantuan lanjutan.`,
         '',
         // Nomor tiket paling atas: inilah rujukan bersama pelapor dan engineer,
         // dan satu-satunya cara engineer menemukan laporan ini pada rekap.
@@ -410,7 +410,7 @@ export default function App() {
         data?.nama ? `Nama: ${data.nama}` : null,
         data?.fungsi ? `Fungsi/Divisi: ${data.fungsi}` : null,
         data?.lokasi ? `Lokasi: ${data.lokasi}` : null,
-        `Layanan: ${division?.name || 'ICT'}`,
+        `Layanan: ${division?.name || 'IT'}`,
         data?.urgensi ? `Tingkat Urgensi: ${data.urgensi}` : null,
         keluhan ? `Keluhan: ${keluhan}` : null,
         '',

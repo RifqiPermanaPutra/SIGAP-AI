@@ -23,7 +23,7 @@
      jauh lebih berbahaya daripada HTTP polos, karena kelak
      mereka akan menekannya juga pada peringatan yang sungguhan.
 
-     Bila Fungsi ICT pusat punya Certificate Authority internal,
+     Bila Fungsi IT pusat punya Certificate Authority internal,
      PAKAI ITU dan lewati skrip ini -- sertifikat dari CA internal
      otomatis dipercaya seluruh komputer domain tanpa memasang
      apa pun satu per satu.
@@ -111,7 +111,7 @@ if ($PSCmdlet.ShouldProcess($($daftarNama -join ', '), 'Buat sertifikat self-sig
     $sertifikat = New-SelfSignedCertificate `
         -DnsName $daftarNama `
         -CertStoreLocation 'Cert:\LocalMachine\My' `
-        -FriendlyName 'SIGAP - Layanan ICT Field Lirik' `
+        -FriendlyName 'SIGAP - Layanan IT Field Lirik' `
         -NotAfter (Get-Date).AddYears($BerlakuTahun) `
         -KeyExportPolicy Exportable `
         -KeyAlgorithm RSA `

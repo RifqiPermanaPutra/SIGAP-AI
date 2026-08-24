@@ -1,8 +1,8 @@
 # SIGAP
 
-**Layanan Bantuan ICT — Pertamina EP Asset 1 Regional 1 Field Lirik**
+**Layanan Bantuan IT — Pertamina EP Asset 1 Regional 1 Field Lirik**
 
-Pekerja menyampaikan kendala ICT, sistem memandu langkah perbaikan dari SOP,
+Pekerja menyampaikan kendala IT, sistem memandu langkah perbaikan dari SOP,
 dan bila belum tuntas laporan diteruskan ke engineer divisi terkait melalui
 WhatsApp beserta data pelapor dan keluhannya.
 
@@ -21,8 +21,9 @@ Dokumen ini panjang karena memuat semuanya. Cari peran Anda:
 
 | Anda adalah | Mulai dari |
 |---|---|
-| **Menerima sistem ini untuk pertama kali** | [Serah terima ke Fungsi ICT](#serah-terima-ke-fungsi-ict) — kerjakan berurutan dari atas |
-| **Pengelola harian (admin ICT)** | [Akun dan kata sandi](#akun-dan-kata-sandi) · [Tugas rutin pengelola](#tugas-rutin-pengelola) |
+| **Menerima sistem ini untuk pertama kali** | [Serah terima ke Fungsi IT](#serah-terima-ke-fungsi-it) — kerjakan berurutan dari atas |
+| **Menempatkan di server sewaan (VPS)** | [PANDUAN-HOSTING.md](PANDUAN-HOSTING.md) — berbeda dari penempatan di kantor |
+| **Pengelola harian (admin IT)** | [Akun dan kata sandi](#akun-dan-kata-sandi) · [Tugas rutin pengelola](#tugas-rutin-pengelola) |
 | **Engineer yang menangani tiket** | [Tugas engineer](#tugas-engineer) |
 | **Memperbarui langkah SOP** | [Penyunting SOP](#penyunting-sop) |
 | **Sedang menghadapi masalah** | [Bila terjadi masalah](#bila-terjadi-masalah) |
@@ -31,7 +32,8 @@ Dokumen ini panjang karena memuat semuanya. Cari peran Anda:
 ### Daftar isi
 
 - [Menjalankan](#menjalankan) — pasang dan nyalakan
-- [Serah terima ke Fungsi ICT](#serah-terima-ke-fungsi-ict) — daftar periksa penyerahan
+- [Serah terima ke Fungsi IT](#serah-terima-ke-fungsi-it) — daftar periksa penyerahan
+- [PANDUAN-HOSTING.md](PANDUAN-HOSTING.md) — menempatkan di server sewaan (VPS)
 - [Akun dan kata sandi](#akun-dan-kata-sandi) — buat, ganti, cabut
 - [Tugas rutin pengelola](#tugas-rutin-pengelola) — bulanan dan tahunan
 - [Bila terjadi masalah](#bila-terjadi-masalah) — gejala, sebab, tindakan
@@ -204,7 +206,7 @@ powershell -ExecutionPolicy Bypass -File .\skrip-windows\lepas-tugas-terjadwal.p
 
 ---
 
-## Serah terima ke Fungsi ICT
+## Serah terima ke Fungsi IT
 
 Bagian ini untuk **orang yang baru menerima sistem ini**. Kerjakan berurutan;
 tiap langkah punya cara memastikan ia benar-benar berhasil.
@@ -320,7 +322,7 @@ Selama masih HTTP, kata sandi dan token sesi melintas di jaringan dalam bentuk
 **terbaca**. Siapa pun di WiFi yang sama dapat membacanya dengan penyadap paket
 sederhana.
 
-**Tanyakan lebih dulu kepada Fungsi ICT pusat: apakah ada Certificate Authority
+**Tanyakan lebih dulu kepada Fungsi IT pusat: apakah ada Certificate Authority
 internal?** Bila ada, pakai itu — sertifikatnya otomatis dipercaya seluruh
 komputer domain tanpa memasang apa pun satu per satu. Bila tidak ada, jalankan
 `skrip-windows\buat-sertifikat.ps1` sebagai Administrator.
@@ -1067,7 +1069,7 @@ menurut kekhasannya dalam divisi tersebut.
 | `swalayan` | Printer, Windows | Dipandu tiga solusi dulu; formulir muncul bila belum tuntas |
 | `engineer` | CCTV, Telepon, Radio, FTTH, LAN, WAN | Langsung ke formulir pelapor |
 
-Pembagian ini berasal dari masukan Engineer ICT: kendala yang cukup umum untuk
+Pembagian ini berasal dari masukan Engineer IT: kendala yang cukup umum untuk
 dipandu sendiri hanya ada pada komputer dan printer. Selebihnya memerlukan
 pemeriksaan langsung, dan SOP-nya tidak boleh disusun dari sumber umum karena
 sangat spesifik lapangan.

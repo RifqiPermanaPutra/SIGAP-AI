@@ -8,15 +8,15 @@
 
 ## 1. Ringkasan
 
-**SIGAP** — layanan bantuan (helpdesk) ICT untuk PT Pertamina EP Asset 1
-Regional 1 Field Lirik. Pekerja menyampaikan kendala ICT, sistem memandu
+**SIGAP** — layanan bantuan (helpdesk) IT untuk PT Pertamina EP Asset 1
+Regional 1 Field Lirik. Pekerja menyampaikan kendala IT, sistem memandu
 langkah perbaikan dari SOP, dan bila belum tuntas laporan diteruskan ke
 engineer divisi terkait melalui WhatsApp.
 
 - Pengembang: Rifqi Permana Putra
 - Repositori: https://github.com/RifqiPermanaPutra/SIGAP-AI
 - Sifat: **sistem internal untuk PT Pertamina EP Field Lirik** — dibangun untuk
-  dipakai sehari-hari oleh pekerja dan Engineer ICT, bukan proyek akademik.
+  dipakai sehari-hari oleh pekerja dan Engineer IT, bukan proyek akademik.
   Karena itu prioritasnya kesiapan operasional: data yang benar, laporan yang
   dapat dipertanggungjawabkan, dan sistem yang tidak kehilangan data.
 
@@ -36,7 +36,7 @@ Lihat bagian 4.
 
 ```
 Beranda
-  └─> Pilih layanan (8 divisi ICT)
+  └─> Pilih layanan (8 divisi IT)
         └─> Sampaikan kendala (percakapan)
               ├─> Solusi Pertama  → "belum berhasil"
               ├─> Solusi Kedua    → "belum berhasil"
@@ -149,7 +149,7 @@ pengguna yang gagal justru diucapkan selamat. Ini pernah terjadi dan sudah
 diperbaiki — jangan dibalik lagi.
 
 ### d. Deteksi eskalasi berbasis frasa khas
-Menganggap setiap penyebutan "Engineer ICT" sebagai eskalasi membuat tombol
+Menganggap setiap penyebutan "Engineer IT" sebagai eskalasi membuat tombol
 Hubungi Engineer muncul di hampir semua jawaban, sehingga pengguna terdorong
 melewati langkah perbaikan. Penanda yang dipakai: `kategori berat`,
 `masalah berat`, `memerlukan penanganan langsung oleh engineer`,
@@ -304,7 +304,7 @@ npm run dev:frontend   # antarmuka dengan hot-reload, port 5173
 - Riwayat laporan berupa grafik per hari/minggu/bulan, dengan penyaringan
 - Perpindahan penyimpanan dari berkas JSON ke SQLite
 - Autentikasi halaman rekap (peran admin & engineer) beserta jejak akses
-- Mode divisi `swalayan` / `engineer` sesuai masukan Engineer ICT
+- Mode divisi `swalayan` / `engineer` sesuai masukan Engineer IT
 - SOP Printer & Windows lengkap tiga solusi per masalah ringan
 - Pencadangan harian otomatis + salinan ke luar mesin (`CADANGAN_LUAR`),
   retensi 2 tahun, log aplikasi bertahan

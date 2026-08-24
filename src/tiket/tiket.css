@@ -57,17 +57,15 @@
    `min-width: 0` di atas dulu tidak berguna karena kedua logo memakai
    `flex-shrink: 0`: induknya boleh menyempit sementara anaknya menolak,
    sehingga logo menembus keluar dan tertimpa tombol Beranda. */
-.tk-merek-logo,
 .tk-merek-logo-unit {
   width: auto; display: block;
   flex: 0 1 auto; min-width: 0;
   object-fit: contain;
 }
-.tk-merek-logo { height: 18px; }
 /* Varian logo untuk header gelap sudah memiliki alpha transparan dan elemen
    monokrom putih, sehingga tidak memerlukan panel, border, maupun padding. */
 .tk-merek-logo-unit {
-  height: 20px;
+  height: 28px;
   filter: brightness(1.12) contrast(1.06) drop-shadow(0 1px 2px rgba(0, 27, 48, 0.35));
 }
 
@@ -213,8 +211,7 @@
   /* Halaman ini navbar kanannya hanya satu tombol, jadi teks merek sudah
      muat di sini — tetapi logonya tetap 24/26px, bukan 30/32px. */
   .tk-merek { gap: 10px; }
-  .tk-merek-logo { height: 24px; }
-  .tk-merek-logo-unit { height: 26px; }
+  .tk-merek-logo-unit { height: 34px; }
   .tk-merek-garis { display: block; height: 24px; }
   .tk-merek-teks { display: flex; }
   .tk-merek-teks strong { font-size: 1rem; }
@@ -232,7 +229,6 @@
    ──────────────────────────────────────────────────────────────── */
 
 @media (min-width: 960px) {
-  .tk-merek-logo { height: 28px; }
-  .tk-merek-logo-unit { height: 30px; }
+  .tk-merek-logo-unit { height: 40px; }
   .tk-merek-garis { height: 28px; }
 }

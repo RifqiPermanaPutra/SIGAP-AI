@@ -104,10 +104,9 @@ export default function Masuk({ judul, sub, label = 'AKSES TERBATAS', kaki, onBe
             Di atas bidang putih tulisannya lenyap. */}
         <div className="sg-masuk-kepala">
           <div className="sg-merek">
-            <img src="/logo-pertamina-ep.svg" alt="Pertamina EP" className="sg-merek-logo" />
             <img
-              src="/logo-satu-it-sigap-dark.png"
-              alt="Pertamina ONE dan SATU-IT SIGAP"
+              src="/logo-sigap.png"
+              alt="SATU-IT SIGAP"
               className="sg-merek-logo-unit"
             />
             <span className="sg-merek-garis" aria-hidden="true" />
@@ -174,7 +173,7 @@ export default function Masuk({ judul, sub, label = 'AKSES TERBATAS', kaki, onBe
           <p className="sg-masuk-kaki">
             {sedangGanti ? (
               <>
-                Yang benar-benar <strong>lupa</strong> kata sandinya hubungi admin ICT.
+                Yang benar-benar <strong>lupa</strong> kata sandinya hubungi admin IT.
                 Kata sandi tidak tersimpan dalam bentuk yang dapat dibaca, jadi ia
                 menggantinya dengan yang baru — bukan memberitahukan yang lama.
               </>

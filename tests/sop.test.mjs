@@ -25,6 +25,20 @@ const PORT = process.env.UJI_PORT || 3999;
 const API = `http://localhost:${PORT}/api`;
 const SOP_DIR = process.env.SOP_DIR;
 
+/* Jumlah masalah DITURUNKAN dari berkas sumber, bukan ditulis sebagai angka
+   tetap. Dulu pengujian ini menuntut tepat 6 masalah printer dan 44 masalah
+   seluruhnya; setiap penambahan SOP — pekerjaan yang memang diharapkan terus
+   berjalan — mematahkannya, padahal tidak ada yang rusak. Yang benar-benar
+   perlu dijaga adalah KESESUAIAN antara berkas sumber, hasil bangun, dan apa
+   yang dilayankan — bukan besarnya angka. */
+const jumlahMasalah = (berkas) =>
+  JSON.parse(fs.readFileSync(path.join(SOP_DIR, berkas), 'utf-8')).masalah.length;
+
+const jumlahMasalahSeluruhnya = () =>
+  fs.readdirSync(SOP_DIR)
+    .filter((f) => f.endsWith('.json'))
+    .reduce((n, f) => n + jumlahMasalah(f), 0);
+
 async function masuk({ namaAkun, sandi }) {
   const r = await fetch(`${API}/auth/masuk`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -74,7 +88,8 @@ cek('divisi swalayan ditandai disajikan ke pengguna',
   daftar.divisi.filter((d) => d.disajikan).map((d) => d.id));
 
 const printer = await json('/sop/printer', adm);
-cek('enam masalah printer terbaca', printer.masalah.length === 6, printer.masalah.length);
+cek('jumlah masalah printer sama dengan berkas sumbernya',
+  printer.masalah.length === jumlahMasalah('printer.json'), printer.masalah.length);
 cek('ambang pencocokan ikut dikirim', printer.ambangCocok === 0.4, printer.ambangCocok);
 
 const macet = printer.masalah.find((m) => /Kertas Macet/i.test(m.judul));
@@ -145,7 +160,9 @@ bagian('4. Menyimpan suntingan');
 // keluhan yang memuatnya langsung dijawab, berarti basis pengetahuan di memori
 // benar-benar dimuat ulang — bukan sekadar berkasnya yang berubah.
 const KATA_BARU = 'zebra';
-const KELUHAN_UJI = `printer muncul tulisan ${KATA_BARU}`;
+// Hanya kata "printer" dan kata rekaan itu — tanpa kata pengiring lain yang
+// mungkin kebetulan sudah ada di SOP printer mana pun.
+const KELUHAN_UJI = `printer ${KATA_BARU}`;
 
 const sebelum = await uji(adm, KELUHAN_UJI);
 cek('sebelum disunting, keluhan itu belum dikenali', sebelum.dijawab === false, sebelum);
@@ -170,13 +187,15 @@ cek('judul kini boleh diperbaiki',
   simpan.masalah.judul === JUDUL_DIPERBAIKI, simpan.masalah?.judul);
 catatan('id tersimpan di berkas sumber — rujukan rekap tidak lagi bergantung pada judul');
 cek('cadangan dibuat sebelum menimpa', Boolean(simpan.cadangan), simpan.cadangan);
-cek('basis pengetahuan dibangun ulang', simpan.kb.masalah === 44, simpan.kb);
+cek('basis pengetahuan dibangun ulang',
+  simpan.kb.masalah === jumlahMasalahSeluruhnya(), simpan.kb);
 
 const berkasSop = path.join(SOP_DIR, 'printer.json');
 const isiBaru = fs.readFileSync(berkasSop, 'utf-8');
 cek('berkas sumber JSON benar-benar berubah', isiBaru.includes(KATA_BARU), 'kata baru tidak ada');
 cek('berkas sumber tetap JSON yang sah',
-  JSON.parse(isiBaru).masalah.length === 6, 'jumlah masalah berubah atau JSON rusak');
+  JSON.parse(isiBaru).masalah.length === jumlahMasalah('printer.json'),
+  'jumlah masalah berubah atau JSON rusak');
 cek('masalah lain tidak ikut tersentuh',
   JSON.parse(isiBaru).masalah.filter((m) => m.id !== asli.id).every((m) => !JSON.stringify(m).includes(KATA_BARU)),
   'masalah tetangga ikut berubah');
@@ -319,7 +338,8 @@ const swalayan = akhir.masalah.filter(
 );
 cek('seluruh masalah ringan divisi swalayan tetap punya tiga solusi',
   swalayan.every((m) => m.solusi.length === 3), swalayan.filter((m) => m.solusi.length !== 3).map((m) => m.id));
-cek('jumlah masalah tetap 44', akhir.masalah.length === 44, akhir.masalah.length);
+cek('jumlah masalah utuh setelah seluruh rangkaian penyuntingan',
+  akhir.masalah.length === jumlahMasalahSeluruhnya(), akhir.masalah.length);
 
 bagian('8. Layanan swalayan tidak boleh kehabisan masalah');
 

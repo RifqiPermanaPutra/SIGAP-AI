@@ -1,0 +1,8 @@
+# Sistem pengaduan internal Pertamina EP Field Lirik.
+#
+# Halaman pengaduan memang terbuka bagi seluruh pekerja, tetapi tidak ada
+# alasan ia perlu ditemukan lewat mesin pencari. Halaman rekap, tugas, dan
+# penyunting SOP sudah dijaga kata sandi — berkas ini lapisan tambahan supaya
+# alamatnya tidak tersebar dengan sendirinya.
+User-agent: *
+Disallow: /

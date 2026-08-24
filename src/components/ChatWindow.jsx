@@ -75,7 +75,7 @@ export default function ChatWindow({
           <div className="empty-state-icon"><IconHeadset size={30} /></div>
           <h2 className="empty-state-title">SIGAP</h2>
           <p className="empty-state-desc">
-            Siap membantu Anda menyelesaikan kendala layanan ICT di Field Lirik.
+            Siap membantu Anda menyelesaikan kendala layanan IT di Field Lirik.
           </p>
         </div>
       ) : (

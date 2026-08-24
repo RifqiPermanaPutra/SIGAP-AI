@@ -1,16 +1,3 @@
-/**
- * Pengelola akun halaman rekap.
- *
- * Sengaja berupa perkakas baris perintah, bukan halaman web: akunnya hanya
- * enam dan tetap, sehingga menyediakan halaman pendaftaran hanya menambah
- * pintu masuk tanpa manfaat.
- *
- * Penggunaan:
- *   npm run akun -- daftar
- *   npm run akun -- buat <nama-akun> "<Nama Lengkap>" <admin|engineer> <kata-sandi>
- *   npm run akun -- ganti <nama-akun> <kata-sandi-baru>
- *   npm run akun -- hapus <nama-akun>
- */
 import 'dotenv/config';
 import { initDatabase, tutupDatabase } from '../server/database/init.js';
 import {

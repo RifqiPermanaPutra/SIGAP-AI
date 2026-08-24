@@ -87,14 +87,27 @@ const KEKHASAN_MINIMUM = 0.4;
 // Kata yang tidak pernah muncul di basis pengetahuan divisi ini.
 const BOBOT_KATA_ASING = 1.2;
 
-/* SELURUH kata asing dihitung sebanyak ini, bukan satu per satu — yang menjadi
-   petunjuk adalah ADANYA kosakata asing, bukan banyaknya. Kata asing datang
-   dari dua sumber berlawanan: keluhan di luar cakupan, dan keterangan tempat
-   atau waktu yang justru menolong ("ruang admin", "lantai 2", "pagi tadi").
+/* SELURUH kata yang tidak menjelaskan masalah ini dihitung sekali saja, bukan
+   satu per satu — yang menjadi petunjuk adalah ADANYA kata semacam itu, bukan
+   banyaknya. Kata semacam itu datang dari dua sumber berlawanan: keluhan di
+   luar cakupan, dan keterangan tempat atau waktu yang justru menolong
+   ("ruang admin", "lantai 2", "pagi tadi").
 
    Dulu tiap kata menambah penyebut, sehingga keluhan yang sama merosot hanya
-   karena diterangkan lebih lengkap: 1,000 → 0,502 → 0,402 → 0,217. */
-const BATAS_KATA_ASING = 1;
+   karena diterangkan lebih lengkap: 1,000 → 0,502 → 0,402 → 0,217.
+
+   PERLUASAN — dulu keringanan ini hanya berlaku bagi kata ASING. Kata yang
+   dikenal divisinya tetapi milik masalah LAIN masih didenda penuh, dan denda
+   itu membesar seiring basis pengetahuan bertambah: makin banyak masalah per
+   divisi, makin tinggi bobot tiap kata langka. Akibatnya penambahan SOP diam-
+   diam menjatuhkan pencocokan yang sebelumnya benar — "kertas nyangkut di
+   printer ruang admin lantai 2 gedung utama pagi tadi" merosot ke 0,250 hanya
+   karena kata "utama" kebetulan ada pada penyebab masalah printer yang lain.
+
+   Sekarang keduanya diperlakukan sama: yang menentukan hanyalah apakah sebuah
+   kata menjelaskan masalah ini atau tidak. Penjaga terhadap kecocokan asal
+   tetap ada pada COCOK_MINIMUM, BUKTI_MINIMUM, dan KEKHASAN_MINIMUM. */
+const BATAS_KATA_TAK_MENJELASKAN = 1;
 
 // Jumlah bobot kata yang cocok — mengukur apakah yang ditulis CUKUP untuk
 // disimpulkan. Tanpa ini keluhan berisi kata "printer" saja berskor 1,000.
@@ -143,30 +156,29 @@ function hitungSkor(kataKeluhan, masalah) {
   let maksimum = 0;
   let kekhasanTertinggi = 0;
   let bukti = 0;
-  let jumlahAsing = 0;
   let jumlahCocok = 0;
+  let dendaTakMenjelaskan = 0;
 
   for (const kata of kataKeluhan) {
     const dikenal = Boolean(bobotDivisi?.has(kata));
     const khas = dikenal ? bobotDivisi.get(kata) : BOBOT_KATA_ASING;
 
-    // Kata asing tidak langsung menambah penyebut — seluruhnya dihitung
-    // sekaligus setelah perulangan, lihat BATAS_KATA_ASING.
-    if (dikenal) maksimum += khas * 3;
-    else jumlahAsing++;
-
     const cocok = kataJudul.has(kata) ? 3 : kataGejala.has(kata) ? 2 : kataPenyebab.has(kata) ? 1 : 0;
+
     if (cocok > 0) {
+      maksimum += khas * 3;
       diperoleh += khas * cocok;
       bukti += khas;
       jumlahCocok++;
       if (khas > kekhasanTertinggi) kekhasanTertinggi = khas;
+    } else if (khas > dendaTakMenjelaskan) {
+      // Kata yang TIDAK menjelaskan masalah ini hanya dicatat yang terberat —
+      // lihat BATAS_KATA_TAK_MENJELASKAN.
+      dendaTakMenjelaskan = khas;
     }
   }
 
-  if (jumlahAsing > 0) {
-    maksimum += BOBOT_KATA_ASING * 3 * Math.min(jumlahAsing, BATAS_KATA_ASING);
-  }
+  maksimum += dendaTakMenjelaskan * 3;
 
   // Kecocokan yang seluruhnya bertumpu pada kata umum tidak dapat dipercaya.
   if (kekhasanTertinggi < KEKHASAN_MINIMUM) return 0;
@@ -352,7 +364,7 @@ function susunJawabanBerat(masalah) {
   bagian.push('');
   bagian.push(
     masalah.penanganan ||
-      'Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Silakan tekan tombol **Hubungi Engineer**.'
+      'Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Silakan tekan tombol **Hubungi Engineer**.'
   );
 
   return bagian.join('\n');
@@ -497,7 +509,7 @@ export async function chat(sessionId, divisi, pesanPengguna) {
   const HABIS = {
     response:
       'Seluruh langkah penyelesaian yang tersedia sudah dicoba, namun kendala Anda belum teratasi.\n\n' +
-      'Permasalahan ini memerlukan penanganan lebih lanjut oleh Engineer ICT. Silakan tekan tombol **Hubungi Engineer**.',
+      'Permasalahan ini memerlukan penanganan lebih lanjut oleh Engineer IT. Silakan tekan tombol **Hubungi Engineer**.',
     shouldEscalate: true,
     isResolved: false
   };
@@ -580,8 +592,8 @@ export async function chat(sessionId, divisi, pesanPengguna) {
 /** Pesan sambutan */
 export function getWelcomeMessage() {
   return (
-    'Selamat datang di **SIGAP**, layanan bantuan ICT Pertamina EP Asset 1 Regional 1 Field Lirik.\n\n' +
-    'Saya siap membantu menyelesaikan kendala ICT Anda. Silakan pilih **layanan** yang ingin dilaporkan terlebih dahulu.'
+    'Selamat datang di **SIGAP**, layanan bantuan IT Pertamina EP Asset 1 Regional 1 Field Lirik.\n\n' +
+    'Saya siap membantu menyelesaikan kendala IT Anda. Silakan pilih **layanan** yang ingin dilaporkan terlebih dahulu.'
   );
 }
 

@@ -1,0 +1,77 @@
+# Unit systemd untuk SIGAP.
+#
+# Pengganti pasang-tugas-terjadwal.ps1 pada penempatan Linux: menyalakan
+# aplikasi saat mesin dinyalakan, dan menghidupkannya kembali bila mati.
+#
+# Pasang:
+#   sudo cp skrip-linux/sigap.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now sigap
+#
+# Periksa:
+#   systemctl status sigap
+#   journalctl -u sigap -f
+#
+# Sesuaikan User, WorkingDirectory, dan ExecStart bila jalur pemasangannya
+# berbeda dari contoh di bawah.
+
+[Unit]
+Description=SIGAP - Layanan Bantuan IT Pertamina EP Field Lirik
+Documentation=file:///opt/sigap/README.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+
+# Akun tersendiri tanpa hak istimewa. JANGAN dijalankan sebagai root:
+# aplikasi ini menyajikan halaman ke publik, dan satu celah pada proses
+# yang berjalan sebagai root berarti seluruh mesin ikut jatuh.
+#   sudo useradd --system --home /opt/sigap --shell /usr/sbin/nologin sigap
+User=sigap
+Group=sigap
+
+WorkingDirectory=/opt/sigap
+ExecStart=/usr/bin/node server.js
+
+# Berkas .env dibaca aplikasi sendiri lewat dotenv, jadi tidak perlu
+# EnvironmentFile di sini. Cukup pastikan /opt/sigap/.env ada dan hanya
+# terbaca oleh pengguna sigap:  chmod 600 /opt/sigap/.env
+
+Restart=always
+RestartSec=5
+
+# Bangkit ulang tanpa batas, tetapi berhenti mencoba bila gagal lima kali
+# dalam satu menit — supaya kesalahan konfigurasi terlihat di status, bukan
+# tersembunyi di balik perulangan yang tak henti.
+StartLimitBurst=5
+StartLimitIntervalSec=60
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sigap
+
+# ── Pembatasan ────────────────────────────────────────────────────────
+# Aplikasi hanya perlu menulis ke dua tempat: basis data dan cadangannya.
+# Selebihnya dikunci, sehingga celah apa pun tidak dapat menyentuh sistem.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictRealtime=true
+LockPersonality=true
+
+# Sesuaikan dengan DB_PATH dan CADANGAN_LUAR di .env
+ReadWritePaths=/var/lib/sigap /var/backups/sigap
+
+# Porta 3000 tidak memerlukan hak istimewa, jadi kemampuan mengikat porta
+# rendah pun tidak diberikan.
+CapabilityBoundingSet=
+AmbientCapabilities=
+
+[Install]
+WantedBy=multi-user.target

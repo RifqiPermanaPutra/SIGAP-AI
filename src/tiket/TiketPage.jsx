@@ -65,10 +65,9 @@ export default function TiketPage() {
     <div className="tk-halaman">
       <header className="tk-navbar">
         <div className="tk-merek">
-          <img src="/logo-pertamina-ep.svg" alt="Pertamina EP" className="tk-merek-logo" />
           <img
-            src="/logo-satu-it-sigap-dark.png"
-            alt="Pertamina ONE dan SATU-IT SIGAP"
+            src="/logo-sigap.png"
+            alt="SATU-IT SIGAP"
             className="tk-merek-logo-unit"
           />
           <span className="tk-merek-garis" aria-hidden="true" />
@@ -135,9 +134,9 @@ export default function TiketPage() {
                 yang mengerjakannya. */}
             <p className="tk-arti">
               {hasil.sudahDitangani
-                ? 'Engineer ICT sudah menandai kendala Anda selesai ditangani.'
+                ? 'Engineer IT sudah menandai kendala Anda selesai ditangani.'
                 : hasil.sedangDikerjakan
-                ? 'Engineer ICT sudah mengambil laporan Anda dan sedang menanganinya.'
+                ? 'Engineer IT sudah mengambil laporan Anda dan sedang menanganinya.'
                 : hasil.arti}
             </p>
 
@@ -161,7 +160,7 @@ export default function TiketPage() {
                 Nomor tiket berurutan dan mudah ditebak, sehingga menampilkannya
                 di sini berarti membukanya bagi siapa pun yang menghitung. */}
             <p className="tk-catatan">
-              Rincian laporan hanya dapat dilihat Engineer ICT. Bila kendala Anda
+              Rincian laporan hanya dapat dilihat Engineer IT. Bila kendala Anda
               masih berlanjut, hubungi engineer kembali dengan menyebutkan nomor
               tiket di atas.
             </p>

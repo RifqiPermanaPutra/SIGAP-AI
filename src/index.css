@@ -1,5 +1,5 @@
 /* ================================================
-   AI Helpdesk ICT — Pertamina EP Field Lirik
+   AI Helpdesk IT — Pertamina EP Field Lirik
    Tema terang, aksen tiga warna korporat
    ================================================ */
 
@@ -197,17 +197,15 @@ button {
   margin-right: auto;
 }
 
-/* PENTING — berkas logo ini adalah varian untuk LATAR GELAP: di dalamnya
-   wordmark "PERTAMINA" digambar dengan fill #ffffff (lihat komentar pada
-   public/logo-pertamina-ep.svg). Karena itu logo harus berada di atas latar
-   gelap. Menaruhnya di atas bidang putih membuat tulisan PERTAMINA lenyap,
-   menyisakan emblem dan "EP" saja. Jangan beri latar terang di belakangnya. */
+/* PENTING — logo SIGAP ini varian untuk LATAR GELAP: baris semboyan
+   "SOLUSI DIGITAL LAYANAN IT YANG TEPAT" di bawahnya berwarna putih.
+   Menaruhnya di atas bidang terang membuat baris itu lenyap, menyisakan
+   wordmark saja. Jangan beri latar terang di belakangnya. */
 /* BOLEH MENYUSUT — pola yang sama sempat merusak lima halaman lain:
    `min-width: 0` pada .lp-brand di atas tidak berguna selama anaknya memakai
    `flex-shrink: 0`. Di sini ia masih muat pada 393px, tetapi hanya menyisakan
    3px pada layar 320px. Dibuat menyusut sekarang, sebelum ponsel sempit
    berikutnya menemukannya. */
-.lp-brand-logo,
 .lp-brand-logo-unit {
   width: auto;
   display: block;
@@ -215,12 +213,11 @@ button {
   min-width: 0;
   object-fit: contain;
 }
-.lp-brand-logo { height: 22px; }
 
 /* Varian logo untuk header gelap sudah memiliki alpha transparan dan elemen
    monokrom putih, sehingga tidak memerlukan panel, border, maupun padding. */
 .lp-brand-logo-unit {
-  height: 24px;
+  height: 34px;
   filter: brightness(1.12) contrast(1.06) drop-shadow(0 1px 2px rgba(0, 27, 48, 0.35));
 }
 
@@ -748,8 +745,8 @@ button {
   gap: 10px;
   padding: 8px clamp(14px, 3vw, 24px);
   border-bottom: 1px solid var(--line);
-  /* Latar gelap wajib: wordmark PERTAMINA pada berkas logo berwarna putih
-     (lihat catatan pada .lp-brand-logo). Header terang membuatnya lenyap. */
+  /* Latar gelap wajib: baris semboyan pada berkas logo berwarna putih
+     (lihat catatan pada .lp-brand-logo-unit). Header terang membuatnya lenyap. */
   background: linear-gradient(100deg, var(--pt-blue-dark) 0%, var(--pt-blue-mid) 55%, var(--pt-blue) 100%);
   border-bottom: none;
   position: relative;
@@ -1555,8 +1552,7 @@ button {
 @media (min-width: 721px) {
   .lp-nav { gap: 18px; padding: 13px clamp(20px, 5vw, 48px); }
   .lp-brand { gap: 8px; }
-  .lp-brand-logo { height: 25px; }
-  .lp-brand-logo-unit { height: 32px; }
+  .lp-brand-logo-unit { height: 42px; }
 
   /* Lencana melayang punya ruang untuk keluar dari tepi kartu */
   .lp-chip { display: flex; }
@@ -1638,8 +1634,7 @@ button {
   .lp-nav-toggle { display: none; width: 40px; height: 40px; }
   .lp-nav-drawer { display: none; }
   .lp-brand { gap: 10px; min-height: auto; }
-  .lp-brand-logo { height: 27px; }
-  .lp-brand-logo-unit { height: 34px; }
+  .lp-brand-logo-unit { height: 46px; }
   .lp-brand-divider { display: block; }
   .lp-brand-text { display: flex; }
   .lp-brand-text strong { font-size: 1rem; }

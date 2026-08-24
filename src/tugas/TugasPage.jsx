@@ -308,10 +308,9 @@ export default function TugasPage() {
     <div className="tg-halaman">
       <header className="tg-navbar">
         <div className="tg-merek">
-          <img src="/logo-pertamina-ep.svg" alt="Pertamina EP" className="tg-merek-logo" />
           <img
-            src="/logo-satu-it-sigap-dark.png"
-            alt="Pertamina ONE dan SATU-IT SIGAP"
+            src="/logo-sigap.png"
+            alt="SATU-IT SIGAP"
             className="tg-merek-logo-unit"
           />
           <span className="tg-merek-garis" aria-hidden="true" />

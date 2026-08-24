@@ -119,7 +119,7 @@ const URGENSI_VALID = URGENSI_LIST.map((u) => u.nilai);
 /**
  * POST /api/chat/reporter
  * Simpan data pelapor (nama, fungsi/divisi, lokasi, tingkat urgensi) pada sesi.
- * Diisi lewat formulir pelaporan saat kendala diteruskan kepada Engineer ICT.
+ * Diisi lewat formulir pelaporan saat kendala diteruskan kepada Engineer IT.
  */
 chatRouter.post('/reporter', (req, res) => {
   try {
@@ -255,7 +255,7 @@ chatRouter.post('/division', (req, res) => {
     // lebih baik daripada memberi kesan sistem akan menawarkan solusi.
     const responseMsg = mode === 'engineer'
       ? `${sapaan}Anda memilih layanan **${namaDivisi(division)}**.\n\n` +
-        'Kendala pada layanan ini memerlukan pemeriksaan langsung oleh Engineer ICT, ' +
+        'Kendala pada layanan ini memerlukan pemeriksaan langsung oleh Engineer IT, ' +
         'sehingga akan kami teruskan kepada engineer yang menangani.\n\n' +
         'Silakan uraikan kendala Anda terlebih dahulu agar engineer memperoleh gambaran yang jelas sebelum menindaklanjuti.'
       : `${sapaan}Anda memilih layanan **${namaDivisi(division)}**.\n\n` +
@@ -384,7 +384,7 @@ chatRouter.post('/', batasPesan, async (req, res) => {
         updateChatSession(sessionId, { eskalasi_ditawarkan_pada: new Date().toISOString() });
         const balasan =
           'Terima kasih, keterangan Anda sudah kami catat.\n\n' +
-          'Kendala Anda belum dapat kami kenali secara otomatis, sehingga akan diteruskan kepada Engineer ICT untuk ditinjau langsung.\n\n' +
+          'Kendala Anda belum dapat kami kenali secara otomatis, sehingga akan diteruskan kepada Engineer IT untuk ditinjau langsung.\n\n' +
           'Silakan tekan tombol **Hubungi Engineer** dan lengkapi data pelaporan.' +
           penutupTiket(sesi.nomor_tiket);
 
@@ -409,7 +409,7 @@ chatRouter.post('/', batasPesan, async (req, res) => {
 
       const balasan = pembuka +
         'Terima kasih, keterangan Anda sudah kami catat.\n\n' +
-        `Kendala **${namaDivisi(sesi.divisi_id)}** memerlukan penanganan langsung oleh Engineer ICT.\n\n` +
+        `Kendala **${namaDivisi(sesi.divisi_id)}** memerlukan penanganan langsung oleh Engineer IT.\n\n` +
         'Silakan tekan tombol **Hubungi Engineer** dan lengkapi data pelaporan agar engineer dapat menindaklanjuti.' +
         penutupTiket(sesi.nomor_tiket);
 

@@ -8,9 +8,9 @@
 
 ## Konteks proyek
 
-**SIGAP AI** adalah sistem helpdesk ICT internal untuk PT Pertamina EP Asset 1
+**SIGAP AI** adalah sistem helpdesk IT internal untuk PT Pertamina EP Asset 1
 Regional 1 Field Lirik — **bukan proyek skripsi**, dipakai nyata sehari-hari.
-Pekerja menyampaikan kendala ICT lewat halaman web, sistem memandu perbaikan
+Pekerja menyampaikan kendala IT lewat halaman web, sistem memandu perbaikan
 dari SOP (murni pencocokan kata kunci, **tanpa AI**), dan bila belum tuntas
 laporan diteruskan ke engineer via WhatsApp.
 
@@ -153,7 +153,7 @@ keyboard virtual, gestur, dsb bisa berbeda dari simulasi).
 ### Kenapa ini penting
 Sekarang, mengubah satu langkah SOP menuntut: menyunting Markdown di
 `knowledge-base/<divisi>/sop-*.md`, menjalankan `npm run build:kb`, lalu
-`npm run build`, lalu menyalakan ulang server. **Engineer ICT tidak akan
+`npm run build`, lalu menyalakan ulang server. **Engineer IT tidak akan
 melakukan itu.** Akibatnya SOP menjadi usang seiring waktu (printer model
 baru, versi Windows baru) dan sistem terus memberi langkah yang tidak lagi
 cocok — lebih berbahaya daripada tidak ada SOP sama sekali, karena

@@ -68,8 +68,23 @@ if (BERKAS_KUNCI && BERKAS_SERTIFIKAT && !pakaiHttps) {
 // tampak aman sementara kukinya masih boleh melintas di atas HTTP.
 if (pakaiHttps) process.env.COOKIE_SECURE = '1';
 
+/**
+ * Apakah halaman ini SAMPAI ke peramban lewat HTTPS.
+ *
+ * Berbeda dari `pakaiHttps`, yang hanya menjawab "apakah Node sendiri yang
+ * membuka sambungan aman". Di belakang reverse proxy — nginx, IIS, atau
+ * terowongan — TLS diakhiri di depan, sehingga Node melihat HTTP biasa
+ * meskipun pengunjung jelas-jelas memakai HTTPS.
+ *
+ * Membedakan keduanya penting: header Strict-Transport-Security tidak akan
+ * pernah terkirim pada penempatan di belakang proxy bila yang dipakai
+ * `pakaiHttps`. Yang menandai keadaan itu adalah COOKIE_SECURE, yang memang
+ * wajib diisi 1 pada penempatan semacam itu.
+ */
+const disajikanLewatHttps = pakaiHttps || process.env.COOKIE_SECURE === '1';
+
 app.use(compression());
-app.use(headerKeamanan({ https: pakaiHttps }));
+app.use(headerKeamanan({ https: disajikanLewatHttps }));
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
 
@@ -99,7 +114,7 @@ app.use('/api/tugas', tugasRouter);
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
-    service: 'SIGAP — Layanan Bantuan ICT Pertamina EP',
+    service: 'SIGAP — Layanan Bantuan IT Pertamina EP',
     timestamp: new Date().toISOString()
   });
 });
@@ -160,7 +175,7 @@ async function start() {
       const skema = pakaiHttps ? 'https' : 'http';
       console.log(`
 ╔══════════════════════════════════════════════════╗
-║   SIGAP — Layanan Bantuan ICT                    ║
+║   SIGAP — Layanan Bantuan IT                    ║
 ║   Pertamina EP Asset 1 Regional 1 Field Lirik    ║
 ║                                                  ║
 ║   Server: ${`${skema}://localhost:${PORT}`.padEnd(38)}║
@@ -170,11 +185,19 @@ async function start() {
 
       if (pakaiHttps) {
         console.log('🔒 HTTPS aktif — kuki sesi bertanda Secure, HSTS dipasang.\n');
+      } else if (disajikanLewatHttps) {
+        // TLS diakhiri di depan (nginx, IIS, terowongan). Node melihat HTTP,
+        // tetapi pengunjung menerima HTTPS — jadi ini bukan keadaan bahaya.
+        console.log('🔒 HTTPS ditangani proxy di depan — kuki bertanda Secure, HSTS dipasang.');
+        console.log('   Pastikan proxy TIDAK meneruskan porta ini langsung ke publik.\n');
       } else {
+        const petunjuk = process.platform === 'win32'
+          ? 'skrip-windows\\buat-sertifikat.ps1'
+          : 'certbot, atau isi COOKIE_SECURE=1 bila TLS ditangani proxy';
         console.warn('⚠️  Berjalan di atas HTTP. Token sesi melintas dalam bentuk terbaca:');
         console.warn('   siapa pun di jaringan yang sama dapat mengambil sesi engineer');
         console.warn('   maupun admin tanpa mengetahui kata sandinya.');
-        console.warn('   Siapkan sertifikat: skrip-windows\\buat-sertifikat.ps1\n');
+        console.warn(`   Siapkan sertifikat: ${petunjuk}\n`);
       }
 
       // Eskalasi adalah jalur akhir pengaduan, jadi divisi yang belum punya

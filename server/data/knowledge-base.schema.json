@@ -41,7 +41,7 @@
         "divisi": {
           "enum": ["printer", "windows", "cctv", "telepon", "radio", "ftth", "lan", "wan"],
           "description": "Layanan pemilik masalah ini. WAJIB salah satu dari delapan id di server/config/divisi.js. Nilai di luar daftar membuat masalahnya tidak pernah tercocokkan, tanpa pesan galat apa pun.",
-          "x-catatan-mode": "Hanya 'printer' dan 'windows' bermode swalayan — hanya keduanya yang isinya benar-benar disajikan sebagai langkah kepada pengguna. Enam layanan lain bermode engineer: keluhannya langsung diteruskan, dan isi SOP-nya TIDAK ditampilkan. Pembagian ini keputusan Engineer ICT (Eka Maulana), lihat KONTEKS-PROYEK.md §6a."
+          "x-catatan-mode": "Hanya 'printer' dan 'windows' bermode swalayan — hanya keduanya yang isinya benar-benar disajikan sebagai langkah kepada pengguna. Enam layanan lain bermode engineer: keluhannya langsung diteruskan, dan isi SOP-nya TIDAK ditampilkan. Pembagian ini keputusan Engineer IT (Eka Maulana), lihat KONTEKS-PROYEK.md §6a."
         },
 
         "judul": {

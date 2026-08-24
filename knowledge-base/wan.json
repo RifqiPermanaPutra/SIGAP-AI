@@ -2,7 +2,12 @@
   "$schema": "../server/data/sop.schema.json",
   "divisi": "wan",
   "nama": "WAN",
-  "catatanKonfirmasi": [],
+  "catatanKonfirmasi": [
+    "[KONFIRMASI] Aplikasi kantor pusat mana saja yang wajib dibuka melalui VPN",
+    "[KONFIRMASI] Siapa yang berwenang menyetujui permintaan akun VPN",
+    "[KONFIRMASI] Daftar lokasi lapangan yang tersambung beserta jenis sambungannya",
+    "[KONFIRMASI] Prosedur pengajuan pembukaan akses situs yang dibatasi"
+  ],
   "masalah": [
     {
       "id": "wan-wan-putus-sesaat-koneksi-internet",
@@ -74,7 +79,7 @@
             "Periksa router utama jika bisa dijangkau, lihat apakah lampu indikator normal",
             "Jika router terlihat mati atau lampu tidak normal, restart router",
             "Tunggu 5-10 menit setelah restart untuk koneksi kembali stabil",
-            "Jika internet seluruh kantor masih down, segera laporkan ke Engineer ICT"
+            "Jika internet seluruh kantor masih down, segera laporkan ke Engineer IT"
           ]
         }
       ],
@@ -91,7 +96,7 @@
         "Masalah pada sisi provider/ISP"
       ],
       "solusi": [],
-      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Silakan hubungi Engineer melalui tombol WhatsApp."
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Silakan hubungi Engineer melalui tombol WhatsApp."
     },
     {
       "id": "wan-konfigurasi-router-firewall",
@@ -100,7 +105,201 @@
       "kategori": "berat",
       "penyebab": [],
       "solusi": [],
-      "penanganan": "Konfigurasi router dan firewall memerlukan hak administrator dan penanganan langsung oleh Engineer ICT. Silakan hubungi Engineer melalui tombol WhatsApp."
+      "penanganan": "Konfigurasi router dan firewall memerlukan hak administrator dan penanganan langsung oleh Engineer IT. Silakan hubungi Engineer melalui tombol WhatsApp."
+    },
+    {
+      "id": "wan-tidak-bisa-membuka-aplikasi-kantor",
+      "judul": "Tidak Bisa Membuka Aplikasi Kantor Pusat",
+      "gejala": "Aplikasi atau situs milik kantor pusat gagal terbuka, sedangkan situs umum seperti mesin pencari dapat dibuka dengan normal.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Sambungan ke kantor pusat sedang terganggu",
+        "Aplikasi tersebut hanya dapat dibuka melalui VPN",
+        "Peladen aplikasi di kantor pusat sedang dirawat",
+        "Hak akses aplikasi belum diberikan untuk akun tersebut"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Membedakan gangguan sambungan dari persoalan hak akses menghemat banyak waktu, dan itu dapat dipastikan hanya dengan membandingkan.",
+          "langkah": [
+            "Coba buka satu situs umum, misalnya mesin pencari, untuk memastikan internet Anda berjalan.",
+            "Bila situs umum pun gagal, berarti persoalannya pada internet, bukan pada sambungan ke kantor pusat.",
+            "Bila situs umum berhasil, catat alamat aplikasi kantor pusat yang Anda coba buka.",
+            "Catat pesan yang muncul di layar secara lengkap, atau potret dengan telepon genggam Anda.",
+            "Perhatikan apakah halamannya memuat sangat lama lalu gagal, atau langsung menolak seketika.",
+            "Keterangan itu penting: memuat lama menandakan gangguan sambungan, sedangkan penolakan seketika menandakan persoalan hak akses.",
+            "Bila Anda biasa memakai VPN, perhatikan apakah VPN sedang tersambung.",
+            "Tanyakan kepada rekan sefungsi apakah mereka dapat membuka aplikasi yang sama.",
+            "Catat hasil perbandingan itu — apakah hanya Anda yang terganggu atau seluruh fungsi.",
+            "Laporkan kepada Engineer IT beserta alamat aplikasi, pesan kesalahan, dan hasil perbandingan tersebut."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "wan-seluruh-kantor-mengeluhkan-internet-tersendat",
+      "judul": "Seluruh Kantor Mengeluhkan Internet Tersendat Bersamaan",
+      "gejala": "Banyak pekerja di beberapa ruangan mengeluhkan hal yang sama pada waktu bersamaan. Halaman gagal terbuka dan pengiriman berkas terhenti di tengah.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kapasitas jalur ke luar sedang penuh",
+        "Ada pengunduhan berukuran besar yang berjalan bersamaan",
+        "Gangguan sebagian dari sisi penyedia jasa",
+        "Perangkat jaringan bekerja melampaui kemampuannya"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Sebaran keluhan menentukan arah pemeriksaan: bila hanya satu ruangan yang terganggu, persoalannya di dalam gedung; bila seluruh kantor, persoalannya pada jalur ke luar.",
+          "langkah": [
+            "Catat sejak jam berapa kelambatan mulai terasa.",
+            "Coba buka dua atau tiga situs berbeda, lalu catat mana yang lambat dan mana yang normal.",
+            "Perhatikan apakah kelambatan terjadi pada seluruh kegiatan, atau hanya saat mengirim berkas.",
+            "Tanyakan kepada rekan di ruangan yang sama apakah mereka juga terganggu.",
+            "Tanyakan pula kepada rekan di ruangan atau lantai lain.",
+            "Catat sebaran keluhan itu — hanya meja Anda, satu ruangan, atau seluruh kantor.",
+            "Bila Anda memakai WiFi, coba pindah ke sambungan kabel bila tersedia, lalu bandingkan.",
+            "Jangan menjalankan uji kecepatan berulang-ulang, karena justru menambah beban jalur.",
+            "Laporkan kepada Engineer IT beserta jam mulai dan sebaran keluhan yang Anda kumpulkan."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "wan-vpn-terputus-sendiri-saat-sedang",
+      "judul": "VPN Terputus Sendiri Saat Sedang Dipakai",
+      "gejala": "Sambungan VPN terputus di tengah pemakaian dan harus disambungkan berulang kali. Pekerjaan yang sedang dikerjakan ikut terhenti.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Sambungan internet dasar terputus sesaat",
+        "Masa berlaku sambungan VPN habis dan perlu disambung ulang",
+        "Akun VPN dipakai di lebih dari satu perangkat bersamaan",
+        "Gangguan pada perangkat VPN di kantor pusat"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Perlu dipastikan apakah yang putus itu VPN-nya saja atau internetnya juga, karena keduanya ditangani dengan cara yang berbeda.",
+          "langkah": [
+            "Setiap kali VPN terputus, catat jam berapa persisnya.",
+            "Segera setelah terputus, coba buka satu situs umum.",
+            "Bila situs umum pun gagal, berarti internetnya yang putus, bukan VPN-nya. Catat keterangan ini.",
+            "Bila situs umum berhasil, berarti memang VPN-nya yang terputus.",
+            "Catat berapa lama VPN bertahan sebelum terputus, misalnya \"putus tiap sekitar 30 menit\".",
+            "Catat pesan yang muncul pada aplikasi VPN saat terputus.",
+            "Perhatikan apakah akun VPN Anda sedang dipakai juga di telepon genggam atau perangkat lain.",
+            "Bila ya, putuskan sambungan pada perangkat lain itu, lalu amati apakah putusnya berkurang.",
+            "Catat nama akun VPN yang Anda pakai.",
+            "Laporkan kepada Engineer IT beserta catatan jam, lama bertahan, dan pesan yang muncul."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "wan-sambungan-ke-lokasi-lapangan-terputus",
+      "judul": "Sambungan ke Lokasi Lapangan Terputus",
+      "gejala": "Sambungan ke lokasi lapangan atau anjungan terputus. Data dari lokasi tersebut tidak lagi masuk, dan perangkat di sana tidak dapat dihubungi.",
+      "kategori": "berat",
+      "penyebab": [
+        "Sambungan antar lokasi terganggu",
+        "Pasokan listrik di lokasi lapangan padam",
+        "Cuaca buruk mengganggu sambungan nirkabel antar lokasi",
+        "Kerusakan perangkat jaringan di lokasi tersebut"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT, dan kerap memerlukan kunjungan ke lokasi. Bila memungkinkan, hubungi rekan di lokasi tersebut untuk menanyakan apakah listrik di sana menyala dan bagaimana keadaan cuacanya — keterangan itu sangat menentukan kesiapan engineer sebelum berangkat. Silakan hubungi Engineer melalui tombol WhatsApp dengan menyebutkan nama lokasi dan sejak jam berapa terputus."
+    },
+    {
+      "id": "wan-permintaan-akun-vpn-baru",
+      "judul": "Permintaan Akun VPN Baru",
+      "gejala": "Pegawai memerlukan akses ke jaringan kantor dari luar lokasi, misalnya saat bertugas ke lapangan atau bekerja dari rumah.",
+      "kategori": "berat",
+      "penyebab": [
+        "Penugasan ke luar lokasi kantor",
+        "Pegawai baru yang memerlukan akses jarak jauh",
+        "Kebutuhan pemeliharaan sistem di luar jam kerja"
+      ],
+      "solusi": [],
+      "penanganan": "Permintaan ini memerlukan penanganan Engineer IT. Akun VPN memberi jalan masuk ke jaringan kantor dari luar, sehingga pemberiannya melalui persetujuan dan tidak dapat dilayani atas permintaan lisan. Silakan hubungi Engineer melalui tombol WhatsApp dengan menyebutkan nama, fungsi, alasan diperlukannya akses, dan sampai kapan akses itu dibutuhkan."
+    },
+    {
+      "id": "wan-situs-tertentu-diblokir-atau-tidak",
+      "judul": "Situs Tertentu Diblokir atau Tidak Dapat Dibuka",
+      "gejala": "Sebuah situs yang diperlukan untuk pekerjaan tidak dapat dibuka dan muncul keterangan bahwa aksesnya dibatasi, sedangkan situs lain terbuka normal.",
+      "kategori": "berat",
+      "penyebab": [
+        "Situs tersebut termasuk yang dibatasi oleh kebijakan jaringan",
+        "Situs digolongkan berisiko oleh perangkat penyaring",
+        "Alamat situs berubah dan belum diperbarui pada daftar",
+        "Gangguan pada perangkat penyaring jaringan"
+      ],
+      "solusi": [],
+      "penanganan": "Permintaan ini memerlukan penanganan Engineer IT. Pembatasan akses situs mengikuti kebijakan keamanan jaringan, sehingga pembukaannya memerlukan peninjauan dan tidak dapat dikerjakan seketika. Jangan mencoba membuka situs tersebut melalui aplikasi pengalih atau VPN pribadi, karena hal itu justru melanggar kebijakan keamanan. Silakan hubungi Engineer melalui tombol WhatsApp dengan menyebutkan alamat situsnya dan untuk keperluan pekerjaan apa situs itu dibutuhkan."
+    },
+    {
+      "id": "wan-rapat-daring-tersendat-padahal-halaman",
+      "judul": "Rapat Daring Tersendat Padahal Halaman Lain Lancar",
+      "gejala": "Suara peserta terputus-putus dan gambar membeku saat rapat daring, sedangkan membuka halaman dan mengirim surel berjalan wajar.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kapasitas unggah lebih kecil daripada kapasitas unduh",
+        "Banyak rapat daring berjalan bersamaan di kantor",
+        "Sambungan nirkabel kurang mantap untuk suara dan gambar",
+        "Ada pengunggahan berkas besar berjalan bersamaan"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Rapat daring menuntut sambungan yang mantap, bukan sekadar cepat. Karena itu ia terganggu lebih dulu daripada kegiatan lain.",
+          "langkah": [
+            "Matikan gambar Anda dengan menekan ikon kamera pada aplikasi rapat, lalu perhatikan apakah suaranya membaik.",
+            "Bila membaik, catat keterangan ini — artinya kapasitas unggah yang terbatas.",
+            "Bila memakai sambungan nirkabel dan tersedia kabel, pindah ke kabel lalu bandingkan.",
+            "Tutup aplikasi lain yang mungkin sedang mengunggah atau mengunduh berkas besar.",
+            "Tanyakan kepada rekan sekantor apakah ada rapat daring lain berjalan pada waktu yang sama.",
+            "Catat berapa banyak rapat yang berjalan bersamaan bila Anda mengetahuinya.",
+            "Catat pada bagian mana rapat mulai tersendat — sejak awal, atau setelah peserta bertambah.",
+            "Catat pula nama aplikasi rapat yang dipakai.",
+            "Laporkan kepada Engineer IT beserta seluruh keterangan tersebut."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "wan-berkas-besar-selalu-gagal-terkirim",
+      "judul": "Berkas Besar Selalu Gagal Terkirim ke Kantor Pusat",
+      "gejala": "Pengiriman berkas berukuran besar berhenti di tengah lalu gagal, sedangkan berkas kecil terkirim tanpa hambatan.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kapasitas unggah tidak sanggup menahan pengiriman sepanjang itu",
+        "Batas ukuran unggahan pada sistem tujuan terlampaui",
+        "Sambungan tergoyah sesaat sehingga pengiriman batal dari awal",
+        "Masa berlaku sesi habis sebelum pengiriman selesai"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Ukuran berkas yang masih berhasil dan yang mulai gagal adalah keterangan paling menentukan, sebab dari situ dapat dibedakan batas sistem tujuan dari gangguan sambungan.",
+          "langkah": [
+            "Klik kanan pada berkas yang gagal terkirim, lalu pilih \"Properties\".",
+            "Catat ukurannya pada baris \"Size\", misalnya 240 MB.",
+            "Coba kirim berkas lain yang jauh lebih kecil ke tujuan yang sama.",
+            "Bila yang kecil berhasil, catat ukurannya juga sebagai pembanding.",
+            "Perhatikan sampai berapa persen pengiriman berjalan sebelum gagal.",
+            "Catat apakah berhenti pada persentase yang selalu sama, atau berbeda-beda tiap percobaan.",
+            "Berhenti pada persentase yang sama menunjuk pada batas ukuran; berbeda-beda menunjuk pada sambungan.",
+            "Catat pesan kesalahan yang muncul, atau potret dengan telepon genggam Anda.",
+            "Catat pula ke sistem apa berkas itu dikirim.",
+            "Laporkan kepada Engineer IT beserta ukuran berkas, persentase berhenti, dan pesan kesalahannya."
+          ]
+        }
+      ],
+      "penanganan": null
     }
   ]
 }

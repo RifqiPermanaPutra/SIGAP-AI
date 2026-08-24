@@ -191,7 +191,7 @@ if ($PSCmdlet.ShouldProcess($NamaTugas, 'Daftarkan tugas terjadwal baru')) {
         -Trigger $pemicu `
         -Principal $prinsipal `
         -Settings $pengaturan `
-        -Description 'SIGAP - layanan bantuan ICT Pertamina EP Field Lirik. Menjalankan server helpdesk di porta 3000 saat komputer menyala.' | Out-Null
+        -Description 'SIGAP - layanan bantuan IT Pertamina EP Field Lirik. Menjalankan server helpdesk di porta 3000 saat komputer menyala.' | Out-Null
 
     Write-Host "  [ok] Tugas '$NamaTugas' terdaftar" -ForegroundColor Green
 } else {
@@ -235,7 +235,7 @@ if ($TanpaFirewall) {
             -Protocol TCP `
             -LocalPort $Porta `
             -Profile Private, Domain `
-            -Description 'SIGAP - layanan bantuan ICT Pertamina EP Field Lirik. Mengizinkan pelapor dan engineer membuka halaman dari komputer maupun ponsel di jaringan kantor.' | Out-Null
+            -Description 'SIGAP - layanan bantuan IT Pertamina EP Field Lirik. Mengizinkan pelapor dan engineer membuka halaman dari komputer maupun ponsel di jaringan kantor.' | Out-Null
 
         Write-Host "  [ok] Porta $Porta dibuka untuk jaringan Private dan Domain" -ForegroundColor Green
         Write-Host '       (profil Public sengaja TIDAK disertakan)'

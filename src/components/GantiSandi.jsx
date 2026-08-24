@@ -155,7 +155,7 @@ export default function GantiSandi({ namaAkun, kelasTombol = '' }) {
             )}
 
             <p className="gs-kaki">
-              Lupa kata sandi sekarang? Hubungi admin ICT — kata sandi tidak
+              Lupa kata sandi sekarang? Hubungi admin IT — kata sandi tidak
               tersimpan dalam bentuk yang dapat dibaca, jadi ia menggantinya
               dengan yang baru, bukan memberitahukan yang lama.
             </p>

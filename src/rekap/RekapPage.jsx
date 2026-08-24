@@ -104,10 +104,9 @@ const SARINGAN_KEADAAN = [
 function Merek() {
   return (
     <div className="rk-merek">
-      <img src="/logo-pertamina-ep.svg" alt="Pertamina EP" className="rk-merek-logo" />
       <img
-        src="/logo-satu-it-sigap-dark.png"
-        alt="Pertamina ONE dan SATU-IT SIGAP"
+        src="/logo-sigap.png"
+        alt="SATU-IT SIGAP"
         className="rk-merek-logo-unit"
       />
       <span className="rk-merek-garis" aria-hidden="true" />

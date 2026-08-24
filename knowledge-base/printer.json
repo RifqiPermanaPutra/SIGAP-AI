@@ -65,7 +65,7 @@
             "Kembali ke halaman \"Printers & scanners\", lalu klik tombol \"Add device\".",
             "Tunggu sekitar 30 detik sampai nama printer muncul dalam pencarian.",
             "Bila nama printer sudah muncul, klik tombol \"Add device\" di sebelahnya.",
-            "Bila printer tidak muncul atau muncul permintaan izin administrator, hentikan dan laporkan kepada Engineer ICT."
+            "Bila printer tidak muncul atau muncul permintaan izin administrator, hentikan dan laporkan kepada Engineer IT."
           ]
         }
       ],
@@ -124,7 +124,7 @@
             "Tutup kembali penutup belakang sampai rapat.",
             "Biarkan printer dalam keadaan tercabut selama 1 menit penuh agar seluruh peringatan di dalamnya tersetel ulang.",
             "Pasang kembali kabel listrik, nyalakan printer, lalu tunggu sampai lampu berhenti berkedip.",
-            "Coba cetak satu halaman. Bila kertas masih macet juga, laporkan kepada Engineer ICT."
+            "Coba cetak satu halaman. Bila kertas masih macet juga, laporkan kepada Engineer IT."
           ]
         }
       ],
@@ -152,7 +152,7 @@
             "Klik nama printer yang Anda gunakan.",
             "Klik tulisan \"Open print queue\". Akan muncul jendela berisi daftar dokumen yang menunggu dicetak.",
             "Pada jendela tersebut, hapus seluruh dokumen yang menunggu. Klik kanan pada tiap dokumen lalu pilih \"Cancel\".",
-            "Perhatikan layar kecil pada badan printer. Bila ada peringatan tinta atau toner habis, laporkan kepada Engineer ICT untuk penggantian.",
+            "Perhatikan layar kecil pada badan printer. Bila ada peringatan tinta atau toner habis, laporkan kepada Engineer IT untuk penggantian.",
             "Buka kembali dokumen yang ingin dicetak, lalu cetak satu halaman saja terlebih dahulu untuk menguji."
           ]
         },
@@ -185,7 +185,7 @@
             "Setelah komputer masuk ke layar utama, tunggu tambahan 2 menit agar seluruh layanan siap.",
             "Buka kembali dokumen yang ingin dicetak.",
             "Cetak satu halaman saja untuk menguji.",
-            "Bila tetap tidak keluar, laporkan kepada Engineer ICT beserta nama printer yang Anda pakai."
+            "Bila tetap tidak keluar, laporkan kepada Engineer IT beserta nama printer yang Anda pakai."
           ]
         }
       ],
@@ -207,7 +207,7 @@
           "judul": "Solusi Pertama: Periksa Sisa Tinta lalu Jalankan Pembersihan",
           "pengantar": null,
           "langkah": [
-            "Perhatikan layar kecil pada badan printer. Cari tanda sisa tinta atau toner. Bila tampak hampir kosong, laporkan kepada Engineer ICT untuk penggantian.",
+            "Perhatikan layar kecil pada badan printer. Cari tanda sisa tinta atau toner. Bila tampak hampir kosong, laporkan kepada Engineer IT untuk penggantian.",
             "Cari tombol menu pada badan printer, biasanya bertuliskan \"Menu\" atau \"Setup\".",
             "Telusuri menu tersebut hingga menemukan pilihan bertuliskan \"Cleaning\", \"Head Cleaning\", atau \"Maintenance\".",
             "Jalankan pembersihan tersebut. Proses ini memakan waktu sekitar 2 sampai 3 menit dan printer akan berbunyi. Ini normal.",
@@ -241,7 +241,7 @@
             "Tunggu sampai proses selesai, lalu cetak ulang halaman uji.",
             "Perhatikan apakah ada satu warna yang hilang sama sekali, misalnya seluruh bagian merah tidak tercetak.",
             "Bila ada warna yang hilang seluruhnya, hentikan percobaan. Itu menandakan tinta warna tersebut habis atau salurannya tersumbat, dan penanganannya bukan di sisi pengguna.",
-            "Laporkan kepada Engineer ICT. Sertakan halaman uji yang sudah tercetak agar engineer dapat langsung melihat bagian mana yang bermasalah."
+            "Laporkan kepada Engineer IT. Sertakan halaman uji yang sudah tercetak agar engineer dapat langsung melihat bagian mana yang bermasalah."
           ]
         }
       ],
@@ -267,7 +267,7 @@
             "Buka penutup printer secara perlahan.",
             "Perhatikan apakah terlihat tumpahan tinta cair atau serbuk hitam di bagian dalam.",
             "Bersihkan bagian yang terlihat kotor memakai kain kering yang lembut. Jangan memakai air, tisu basah, atau cairan pembersih apa pun.",
-            "Bila terlihat serbuk toner tumpah cukup banyak, hentikan pembersihan dan laporkan kepada Engineer ICT. Serbuk toner tidak boleh dihirup.",
+            "Bila terlihat serbuk toner tumpah cukup banyak, hentikan pembersihan dan laporkan kepada Engineer IT. Serbuk toner tidak boleh dihirup.",
             "Tutup kembali penutup printer, pasang kabel listrik, lalu nyalakan.",
             "Cetak tiga sampai lima halaman percobaan. Noda ringan biasanya hilang dengan sendirinya setelah beberapa lembar."
           ]
@@ -297,7 +297,7 @@
             "Pastikan jenis kertasnya sesuai untuk printer kantor biasa. Kertas foto, kertas stiker, atau kertas tebal dapat meninggalkan noda pada printer yang tidak dirancang untuk itu.",
             "Masukkan kertas baru ke dalam baki, lalu pasang baki kembali sampai rapat.",
             "Nyalakan printer, lalu cetak tiga halaman percobaan.",
-            "Bila noda tetap muncul, laporkan kepada Engineer ICT. Sertakan satu lembar hasil cetak yang bernoda sebagai contoh."
+            "Bila noda tetap muncul, laporkan kepada Engineer IT. Sertakan satu lembar hasil cetak yang bernoda sebagai contoh."
           ]
         }
       ],
@@ -314,7 +314,872 @@
         "Komponen penggerak rusak karena usia atau benturan"
       ],
       "solusi": [],
-      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer ICT. Bila tercium bau terbakar atau keluar asap, segera cabut kabel listrik printer dari stopkontak. Silakan hubungi Engineer melalui tombol WhatsApp."
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Bila tercium bau terbakar atau keluar asap, segera cabut kabel listrik printer dari stopkontak. Silakan hubungi Engineer melalui tombol WhatsApp."
+    },
+    {
+      "id": "printer-printer-mencetak-halaman-kosong",
+      "judul": "Printer Mencetak Halaman Kosong",
+      "gejala": "Kertas keluar dari printer tetapi seluruh permukaannya putih. Tidak ada tulisan maupun gambar yang tercetak.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Pita pelindung pada kartrid baru belum dilepas",
+        "Tinta atau toner sudah habis",
+        "Kepala cetak tersumbat karena printer lama tidak dipakai",
+        "Kartrid tidak terpasang sampai rapat",
+        "Dokumen yang dicetak memang berisi halaman kosong"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Periksa Dokumen dan Pasang Ulang Kartrid",
+          "pengantar": null,
+          "langkah": [
+            "Buka kembali dokumen yang Anda cetak. Gulir sampai halaman terakhir dan pastikan memang ada isinya.",
+            "Tekan Ctrl dan P bersamaan untuk membuka jendela cetak. Perhatikan gambar pratinjau di sisi kanan.",
+            "Bila pratinjau menampilkan halaman putih, berarti masalahnya pada dokumen, bukan pada printer. Perbaiki dokumennya terlebih dahulu.",
+            "Bila pratinjau menampilkan isi dengan benar, lanjutkan ke printer.",
+            "Matikan printer dengan menekan tombol daya, lalu tunggu sampai lampunya padam.",
+            "Buka penutup printer di bagian depan atau atas. Tunggu sampai kartrid berhenti bergerak.",
+            "Keluarkan kartrid dengan menariknya perlahan ke arah Anda. Jangan menyentuh bagian logam atau lubang kecil di bawahnya.",
+            "Bila kartrid baru saja diganti, periksa apakah masih ada pita plastik atau stiker yang menempel. Bila ada, lepaskan.",
+            "Pasang kembali kartrid sampai terdengar bunyi klik, menandakan sudah terkunci.",
+            "Tutup penutup printer, nyalakan kembali, lalu coba cetak satu halaman untuk menguji."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Bersihkan Kepala Cetak dari Menu Printer",
+          "pengantar": "Dipakai bila kartrid sudah terpasang benar tetapi hasilnya tetap kosong. Printer yang lama tidak dipakai kerap tersumbat tinta kering.",
+          "langkah": [
+            "Pastikan printer menyala dan ada kertas di dalam bakinya.",
+            "Klik tombol Start di bagian bawah layar, lalu klik ikon roda gigi bertuliskan \"Settings\".",
+            "Pada daftar di sisi kiri, klik \"Bluetooth & devices\", lalu klik \"Printers & scanners\".",
+            "Cari nama printer Anda pada daftar, lalu klik satu kali pada namanya.",
+            "Klik \"Printer preferences\" atau \"Printing preferences\".",
+            "Cari tab bertuliskan \"Maintenance\", \"Utility\", atau \"Perawatan\", lalu klik.",
+            "Klik \"Head Cleaning\", \"Clean Printhead\", atau \"Pembersihan Kepala Cetak\".",
+            "Tunggu sampai proses selesai. Printer akan berbunyi selama beberapa menit — ini wajar dan jangan dimatikan.",
+            "Setelah selesai, klik \"Print Nozzle Check Pattern\" bila tersedia, untuk mencetak pola pengujian.",
+            "Perhatikan hasil pola. Bila garisnya sudah utuh, coba cetak dokumen Anda kembali.",
+            "Bila pola masih terputus, ulangi pembersihan paling banyak dua kali. Lebih dari itu hanya memboroskan tinta."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Periksa Sisa Tinta atau Toner",
+          "pengantar": "Dipakai bila pembersihan kepala cetak belum menolong. Tinta yang benar-benar habis tidak dapat diatasi dengan pengaturan apa pun.",
+          "langkah": [
+            "Perhatikan layar kecil pada badan printer. Banyak printer menampilkan sisa tinta di sana.",
+            "Bila tidak ada layar, klik Start, lalu Settings, lalu \"Bluetooth & devices\", lalu \"Printers & scanners\".",
+            "Klik nama printer Anda, lalu klik \"Printer preferences\".",
+            "Cari tab \"Maintenance\" atau \"Utility\", lalu cari \"Ink Level\" atau \"Estimated Levels\".",
+            "Perhatikan batang penunjuk tiap warna. Batang yang hampir habis biasanya ditandai warna merah atau tanda seru.",
+            "Untuk printer bertangki tinta, lihat langsung tabung tinta di sisi printer. Pastikan cairannya masih di atas garis batas bawah.",
+            "Catat warna mana yang habis. Keterangan ini akan mempercepat penyiapan penggantinya.",
+            "Laporkan kepada Engineer IT dengan menyebutkan nama printer, lokasinya, dan warna tinta yang habis."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "printer-hasil-cetak-terpotong-atau-ukuran",
+      "judul": "Hasil Cetak Terpotong atau Ukuran Kertas Tidak Sesuai",
+      "gejala": "Sebagian tulisan atau gambar terpotong di tepi kertas. Tata letak dokumen berubah dari yang terlihat di layar.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Ukuran kertas pada pengaturan cetak berbeda dengan kertas di dalam baki",
+        "Batas tepi dokumen terlalu sempit",
+        "Pengaturan penyesuaian halaman tidak aktif",
+        "Kertas di baki tidak dirapatkan penjepitnya"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Samakan Ukuran Kertas pada Pengaturan Cetak",
+          "pengantar": null,
+          "langkah": [
+            "Perhatikan kertas yang ada di dalam baki printer. Ukuran yang lazim di kantor adalah A4 dan F4 atau Folio.",
+            "Kertas A4 berukuran 21 kali 29,7 sentimeter, sedangkan F4 sedikit lebih panjang, 21 kali 33 sentimeter.",
+            "Buka dokumen yang ingin dicetak, lalu tekan Ctrl dan P bersamaan.",
+            "Cari pilihan bertuliskan \"Paper size\" atau \"Ukuran kertas\".",
+            "Pilih ukuran yang sama persis dengan kertas di dalam baki.",
+            "Perhatikan gambar pratinjau di sisi kanan. Pastikan tidak ada bagian yang keluar dari bingkai halaman.",
+            "Cari pilihan \"Scale\" atau \"Skala\", lalu pilih \"Fit to page\" atau \"Sesuaikan halaman\".",
+            "Coba cetak satu halaman terlebih dahulu untuk menguji, jangan seluruh dokumen.",
+            "Bila hasilnya sudah benar, cetak sisanya."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Perbaiki Batas Tepi Dokumen",
+          "pengantar": "Dipakai bila ukuran kertas sudah sesuai tetapi tepinya masih terpotong. Sebagian printer tidak dapat mencetak sampai benar-benar ke pinggir kertas.",
+          "langkah": [
+            "Buka dokumen Anda di Microsoft Word.",
+            "Klik menu \"Layout\" di bagian atas jendela.",
+            "Klik \"Margins\", lalu pilih \"Normal\". Pengaturan ini memberi jarak aman sekitar 2,5 sentimeter dari tiap tepi.",
+            "Bila isian Anda terlalu padat, pilih \"Narrow\", tetapi jangan kurang dari 1,27 sentimeter.",
+            "Perhatikan apakah ada tabel atau gambar yang melewati garis tepi. Bila ada, perkecil lebarnya.",
+            "Untuk tabel, klik pada tabelnya, lalu klik \"Layout\", lalu \"AutoFit\", lalu \"AutoFit Window\".",
+            "Tekan Ctrl dan P bersamaan, lalu periksa kembali pratinjaunya.",
+            "Coba cetak satu halaman untuk menguji."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Rapikan Kertas dan Penjepit di Dalam Baki",
+          "pengantar": "Dipakai bila hasil cetak bergeser tidak menentu dari satu lembar ke lembar lain.",
+          "langkah": [
+            "Tarik keluar baki kertas printer secara perlahan.",
+            "Keluarkan seluruh kertas dari dalam baki.",
+            "Rapikan tumpukan kertas dengan mengetukkan sisinya ke permukaan meja, supaya tepinya rata.",
+            "Periksa apakah ada lembar yang terlipat, sobek, atau lembap. Buang lembar semacam itu.",
+            "Masukkan kembali tumpukan kertas. Jangan mengisi melebihi garis batas yang tertera di dinding baki.",
+            "Perhatikan penjepit kertas di sisi kiri dan kanan baki. Geser sampai menyentuh tepi kertas.",
+            "Jangan menekan penjepit terlalu rapat sampai kertas menekuk. Cukup menyentuh saja.",
+            "Bila ada penjepit di bagian belakang, geser juga sampai menyentuh ujung kertas.",
+            "Dorong baki kembali ke dalam printer sampai rapat.",
+            "Coba cetak satu halaman untuk menguji."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "printer-printer-mencetak-sangat-lambat",
+      "judul": "Printer Mencetak Sangat Lambat",
+      "gejala": "Dokumen membutuhkan waktu sangat lama sebelum keluar. Printer terlihat menyala tetapi lama tidak bergerak.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Mutu cetak disetel pada pilihan tertinggi",
+        "Dokumen memuat banyak gambar beresolusi besar",
+        "Antrian cetak menumpuk oleh pekerjaan lama",
+        "Sambungan jaringan printer lemah",
+        "Mode senyap atau hemat daya sedang aktif"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Turunkan Mutu Cetak untuk Dokumen Biasa",
+          "pengantar": null,
+          "langkah": [
+            "Buka dokumen yang ingin dicetak, lalu tekan Ctrl dan P bersamaan.",
+            "Klik \"Printer properties\", \"Preferences\", atau \"Properti printer\".",
+            "Cari pilihan bertuliskan \"Print Quality\", \"Mutu Cetak\", atau \"Quality\".",
+            "Untuk dokumen tulisan biasa, pilih \"Draft\", \"Fast\", atau \"Standard\". Hindari \"Best\" atau \"High\" yang jauh lebih lambat.",
+            "Bila dokumennya tidak memerlukan warna, cari pilihan \"Grayscale\" atau \"Black and white\", lalu aktifkan.",
+            "Cari pilihan \"Quiet Mode\" atau \"Mode Senyap\". Bila aktif, matikan — mode ini sengaja memperlambat printer.",
+            "Klik \"OK\" untuk menyimpan, lalu klik \"Print\".",
+            "Perhatikan berapa lama halaman pertama keluar. Seharusnya jauh lebih cepat."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Bersihkan Antrian Cetak yang Menumpuk",
+          "pengantar": "Dipakai bila printer diam lama sebelum mulai bekerja. Pekerjaan lama yang tersangkut menahan pekerjaan baru di belakangnya.",
+          "langkah": [
+            "Klik tombol Start, lalu klik ikon roda gigi bertuliskan \"Settings\".",
+            "Klik \"Bluetooth & devices\", lalu klik \"Printers & scanners\".",
+            "Cari nama printer Anda, lalu klik satu kali pada namanya.",
+            "Klik \"Open print queue\" atau \"Buka antrian cetak\".",
+            "Perhatikan daftar yang muncul. Bila ada pekerjaan bertuliskan \"Error\" atau \"Deleting\", itulah penyebabnya.",
+            "Klik kanan pada tiap baris, lalu pilih \"Cancel\". Lakukan sampai daftarnya kosong.",
+            "Bila ada baris yang tidak mau hilang, matikan printer, tunggu 30 detik, lalu nyalakan kembali.",
+            "Setelah daftar kosong, coba cetak satu halaman untuk menguji."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Perkecil Ukuran Dokumen Bergambar",
+          "pengantar": "Dipakai bila yang lambat hanya dokumen tertentu yang memuat banyak gambar atau hasil pindaian.",
+          "langkah": [
+            "Buka dokumen Anda di Microsoft Word.",
+            "Klik salah satu gambar di dalam dokumen.",
+            "Klik menu \"Picture Format\" yang muncul di bagian atas.",
+            "Klik \"Compress Pictures\".",
+            "Hilangkan centang pada \"Apply only to this picture\", supaya berlaku untuk seluruh gambar.",
+            "Pilih \"Print (220 ppi)\" yang sudah memadai untuk hasil cetak kantor.",
+            "Klik \"OK\", lalu simpan dokumen dengan menekan Ctrl dan S bersamaan.",
+            "Coba cetak kembali dan perhatikan apakah sudah lebih cepat.",
+            "Bila dokumen berasal dari hasil pindaian dan tetap lambat, laporkan kepada Engineer IT."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "printer-printer-menarik-kertas-lebih-dari",
+      "judul": "Printer Menarik Kertas Lebih dari Satu Lembar",
+      "gejala": "Beberapa lembar kertas tertarik masuk bersamaan. Sebagian keluar kosong, atau kertas langsung macet.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kertas lembap sehingga saling menempel",
+        "Tumpukan kertas tidak diratakan sebelum dimasukkan",
+        "Baki diisi melebihi garis batas",
+        "Roda penarik kertas berdebu dan licin",
+        "Kertas yang dipakai terlalu tipis"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Kipas dan Ratakan Tumpukan Kertas",
+          "pengantar": null,
+          "langkah": [
+            "Tarik keluar baki kertas, lalu keluarkan seluruh tumpukan kertas.",
+            "Pegang tumpukan kertas pada satu sisi, lalu kibaskan seperti mengipas kartu. Ini melepaskan lembar yang saling menempel.",
+            "Ulangi dari sisi yang berbeda supaya seluruh tepinya terpisah.",
+            "Ketukkan tepi tumpukan ke permukaan meja sampai rata betul.",
+            "Perhatikan apakah kertas terasa lembap atau bergelombang. Kertas semacam itu jangan dipakai.",
+            "Ambil kertas secukupnya saja, kira-kira setengah baki. Jangan mengisi sampai melewati garis batas.",
+            "Masukkan tumpukan ke baki, lalu rapatkan penjepit di kiri dan kanan sampai menyentuh tepi kertas.",
+            "Dorong baki kembali sampai rapat, lalu coba cetak tiga halaman untuk menguji."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Bersihkan Roda Penarik Kertas",
+          "pengantar": "Dipakai bila kertas sudah rapi tetapi tetap tertarik lebih dari satu. Roda penarik yang berdebu kehilangan cengkeramannya.",
+          "langkah": [
+            "Matikan printer dengan menekan tombol daya, lalu cabut kabel listriknya dari stopkontak.",
+            "Tunggu sekitar 5 menit supaya bagian dalam printer tidak lagi panas.",
+            "Tarik keluar baki kertas sepenuhnya, lalu keluarkan seluruh kertas.",
+            "Lihat ke dalam rongga tempat baki tadi. Cari roda karet berwarna abu-abu atau hitam di bagian atas rongga.",
+            "Siapkan kain lembut yang dibasahi sedikit air, lalu peras sampai tidak menetes. Jangan memakai cairan pembersih.",
+            "Usap permukaan roda karet perlahan sambil memutarnya dengan jari, supaya seluruh permukaannya terusap.",
+            "Tunggu sekitar 10 menit sampai rodanya benar-benar kering.",
+            "Masukkan kembali kertas dan baki, pasang kabel listrik, lalu nyalakan printer.",
+            "Coba cetak tiga halaman untuk menguji.",
+            "Bila kertas masih tertarik lebih dari satu, laporkan kepada Engineer IT — kemungkinan rodanya sudah aus."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Uji dengan Kertas dari Rim yang Berbeda",
+          "pengantar": "Kertas yang lembap adalah penyebab tersering, dan cara memastikannya hanya dengan membandingkan.",
+          "langkah": [
+            "Cari rim kertas lain yang masih terbungkus rapat, sebaiknya yang disimpan di ruangan berpendingin.",
+            "Buka bungkusnya, lalu ambil sekitar 20 lembar dari bagian tengah rim.",
+            "Keluarkan seluruh kertas lama dari baki printer, lalu sisihkan.",
+            "Masukkan kertas baru tadi, rapatkan penjepit kiri dan kanan.",
+            "Cetak lima halaman berturut-turut, lalu hitung berapa lembar yang keluar.",
+            "Bila kelimanya keluar satu per satu dengan benar, berarti kertas lama yang lembap.",
+            "Pindahkan penyimpanan kertas ke tempat yang lebih kering dan tidak menempel lantai.",
+            "Bila dengan kertas baru pun masih tertarik lebih dari satu, laporkan kepada Engineer IT.",
+            "Sebutkan bahwa Anda sudah menguji dengan kertas dari rim yang berbeda."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "printer-warna-hasil-cetak-pudar-atau",
+      "judul": "Warna Hasil Cetak Pudar atau Tidak Sesuai",
+      "gejala": "Warna pada hasil cetak berbeda jauh dari yang terlihat di layar. Warna terlihat pucat, kusam, atau berubah menjadi warna lain.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Salah satu warna tinta hampir habis",
+        "Kepala cetak sebagian tersumbat",
+        "Mode hemat tinta sedang aktif",
+        "Jenis kertas pada pengaturan tidak sesuai dengan kertas yang dipakai",
+        "Kartrid bukan bawaan pabrik"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Matikan Mode Hemat dan Samakan Jenis Kertas",
+          "pengantar": null,
+          "langkah": [
+            "Buka dokumen yang ingin dicetak, lalu tekan Ctrl dan P bersamaan.",
+            "Klik \"Printer properties\" atau \"Preferences\".",
+            "Cari pilihan \"Economy Mode\", \"Draft\", atau \"Toner Save\". Bila aktif, matikan.",
+            "Cari pilihan \"Print Quality\", lalu pilih \"Normal\" atau \"Best\".",
+            "Cari pilihan \"Paper Type\" atau \"Jenis Kertas\".",
+            "Pilih jenis yang sesuai dengan kertas di baki. Untuk kertas fotokopi biasa, pilih \"Plain Paper\".",
+            "Pastikan pilihan \"Print in Grayscale\" atau \"Black and white only\" tidak tercentang.",
+            "Klik \"OK\", lalu cetak satu halaman untuk menguji."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Cetak Pola Pengujian untuk Melihat Warna yang Bermasalah",
+          "pengantar": "Dipakai untuk mengetahui warna mana yang bermasalah, supaya laporan kepada engineer lebih tepat.",
+          "langkah": [
+            "Pastikan printer menyala dan ada kertas di dalam bakinya.",
+            "Klik Start, lalu Settings, lalu \"Bluetooth & devices\", lalu \"Printers & scanners\".",
+            "Klik nama printer Anda, lalu klik \"Printer preferences\".",
+            "Cari tab \"Maintenance\" atau \"Utility\", lalu klik.",
+            "Klik \"Nozzle Check\" atau \"Print Test Page\".",
+            "Tunggu sampai halaman pengujian keluar.",
+            "Perhatikan pola tiap warna. Umumnya ada empat blok: hitam, biru muda, merah muda, dan kuning.",
+            "Cari blok yang garisnya terputus, pudar, atau tidak muncul sama sekali.",
+            "Catat warna blok yang bermasalah tadi.",
+            "Bila ada yang terputus, jalankan \"Head Cleaning\" dari tab yang sama, lalu cetak ulang pola pengujiannya.",
+            "Bila setelah dua kali pembersihan polanya tetap terputus, laporkan kepada Engineer IT beserta warna yang bermasalah."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Bandingkan dengan Cetakan dari Komputer Lain",
+          "pengantar": "Pengujian ini memisahkan dua kemungkinan yang penanganannya jauh berbeda: printernya, atau pengaturan di komputer Anda.",
+          "langkah": [
+            "Simpan dokumen yang warnanya bermasalah ke folder bersama, atau kirimkan kepada rekan Anda.",
+            "Mintalah rekan mencetak dokumen yang sama ke printer yang sama.",
+            "Bandingkan kedua hasil cetak itu berdampingan di bawah cahaya yang sama.",
+            "Bila hasil rekan Anda benar, berarti pengaturan di komputer Andalah yang keliru — ulangi solusi pertama dengan lebih teliti.",
+            "Bila hasil rekan Anda sama pudarnya, berarti printernya yang bermasalah.",
+            "Simpan kedua lembar hasil cetak tersebut sebagai bukti.",
+            "Catat merek dan tipe printer, tertera di bagian depan badannya.",
+            "Laporkan kepada Engineer IT beserta hasil perbandingan dan warna yang bermasalah."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "printer-printer-meminta-kertas-padahal-baki",
+      "judul": "Printer Meminta Kertas Padahal Baki Terisi",
+      "gejala": "Muncul pesan \"Out of Paper\", \"Load Paper\", atau \"Kertas Habis\" pada layar printer atau komputer, padahal kertas masih ada di dalam baki.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kertas tidak terdorong sampai menyentuh roda penarik",
+        "Penjepit kertas terlalu longgar sehingga tumpukan bergeser",
+        "Baki tidak tertutup rapat",
+        "Printer menunggu kertas dari baki yang berbeda",
+        "Sensor kertas tertutup debu atau serpihan kertas"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Pasang Ulang Kertas dengan Benar",
+          "pengantar": null,
+          "langkah": [
+            "Tarik keluar baki kertas secara perlahan sampai berhenti.",
+            "Keluarkan seluruh kertas, lalu ratakan tumpukannya dengan mengetuk tepinya ke meja.",
+            "Masukkan kembali tumpukan kertas, dorong sampai ujung depannya menyentuh dinding depan baki.",
+            "Geser penjepit di sisi kiri dan kanan sampai menyentuh tepi kertas, tanpa menekuknya.",
+            "Bila ada penjepit di belakang, geser sampai menyentuh ujung belakang kertas.",
+            "Pastikan tinggi tumpukan tidak melewati garis batas pada dinding baki.",
+            "Dorong baki masuk sampai terdengar bunyi klik atau terasa rapat.",
+            "Perhatikan layar printer. Bila masih ada pesan kesalahan, tekan tombol bertanda \"OK\", \"Resume\", atau \"Lanjutkan\".",
+            "Coba cetak satu halaman untuk menguji."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Pastikan Printer Mengambil dari Baki yang Benar",
+          "pengantar": "Dipakai pada printer yang memiliki lebih dari satu baki. Printer bisa saja menunggu kertas dari baki yang memang kosong.",
+          "langkah": [
+            "Perhatikan badan printer. Hitung berapa laci atau baki kertas yang ada.",
+            "Bila lebih dari satu, perhatikan pesan pada layar printer — biasanya disebutkan baki mana yang diminta.",
+            "Buka dokumen yang ingin dicetak, lalu tekan Ctrl dan P bersamaan.",
+            "Klik \"Printer properties\" atau \"Preferences\".",
+            "Cari pilihan \"Paper Source\", \"Sumber Kertas\", atau \"Tray\".",
+            "Pilih \"Auto Select\" atau \"Pilih Otomatis\" supaya printer mengambil dari baki mana pun yang terisi.",
+            "Bila Anda ingin baki tertentu, pastikan baki itulah yang benar-benar terisi kertas.",
+            "Klik \"OK\", lalu coba cetak satu halaman untuk menguji.",
+            "Bila pesan kertas habis tetap muncul padahal seluruh baki terisi, laporkan kepada Engineer IT — kemungkinan sensornya bermasalah."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Matikan Total lalu Nyalakan Ulang Printer",
+          "pengantar": "Sensor kertas kerap tersangkut pada keadaan lama. Mematikan printer sampai benar-benar kehilangan daya menyetel ulang pembacaannya.",
+          "langkah": [
+            "Tekan tombol daya pada printer sampai lampunya padam.",
+            "Cabut kabel listrik printer dari stopkontak — jangan hanya menekan tombol dayanya.",
+            "Tarik keluar baki kertas, lalu keluarkan seluruh isinya.",
+            "Tunggu sekitar 2 menit. Ini memberi waktu bagi sensor melepaskan keadaan lamanya.",
+            "Masukkan kembali kertas, dorong sampai menyentuh dinding depan baki, lalu rapatkan penjepitnya.",
+            "Dorong baki masuk sampai terasa rapat.",
+            "Pasang kembali kabel listrik, lalu nyalakan printer.",
+            "Tunggu sampai lampu berhenti berkedip, sekitar 1 menit.",
+            "Coba cetak satu halaman untuk menguji.",
+            "Bila pesan kertas habis tetap muncul, laporkan kepada Engineer IT — kemungkinan sensornya rusak."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "printer-tidak-bisa-memindai-dokumen-dari",
+      "judul": "Tidak Bisa Memindai Dokumen dari Printer",
+      "gejala": "Pemindaian gagal dan muncul keterangan bahwa pemindai tidak ditemukan. Tombol pindai pada badan perangkat tidak memberi hasil.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Aplikasi pemindai belum terpasang di komputer",
+        "Perangkat dikenali sebagai pencetak saja, belum sebagai pemindai",
+        "Dokumen diletakkan terbalik pada kaca pemindai",
+        "Penutup pemindai tidak tertutup rapat"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Pindai lewat Aplikasi Bawaan Windows",
+          "pengantar": null,
+          "langkah": [
+            "Angkat penutup pemindai di bagian atas printer.",
+            "Letakkan dokumen menghadap ke bawah, menempel pada kaca.",
+            "Sejajarkan sudut dokumen dengan tanda panah atau sudut yang tertera pada tepi kaca.",
+            "Tutup penutup pemindai secara perlahan sampai rapat.",
+            "Pada komputer, klik tombol Start, lalu ketik \"Windows Fax and Scan\".",
+            "Klik aplikasi \"Windows Fax and Scan\" yang muncul.",
+            "Klik tombol \"New Scan\" di bagian kiri atas.",
+            "Perhatikan nama pemindai di bagian atas jendela. Bila salah, klik \"Change\" lalu pilih printer Anda.",
+            "Klik \"Preview\" untuk melihat hasil sementara.",
+            "Bila hasilnya sudah benar, klik \"Scan\".",
+            "Hasil pindaian akan tersimpan di folder \"Documents\", lalu \"Scanned Documents\"."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Nyalakan Ulang Printer dan Periksa Sambungannya",
+          "pengantar": "Dipakai bila nama pemindai tidak muncul sama sekali pada daftar.",
+          "langkah": [
+            "Matikan printer dengan menekan tombol daya, lalu cabut kabel listriknya.",
+            "Tunggu sekitar 30 detik.",
+            "Pasang kembali kabel listrik, lalu nyalakan printer. Tunggu sampai lampu berhenti berkedip.",
+            "Bila printer tersambung dengan kabel, tekan kedua ujung kabelnya sampai rapat.",
+            "Bila printer tersambung lewat jaringan, perhatikan layar printer dan pastikan ada tanda jaringan yang aktif.",
+            "Pada komputer, klik Start, lalu Settings, lalu \"Bluetooth & devices\", lalu \"Printers & scanners\".",
+            "Cari nama printer Anda. Pastikan tidak bertuliskan \"Offline\".",
+            "Klik nama printer, lalu perhatikan apakah ada bagian bertuliskan \"Scanner\".",
+            "Bila tidak ada bagian \"Scanner\", berarti pemindainya belum terpasang. Laporkan kepada Engineer IT.",
+            "Bila ada, coba pindai kembali lewat \"Windows Fax and Scan\"."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Kumpulkan Keterangan untuk Engineer",
+          "pengantar": "Bila kedua cara sebelumnya gagal, aplikasi pemindainya memang belum terpasang — dan itu memerlukan izin administrator.",
+          "langkah": [
+            "Catat merek dan tipe perangkat, tertera di bagian depan badannya.",
+            "Catat lokasinya, misalnya nama ruangan atau lantai.",
+            "Klik Start, lalu Settings, lalu \"Bluetooth & devices\", lalu \"Printers & scanners\".",
+            "Klik nama perangkat Anda, lalu potret layar tersebut dengan telepon genggam.",
+            "Catat apakah ada bagian bertuliskan \"Scanner\" pada layar itu.",
+            "Catat pula pesan kesalahan yang muncul saat Anda mencoba memindai.",
+            "Tanyakan kepada rekan sekantor apakah ada yang berhasil memindai dari perangkat yang sama.",
+            "Bila ada yang berhasil, tanyakan aplikasi apa yang ia pakai lalu catat namanya.",
+            "Laporkan kepada Engineer IT beserta seluruh keterangan tersebut."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "printer-hasil-cetak-miring-atau-posisinya",
+      "judul": "Hasil Cetak Miring atau Posisinya Bergeser",
+      "gejala": "Tulisan tercetak miring terhadap tepi kertas, atau posisinya bergeser berbeda-beda pada tiap lembar.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Penjepit kertas tidak menyentuh tepi tumpukan",
+        "Kertas di dalam baki tidak rata",
+        "Baki tidak terdorong sampai rapat",
+        "Ada serpihan kertas tertinggal di jalur kertas",
+        "Roda penarik kertas mulai aus"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Rapatkan Penjepit dan Ratakan Kertas",
+          "pengantar": null,
+          "langkah": [
+            "Tarik keluar baki kertas sepenuhnya.",
+            "Keluarkan seluruh kertas, lalu ketukkan tepinya ke meja sampai benar-benar rata.",
+            "Periksa apakah ada lembar yang terlipat pada sudutnya. Singkirkan lembar semacam itu.",
+            "Masukkan kembali tumpukan, dorong sampai menyentuh dinding depan baki.",
+            "Geser penjepit kiri dan kanan sampai keduanya menyentuh tepi kertas dengan lembut.",
+            "Goyangkan tumpukan sedikit dengan jari. Bila masih bisa bergeser ke samping, rapatkan lagi penjepitnya.",
+            "Dorong baki masuk sampai rapat betul.",
+            "Cetak tiga halaman berturut-turut, lalu bandingkan posisi tulisannya."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Periksa Jalur Kertas dari Serpihan",
+          "pengantar": "Dipakai bila kertas masih miring padahal penjepitnya sudah rapat. Serpihan kertas dari kemacetan sebelumnya kerap menahan salah satu sisi kertas.",
+          "langkah": [
+            "Matikan printer, lalu cabut kabel listriknya dari stopkontak.",
+            "Tunggu sekitar 5 menit supaya bagian dalam printer tidak lagi panas.",
+            "Tarik keluar baki kertas, lalu keluarkan seluruh kertas.",
+            "Buka penutup belakang printer bila ada. Biasanya ada tuas atau kait yang perlu ditekan.",
+            "Perhatikan bagian dalam dengan bantuan senter. Cari serpihan kertas kecil yang tersangkut.",
+            "Bila ada, tarik keluar perlahan searah jalur kertas. Jangan menariknya berlawanan arah.",
+            "Tutup kembali penutup belakang sampai terdengar bunyi klik.",
+            "Masukkan kembali kertas dan baki, pasang kabel listrik, lalu nyalakan printer.",
+            "Cetak tiga halaman untuk menguji.",
+            "Bila hasilnya masih miring, laporkan kepada Engineer IT beserta contoh lembar hasil cetaknya."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Uji dengan Kertas Setengah Baki",
+          "pengantar": "Tumpukan yang terlalu penuh atau terlalu sedikit sama-sama membuat kertas tertarik miring. Pengujian ini menemukan titik yang pas.",
+          "langkah": [
+            "Keluarkan seluruh kertas dari baki.",
+            "Masukkan kertas kira-kira setengah baki saja, jangan penuh dan jangan terlalu sedikit.",
+            "Ratakan tepinya, lalu rapatkan penjepit kiri dan kanan.",
+            "Cetak lima halaman berisi tulisan biasa.",
+            "Susun kelima lembar itu bertumpuk, lalu perhatikan apakah tulisannya sejajar antar lembar.",
+            "Bila sudah lurus, pertahankan kebiasaan mengisi baki setengah saja.",
+            "Bila masih miring, ukur seberapa jauh pergeserannya dari tepi kertas dengan penggaris.",
+            "Simpan salah satu lembar hasil cetak sebagai bukti.",
+            "Laporkan kepada Engineer IT beserta lembar tersebut dan ukuran pergeserannya."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "printer-peringatan-tinta-atau-toner-hampir",
+      "judul": "Peringatan Tinta atau Toner Hampir Habis",
+      "gejala": "Muncul pesan bahwa tinta atau toner segera habis, tetapi hasil cetak masih terbaca dengan baik.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Sisa tinta atau toner memang sudah menipis",
+        "Perhitungan sisa tinta pada printer bersifat perkiraan",
+        "Serbuk toner mengendap di satu sisi kartrid"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Ratakan Serbuk Toner untuk Memperpanjang Pemakaian",
+          "pengantar": "Berlaku untuk printer laser, yaitu printer yang memakai serbuk dan terasa hangat saat mencetak. Jangan dikerjakan pada printer bertinta cair.",
+          "langkah": [
+            "Matikan printer dengan menekan tombol daya.",
+            "Buka penutup depan printer.",
+            "Tarik keluar kartrid toner perlahan dengan memegang gagangnya.",
+            "Pegang kartrid mendatar dengan kedua tangan.",
+            "Goyangkan perlahan ke kiri dan ke kanan sebanyak lima sampai enam kali, supaya serbuknya merata.",
+            "Jangan mengguncang terlalu keras dan jangan menyentuh permukaan hijau atau biru pada kartrid.",
+            "Masukkan kembali kartrid sampai terdengar bunyi klik.",
+            "Tutup penutup depan, lalu nyalakan printer.",
+            "Coba cetak satu halaman. Cara ini biasanya menambah beberapa puluh lembar lagi.",
+            "Tetap laporkan kepada Engineer IT supaya penggantinya disiapkan sebelum benar-benar habis."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Catat Keterangan Kartrid untuk Penggantian",
+          "pengantar": "Keterangan yang tepat mempercepat penyiapan kartrid pengganti, karena satu merek printer memakai banyak tipe kartrid berbeda.",
+          "langkah": [
+            "Perhatikan bagian depan printer. Catat merek dan tipenya, misalnya \"HP LaserJet Pro M404dn\".",
+            "Buka penutup printer, lalu keluarkan kartrid yang hampir habis.",
+            "Perhatikan tulisan pada badan kartrid. Catat kode tipenya, misalnya \"CF259A\" atau \"664 Black\".",
+            "Untuk printer berwarna, catat pula warna kartrid yang habis.",
+            "Masukkan kembali kartrid sampai terkunci, lalu tutup penutupnya.",
+            "Catat pula lokasi printer, misalnya nama ruangan atau lantai.",
+            "Laporkan kepada Engineer IT dengan menyertakan merek printer, kode kartrid, warna, dan lokasinya."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Atur Pemakaian Sementara Menunggu Pengganti",
+          "pengantar": "Sisa tinta dapat bertahan jauh lebih lama bila pemakaiannya diatur, sehingga pekerjaan tidak terhenti selama menunggu.",
+          "langkah": [
+            "Untuk dokumen yang hanya dibaca sendiri, tekan Ctrl dan P lalu pilih mutu \"Draft\" atau \"Fast\".",
+            "Untuk dokumen berwarna yang tidak wajib berwarna, pilih \"Grayscale\" atau \"Black and white\".",
+            "Cetak dua halaman dalam satu lembar bila hanya untuk bahan rapat: cari pilihan \"Pages per sheet\", lalu pilih 2.",
+            "Periksa dokumen di layar terlebih dahulu, supaya tidak perlu mencetak ulang karena salah ketik.",
+            "Tekan Ctrl dan P, lalu pilih halaman tertentu saja bila tidak seluruhnya diperlukan.",
+            "Untuk dokumen yang cukup dibagikan saja, kirimkan sebagai PDF alih-alih dicetak.",
+            "Bila ada printer lain di ruangan sebelah yang tintanya masih penuh, gunakan sementara.",
+            "Pastikan penggantinya sudah diajukan kepada Engineer IT supaya tidak terlambat."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "printer-printer-berbunyi-kasar-atau-berbau",
+      "judul": "Printer Berbunyi Kasar atau Berbau Terbakar",
+      "gejala": "Terdengar bunyi berderak, berdecit, atau berbenturan dari dalam printer. Tercium bau hangus atau plastik terbakar, dan kertas dapat tersangkut berulang kali.",
+      "kategori": "berat",
+      "penyebab": [
+        "Kerusakan pada roda gigi penggerak di dalam printer",
+        "Benda asing masuk ke dalam jalur kertas",
+        "Kerusakan pada bagian pemanas printer laser",
+        "Gangguan kelistrikan pada papan rangkaian printer"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Segera matikan printer dan cabut kabel listriknya dari stopkontak — jangan dinyalakan kembali untuk mencoba-coba. Bau terbakar dan bunyi berbenturan menandakan kerusakan bagian dalam yang dapat meluas bila pemakaian diteruskan. Jangan membuka badan printer sendiri. Silakan hubungi Engineer melalui tombol WhatsApp, dan sebutkan bunyi atau bau yang Anda dapati beserta lokasi printernya."
+    },
+    {
+      "id": "printer-gagal-mencetak-bolakbalik-pada-dua",
+      "judul": "Gagal Mencetak Bolak-Balik pada Dua Sisi Kertas",
+      "gejala": "Hasil cetak hanya keluar pada satu sisi kertas meski pilihan cetak dua sisi sudah dipilih, atau sisi keduanya tercetak terbalik.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Pilihan cetak dua sisi tidak aktif pada jendela cetak",
+        "Printer tidak memiliki kemampuan mencetak dua sisi sendiri",
+        "Arah pembalikan halaman dipilih keliru",
+        "Jenis kertas terlalu tebal untuk dibalik sendiri oleh printer"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Aktifkan Cetak Dua Sisi pada Jendela Cetak",
+          "pengantar": null,
+          "langkah": [
+            "Buka dokumen yang ingin dicetak, lalu tekan Ctrl dan P bersamaan.",
+            "Cari pilihan bertuliskan \"Print on both sides\" atau \"Two-sided printing\".",
+            "Pilih \"Print on both sides\".",
+            "Perhatikan pilihan arah pembalikan yang muncul di bawahnya.",
+            "Untuk dokumen biasa yang dibaca seperti buku, pilih \"Flip on long edge\".",
+            "Untuk dokumen yang dibalik seperti kalender, pilih \"Flip on short edge\".",
+            "Perhatikan gambar pratinjau di sisi kanan untuk memastikan.",
+            "Coba cetak dua halaman terlebih dahulu untuk menguji arah pembalikannya.",
+            "Bila arahnya terbalik, ulangi dengan memilih pilihan pembalikan yang satunya.",
+            "Setelah benar, cetak sisa dokumennya."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Cetak Dua Sisi Secara Manual",
+          "pengantar": "Dipakai bila pilihan cetak dua sisi tidak tersedia, yang berarti printer tersebut memang tidak dapat membalik kertas sendiri.",
+          "langkah": [
+            "Buka dokumen, lalu tekan Ctrl dan P bersamaan.",
+            "Cari pilihan \"Print One Sided\", lalu ubah menjadi \"Manually Print on Both Sides\" bila tersedia.",
+            "Bila pilihan itu tidak ada, cari pilihan \"Print\" lalu ubah dari \"All Pages\" menjadi \"Odd Pages Only\".",
+            "Klik \"Print\", lalu tunggu sampai seluruh halaman ganjil selesai tercetak.",
+            "Ambil tumpukan hasil cetak, lalu ratakan tepinya.",
+            "Balikkan tumpukan tersebut, lalu masukkan kembali ke baki kertas.",
+            "Perhatikan arah kertas dengan saksama — bila ragu, tandai satu lembar dengan pensil untuk mengujinya lebih dulu.",
+            "Kembali ke dokumen, tekan Ctrl dan P, lalu pilih \"Even Pages Only\".",
+            "Klik \"Print\", lalu tunggu sampai selesai.",
+            "Periksa hasilnya. Bila urutannya terbalik, ulangi dengan arah tumpukan yang berbeda."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Kumpulkan Keterangan untuk Engineer",
+          "pengantar": "Bila kedua cara sebelumnya gagal, perlu dipastikan apakah perangkatnya memang tidak memiliki kemampuan membalik kertas sendiri.",
+          "langkah": [
+            "Catat merek dan tipe printer, tertera di bagian depan badannya.",
+            "Perhatikan bagian belakang printer. Cari penutup yang dapat dibuka selebar jalur kertas.",
+            "Penutup semacam itu biasanya menandakan printer dapat membalik kertas sendiri.",
+            "Tekan Ctrl dan P, lalu klik \"Printer properties\".",
+            "Potret layar pengaturan tersebut dengan telepon genggam Anda.",
+            "Catat apakah ada pilihan bertuliskan \"Duplex\", \"Two-sided\", atau \"Bolak-balik\".",
+            "Bila pilihan itu ada tetapi tidak dapat ditekan, catat keterangan tersebut.",
+            "Laporkan kepada Engineer IT beserta merek, tipe, dan foto pengaturannya."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "printer-printer-jaringan-hilang-dari-daftar",
+      "judul": "Printer Jaringan Hilang dari Daftar",
+      "gejala": "Nama printer yang biasa dipakai tidak lagi muncul pada daftar printer, padahal printernya menyala dan rekan lain masih dapat memakainya.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Komputer baru diganti sehingga printer belum ditambahkan",
+        "Sambungan komputer ke jaringan kantor terputus",
+        "Alamat printer di jaringan berubah",
+        "Sambungan printer terhapus dari komputer"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Tambahkan Kembali Printer dari Daftar Jaringan",
+          "pengantar": null,
+          "langkah": [
+            "Pastikan komputer Anda tersambung ke jaringan kantor terlebih dahulu.",
+            "Tanyakan kepada rekan yang masih dapat mencetak, apa nama persis printer tersebut.",
+            "Klik tombol Start, lalu klik ikon roda gigi bertuliskan \"Settings\".",
+            "Klik \"Bluetooth & devices\", lalu klik \"Printers & scanners\".",
+            "Klik tombol \"Add device\" di bagian atas.",
+            "Tunggu sekitar 30 detik sampai pencarian selesai.",
+            "Perhatikan apakah nama printer yang Anda cari muncul pada daftar.",
+            "Bila muncul, klik \"Add device\" di sebelah namanya, lalu tunggu sampai selesai.",
+            "Bila tidak muncul, klik \"The printer that I want isn't listed\".",
+            "Pilih \"Select a shared printer by name\", lalu masukkan alamat printer yang diberikan rekan Anda.",
+            "Bila muncul permintaan izin administrator atau permintaan memasang perangkat lunak, hentikan.",
+            "Laporkan kepada Engineer IT beserta nama printer yang Anda cari dan nama ruangannya."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Pastikan Komputer Berada di Jaringan yang Benar",
+          "pengantar": "Printer jaringan hanya terlihat bila komputer berada pada jaringan kantor. Sambungan tamu atau tethering telepon membuatnya lenyap.",
+          "langkah": [
+            "Klik ikon jaringan di pojok kanan bawah layar, di dekat jam.",
+            "Perhatikan nama jaringan yang sedang tersambung.",
+            "Pastikan itu jaringan kantor, bukan jaringan tamu maupun sambungan dari telepon genggam.",
+            "Bila salah, klik nama jaringan kantor lalu klik \"Connect\".",
+            "Bila komputer Anda memakai kabel, pastikan kabelnya tertancap dan lampunya menyala.",
+            "Tunggu sekitar 30 detik sampai sambungannya mantap.",
+            "Klik Start, lalu Settings, lalu \"Bluetooth & devices\", lalu \"Printers & scanners\".",
+            "Perhatikan apakah nama printer sudah muncul kembali.",
+            "Bila sudah, coba cetak satu halaman untuk menguji."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Kumpulkan Keterangan untuk Engineer",
+          "pengantar": "Menambahkan printer jaringan kerap memerlukan izin administrator, dan itu di luar wewenang pelapor.",
+          "langkah": [
+            "Mintalah rekan yang masih dapat mencetak untuk membuka Settings, lalu \"Printers & scanners\".",
+            "Mintalah ia mengklik nama printer tersebut, lalu memotret layarnya.",
+            "Catat nama persis printer itu, termasuk huruf besar kecilnya.",
+            "Catat nama ruangan tempat printer berada.",
+            "Catat pula nama komputer Anda: tekan tombol Windows, ketik \"About your PC\", lalu lihat bagian \"Device name\".",
+            "Catat pesan kesalahan yang muncul saat Anda mencoba menambahkannya.",
+            "Laporkan kepada Engineer IT beserta seluruh keterangan tersebut.",
+            "Sementara menunggu, titipkan berkas kepada rekan yang printernya masih berfungsi."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "printer-hasil-cetak-berbeda-dari-tampilan",
+      "judul": "Hasil Cetak Berbeda dari Tampilan di Layar",
+      "gejala": "Tata letak, jenis huruf, atau posisi tabel pada hasil cetak berbeda dari yang terlihat di layar.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Jenis huruf yang dipakai tidak tersedia pada printer",
+        "Dokumen dibuat pada komputer dengan pengaturan berbeda",
+        "Ukuran kertas pada dokumen berbeda dengan yang dipakai printer",
+        "Dokumen dibuka dengan aplikasi selain aplikasi pembuatnya"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Cetak Lewat Berkas PDF",
+          "pengantar": "Menyimpan dokumen sebagai PDF terlebih dahulu mengunci tata letaknya, sehingga hasil cetak selalu sama dengan yang terlihat di layar.",
+          "langkah": [
+            "Buka dokumen Anda, lalu periksa tata letaknya sekali lagi di layar.",
+            "Tekan Ctrl dan P bersamaan untuk membuka jendela cetak.",
+            "Pada pilihan nama printer, pilih \"Microsoft Print to PDF\".",
+            "Klik \"Print\". Akan muncul jendela yang meminta lokasi penyimpanan.",
+            "Pilih folder \"Documents\", beri nama berkasnya, lalu klik \"Save\".",
+            "Buka berkas PDF yang baru saja tersimpan.",
+            "Periksa tata letaknya dengan saksama. Beginilah nanti hasil cetaknya.",
+            "Bila sudah benar, tekan Ctrl dan P dari dalam berkas PDF tersebut.",
+            "Pilih printer yang sebenarnya, lalu klik \"Print\".",
+            "Bila tata letak pada PDF sudah salah, berarti persoalannya pada dokumen asalnya, bukan pada printer."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Sematkan Jenis Huruf ke Dalam Dokumen",
+          "pengantar": "Dokumen yang dibuat di komputer lain kerap memakai jenis huruf yang tidak ada di komputer Anda, sehingga digantikan huruf lain dan tata letaknya bergeser.",
+          "langkah": [
+            "Buka dokumen Anda di Microsoft Word.",
+            "Klik menu \"File\" di pojok kiri atas.",
+            "Klik \"Options\" pada daftar di bagian bawah sisi kiri.",
+            "Klik \"Save\" pada daftar di sisi kiri jendela yang muncul.",
+            "Gulir ke bagian bawah sampai menemukan \"Preserve fidelity when sharing this document\".",
+            "Centang \"Embed fonts in the file\".",
+            "Centang pula \"Embed only the characters used in the document\" supaya ukuran berkasnya tidak membengkak.",
+            "Klik \"OK\", lalu simpan dokumen dengan menekan Ctrl dan S bersamaan.",
+            "Tutup dokumen, lalu buka kembali dan periksa tata letaknya."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Kumpulkan Keterangan untuk Engineer",
+          "pengantar": "Bila tata letaknya tetap bergeser, kemungkinan jenis hurufnya memang perlu dipasang di komputer Anda.",
+          "langkah": [
+            "Buka dokumen Anda, lalu sorot bagian tulisan yang tata letaknya bergeser.",
+            "Perhatikan nama jenis huruf yang tertera di bagian atas jendela Word.",
+            "Catat nama jenis huruf tersebut.",
+            "Bila namanya tertulis di dalam tanda kurung, itu tanda huruf aslinya tidak tersedia dan sedang digantikan.",
+            "Potret tampilan di layar dengan telepon genggam Anda.",
+            "Simpan pula selembar hasil cetaknya sebagai pembanding.",
+            "Tanyakan kepada pembuat dokumen, jenis huruf apa yang ia pakai.",
+            "Laporkan kepada Engineer IT beserta nama jenis huruf, foto layar, dan lembar hasil cetaknya."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "printer-hasil-cetak-berupa-simbol-acak",
+      "judul": "Hasil Cetak Berupa Simbol Acak atau Huruf Berantakan",
+      "gejala": "Kertas keluar berisi deretan simbol, angka, dan huruf acak yang tidak berhubungan dengan dokumen. Kadang berlembar-lembar sekaligus.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Pengantar cetak yang terpasang tidak sesuai dengan perangkatnya",
+        "Perintah cetak rusak di tengah pengiriman",
+        "Antrian cetak menyimpan perintah yang cacat",
+        "Kabel penghubung longgar sehingga data terputus"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Hentikan Cetakan dan Bersihkan Antriannya",
+          "pengantar": "Langkah pertama menghentikan pemborosan kertas, sebab cetakan semacam ini kerap berjalan terus sampai kertasnya habis.",
+          "langkah": [
+            "Segera tekan tombol batal pada badan printer, biasanya bertanda silang atau bertuliskan \"Cancel\".",
+            "Bila kertas terus keluar, matikan printer dengan menekan tombol dayanya.",
+            "Klik Start, lalu Settings, lalu \"Bluetooth & devices\", lalu \"Printers & scanners\".",
+            "Klik nama printer Anda, lalu klik \"Open print queue\".",
+            "Klik kanan pada setiap baris dalam daftar, lalu pilih \"Cancel\".",
+            "Lakukan sampai daftarnya benar-benar kosong.",
+            "Nyalakan kembali printer, lalu tunggu sampai lampunya berhenti berkedip.",
+            "Ambil kertas yang telanjur tercetak acak, lalu sisihkan untuk kertas buram.",
+            "Coba cetak satu halaman sederhana dari Notepad sebagai pengujian."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Cetak Ulang lewat Berkas PDF",
+          "pengantar": "Mengubah dokumen menjadi PDF terlebih dahulu kerap menghindari cetakan acak, sekaligus memastikan apakah persoalannya pada dokumen atau pada printer.",
+          "langkah": [
+            "Buka dokumen yang tadi bermasalah.",
+            "Tekan Ctrl dan P bersamaan.",
+            "Pada pilihan nama printer, pilih \"Microsoft Print to PDF\".",
+            "Klik \"Print\", lalu simpan berkasnya di folder \"Documents\".",
+            "Buka berkas PDF yang baru saja tersimpan.",
+            "Periksa tampilannya. Bila PDF-nya sudah acak, berarti dokumen asalnya yang rusak.",
+            "Bila PDF-nya benar, tekan Ctrl dan P dari dalam PDF tersebut.",
+            "Pilih printer yang sebenarnya, lalu cetak satu halaman untuk menguji.",
+            "Bila lewat PDF hasilnya benar, gunakan cara ini sementara sampai ditangani engineer."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Kumpulkan Keterangan untuk Engineer",
+          "pengantar": "Cetakan acak hampir selalu berarti pengantar cetaknya tidak sesuai, dan penggantiannya memerlukan izin administrator.",
+          "langkah": [
+            "Simpan selembar hasil cetak yang acak sebagai bukti.",
+            "Catat merek dan tipe printer, tertera di bagian depan badannya.",
+            "Klik Start, lalu Settings, lalu \"Bluetooth & devices\", lalu \"Printers & scanners\".",
+            "Klik nama printer Anda, lalu klik \"Printer properties\".",
+            "Klik tab \"Advanced\", lalu perhatikan nama yang tertera di sebelah \"Driver\".",
+            "Catat nama tersebut persis seperti tertulis, lalu potret layarnya.",
+            "Catat pula apakah cetakan acak terjadi pada semua dokumen atau hanya sebagian.",
+            "Bila hanya sebagian, catat aplikasi apa yang dipakai membuat dokumen itu.",
+            "Tanyakan kepada rekan apakah mereka mengalami hal serupa pada printer yang sama.",
+            "Laporkan kepada Engineer IT beserta lembar bukti, foto, dan seluruh keterangan tersebut."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "printer-dokumen-tercetak-di-perangkat-yang",
+      "judul": "Dokumen Tercetak di Perangkat yang Salah",
+      "gejala": "Perintah cetak berjalan tanpa pesan kesalahan, tetapi kertasnya tidak keluar pada perangkat terdekat. Belakangan diketahui keluar pada perangkat lain.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Perangkat bawaan disetel ke unit yang jauh",
+        "Windows memindahkan pilihan bawaan mengikuti jaringan terakhir",
+        "Ada beberapa perangkat bernama mirip pada daftar",
+        "Perangkat terdekat sedang tidak tersedia sehingga dialihkan"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Tetapkan Printer Bawaan dan Kunci Pilihannya",
+          "pengantar": "Windows dapat berpindah printer bawaan sendiri mengikuti jaringan terakhir yang dipakai. Perilaku itu perlu dimatikan.",
+          "langkah": [
+            "Klik Start, lalu Settings, lalu \"Bluetooth & devices\", lalu \"Printers & scanners\".",
+            "Gulir ke bagian bawah halaman.",
+            "Cari sakelar \"Let Windows manage my default printer\", lalu matikan.",
+            "Gulir kembali ke atas, lalu cari perangkat yang berada di ruangan Anda.",
+            "Klik namanya, lalu klik tombol \"Set as default\".",
+            "Perhatikan tanda centang hijau yang kini muncul di sebelah namanya.",
+            "Catat nama persis perangkat tersebut supaya tidak keliru lain kali.",
+            "Buka dokumen apa saja, tekan Ctrl dan P, lalu pastikan nama itu yang terpilih.",
+            "Cetak satu halaman untuk menguji."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Bedakan Perangkat yang Namanya Mirip",
+          "pengantar": "Satu kantor kerap memiliki beberapa perangkat bertipe sama, sehingga namanya hanya berbeda di beberapa huruf terakhir.",
+          "langkah": [
+            "Berjalanlah ke perangkat di ruangan Anda.",
+            "Cari stiker atau tulisan pada badannya yang memuat namanya di jaringan.",
+            "Bila tidak ada, cetak halaman keterangan dari menu pada layar perangkat tersebut.",
+            "Menunya biasanya bernama \"Information\", \"Network Config\", atau \"Print Config Page\".",
+            "Pada halaman yang keluar, cari baris bertuliskan \"Host Name\" atau \"Printer Name\".",
+            "Catat nama itu persis, termasuk angka di belakangnya.",
+            "Kembali ke komputer, lalu buka Settings, \"Bluetooth & devices\", \"Printers & scanners\".",
+            "Cocokkan nama yang Anda catat dengan daftar yang ada.",
+            "Tetapkan yang cocok sebagai bawaan, lalu ganti namanya agar mudah dikenali bila memungkinkan.",
+            "Beri tahu rekan sekantor nama yang benar, supaya mereka tidak keliru juga."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Amankan Dokumen yang Telanjur Tercetak",
+          "pengantar": "Dokumen yang tercetak di ruangan lain dapat memuat keterangan yang tidak semestinya dibaca orang lain. Ini yang perlu didahulukan.",
+          "langkah": [
+            "Segera hubungi rekan di ruangan tempat dokumen itu tercetak.",
+            "Mintalah ia mengambil kertasnya dari baki keluaran dan menyimpannya.",
+            "Bila dokumennya memuat keterangan yang tidak semestinya tersebar, mintalah dimusnahkan.",
+            "Catat berapa lembar yang telanjur tercetak.",
+            "Bila dokumennya menyangkut data pribadi atau keterangan tertutup, laporkan kepada atasan Anda.",
+            "Laporkan pula kepada Engineer IT supaya penamaan perangkat dirapikan.",
+            "Sebutkan nama perangkat yang keliru dan nama perangkat yang seharusnya.",
+            "Sebutkan pula ruangan asal dan ruangan tempat dokumen itu tercetak."
+          ]
+        }
+      ],
+      "penanganan": null
     }
   ]
 }

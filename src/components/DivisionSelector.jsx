@@ -3,7 +3,7 @@ import { DivisionIcon, IconClose, IconHeadset } from './Icons.jsx';
 import { LAYANAN_OTOMATIS } from '../data/layananOtomatis.js';
 
 /**
- * Pemilihan layanan ICT — langkah pertama sebelum menyampaikan kendala.
+ * Pemilihan layanan IT — langkah pertama sebelum menyampaikan kendala.
  *  - onClose : keluar ke beranda
  */
 export default function DivisionSelector({ divisions, onSelect, onClose }) {
@@ -13,7 +13,7 @@ export default function DivisionSelector({ divisions, onSelect, onClose }) {
         className="division-modal"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
-        aria-label="Pilih Layanan ICT"
+        aria-label="Pilih Layanan IT"
       >
         {onClose && (
           <button
