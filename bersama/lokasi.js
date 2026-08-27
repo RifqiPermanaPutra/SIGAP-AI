@@ -3,6 +3,12 @@
  * Buatan, Ukui, dan Lirik. Dipakai pada dropdown pemilihan lokasi pelapor.
  *
  * Sumber: data lokasi operasional Field Lirik.
+ *
+ * Seluruh lokasi pada kelompok Lirik diakhiri kata "Lirik" supaya asal
+ * areanya terbaca sendiri — nama seperti "RAM" atau "FM" saja tidak
+ * memberitahu pembacanya area mana yang dimaksud, dan nama itu ikut terbawa
+ * ke pesan WhatsApp engineer serta tabel rekap yang lepas dari pengelompokan
+ * dropdown ini.
  */
 export const LOKASI_GROUPS = [
   {
@@ -24,29 +30,29 @@ export const LOKASI_GROUPS = [
   {
     area: 'Lirik',
     items: [
-      'HSSE Demo Room',
+      'HSSE Demo Room Lirik',
       'Produksi Lirik',
       'WS Lirik',
       'PE Lirik',
       'Finance Lirik',
       'HC Lirik',
-      'RAM',
-      'PO',
-      'LR',
-      'FM',
-      'IT',
-      'Fire',
-      'Transport',
-      'SCM',
-      'Bengkel TOPSIP',
-      'Bengkel Mekanik',
-      'Bengkel Instrumen Umum dan Las',
-      'Bengkel Listrik',
-      'Security Kantor Besar',
-      'Pos Camp 1',
-      'Security Industrial',
-      'Security Japura',
-      'SP 2, 3, 4'
+      'RAM Lirik',
+      'PO Lirik',
+      'LR Lirik',
+      'FM Lirik',
+      'IT Lirik',
+      'Fire Lirik',
+      'Transport Lirik',
+      'SCM Lirik',
+      'Bengkel TOPSIP Lirik',
+      'Bengkel Mekanik Lirik',
+      'Bengkel Instrumen Umum dan Las Lirik',
+      'Bengkel Listrik Lirik',
+      'Security Kantor Besar Lirik',
+      'Pos Camp 1 Lirik',
+      'Security Industrial Lirik',
+      'Security Japura Lirik',
+      'SP 2, 3, 4 Lirik'
     ]
   }
 ];
