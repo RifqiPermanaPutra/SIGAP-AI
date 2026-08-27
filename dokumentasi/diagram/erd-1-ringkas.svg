@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1900 930" width="1900" height="930" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif">
+<rect width="1900" height="930" fill="#ffffff"/>
+<text x="56" y="56" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="26" font-weight="700" fill="#101725">ERD SIGAP — Gambar 1: Diagram Ringkas</text>
+<text x="56" y="82" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="13.5" font-weight="400" fill="#5b6878">Seluruh entitas dan relasinya. Atribut diuraikan pada Gambar 2 sampai 4.</text>
+<line x1="56" y1="100" x2="1844" y2="100" stroke="#dde4ed" stroke-width="1"/>
+<line x1="330" y1="230" x2="487.5" y2="230" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="687.5" y1="230" x2="845" y2="230" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="1055" y1="230" x2="1212.5" y2="230" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="1412.5" y1="232.6" x2="1570" y2="232.6" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="1412.5" y1="227.4" x2="1570" y2="227.4" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="225" y1="261" x2="225" y2="374" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="222.4" y1="466" x2="222.4" y2="579" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="227.6" y1="466" x2="227.6" y2="579" stroke="#4a5665" stroke-width="1.5"/>
+<rect x="120" y="199" width="210" height="62" fill="#d6eafa" stroke="#006cb8" stroke-width="2.5"/>
+<text x="225" y="226" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="17" font-weight="600" fill="#101725">PENGGUNA</text>
+<text x="225" y="245" text-anchor="middle" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="10.5" font-weight="400" fill="#5b6878">admin dan engineer</text>
+<polygon points="587.5,184 687.5,230 587.5,276 487.5,230" fill="#fdf3c8" stroke="#c9a227" stroke-width="2.5"/>
+<text x="587.5" y="235" text-anchor="middle" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="14" font-weight="500" fill="#101725">Menangani</text>
+<rect x="845" y="199" width="210" height="62" fill="#d6eafa" stroke="#006cb8" stroke-width="2.5"/>
+<text x="950" y="226" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="17" font-weight="600" fill="#101725">SESI</text>
+<text x="950" y="245" text-anchor="middle" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="10.5" font-weight="400" fill="#5b6878">satu baris = satu laporan</text>
+<polygon points="1312.5,184 1412.5,230 1312.5,276 1212.5,230" fill="#fdf3c8" stroke="#c9a227" stroke-width="2.5"/>
+<text x="1312.5" y="235" text-anchor="middle" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="14" font-weight="500" fill="#101725">Memiliki</text>
+<rect x="1570" y="199" width="210" height="62" fill="#d6eafa" stroke="#006cb8" stroke-width="2.5"/>
+<text x="1675" y="226" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="17" font-weight="600" fill="#101725">PESAN</text>
+<text x="1675" y="245" text-anchor="middle" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="10.5" font-weight="400" fill="#5b6878">isi percakapan</text>
+<text x="408.75" y="216" text-anchor="middle" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="17" font-weight="600" fill="#101725">1</text>
+<text x="766.25" y="216" text-anchor="middle" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="17" font-weight="600" fill="#101725">N</text>
+<text x="1133.75" y="216" text-anchor="middle" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="17" font-weight="600" fill="#101725">1</text>
+<text x="1491.25" y="216" text-anchor="middle" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="17" font-weight="600" fill="#101725">N</text>
+<polygon points="225,374 325,420 225,466 125,420" fill="#fdf3c8" stroke="#c9a227" stroke-width="2.5"/>
+<text x="225" y="425" text-anchor="middle" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="14" font-weight="500" fill="#101725">Mencatat</text>
+<rect x="120" y="579" width="210" height="62" fill="#d6eafa" stroke="#006cb8" stroke-width="2.5"/>
+<text x="225" y="606" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="17" font-weight="600" fill="#101725">LOG_AKSES</text>
+<text x="225" y="625" text-anchor="middle" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="10.5" font-weight="400" fill="#5b6878">jejak akses</text>
+<text x="247" y="292" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="17" font-weight="600" fill="#101725">1</text>
+<text x="247" y="570" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="17" font-weight="600" fill="#101725">N</text>
+<rect x="1570" y="579" width="210" height="62" fill="#d6eafa" stroke="#006cb8" stroke-width="2.5"/>
+<text x="1675" y="606" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="17" font-weight="600" fill="#101725">MIGRASI</text>
+<text x="1675" y="625" text-anchor="middle" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="10.5" font-weight="400" fill="#5b6878">penanda teknis · tanpa relasi</text>
+<line x1="56" y1="706" x2="1844" y2="706" stroke="#dde4ed" stroke-width="1"/>
+<text x="56" y="730" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="11.5" font-weight="700" fill="#5b6878">KETERANGAN NOTASI</text>
+<rect x="56" y="749" width="44" height="26" fill="#d6eafa" stroke="#006cb8" stroke-width="2"/>
+<text x="116" y="767" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="13" font-weight="400" fill="#5b6878">Entitas</text>
+<polygon points="206.30225000000002,747 230.30225000000002,762 206.30225000000002,777 182.30225000000002,762" fill="#fdf3c8" stroke="#c9a227" stroke-width="2"/>
+<text x="244.30225000000002" y="767" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="13" font-weight="400" fill="#5b6878">Relasi</text>
+<ellipse cx="327.13275" cy="762" rx="22" ry="12" fill="#fff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="365.13275" y="767" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="13" font-weight="400" fill="#5b6878">Atribut</text>
+<ellipse cx="455.435" cy="762" rx="22" ry="12" fill="#fff" stroke="#4a5665" stroke-width="1.6" stroke-dasharray="5 4"/>
+<text x="493.435" y="767" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="13" font-weight="400" fill="#5b6878">Atribut turunan</text>
+<ellipse cx="643.51125" cy="762" rx="28" ry="17" fill="#fff" stroke="#4a5665" stroke-width="1.6"/>
+<ellipse cx="643.51125" cy="762" rx="22" ry="12" fill="#fff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="681.51125" y="767" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="13" font-weight="400" fill="#5b6878">Atribut bernilai jamak</text>
+<line x1="861.88975" y1="759" x2="905.88975" y2="759" stroke="#4a5665" stroke-width="1.6"/>
+<line x1="861.88975" y1="765" x2="905.88975" y2="765" stroke="#4a5665" stroke-width="1.6"/>
+<text x="921.88975" y="767" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="13" font-weight="400" fill="#5b6878">Partisipasi total</text>
+<line x1="56" y1="866" x2="1844" y2="866" stroke="#dde4ed" stroke-width="1"/>
+<text x="56" y="876" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="12" font-weight="400" fill="#5b6878">Relasi Menangani dan Mencatat dimodelkan secara konseptual; pada penerapannya keduanya tidak ditegakkan sebagai foreign key,</text>
+<text x="56" y="896" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="12" font-weight="400" fill="#5b6878">agar jejak laporan dan jejak akses tetap utuh ketika sebuah akun dihapus. Hanya relasi Memiliki yang berupa foreign key sungguhan.</text>
+</svg>

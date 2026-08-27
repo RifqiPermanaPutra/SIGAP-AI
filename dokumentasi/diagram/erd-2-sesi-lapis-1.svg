@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1760 636" width="1760" height="636" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif">
+<rect width="1760" height="636" fill="#ffffff"/>
+<text x="56" y="56" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="26" font-weight="700" fill="#101725">ERD SIGAP — Gambar 2: Entitas SESI (lapis 1)</text>
+<text x="56" y="82" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="13.5" font-weight="400" fill="#5b6878">Bagian yang selalu tercatat untuk setiap laporan, bahkan ketika pelapor tidak sampai mengisi identitasnya.</text>
+<line x1="56" y1="100" x2="1704" y2="100" stroke="#dde4ed" stroke-width="1"/>
+<line x1="880" y1="305" x2="446" y2="186" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="880" y1="305" x2="612" y2="186" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="880" y1="305" x2="778" y2="186" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="880" y1="305" x2="944" y2="186" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="880" y1="305" x2="1124" y2="186" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="880" y1="305" x2="1309" y2="186" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="880" y1="367" x2="496" y2="486" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="880" y1="367" x2="662" y2="486" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="880" y1="367" x2="828" y2="486" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="880" y1="367" x2="994" y2="486" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="880" y1="367" x2="1212" y2="486" stroke="#4a5665" stroke-width="1.5"/>
+<rect x="775" y="305" width="210" height="62" fill="#d6eafa" stroke="#006cb8" stroke-width="2.5"/>
+<text x="880" y="332" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="17" font-weight="600" fill="#101725">SESI</text>
+<text x="880" y="351" text-anchor="middle" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="10.5" font-weight="400" fill="#5b6878">lapis 1 — selalu tercatat, tanpa identitas</text>
+<ellipse cx="446" cy="186" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="446" y="191" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="600" fill="#101725" text-decoration="underline">id</text>
+<ellipse cx="612" cy="186" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="612" y="191" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">nomor_tiket</text>
+<ellipse cx="778" cy="186" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="778" y="191" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">tanggal_wib</text>
+<ellipse cx="944" cy="186" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="944" y="191" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">dibuat_pada</text>
+<ellipse cx="1124" cy="186" rx="86" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="1124" y="191" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">diperbarui_pada</text>
+<ellipse cx="1309" cy="186" rx="77" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="1309" y="191" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">berakhir_pada</text>
+<ellipse cx="496" cy="486" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="496" y="491" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">status</text>
+<ellipse cx="662" cy="486" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="662" y="491" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">divisi_id</text>
+<ellipse cx="828" cy="486" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="828" y="491" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">mode_divisi</text>
+<ellipse cx="994" cy="486" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="994" y="491" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">keluhan</text>
+<ellipse cx="1212" cy="486" rx="124" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="1212" y="491" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">eskalasi_ditawarkan_pada</text>
+<line x1="56" y1="572" x2="1704" y2="572" stroke="#dde4ed" stroke-width="1"/>
+<text x="56" y="582" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="12" font-weight="400" fill="#5b6878">nomor_tiket bersifat UNIQUE dan menjadi kunci alternatif; nomor inilah yang disebut pelapor saat menghubungi engineer.</text>
+<text x="56" y="602" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="12" font-weight="400" fill="#5b6878">tanggal_wib disimpan terpisah dari dibuat_pada agar pengelompokan harian tidak meleset pada laporan dini hari.</text>
+</svg>

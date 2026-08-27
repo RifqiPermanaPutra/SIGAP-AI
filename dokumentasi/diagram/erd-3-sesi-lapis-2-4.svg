@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1820 636" width="1820" height="636" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif">
+<rect width="1820" height="636" fill="#ffffff"/>
+<text x="56" y="56" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="26" font-weight="700" fill="#101725">ERD SIGAP — Gambar 3: Entitas SESI (lapis 2, 3, 4)</text>
+<text x="56" y="82" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="13.5" font-weight="400" fill="#5b6878">Penelusuran solusi, identitas pelapor saat eskalasi, dan penanganan oleh engineer.</text>
+<line x1="56" y1="100" x2="1764" y2="100" stroke="#dde4ed" stroke-width="1"/>
+<line x1="910" y1="305" x2="315" y2="186" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="910" y1="305" x2="486" y2="186" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="910" y1="305" x2="666" y2="186" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="910" y1="305" x2="846" y2="186" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="910" y1="305" x2="1012" y2="186" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="910" y1="305" x2="1178" y2="186" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="910" y1="305" x2="1344" y2="186" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="910" y1="305" x2="1510" y2="186" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="910" y1="367" x2="327" y2="486" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="910" y1="367" x2="521" y2="486" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="910" y1="367" x2="740" y2="486" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="910" y1="367" x2="959" y2="486" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="910" y1="367" x2="1148" y2="486" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="910" y1="367" x2="1332" y2="486" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="910" y1="367" x2="1507" y2="486" stroke="#4a5665" stroke-width="1.5"/>
+<rect x="805" y="305" width="210" height="62" fill="#d6eafa" stroke="#006cb8" stroke-width="2.5"/>
+<text x="910" y="332" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="17" font-weight="600" fill="#101725">SESI</text>
+<text x="910" y="351" text-anchor="middle" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="10.5" font-weight="400" fill="#5b6878">lapis 2, 3, dan 4 — lanjutan Gambar 2</text>
+<ellipse cx="315" cy="186" rx="77" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="315" y="191" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">masalah_cocok</text>
+<ellipse cx="486" cy="186" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="486" y="191" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">skor_cocok</text>
+<ellipse cx="666" cy="186" rx="86" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="666" y="191" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">solusi_terakhir</text>
+<ellipse cx="846" cy="186" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="846" y="191" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">nama</text>
+<ellipse cx="1012" cy="186" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="1012" y="191" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">fungsi</text>
+<ellipse cx="1178" cy="186" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="1178" y="191" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">lokasi</text>
+<ellipse cx="1344" cy="186" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6" stroke-dasharray="7 5"/>
+<text x="1344" y="191" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">area</text>
+<ellipse cx="1510" cy="186" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="1510" y="191" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">urgensi</text>
+<ellipse cx="327" cy="486" rx="86" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="327" y="491" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">engineer_tujuan</text>
+<ellipse cx="521" cy="486" rx="86" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="521" y="491" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">diteruskan_pada</text>
+<ellipse cx="740" cy="486" rx="111" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="740" y="491" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">mulai_dikerjakan_pada</text>
+<ellipse cx="959" cy="486" rx="86" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="959" y="491" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">dikerjakan_oleh</text>
+<ellipse cx="1148" cy="486" rx="81" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="1148" y="491" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">ditangani_pada</text>
+<ellipse cx="1332" cy="486" rx="81" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="1332" y="491" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">ditangani_oleh</text>
+<ellipse cx="1507" cy="486" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="1507" y="491" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">catatan</text>
+<line x1="56" y1="572" x2="1764" y2="572" stroke="#dde4ed" stroke-width="1"/>
+<text x="56" y="582" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="12" font-weight="400" fill="#5b6878">area digambar dengan elips putus-putus karena merupakan atribut TURUNAN — nilainya dihitung dari lokasi, tidak diisi pelapor.</text>
+<text x="56" y="602" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="12" font-weight="400" fill="#5b6878">Keempat lapis pada Gambar 2 dan 3 berada dalam SATU entitas yang sama, bukan empat entitas terpisah.</text>
+</svg>

@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2100 1108" width="2100" height="1108" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif">
+<rect width="2100" height="1108" fill="#ffffff"/>
+<text x="56" y="56" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="26" font-weight="700" fill="#101725">ERD SIGAP — Gambar 4: Entitas PESAN, PENGGUNA, LOG_AKSES, dan MIGRASI</text>
+<text x="56" y="82" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="13.5" font-weight="400" fill="#5b6878">Keempat entitas selain SESI, beserta seluruh atributnya.</text>
+<line x1="56" y1="100" x2="2044" y2="100" stroke="#dde4ed" stroke-width="1"/>
+<line x1="640" y1="305" x2="474" y2="186" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="640" y1="305" x2="640" y2="186" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="640" y1="305" x2="806" y2="186" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="640" y1="367" x2="557" y2="486" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="640" y1="367" x2="723" y2="486" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="1620" y1="305" x2="1620" y2="186" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="1620" y1="367" x2="1620" y2="486" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="640" y1="777" x2="308" y2="658" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="640" y1="777" x2="474" y2="658" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="640" y1="777" x2="640" y2="658" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="640" y1="777" x2="806" y2="658" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="640" y1="777" x2="972" y2="658" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="640" y1="839" x2="360" y2="958" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="640" y1="839" x2="535" y2="958" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="640" y1="839" x2="710" y2="958" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="640" y1="839" x2="898" y2="958" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="1620" y1="777" x2="1454" y2="658" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="1620" y1="777" x2="1620" y2="658" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="1620" y1="777" x2="1786" y2="658" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="1620" y1="839" x2="1537" y2="958" stroke="#4a5665" stroke-width="1.5"/>
+<line x1="1620" y1="839" x2="1703" y2="958" stroke="#4a5665" stroke-width="1.5"/>
+<rect x="535" y="305" width="210" height="62" fill="#d6eafa" stroke="#006cb8" stroke-width="2.5"/>
+<text x="640" y="332" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="17" font-weight="600" fill="#101725">PESAN</text>
+<text x="640" y="351" text-anchor="middle" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="10.5" font-weight="400" fill="#5b6878">isi percakapan</text>
+<ellipse cx="474" cy="186" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="474" y="191" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="600" fill="#101725" text-decoration="underline">id</text>
+<ellipse cx="640" cy="186" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="640" y="191" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">sesi_id</text>
+<ellipse cx="806" cy="186" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="806" y="191" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">peran</text>
+<ellipse cx="557" cy="486" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="557" y="491" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">isi</text>
+<ellipse cx="723" cy="486" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="723" y="491" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">dibuat_pada</text>
+<rect x="1515" y="305" width="210" height="62" fill="#d6eafa" stroke="#006cb8" stroke-width="2.5"/>
+<text x="1620" y="332" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="17" font-weight="600" fill="#101725">MIGRASI</text>
+<text x="1620" y="351" text-anchor="middle" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="10.5" font-weight="400" fill="#5b6878">penanda teknis</text>
+<ellipse cx="1620" cy="186" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="1620" y="191" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="600" fill="#101725" text-decoration="underline">nama</text>
+<ellipse cx="1620" cy="486" rx="86" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="1620" y="491" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">dijalankan_pada</text>
+<rect x="535" y="777" width="210" height="62" fill="#d6eafa" stroke="#006cb8" stroke-width="2.5"/>
+<text x="640" y="804" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="17" font-weight="600" fill="#101725">PENGGUNA</text>
+<text x="640" y="823" text-anchor="middle" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="10.5" font-weight="400" fill="#5b6878">admin dan engineer</text>
+<ellipse cx="308" cy="658" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="308" y="663" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="600" fill="#101725" text-decoration="underline">id</text>
+<ellipse cx="474" cy="658" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="474" y="663" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">nama_akun</text>
+<ellipse cx="640" cy="658" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="640" y="663" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">nama</text>
+<ellipse cx="806" cy="658" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="806" y="663" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">peran</text>
+<ellipse cx="972" cy="658" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="972" y="663" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">sandi_hash</text>
+<ellipse cx="360" cy="958" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="360" y="963" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">dibuat_pada</text>
+<ellipse cx="535" cy="958" rx="81" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="535" y="963" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">masuk_terakhir</text>
+<ellipse cx="710" cy="958" rx="78" ry="32" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<ellipse cx="710" cy="958" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="710" y="963" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">divisi</text>
+<ellipse cx="898" cy="958" rx="94" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="898" y="963" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">sandi_diubah_pada</text>
+<rect x="1515" y="777" width="210" height="62" fill="#d6eafa" stroke="#006cb8" stroke-width="2.5"/>
+<text x="1620" y="804" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="17" font-weight="600" fill="#101725">LOG_AKSES</text>
+<text x="1620" y="823" text-anchor="middle" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="10.5" font-weight="400" fill="#5b6878">jejak akses</text>
+<ellipse cx="1454" cy="658" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="1454" y="663" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="600" fill="#101725" text-decoration="underline">id</text>
+<ellipse cx="1620" cy="658" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="1620" y="663" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">nama_akun</text>
+<ellipse cx="1786" cy="658" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="1786" y="663" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">tindakan</text>
+<ellipse cx="1537" cy="958" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="1537" y="963" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">keterangan</text>
+<ellipse cx="1703" cy="958" rx="72" ry="26" fill="#ffffff" stroke="#4a5665" stroke-width="1.6"/>
+<text x="1703" y="963" text-anchor="middle" font-family="'IBM Plex Mono','JetBrains Mono',Consolas,monospace" font-size="14" font-weight="400" fill="#101725">dibuat_pada</text>
+<line x1="56" y1="1044" x2="2044" y2="1044" stroke="#dde4ed" stroke-width="1"/>
+<text x="56" y="1054" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="12" font-weight="400" fill="#5b6878">divisi digambar dengan elips ganda karena merupakan atribut BERNILAI JAMAK — satu engineer dapat memegang beberapa layanan sekaligus.</text>
+<text x="56" y="1074" text-anchor="start" font-family="'IBM Plex Sans','Segoe UI',Arial,sans-serif" font-size="12" font-weight="400" fill="#5b6878">sesi_id pada PESAN adalah foreign key ke SESI; nama_akun pada LOG_AKSES sengaja tidak dijadikan foreign key.</text>
+</svg>
