@@ -539,8 +539,8 @@ export default function RekapPage() {
                   kendalanya tidak muncul di mana pun kecuali angka ini. */}
               <Kotak
                 ikon={<IconAlert size={17} />}
-                label="Ditawari engineer, lalu pergi" nilai={r.ditawari_pergi}
-                keterangan="tidak tuntas dan tidak dilaporkan ke siapa pun"
+                label="Tidak lanjut ke engineer" nilai={r.ditawari_pergi}
+                keterangan="sudah ditawari bantuan, tapi tidak diteruskan"
               />
               <Kotak
                 ikon={<IconClock size={17} />}
