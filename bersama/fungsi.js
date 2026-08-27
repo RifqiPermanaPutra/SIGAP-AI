@@ -4,10 +4,14 @@
  */
 export const FUNGSI_LIST = [
   'FM (Field Manager)',
-  'HC & Plan Eval',
-  'PE & WO/WS',
+  'HC',
+  'Plan Eval',
+  'PE',
+  'WO',
+  'WS',
   'Finance',
-  'R.A.M',
+  'RAM',
   'Legal & Relation',
-  'PO (Production Operation)'
+  'PO (Production Operation)',
+  'SCM'
 ];
