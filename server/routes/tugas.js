@@ -14,8 +14,7 @@ import { Router } from 'express';
 import { wajibMasuk, catatAkses } from '../services/authService.js';
 import {
   daftarTugas, tandaiDitangani, batalkanPenandaan,
-  mulaiMengerjakan, lepaskanTugas
-} from '../services/rekapService.js';
+  mulaiMengerjakan, lepaskanTugas, kirimKabar, kabarTiket} from '../services/rekapService.js';
 import { DIVISI_ID, DIVISIONS, namaDivisi } from '../config/divisi.js';
 
 export const tugasRouter = Router();
@@ -154,6 +153,42 @@ tugasRouter.post('/lepas', (req, res) => {
  * `selesaiPada` boleh dikosongkan — artinya sekarang. Diisi bila engineer baru
  * sempat membuka halaman ini beberapa jam setelah kendalanya benar-benar beres.
  */
+/**
+ * POST /api/tugas/kabar
+ * Kirim kabar kepada pelapor — tampil di halaman cek status tiketnya.
+ *
+ * Ini jawaban atas perbaikan yang menunggu barang datang: tanpa kabar,
+ * tiket yang sedang menunggu sparepart terlihat sama saja dengan tiket
+ * yang terlupakan.
+ */
+tugasRouter.post('/kabar', (req, res) => {
+  const { nomorTiket, isi } = req.body || {};
+
+  if (!nomorTiket) {
+    return res.status(400).json({ success: false, error: 'nomorTiket wajib diisi' });
+  }
+
+  const hasil = kirimKabar(nomorTiket, req.pengguna.akun, isi, {
+    divisiDiizinkan: req.pengguna.divisi
+  });
+
+  if (!hasil.ok) {
+    return res.status(hasil.status || 400).json({ success: false, error: hasil.alasan });
+  }
+
+  catatAkses(req.pengguna.akun, 'kirim-kabar', nomorTiket);
+  res.json({ success: true, kabar: hasil.kabar });
+});
+
+/**
+ * GET /api/tugas/kabar/:nomor
+ * Kabar yang sudah pernah dikirim — supaya engineer tidak mengulang isi
+ * yang sama, dan tahu kapan terakhir pelapor dikabari.
+ */
+tugasRouter.get('/kabar/:nomor', (req, res) => {
+  res.json({ success: true, data: kabarTiket(String(req.params.nomor || '').trim().toUpperCase()) });
+});
+
 tugasRouter.post('/selesai', (req, res) => {
   const { nomorTiket, catatan, selesaiPada } = req.body || {};
 

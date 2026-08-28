@@ -20,6 +20,7 @@
 import { Router } from 'express';
 import { wajibSiap } from '../database/init.js';
 import { namaDivisi } from '../config/divisi.js';
+import { kabarTiket } from '../services/rekapService.js';
 import { batasiLaju } from '../services/pembatasLaju.js';
 
 export const tiketRouter = Router();
@@ -112,7 +113,17 @@ tiketRouter.get('/:nomor', batasCek, (req, res) => {
       // Inilah yang paling ingin diketahui pelapor, dan satu-satunya alasan
       // halaman ini ada: kendalanya sudah ditangani atau belum.
       ditanganiPada: sesi.ditangani_pada,
-      sudahDitangani: Boolean(sesi.ditangani_pada)
+      sudahDitangani: Boolean(sesi.ditangani_pada),
+
+      // Kabar engineer selama tiket berjalan — inilah yang membedakan
+      // perbaikan yang sedang menunggu barang datang dari tiket yang
+      // terlupakan. Keduanya tampak sama bila pelapor hanya melihat status.
+      //
+      // `oleh` SENGAJA DIBUANG, dengan alasan yang sama seperti
+      // `dikerjakan_oleh` di atas: halaman ini terbuka dan nomornya dapat
+      // ditebak berurutan, sehingga menyebut nama penulisnya berarti
+      // menjadikannya cara memetakan siapa mengerjakan apa.
+      kabar: kabarTiket(nomor).map(({ isi, dibuat_pada }) => ({ isi, dibuatPada: dibuat_pada }))
     }
   });
 });

@@ -156,6 +156,26 @@ export default function TiketPage() {
               )}
             </dl>
 
+            {/* Kabar dari engineer. Inilah yang membedakan perbaikan yang
+                sedang menunggu barang datang dari tiket yang terlupakan —
+                tanpa ini, keduanya terlihat persis sama bagi pelapor.
+
+                Nama penulisnya tidak ditampilkan; lihat alasannya pada
+                server/routes/tiket.js. */}
+            {hasil.kabar?.length > 0 && (
+              <div className="tk-kabar">
+                <h3>Kabar dari Engineer IT</h3>
+                <ol>
+                  {hasil.kabar.map((k, i) => (
+                    <li key={i}>
+                      <time>{waktuWIB(k.dibuatPada)}</time>
+                      <p>{k.isi}</p>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            )}
+
             {/* Halaman ini tidak menampilkan isi keluhan maupun data pelapor.
                 Nomor tiket berurutan dan mudah ditebak, sehingga menampilkannya
                 di sini berarti membukanya bagi siapa pun yang menghitung. */}

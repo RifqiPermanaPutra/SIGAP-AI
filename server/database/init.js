@@ -133,6 +133,31 @@ CREATE TABLE IF NOT EXISTS pesan (
 
 CREATE INDEX IF NOT EXISTS idx_pesan_sesi ON pesan(sesi_id, id);
 
+-- Kabar dari engineer kepada pelapor selama tiketnya berjalan.
+--
+-- Lahir dari keadaan yang tidak tertangani rancangan awal: perbaikan yang
+-- menunggu barang datang berhari-hari terlihat sama saja dengan tiket yang
+-- terlupakan, karena pelapor hanya melihat status "diteruskan" tanpa sebab.
+--
+-- Tabel tersendiri, bukan baris pada "pesan": "pesan" adalah percakapan
+-- pelapor dengan sistem, dan kabar engineer bukan bagian darinya. Satu tiket
+-- dapat menerima banyak kabar selama menunggu, sehingga hubungannya
+-- satu-ke-banyak dan tidak dapat ditampung kolom pada "sesi".
+--
+-- TERBACA TANPA MASUK. Isinya tampil pada /tiket yang hanya meminta nomor
+-- tiket — nomor yang dapat ditebak berurutan. Itu keputusan yang diambil
+-- sadar; karena itu antarmuka penulisnya mengingatkan engineer agar tidak
+-- menyebut nama orang atau rincian yang tidak perlu diketahui umum.
+CREATE TABLE IF NOT EXISTS kabar (
+  id           INTEGER PRIMARY KEY AUTOINCREMENT,
+  sesi_id      TEXT NOT NULL REFERENCES sesi(id) ON DELETE CASCADE,
+  isi          TEXT NOT NULL,
+  oleh         TEXT NOT NULL,                  -- nama akun engineer/admin
+  dibuat_pada  TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_kabar_sesi ON kabar(sesi_id, id);
+
 -- Akun pengakses halaman rekap. Tidak ada pendaftaran mandiri: untuk enam
 -- pengguna tetap, membuka pintu pendaftaran hanya menambah risiko.
 CREATE TABLE IF NOT EXISTS pengguna (

@@ -801,6 +801,7 @@ export function hapusLaporan(nomorTiket) {
     // pada `PRAGMA foreign_keys = ON` yang disetel di tempat lain; menuliskannya
     // di sini membuat penghapusan tetap utuh bila pengaturan itu berubah.
     const pesanTerhapus = db.prepare('DELETE FROM pesan WHERE sesi_id = ?').run(baris.id).changes;
+    db.prepare('DELETE FROM kabar WHERE sesi_id = ?').run(baris.id);
     db.prepare('DELETE FROM sesi WHERE id = ?').run(baris.id);
     db.exec('COMMIT');
     return { ...baris, pesanTerhapus };
@@ -808,4 +809,62 @@ export function hapusLaporan(nomorTiket) {
     db.exec('ROLLBACK');
     throw galat;
   }
+}
+
+/**
+ * Kirim kabar dari engineer kepada pelapor.
+ *
+ * Perbaikan yang menunggu barang datang berhari-hari terlihat sama saja
+ * dengan tiket yang terlupakan: pelapor hanya melihat status 'diteruskan'
+ * tanpa sebab. Kabar inilah yang membedakan keduanya.
+ *
+ * TERBACA TANPA MASUK pada /tiket. Isinya tidak disaring di sini — yang
+ * menjaganya adalah peringatan pada antarmuka penulisnya, karena hanya
+ * engineer yang tahu mana rincian yang layak diumumkan.
+ *
+ * @param {string} nomorTiket
+ * @param {string} namaAkun penulis kabar
+ * @param {string} isi
+ * @param {{divisiDiizinkan?: string[]|null}} opsi
+ * @returns {{ok: boolean, alasan?: string, status?: number, kabar?: object}}
+ */
+export function kirimKabar(nomorTiket, namaAkun, isi, opsi = {}) {
+  const { divisiDiizinkan = null } = opsi;
+
+  const dapat = tiketDalamWewenang(nomorTiket, divisiDiizinkan);
+  if (!dapat.ok) return dapat;
+  const { sesi } = dapat;
+
+  const teks = String(isi || '').trim();
+  if (!teks) return { ok: false, alasan: 'Isi kabar tidak boleh kosong' };
+
+  // Dibatasi supaya kotak kabar tidak berubah menjadi tempat menyalin catatan
+  // penanganan yang panjang — yang tempatnya di kolom `catatan`, dan tidak
+  // terbuka untuk umum.
+  if (teks.length > 500) {
+    return { ok: false, alasan: 'Kabar terlalu panjang (maksimal 500 karakter)' };
+  }
+
+  const dibuatPada = new Date().toISOString();
+  wajibSiap().prepare(
+    'INSERT INTO kabar (sesi_id, isi, oleh, dibuat_pada) VALUES (?, ?, ?, ?)'
+  ).run(sesi.id, teks, namaAkun, dibuatPada);
+
+  return { ok: true, kabar: { isi: teks, oleh: namaAkun, dibuat_pada: dibuatPada } };
+}
+
+/**
+ * Kabar sebuah tiket, terlama di atas.
+ *
+ * `oleh` disertakan supaya halaman rekap dan tugas dapat menampilkan siapa
+ * yang menulis. Rute /tiket yang terbuka WAJIB membuangnya sebelum
+ * mengirimkan — lihat alasannya di sana.
+ */
+export function kabarTiket(nomorTiket) {
+  return wajibSiap().prepare(`
+    SELECT k.isi, k.oleh, k.dibuat_pada
+      FROM kabar k JOIN sesi s ON s.id = k.sesi_id
+     WHERE s.nomor_tiket = ?
+     ORDER BY k.id
+  `).all(nomorTiket);
 }

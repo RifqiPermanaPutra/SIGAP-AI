@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   DivisionIcon, IconCheck, IconLogout, IconChart, IconClock, IconInbox,
-  IconAlert, IconWrench, IconUndo, IconUser
+  IconAlert, IconWrench, IconUndo, IconUser, IconSend
 } from '../components/Icons.jsx';
 import Masuk from '../components/Masuk.jsx';
 import GantiSandi from '../components/GantiSandi.jsx';
@@ -145,6 +145,12 @@ export default function TugasPage() {
   const [sibuk, setSibuk] = useState(false);
   const [galatDialog, setGalatDialog] = useState('');
   const [divisi, setDivisi] = useState('');
+
+  // Dinamai 'kabari', bukan 'kabar' — nama itu sudah dipakai pesan sukses
+  // di halaman ini.
+  const [kabari, setKabari] = useState(null);
+  const [isiKabar, setIsiKabar] = useState('');
+  const [galatKabar, setGalatKabar] = useState('');
   // Nomor tiket yang tombolnya sedang menunggu jawaban server — supaya ketukan
   // kedua pada tombol yang sama tidak mengirim permintaan kembar.
   const [sedangKirim, setSedangKirim] = useState('');
@@ -202,6 +208,36 @@ export default function TugasPage() {
    * alih, atau melepaskan. Ketiganya berbagi penanganan yang sama karena
    * ketiganya sama-sama satu permintaan tanpa formulir.
    */
+  /**
+   * Kirim kabar kepada pelapor, tampil pada halaman cek status tiketnya.
+   *
+   * Terpisah dari `tindakan` karena galatnya ditampilkan DI DALAM dialog,
+   * bukan di tingkat halaman yang berada di belakang lapisan gelapnya.
+   */
+  const kirimKabar = async () => {
+    const isi = isiKabar.trim();
+    if (!isi) { setGalatKabar('Isi kabar tidak boleh kosong.'); return; }
+
+    setGalatKabar('');
+    setSibuk(true);
+    try {
+      const r = await fetch(`${API}/tugas/kabar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nomorTiket: kabari.nomor_tiket, isi })
+      });
+      const d = await r.json();
+      if (!d.success) { setGalatKabar(d.error || 'Gagal mengirim kabar.'); return; }
+
+      setKabari(null);
+      setIsiKabar('');
+      setKabar('Kabar terkirim. Pelapor dapat membacanya lewat nomor tiketnya.');
+    } catch {
+      setGalatKabar('Tidak dapat terhubung ke server.');
+    } finally {
+      setSibuk(false);
+    }
+  };
   const tindakan = async (jalur, tugas, tambahan = {}) => {
     setSedangKirim(tugas.nomor_tiket);
     setGalat('');
@@ -534,6 +570,15 @@ export default function TugasPage() {
                         </button>
                       )}
 
+                      {/* Kabari pelapor. Tersedia bagi siapa pun yang boleh
+                          menangani tiket ini — termasuk yang belum
+                          memegangnya, karena kabar "sparepart sedang dipesan"
+                          justru perlu dikirim sebelum pengerjaannya mulai. */}
+                      <button type="button" className="tg-tombol-samar" disabled={menunggu}
+                              onClick={() => { setKabari(t); setIsiKabar(''); setGalatKabar(''); }}>
+                        <IconSend size={15} /> Kabari pelapor
+                      </button>
+
                       {/* Menyelesaikan tiket yang dipegang orang lain ditolak
                           server. Tombolnya disembunyikan agar penolakan itu
                           tidak perlu dialami dulu untuk diketahui — kecuali
@@ -554,6 +599,46 @@ export default function TugasPage() {
           </>
         )}
       </div>
+
+      {kabari && (
+        <div className="tg-dialog-latar" onClick={() => setKabari(null)}>
+          <div className="tg-dialog" role="dialog" aria-modal="true"
+               aria-label={`Kabari pelapor ${kabari.nomor_tiket}`}
+               onClick={(e) => e.stopPropagation()}>
+            <h3>Kabari pelapor</h3>
+            <p className="tg-dialog-tiket">{kabari.nomor_tiket} · {kabari.divisi_nama}</p>
+            <p className="tg-dialog-keluhan">{kabari.keluhan}</p>
+
+            {/* Peringatan ini bukan basa-basi. Halaman cek status terbuka
+                tanpa masuk dan nomor tiketnya dapat ditebak berurutan,
+                sehingga apa pun yang ditulis di sini dapat terbaca orang
+                lain. Hanya engineer yang tahu mana rincian yang layak. */}
+            <p className="tg-peringatan">
+              Kabar ini terbaca oleh siapa pun yang mengetahui nomor tiketnya.
+              Tulis seperlunya — hindari menyebut nama orang, kata sandi, atau
+              rincian yang tidak perlu diketahui umum.
+            </p>
+
+            <label htmlFor="tg-isi-kabar">
+              Kabar untuk pelapor <small>(maksimal 500 karakter)</small>
+            </label>
+            <textarea
+              id="tg-isi-kabar" rows="3" value={isiKabar} maxLength={500} autoFocus
+              placeholder="Contoh: unit kamera perlu diganti dan stoknya habis. Sudah dipesan, perkiraan datang minggu depan."
+              onChange={(e) => setIsiKabar(e.target.value)}
+            />
+
+            {galatKabar && <p className="tg-galat" role="alert">{galatKabar}</p>}
+
+            <div className="tg-dialog-aksi">
+              <button type="button" className="tg-tombol-samar" onClick={() => setKabari(null)}>Batal</button>
+              <button type="button" className="tg-tombol-utama" disabled={sibuk} onClick={kirimKabar}>
+                {sibuk ? 'Mengirim…' : 'Kirim kabar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {dipilih && (
         <DialogSelesai
