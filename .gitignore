@@ -36,6 +36,13 @@ _*.log
 .claude/
 .qodo/
 
+# Dokumentasi laporan — tangkapan layar, diagram, dan presentasi.
+# Dipindahkan keluar repo (lihat README) karena isinya 29 MB, sembilan kali
+# lipat seluruh kode aplikasi, sementara tidak satu pun dirujuk kodenya.
+# Arsip deploy ikut mengecil dari 28 MB menjadi seukuran kodenya saja.
+dokumentasi/
+*.docx
+
 # OS
 .DS_Store
 Thumbs.db
