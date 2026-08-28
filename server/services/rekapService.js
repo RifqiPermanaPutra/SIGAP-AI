@@ -761,3 +761,51 @@ export function pangkasIsiLama(tahun = 2) {
 
   return { pesan, akses };
 }
+
+/**
+ * Hapus sebuah laporan dari basis data. HANYA ADMIN — lihat rute /hapus.
+ *
+ * PENGHAPUSAN INI PERMANEN dan tidak dapat dibatalkan. Dipilih atas permintaan
+ * pengguna agar laporan karangan benar-benar lenyap dari rekap, bukan sekadar
+ * disembunyikan.
+ *
+ * Yang menjaganya tetap dapat dipertanggungjawabkan:
+ *
+ *   1. Barisnya DIBACA LEBIH DAHULU lalu dikembalikan kepada pemanggil, supaya
+ *      rute dapat menuliskan nomor tiket, keluhan, dan alasannya ke `log_akses`.
+ *      Setelah baris ini hilang, catatan itulah satu-satunya bukti yang
+ *      tersisa — maka isinya harus cukup untuk meninjau ulang keputusannya.
+ *
+ *   2. Pesan dan sesinya dibuang dalam SATU transaksi. Bila salah satunya
+ *      gagal, keduanya batal — tidak ada baris `pesan` yatim yang menunjuk
+ *      sesi yang sudah tiada.
+ *
+ * @param {string} nomorTiket nomor tiket laporan
+ * @returns {{nomor_tiket: string, keluhan: string|null, nama: string|null,           tanggal_wib: string, divisi_id: string|null, pesanTerhapus: number}|null}
+ *          data laporan yang dihapus, atau `null` bila tiketnya tidak ada
+ */
+export function hapusLaporan(nomorTiket) {
+  const db = wajibSiap();
+
+  const baris = db.prepare(`
+    SELECT id, nomor_tiket, tanggal_wib, divisi_id, nama, fungsi, lokasi, keluhan, status
+      FROM sesi WHERE nomor_tiket = ?
+  `).get(nomorTiket);
+
+  // Tiket tak dikenal bukan galat, melainkan jawaban: tidak ada yang dihapus.
+  if (!baris) return null;
+
+  db.exec('BEGIN');
+  try {
+    // Dihapus tersurat meski ON DELETE CASCADE sudah aktif. Cascade bergantung
+    // pada `PRAGMA foreign_keys = ON` yang disetel di tempat lain; menuliskannya
+    // di sini membuat penghapusan tetap utuh bila pengaturan itu berubah.
+    const pesanTerhapus = db.prepare('DELETE FROM pesan WHERE sesi_id = ?').run(baris.id).changes;
+    db.prepare('DELETE FROM sesi WHERE id = ?').run(baris.id);
+    db.exec('COMMIT');
+    return { ...baris, pesanTerhapus };
+  } catch (galat) {
+    db.exec('ROLLBACK');
+    throw galat;
+  }
+}

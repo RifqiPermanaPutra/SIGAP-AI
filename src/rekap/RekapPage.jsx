@@ -156,6 +156,9 @@ export default function RekapPage() {
   const [memuat, setMemuat] = useState(false);
   const [galat, setGalat] = useState('');
   const [tandai, setTandai] = useState(null);
+  const [hapus, setHapus] = useState(null);
+  const [alasanHapus, setAlasanHapus] = useState('');
+  const [galatHapus, setGalatHapus] = useState('');
   const [galatTandai, setGalatTandai] = useState('');
   const [batal, setBatal] = useState(null);
   const [barisTerbuka, setBarisTerbuka] = useState(null);
@@ -263,6 +266,34 @@ export default function RekapPage() {
       ambil();
     } catch {
       setGalat('Gagal membatalkan penandaan.');
+    }
+  };
+
+  /**
+   * Hapus laporan dari basis data — permanen, tidak dapat dibatalkan.
+   *
+   * Alasannya diwajibkan dan ikut tertulis pada jejak akses. Sesudah barisnya
+   * hilang, catatan itulah satu-satunya bukti laporan tersebut pernah ada.
+   */
+  const kirimHapus = async () => {
+    setGalatHapus('');
+    const alasan = alasanHapus.trim();
+    if (!alasan) { setGalatHapus('Alasan wajib diisi.'); return; }
+
+    try {
+      const res = await fetch(`${API}/rekap/hapus`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nomorTiket: hapus.nomor_tiket, alasan })
+      });
+      const d = await res.json();
+      if (!d.success) { setGalatHapus(d.error || 'Gagal menghapus laporan.'); return; }
+
+      setHapus(null);
+      setAlasanHapus('');
+      ambil();
+    } catch {
+      setGalatHapus('Tidak dapat terhubung ke server.');
     }
   };
 
@@ -766,6 +797,23 @@ export default function RekapPage() {
                             </span>
                           </td>
                           <td className="rk-sembunyi-cetak">
+                            {/* Menghapus laporan karangan. Hanya admin —
+                                lihat catatan pada rute /hapus. Ditaruh di luar
+                                percabangan status karena laporan tak jelas
+                                dapat berada pada keadaan apa pun, termasuk
+                                yang sudah ditandai selesai. */}
+                            {pengguna.peran === 'admin' && (
+                              <button
+                                className="rk-tombol-kecil rk-tombol-hapus"
+                                title="Hapus laporan ini secara permanen"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setHapus(l); setAlasanHapus(''); setGalatHapus('');
+                                }}
+                              >
+                                Hapus
+                              </button>
+                            )}
                             {l.status === 'diteruskan' && !l.ditangani_pada ? (
                               <>
                                 {/* Tiket yang sudah dipegang engineer. Tanpa
@@ -866,6 +914,37 @@ export default function RekapPage() {
           onBatal={() => { setTandai(null); setGalatTandai(''); }}
           onKirim={kirimTandai}
         />
+      )}
+
+      {hapus && (
+        <div className="rk-dialog-latar" onClick={() => setHapus(null)}>
+          <div className="rk-dialog" role="dialog" aria-modal="true"
+               aria-label="Hapus laporan" onClick={(e) => e.stopPropagation()}>
+            <h3>Hapus laporan ini?</h3>
+            <p className="rk-dialog-tiket">{hapus.nomor_tiket} · {hapus.divisi_nama}</p>
+            <p className="rk-dialog-keluhan">{hapus.keluhan || '—'}</p>
+            <p className="rk-dialog-keluhan">
+              <strong>Penghapusan ini permanen dan tidak dapat dibatalkan.</strong>{' '}
+              Laporan beserta seluruh percakapannya dibuang dari basis data, dan
+              nomor tiketnya tidak lagi dapat ditelusuri pelapor. Yang tersisa
+              hanya catatan pada jejak akses.
+            </p>
+            <label htmlFor="rk-alasan-hapus">Alasan <small>(wajib diisi)</small></label>
+            <textarea id="rk-alasan-hapus" rows="2" value={alasanHapus} autoFocus
+                      placeholder="Contoh: laporan karangan, bukan kejadian nyata"
+                      onChange={(e) => setAlasanHapus(e.target.value)} />
+
+            {galatHapus && (
+              <p className="rk-dialog-galat" role="alert">
+                <IconAlert size={15} /> {galatHapus}
+              </p>
+            )}
+            <div className="rk-dialog-aksi">
+              <button className="rk-tombol-samar" onClick={() => setHapus(null)}>Tidak jadi</button>
+              <button className="rk-tombol-utama" onClick={kirimHapus}>Ya, hapus permanen</button>
+            </div>
+          </div>
+        </div>
       )}
 
       {batal && (

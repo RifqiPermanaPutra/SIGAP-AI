@@ -197,6 +197,13 @@
   min-height: 32px;
 }
 .rk-tombol-kecil:hover { border-color: var(--pt-blue); }
+/* Tombol hapus dibedakan warnanya karena tindakannya tidak dapat dibatalkan,
+   dan letaknya bersebelahan dengan "Tandai selesai" yang bisa. */
+.rk-tombol-hapus {
+  background: var(--pt-red-soft);
+  color: var(--pt-red-text);
+}
+.rk-tombol-hapus:hover { border-color: var(--pt-red); }
 
 /* ── Saringan ─────────────────────────────────────────────────── */
 

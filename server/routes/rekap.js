@@ -8,7 +8,8 @@
 import { Router } from 'express';
 import {
   cariLaporan, jumlahLaporan, ringkasan, deretWaktu, sebaran,
-  keluhanTakDikenali, nilaiUnik, tandaiDitangani, keefektifanSolusi
+  keluhanTakDikenali, nilaiUnik, tandaiDitangani, keefektifanSolusi,
+  hapusLaporan
 } from '../services/rekapService.js';
 import {
   wajibMasuk, catatAkses, daftarAkses, daftarPengguna, divisiAkun
@@ -279,6 +280,52 @@ rekapRouter.post('/catat-cetak', wajibMasuk(), (req, res) => {
 });
 
 /** GET /api/rekap/akses — jejak akses, hanya admin */
+/* ────────────────────────────────────────────────────────────────
+   Menghapus laporan
+
+   HANYA ADMIN. Engineer sengaja tidak diberi wewenang ini: pada sistem
+   pengaduan, kemampuan menghapus laporan mencakup kemampuan menghapus
+   keluhan tentang dirinya sendiri.
+
+   Penghapusannya permanen. Karena itu jejaknya ditulis SEBELUM barisnya
+   dibuang, dan memuat isi keluhannya — sesudah ini, catatan itulah
+   satu-satunya bukti bahwa laporan tersebut pernah ada.
+   ──────────────────────────────────────────────────────────────── */
+
+rekapRouter.post('/hapus', wajibMasuk('admin'), (req, res) => {
+  try {
+    const nomorTiket = String(req.body?.nomorTiket || '').trim();
+    const alasan = String(req.body?.alasan || '').trim();
+
+    if (!nomorTiket) {
+      return res.status(400).json({ success: false, error: 'Nomor tiket wajib diisi' });
+    }
+    // Alasan diwajibkan, bukan dianjurkan. Penghapusan tanpa alasan tidak
+    // dapat ditinjau ulang oleh siapa pun — termasuk oleh admin yang
+    // menghapusnya sendiri, enam bulan kemudian.
+    if (!alasan) {
+      return res.status(400).json({ success: false, error: 'Alasan wajib diisi' });
+    }
+
+    const terhapus = hapusLaporan(nomorTiket);
+    if (!terhapus) {
+      return res.status(404).json({ success: false, error: 'Nomor tiket tidak ditemukan' });
+    }
+
+    catatAkses(
+      req.pengguna.akun,
+      'hapus-laporan',
+      `${terhapus.nomor_tiket} · ${terhapus.tanggal_wib} · ${terhapus.divisi_id || '—'} · ` +
+      `${terhapus.nama || 'tanpa nama'} · "${terhapus.keluhan || '—'}" — alasan: ${alasan}`
+    );
+
+    res.json({ success: true, pesanTerhapus: terhapus.pesanTerhapus });
+  } catch (error) {
+    console.error('Error hapus laporan:', error);
+    res.status(500).json({ success: false, error: 'Gagal menghapus laporan' });
+  }
+});
+
 rekapRouter.get('/akses', wajibMasuk('admin'), (req, res) => {
   res.json({ success: true, akses: daftarAkses(200) });
 });
