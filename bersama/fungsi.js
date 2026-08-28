@@ -12,5 +12,6 @@ export const FUNGSI_LIST = [
   'RAM',
   'Legal & Relation',
   'PO (Production Operation)',
-  'SCM'
+  'SCM',
+  'HSSE'
 ];
