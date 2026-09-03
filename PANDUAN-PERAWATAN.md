@@ -17,13 +17,18 @@ Sistemnya sudah berdiri di <https://sigapit.my.id>.
 |---|---|---|
 | Menyunting kode | Bisa | Bisa |
 | `git push` ke GitHub | Bisa | Bisa |
-| SSH langsung ke VPS | **Diblokir jaringan kantor (port 22)** | Bisa |
-| Menayangkan ke server | Lewat Terminal web IDCloudHost | Lewat SSH biasa |
+| SSH langsung ke VPS | Bisa | Bisa |
+| Menayangkan ke server | Lewat SSH | Lewat SSH |
 
-Blokir port 22 di kantor itu keputusan jaringan Pertamina, bukan kesalahan
-penyetelan. Karena itu penayangan tidak lagi memakai `scp`, melainkan
-`git pull` yang dijalankan **di dalam** VPS — dan itu dapat dilakukan dari
-Terminal web yang berjalan lewat HTTPS.
+Penayangan tidak lagi memakai `scp`, melainkan `git pull` yang dijalankan
+**di dalam** VPS. Cara ini dipilih bukan sekadar karena lebih ringkas: arsip
+yang dulu dikirim berukuran 27 MB tiap kali, sedangkan `git pull` hanya
+memindahkan baris yang benar-benar berubah.
+
+Bila suatu saat SSH tidak dapat menembus jaringan tempat Anda berada —
+sebagian jaringan perusahaan menutup porta 22 — VPS tetap dapat dikelola
+lewat **Terminal web IDCloudHost** yang berjalan di atas HTTPS. Isi
+perintahnya sama persis.
 
 **PowerShell di laptop kantor versi 5.1 dan tidak mengenal `&&`.** Perintah
 untuk Windows di bawah ini karena itu ditulis satu per satu. Perintah untuk VPS
@@ -142,30 +147,40 @@ sandi biasa di terminal.
 
 ## Langkah 5: tayangkan ke server
 
-### Dari laptop kantor — lewat Terminal web
+### Cara biasa — lewat SSH
 
-1. Buka <https://my.idcloudhost.com>
-2. Masuk ke VPS bernama `sigapit`
-3. Klik tombol **Terminal** di baris atas (sederet dengan Start, Stop, Reboot)
-4. Masuk sebagai `sigapit` dengan kata sandi VPS
-5. Jalankan:
-
-```bash
-cd /opt/sigap && sudo -u sigap git pull && sudo -u sigap npm run build && sudo systemctl restart sigap
-```
-
-### Dari laptop rumah — lewat SSH
+Dari PowerShell di laptop mana pun:
 
 ```bash
 ssh sigapit@103.55.37.108
 ```
 
-Setelah prompt berubah menjadi `sigapit@sigapit:~$`, jalankan perintah yang
-sama persis seperti di atas.
+Masukkan kata sandi VPS. Huruf tidak akan terlihat saat diketik — itu
+perilaku normal SSH, bukan tanda macet.
+
+Setelah prompt berubah menjadi `sigapit@sigapit:~$`, jalankan:
+
+```bash
+cd /opt/sigap && sudo -u sigap git pull && sudo -u sigap npm run build && sudo systemctl restart sigap
+```
 
 > **Cara memastikan sudah berada di dalam VPS:** prompt-nya
 > `sigapit@sigapit:~$`, bukan `PS C:\...>`. Perintah `sudo` tidak akan pernah
 > jalan di Windows.
+
+### Bila SSH tidak dapat menembus jaringan — lewat Terminal web
+
+Sebagian jaringan perusahaan menutup porta 22. Gejalanya: `ssh` berhenti di
+`Connecting to ... port 22` lalu diam sampai `Connection timed out`. Bila itu
+terjadi, VPS tetap dapat dikelola lewat peramban:
+
+1. Buka <https://my.idcloudhost.com>
+2. Masuk ke VPS bernama `sigapit`
+3. Klik tombol **Terminal** di baris atas (sederet dengan Start, Stop, Reboot)
+4. Masuk sebagai `sigapit` dengan kata sandi VPS
+5. Jalankan perintah yang sama persis seperti di atas
+
+Terminal ini berjalan di atas HTTPS, sehingga tidak terpengaruh blokir porta 22.
 
 ---
 
