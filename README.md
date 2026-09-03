@@ -23,6 +23,7 @@ Dokumen ini panjang karena memuat semuanya. Cari peran Anda:
 |---|---|
 | **Menerima sistem ini untuk pertama kali** | [Serah terima ke Fungsi IT](#serah-terima-ke-fungsi-it) — kerjakan berurutan dari atas |
 | **Menempatkan di server sewaan (VPS)** | [PANDUAN-HOSTING.md](PANDUAN-HOSTING.md) — berbeda dari penempatan di kantor |
+| **Mengubah kode lalu menayangkannya** | [PANDUAN-PERAWATAN.md](PANDUAN-PERAWATAN.md) — sunting, uji, kirim, periksa |
 | **Pengelola harian (admin IT)** | [Akun dan kata sandi](#akun-dan-kata-sandi) · [Tugas rutin pengelola](#tugas-rutin-pengelola) |
 | **Engineer yang menangani tiket** | [Tugas engineer](#tugas-engineer) |
 | **Memperbarui langkah SOP** | [Penyunting SOP](#penyunting-sop) |
@@ -34,6 +35,7 @@ Dokumen ini panjang karena memuat semuanya. Cari peran Anda:
 - [Menjalankan](#menjalankan) — pasang dan nyalakan
 - [Serah terima ke Fungsi IT](#serah-terima-ke-fungsi-it) — daftar periksa penyerahan
 - [PANDUAN-HOSTING.md](PANDUAN-HOSTING.md) — menempatkan di server sewaan (VPS)
+- [PANDUAN-PERAWATAN.md](PANDUAN-PERAWATAN.md) — alur mengubah kode dan menayangkannya
 - [Akun dan kata sandi](#akun-dan-kata-sandi) — buat, ganti, cabut
 - [Tugas rutin pengelola](#tugas-rutin-pengelola) — bulanan dan tahunan
 - [Bila terjadi masalah](#bila-terjadi-masalah) — gejala, sebab, tindakan
