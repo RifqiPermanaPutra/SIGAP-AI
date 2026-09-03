@@ -28,7 +28,8 @@ jangan tambah dependensi kecuali benar-benar tidak terhindarkan.
 **Sebelum menyentuh apa pun:**
 ```bash
 npm install
-npm test        # harus 116 pemeriksaan lulus (37 basisdata + 9 akurasi + 70 api)
+# harus 116 pemeriksaan lulus (37 basisdata + 9 akurasi + 70 api)
+npm test
 ```
 Jika ada yang gagal sebelum Anda mengubah apa pun, laporkan dan hentikan —
 jangan lanjut di atas fondasi yang sudah rusak.

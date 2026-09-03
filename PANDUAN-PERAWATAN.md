@@ -161,7 +161,10 @@ perilaku normal SSH, bukan tanda macet.
 Setelah prompt berubah menjadi `sigapit@sigapit:~$`, jalankan:
 
 ```bash
-cd /opt/sigap && sudo -u sigap git pull && sudo -u sigap npm run build && sudo systemctl restart sigap
+cd /opt/sigap \
+  && sudo -u sigap git pull \
+  && sudo -u sigap npm run build \
+  && sudo systemctl restart sigap
 ```
 
 > **Cara memastikan sudah berada di dalam VPS:** prompt-nya
@@ -247,7 +250,9 @@ dari folder `dist/`, dan folder itu **tidak ikut git** — jadi harus dibangun
 ulang di server setiap kali menayangkan.
 
 ```bash
-cd /opt/sigap && sudo -u sigap npm run build && sudo systemctl restart sigap
+cd /opt/sigap \
+  && sudo -u sigap npm run build \
+  && sudo systemctl restart sigap
 ```
 
 ### Ingin kembali ke versi sebelumnya
@@ -255,13 +260,17 @@ cd /opt/sigap && sudo -u sigap npm run build && sudo systemctl restart sigap
 Lihat riwayatnya:
 
 ```bash
-cd /opt/sigap && sudo -u sigap git log --oneline -10
+cd /opt/sigap \
+  && sudo -u sigap git log --oneline -10
 ```
 
 Kembali ke commit tertentu:
 
 ```bash
-cd /opt/sigap && sudo -u sigap git reset --hard <kode-commit> && sudo -u sigap npm run build && sudo systemctl restart sigap
+cd /opt/sigap \
+  && sudo -u sigap git reset --hard <kode-commit> \
+  && sudo -u sigap npm run build \
+  && sudo systemctl restart sigap
 ```
 
 Basis data tidak ikut mundur — ia berada di `/var/lib/sigap/`, di luar folder
@@ -274,7 +283,8 @@ aplikasi. Yang kembali hanya kodenya.
 Bila perubahannya menyentuh basis data atau Anda ragu, cadangkan lebih dulu:
 
 ```bash
-cd /opt/sigap && sudo -u sigap npm run cadangkan
+cd /opt/sigap \
+  && sudo -u sigap npm run cadangkan
 ```
 
 Hasilnya tersimpan di `/var/lib/sigap/cadangan`. Pencadangan harian sebenarnya
@@ -314,6 +324,9 @@ git push
 **Di VPS:**
 
 ```bash
-cd /opt/sigap && sudo -u sigap git pull && sudo -u sigap npm run build && sudo systemctl restart sigap
+cd /opt/sigap \
+  && sudo -u sigap git pull \
+  && sudo -u sigap npm run build \
+  && sudo systemctl restart sigap
 systemctl status sigap
 ```

@@ -206,7 +206,8 @@ Arahkan dulu nama domain ke alamat IP VPS (rekaman A), tunggu sampai
 menyebar. Periksa: `dig +short sigap.contoh.id`
 
 ```bash
-sudo cp /opt/sigap/skrip-linux/nginx-sigap.conf /etc/nginx/sites-available/sigap
+sudo cp /opt/sigap/skrip-linux/nginx-sigap.conf \
+        /etc/nginx/sites-available/sigap
 sudo nano /etc/nginx/sites-available/sigap     # ganti sigap.contoh.id
 sudo ln -s /etc/nginx/sites-available/sigap /etc/nginx/sites-enabled/
 sudo rm -f /etc/nginx/sites-enabled/default
@@ -328,7 +329,9 @@ Memperbarui aplikasi:
 ```bash
 sudo systemctl stop sigap
 cd /opt/sigap && sudo -u sigap tar xzf /tmp/sigap-baru.tar.gz
-sudo -u sigap npm install && sudo -u sigap npm run build:kb && sudo -u sigap npm run build
+sudo -u sigap npm install \
+  && sudo -u sigap npm run build:kb \
+  && sudo -u sigap npm run build
 sudo systemctl start sigap
 ```
 

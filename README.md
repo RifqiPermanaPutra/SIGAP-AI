@@ -189,10 +189,17 @@ Ingin mengatur firewall sendiri? Tambahkan `-TanpaFirewall`. Ingin porta lain?
 Memeriksa dan mengendalikannya:
 
 ```powershell
-Get-ScheduledTaskInfo -TaskName SIGAP-Server   # kapan terakhir jalan, hasilnya apa
-Start-ScheduledTask   -TaskName SIGAP-Server   # jalankan sekarang, tanpa restart komputer
-Stop-ScheduledTask    -TaskName SIGAP-Server   # hentikan yang sedang berjalan
-Disable-ScheduledTask -TaskName SIGAP-Server   # matikan pemicunya untuk sementara
+# kapan terakhir jalan, hasilnya apa
+Get-ScheduledTaskInfo -TaskName SIGAP-Server
+
+# jalankan sekarang, tanpa restart komputer
+Start-ScheduledTask   -TaskName SIGAP-Server
+
+# hentikan yang sedang berjalan
+Stop-ScheduledTask    -TaskName SIGAP-Server
+
+# matikan pemicunya untuk sementara
+Disable-ScheduledTask -TaskName SIGAP-Server
 ```
 
 Membongkar seluruhnya:
