@@ -55,11 +55,15 @@ export default function ChatWindow({
 
   // Saran ditawarkan hanya di awal percakapan, saat pengguna belum bertanya
   const showSuggestions =
-    division &&
-    !isLoading &&
-    !showEngineerBtn &&
-    messages.length > 0 &&
-    !messages.some((m) => m.role === 'user');
+  division &&
+  !isLoading &&
+  !showEngineerBtn &&
+  messages.length > 0 &&
+  !messages.some((m) => m.role === 'user');
+
+console.log('DIVISION:', division);
+console.log('DIVISION ID:', division?.id);
+console.log('SUGGESTIONS END USER:', division?.id === 'end-user');
 
   return (
     <div

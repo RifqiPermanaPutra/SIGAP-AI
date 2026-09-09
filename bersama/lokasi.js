@@ -15,7 +15,8 @@ export const LOKASI_GROUPS = [
     area: 'Buatan',
     items: [
       'Kantor Besar Buatan',
-      'Operator Buatan'
+      'Operator Buatan',
+      'RDP (Rumah Dinas Perusahaan)'
     ]
   },
   {
@@ -24,12 +25,14 @@ export const LOKASI_GROUPS = [
       'Pumper UKUI',
       'P3 Operator UKUI',
       'SP 5, 6, 7 UKUI',
-      'Klinik UKUI'
+      'Klinik UKUI',
+      'RDP (Rumah Dinas Perusahaan)'
     ]
   },
   {
     area: 'Lirik',
     items: [
+      'RDP (Rumah Dinas Perusahaan)',
       'HSSE Demo Room Lirik',
       'Produksi Lirik',
       'WS Lirik',

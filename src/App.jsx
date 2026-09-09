@@ -206,12 +206,6 @@ export default function App() {
   // Pilih layanan langsung dari kartu di landing
  const handleLandingDivision = (selectedDivision) => {
   setView('chat');
-
-  if (selectedDivision.id === 'end-user') {
-    setShowDivisionSelector(true);
-    return;
-  }
-
   handleDivisionSelect(selectedDivision);
 };
 
@@ -493,12 +487,11 @@ export default function App() {
       )}
 
       {!showIntake && showDivisionSelector && config && ( 
-      <DivisionSelector 
-      divisions={config.divisions} 
-      onSelect={handleDivisionSelect} 
+      <DivisionSelector
+      divisions={config.divisions}
+      onSelect={handleDivisionSelect}
       onClose={handleDivisionClose}
-      initialEndUser={true}
-    /> 
+      />
   )}
     </div>
   );
