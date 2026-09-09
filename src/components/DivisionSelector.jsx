@@ -10,9 +10,15 @@ const END_USER_OPTIONS = [
   { id: 'software', name: 'Software', description: 'Kendala pada aplikasi atau perangkat lunak', icon: '💿' }
 ];
 
-export default function DivisionSelector({ divisions, onSelect, onClose }) {
-  const [showEndUserCategories, setShowEndUserCategories] = useState(false);
-
+export default function DivisionSelector({
+  divisions,
+  onSelect,
+  onClose,
+  initialEndUser = false
+}) {
+  const [showEndUserCategories, setShowEndUserCategories] =
+    useState(initialEndUser);
+    
   const handleSelect = (div) => {
     if (div.id === 'end-user') {
       setShowEndUserCategories(true);

@@ -204,7 +204,7 @@ export default function App() {
   };
 
   // Pilih layanan langsung dari kartu di landing
-  const handleLandingDivision = (selectedDivision) => {
+ const handleLandingDivision = (selectedDivision) => {
   setView('chat');
 
   if (selectedDivision.id === 'end-user') {
@@ -492,13 +492,14 @@ export default function App() {
         />
       )}
 
-      {!showIntake && showDivisionSelector && config && (
-        <DivisionSelector
-          divisions={config.divisions}
-          onSelect={handleDivisionSelect}
-          onClose={handleDivisionClose}
-        />
-      )}
+      {!showIntake && showDivisionSelector && config && ( 
+      <DivisionSelector 
+      divisions={config.divisions} 
+      onSelect={handleDivisionSelect} 
+      onClose={handleDivisionClose}
+      initialEndUser={true}
+    /> 
+  )}
     </div>
   );
 }
