@@ -24,8 +24,8 @@ if (!(process.env.WHATSAPP_FTTH || '').trim() && (process.env[ENV_FTTH_SEBELUMNY
  *  - `engineer` : tidak ada langkah SOP, keluhan langsung diteruskan
  *
  * Pembagian ini berasal dari masukan Engineer IT (Eka Maulana): keluhan yang
- * cukup umum untuk dipandu sendiri hanya ada pada komputer dan printer.
- * Selebihnya — CCTV, jaringan, WAN, HT, telepon — memang harus ditangani
+ * cukup umum untuk dipandu sendiri hanya ada pada End User dan printer.
+ * Selebihnya — CCTV, jaringan, multimedia, HT, telepon — memang harus ditangani
  * engineer, dan SOP-nya tidak boleh disusun dari sumber umum karena sangat
  * spesifik lapangan.
  *
@@ -34,16 +34,12 @@ if (!(process.env.WHATSAPP_FTTH || '').trim() && (process.env[ENV_FTTH_SEBELUMNY
  */
 export const DIVISIONS = [
   { id: 'printer', name: 'Printer', description: 'Masalah printer, cetak dokumen', env: 'WHATSAPP_PRINTER', mode: 'swalayan' },
-  { id: 'windows', name: 'Windows', description: 'Laptop, PC, sistem operasi', env: 'WHATSAPP_WINDOWS', mode: 'swalayan' },
+  { id: 'end-user', name: 'End User', description: 'Laptop, PC, Sistem Informasi, Hardware, Software', env: 'WHATSAPP_END_USER', mode: 'swalayan' },
   { id: 'cctv', name: 'CCTV', description: 'Kamera pengawas, DVR/NVR', env: 'WHATSAPP_CCTV', mode: 'engineer' },
   { id: 'telepon', name: 'Telepon', description: 'Telepon kantor, extension', env: 'WHATSAPP_TELEPON', mode: 'engineer' },
-  { id: 'radio', name: 'Radio Komunikasi', description: 'Radio HT, repeater', env: 'WHATSAPP_RADIO', mode: 'engineer' },
-  // FTTH masih menunggu konfirmasi: Eka menyebut "jaringan" tanpa merinci
-  // apakah FTTH termasuk. Ditempatkan sebagai mode engineer karena perangkat
-  // ONU umumnya berada di rak, bukan di meja pengguna.
   { id: 'ftth', name: 'FTTH', description: 'Fiber to the home, ONU/ONT', env: 'WHATSAPP_FTTH', mode: 'engineer' },
   { id: 'lan', name: 'LAN', description: 'Jaringan lokal, kabel LAN', env: 'WHATSAPP_LAN', mode: 'engineer' },
-  { id: 'wan', name: 'WAN', description: 'Jaringan luas, koneksi antar site', env: 'WHATSAPP_WAN', mode: 'engineer' }
+  { id: 'multimedia', name: 'Multimedia', description: 'Sound system, tinta printer, persiapan rapat', env: 'WHATSAPP_MULTIMEDIA', mode: 'engineer' }
 ];
 
 /** Peta id → divisi, untuk pencarian cepat */

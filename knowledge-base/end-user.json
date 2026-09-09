@@ -1,7 +1,7 @@
 {
   "$schema": "../server/data/sop.schema.json",
-  "divisi": "windows",
-  "nama": "Windows",
+  "divisi": "end-user",
+  "nama": "End User",
   "catatanKonfirmasi": [
     "Komputer bergabung ke domain perusahaan atau berdiri sendiri",
     "Kebijakan masa berlaku kata sandi dan prosedur pengaturan ulang",
@@ -1821,6 +1821,591 @@
       ],
       "solusi": [],
       "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Sebelum melapor, ada dua hal aman yang dapat Anda periksa dan sangat menolong: pastikan kabel daya tertancap rapat di kedua ujungnya, lalu uji stopkontaknya dengan alat lain yang Anda tahu berfungsi. Untuk laptop, tancapkan pengisi daya lalu tunggu 15 menit sebelum mencoba menyalakannya kembali, dan perhatikan apakah ada lampu pengisian yang menyala. Jangan membuka badan komputer sendiri. Silakan hubungi Engineer melalui tombol WhatsApp beserta hasil pemeriksaan tersebut dan lokasi komputernya."
+    },
+    {
+      "id": "end-user-laptop-tidak-bisa-menyala",
+      "judul": "Laptop Tidak Bisa Menyala",
+      "gejala": "Ketika tombol daya ditekan, laptop tidak menampilkan layar atau tidak masuk ke Windows.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Baterai habis",
+        "Adaptor daya tidak terpasang dengan baik",
+        "Laptop mengalami kondisi daya sementara",
+        "Perangkat keras membutuhkan pemeriksaan"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Periksa Daya",
+          "pengantar": null,
+          "langkah": [
+            "Pastikan adaptor terpasang rapat ke laptop dan stopkontak.",
+            "Perhatikan apakah lampu pengisian menyala.",
+            "Lepaskan perangkat USB yang tidak diperlukan.",
+            "Tekan tombol daya sekali lalu tunggu sekitar 30 detik."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Lakukan Power Reset",
+          "pengantar": null,
+          "langkah": [
+            "Cabut adaptor daya.",
+            "Jika baterai dapat dilepas, lepaskan baterainya.",
+            "Tekan dan tahan tombol daya sekitar 15 detik.",
+            "Pasang kembali adaptor, lalu nyalakan laptop."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Coba Sumber Daya Lain",
+          "pengantar": null,
+          "langkah": [
+            "Coba stopkontak lain yang diketahui berfungsi.",
+            "Pastikan indikator adaptor menyala bila memang memiliki indikator.",
+            "Coba nyalakan tanpa perangkat tambahan.",
+            "Jika tetap tidak menyala, laporkan kepada Engineer IT."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "end-user-pc-tidak-bisa-menyala",
+      "judul": "PC Tidak Bisa Menyala",
+      "gejala": "PC tidak menyala ketika tombol daya ditekan atau tidak ada tampilan setelah dinyalakan.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kabel daya longgar",
+        "Stopkontak atau sumber listrik bermasalah",
+        "Perangkat mengalami gangguan daya",
+        "Komponen PC membutuhkan pemeriksaan"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Periksa Kabel Daya",
+          "pengantar": null,
+          "langkah": [
+            "Pastikan kabel daya PC terpasang rapat.",
+            "Periksa sambungan ke stopkontak.",
+            "Pastikan sakelar daya pada perangkat atau terminal listrik berada pada posisi menyala.",
+            "Tekan tombol daya sekali dan tunggu."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Periksa Sumber Listrik",
+          "pengantar": null,
+          "langkah": [
+            "Coba stopkontak lain yang diketahui berfungsi.",
+            "Jangan memakai kabel atau terminal listrik yang terlihat rusak.",
+            "Pastikan perangkat lain di sumber listrik yang sama menyala.",
+            "Coba nyalakan kembali PC."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Lepaskan Perangkat Tambahan",
+          "pengantar": null,
+          "langkah": [
+            "Matikan sumber daya PC.",
+            "Lepaskan flashdisk, hard disk eksternal, dan perangkat USB yang tidak diperlukan.",
+            "Sambungkan kembali daya PC.",
+            "Jika tetap tidak menyala, hubungi Engineer IT."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "end-user-monitor-pc-tidak-menampilkan-gambar",
+      "judul": "Monitor PC Tidak Menampilkan Gambar",
+      "gejala": "Monitor menyala tetapi layar kosong atau menampilkan pesan tidak ada sinyal.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kabel monitor longgar",
+        "Input monitor tidak sesuai",
+        "PC belum mengirim sinyal gambar",
+        "Perangkat tampilan mengalami gangguan"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Periksa Kabel dan Input",
+          "pengantar": null,
+          "langkah": [
+            "Pastikan kabel video terpasang rapat pada monitor dan PC.",
+            "Pastikan monitor mendapat daya dan lampu indikator menyala.",
+            "Tekan tombol Input/Source pada monitor.",
+            "Pilih sumber input yang sesuai dengan kabel yang digunakan."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Periksa Sambungan",
+          "pengantar": null,
+          "langkah": [
+            "Matikan monitor.",
+            "Lepaskan lalu pasang kembali kabel video dengan rapat.",
+            "Jika tersedia kabel lain yang sudah diketahui baik, gunakan untuk pengujian.",
+            "Nyalakan monitor kembali."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Restart PC",
+          "pengantar": null,
+          "langkah": [
+            "Simpan pekerjaan jika masih dapat dilakukan.",
+            "Restart PC melalui Windows bila memungkinkan.",
+            "Tunggu sampai proses penyalaan selesai.",
+            "Jika monitor tetap tidak menampilkan gambar, hubungi Engineer IT."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "end-user-pc-terasa-sangat-lambat",
+      "judul": "PC Terasa Sangat Lambat",
+      "gejala": "PC membutuhkan waktu lama untuk membuka aplikasi, berpindah jendela, atau merespons perintah.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Terlalu banyak aplikasi berjalan",
+        "Penyimpanan hampir penuh",
+        "Program berjalan otomatis saat startup",
+        "PC sudah lama tidak direstart"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Tutup Aplikasi yang Tidak Diperlukan",
+          "pengantar": null,
+          "langkah": [
+            "Simpan pekerjaan yang sedang dikerjakan.",
+            "Tutup aplikasi yang tidak digunakan.",
+            "Tutup tab browser yang tidak diperlukan.",
+            "Restart PC dan tunggu sampai Windows selesai memuat."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Periksa Penyimpanan",
+          "pengantar": null,
+          "langkah": [
+            "Buka Settings lalu System lalu Storage.",
+            "Periksa apakah ruang penyimpanan hampir penuh.",
+            "Hapus berkas sementara yang memang aman dihapus.",
+            "Kosongkan Recycle Bin jika isinya tidak diperlukan."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Kurangi Startup",
+          "pengantar": null,
+          "langkah": [
+            "Buka Settings lalu Apps lalu Startup.",
+            "Periksa program yang berdampak tinggi saat startup.",
+            "Matikan hanya program yang Anda kenali dan tidak diperlukan.",
+            "Restart PC. Jika tetap lambat, hubungi Engineer IT."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "end-user-sistem-informasi-tidak-bisa-login",
+      "judul": "Sistem Informasi Tidak Bisa Login",
+      "gejala": "Nama pengguna atau kata sandi ditolak saat masuk ke sistem informasi internal.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kata sandi salah",
+        "Akun terkunci",
+        "Koneksi ke sistem internal terganggu",
+        "Hak akses akun bermasalah"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Periksa Data Login",
+          "pengantar": null,
+          "langkah": [
+            "Pastikan nama pengguna yang dipakai adalah akun Anda.",
+            "Periksa huruf besar-kecil pada kata sandi.",
+            "Ketik ulang data login secara perlahan.",
+            "Coba login kembali satu kali."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Periksa Koneksi",
+          "pengantar": null,
+          "langkah": [
+            "Pastikan komputer terhubung ke jaringan kantor.",
+            "Coba buka halaman internal lain yang biasa digunakan.",
+            "Jika halaman internal lain juga tidak dapat dibuka, catat hasilnya.",
+            "Coba login kembali setelah koneksi normal."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Hentikan Percobaan Berulang",
+          "pengantar": null,
+          "langkah": [
+            "Jangan terus mencoba jika akun terus ditolak.",
+            "Catat pesan kesalahan yang muncul.",
+            "Catat jam kejadian dan nama sistem yang digunakan.",
+            "Jika tetap gagal, hubungi Engineer IT dan sebutkan nama sistem serta pesan kesalahannya."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "end-user-sistem-informasi-tidak-bisa-dibuka",
+      "judul": "Sistem Informasi Tidak Bisa Dibuka",
+      "gejala": "Halaman sistem informasi internal tidak terbuka atau langsung menampilkan pesan kesalahan.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Koneksi jaringan internal terganggu",
+        "Layanan sistem sedang bermasalah",
+        "Peramban menyimpan data sesi lama",
+        "Akses pengguna sedang bermasalah"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Periksa Koneksi",
+          "pengantar": null,
+          "langkah": [
+            "Pastikan koneksi jaringan kantor aktif.",
+            "Coba buka satu situs atau sistem internal lain.",
+            "Catat apakah sistem lain dapat dibuka.",
+            "Coba buka sistem informasi kembali."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Muat Ulang Sesi",
+          "pengantar": null,
+          "langkah": [
+            "Tutup tab sistem informasi.",
+            "Buka kembali peramban.",
+            "Masuk ke alamat sistem informasi dari alamat resmi yang biasa digunakan.",
+            "Coba login kembali dan catat pesan kesalahan jika muncul."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Bandingkan dengan Pengguna Lain",
+          "pengantar": null,
+          "langkah": [
+            "Tanyakan kepada rekan apakah sistem yang sama dapat dibuka.",
+            "Catat apakah hanya akun Anda yang mengalami masalah atau semua pengguna.",
+            "Jangan mengubah konfigurasi sistem internal sendiri.",
+            "Jika gangguan tetap ada, hubungi Engineer IT dengan menyebutkan nama sistem dan waktu kejadian."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "end-user-sistem-informasi-data-tidak-tampil",
+      "judul": "Data pada Sistem Informasi Tidak Tampil",
+      "gejala": "Halaman sistem dapat dibuka tetapi data yang biasanya muncul kosong atau tidak lengkap.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Filter pencarian tidak sesuai",
+        "Data belum tersinkron",
+        "Layanan sistem mengalami gangguan",
+        "Hak akses pengguna berubah"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Periksa Filter",
+          "pengantar": null,
+          "langkah": [
+            "Periksa tanggal, lokasi, status, atau filter lain yang sedang aktif.",
+            "Hapus filter yang tidak diperlukan.",
+            "Jalankan pencarian kembali.",
+            "Periksa apakah data sudah muncul."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Muat Ulang Halaman",
+          "pengantar": null,
+          "langkah": [
+            "Simpan atau catat pekerjaan yang sedang dilakukan.",
+            "Muat ulang halaman sistem.",
+            "Keluar lalu masuk kembali bila diperlukan.",
+            "Coba buka data yang sama sekali lagi."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Bandingkan Data",
+          "pengantar": null,
+          "langkah": [
+            "Tanyakan kepada rekan apakah data yang sama tampil di akunnya.",
+            "Catat nama menu dan data yang tidak muncul.",
+            "Catat waktu ketika data mulai tidak tampil.",
+            "Jika tetap bermasalah, hubungi Engineer IT."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "end-user-keyboard-mouse-tidak-berfungsi",
+      "judul": "Keyboard atau Mouse Tidak Berfungsi",
+      "gejala": "Keyboard atau mouse tidak merespons ketika digunakan pada komputer.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kabel atau konektor longgar",
+        "Baterai perangkat nirkabel habis",
+        "Port USB bermasalah",
+        "Perangkat mengalami gangguan"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Periksa Sambungan",
+          "pengantar": null,
+          "langkah": [
+            "Pastikan kabel keyboard atau mouse terpasang rapat.",
+            "Jika perangkat nirkabel, pastikan tombol dayanya menyala.",
+            "Untuk perangkat nirkabel, periksa baterainya.",
+            "Coba gunakan perangkat kembali."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Coba Port Lain",
+          "pengantar": null,
+          "langkah": [
+            "Lepaskan perangkat dari port USB.",
+            "Tunggu beberapa detik.",
+            "Pasang pada port USB lain yang tersedia.",
+            "Tunggu sampai Windows mengenali perangkat."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Uji Perangkat Lain",
+          "pengantar": null,
+          "langkah": [
+            "Jika tersedia, gunakan keyboard atau mouse lain yang diketahui berfungsi.",
+            "Periksa apakah perangkat pengganti dapat digunakan.",
+            "Jika perangkat pengganti berfungsi, perangkat awal kemungkinan bermasalah.",
+            "Laporkan kepada Engineer IT bila perlu penggantian."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "end-user-usb-tidak-terdeteksi",
+      "judul": "Perangkat USB Tidak Terdeteksi",
+      "gejala": "Flashdisk, hard disk eksternal, atau perangkat USB tidak muncul setelah disambungkan.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Koneksi USB tidak rapat",
+        "Port USB bermasalah",
+        "Perangkat USB mengalami gangguan",
+        "Perangkat belum dikenali Windows"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Pasang Ulang USB",
+          "pengantar": null,
+          "langkah": [
+            "Lepaskan perangkat USB dengan aman bila sedang terbaca.",
+            "Cabut perangkat lalu tunggu beberapa detik.",
+            "Pasang kembali sampai terdengar atau terlihat tanda perangkat terhubung.",
+            "Periksa File Explorer."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Coba Port Lain",
+          "pengantar": null,
+          "langkah": [
+            "Lepaskan perangkat USB.",
+            "Sambungkan ke port USB lain pada komputer.",
+            "Tunggu beberapa detik agar Windows mengenalinya.",
+            "Periksa kembali File Explorer."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Bandingkan dengan Komputer Lain",
+          "pengantar": null,
+          "langkah": [
+            "Jika kebijakan perusahaan mengizinkan, uji perangkat pada komputer lain.",
+            "Jangan membuka atau mengubah isi perangkat bila ada berkas kerja penting.",
+            "Catat apakah perangkat terdeteksi di komputer lain.",
+            "Jika tetap tidak terdeteksi, hubungi Engineer IT."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "end-user-monitor-tidak-menampilkan-gambar",
+      "judul": "Monitor Tidak Menampilkan Gambar",
+      "gejala": "Layar monitor kosong meskipun komputer menyala.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Monitor tidak mendapat daya",
+        "Kabel tampilan longgar",
+        "Sumber input monitor salah",
+        "Perangkat tampilan bermasalah"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Periksa Daya",
+          "pengantar": null,
+          "langkah": [
+            "Pastikan kabel daya monitor terpasang.",
+            "Pastikan lampu indikator monitor menyala.",
+            "Tekan tombol daya monitor sekali.",
+            "Tunggu beberapa detik dan periksa layar."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Periksa Input dan Kabel",
+          "pengantar": null,
+          "langkah": [
+            "Pastikan kabel video terpasang rapat.",
+            "Tekan Input/Source pada monitor.",
+            "Pilih sumber input yang sesuai.",
+            "Periksa apakah gambar sudah muncul."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Uji Sambungan",
+          "pengantar": null,
+          "langkah": [
+            "Matikan monitor.",
+            "Pasang kembali kabel video.",
+            "Jika tersedia, gunakan kabel video yang diketahui baik.",
+            "Nyalakan monitor kembali. Jika tetap kosong, hubungi Engineer IT."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "end-user-aplikasi-tidak-bisa-dibuka",
+      "judul": "Aplikasi Tidak Bisa Dibuka",
+      "gejala": "Ketika aplikasi dijalankan, aplikasi tidak muncul atau langsung tertutup.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Aplikasi sedang mengalami error",
+        "Komputer belum selesai memuat layanan",
+        "Berkas aplikasi rusak",
+        "Aplikasi membutuhkan pembaruan"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Tutup dan Buka Kembali",
+          "pengantar": null,
+          "langkah": [
+            "Tutup aplikasi yang sedang berjalan.",
+            "Tunggu sekitar 10 detik.",
+            "Buka aplikasi kembali dari menu Start.",
+            "Catat pesan kesalahan bila muncul."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Restart Komputer",
+          "pengantar": null,
+          "langkah": [
+            "Simpan seluruh pekerjaan.",
+            "Tutup aplikasi lain yang sedang digunakan.",
+            "Restart komputer melalui Start lalu Power lalu Restart.",
+            "Setelah komputer siap, buka aplikasi kembali."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Catat Error",
+          "pengantar": null,
+          "langkah": [
+            "Buka aplikasi sekali lagi.",
+            "Catat pesan kesalahan secara lengkap.",
+            "Catat kapan masalah mulai terjadi.",
+            "Jangan memasang ulang aplikasi internal sendiri; bila tetap gagal, hubungi Engineer IT."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "end-user-aplikasi-sering-error",
+      "judul": "Aplikasi Sering Error",
+      "gejala": "Aplikasi dapat dibuka tetapi sering berhenti, menampilkan error, atau tidak merespons.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Terlalu banyak aplikasi terbuka",
+        "Aplikasi membutuhkan pembaruan",
+        "Penyimpanan atau memori terbatas",
+        "Berkas aplikasi mengalami gangguan"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Tutup Aplikasi Lain",
+          "pengantar": null,
+          "langkah": [
+            "Simpan pekerjaan.",
+            "Tutup aplikasi yang tidak diperlukan.",
+            "Tutup tab browser yang tidak digunakan.",
+            "Coba gunakan aplikasi kembali."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Restart Komputer",
+          "pengantar": null,
+          "langkah": [
+            "Simpan pekerjaan yang sedang terbuka.",
+            "Restart komputer melalui Start lalu Power lalu Restart.",
+            "Tunggu sekitar 3 menit setelah Windows menyala.",
+            "Buka aplikasi dan coba pekerjaan yang sama."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Catat Pola Error",
+          "pengantar": null,
+          "langkah": [
+            "Perhatikan kapan aplikasi berhenti merespons.",
+            "Catat pesan error yang muncul.",
+            "Catat pekerjaan yang sedang dilakukan saat error.",
+            "Jika tetap terjadi, hubungi Engineer IT dengan membawa catatan tersebut."
+          ]
+        }
+      ],
+      "penanganan": null
+    },
+    {
+      "id": "end-user-software-tidak-bisa-diinstal",
+      "judul": "Software Tidak Bisa Diinstal",
+      "gejala": "Proses pemasangan software gagal, berhenti, atau menampilkan pesan bahwa pengguna tidak memiliki izin.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Akun tidak memiliki hak administrator",
+        "Software tidak sesuai kebijakan perusahaan",
+        "Berkas pemasang rusak",
+        "Versi software tidak sesuai"
+      ],
+      "solusi": [
+        {
+          "judul": "Solusi Pertama: Periksa Berkas Pemasang",
+          "pengantar": null,
+          "langkah": [
+            "Pastikan berkas pemasang berasal dari sumber resmi perusahaan.",
+            "Periksa apakah unduhan selesai dengan sempurna.",
+            "Jangan menjalankan pemasang yang berasal dari sumber tidak dikenal.",
+            "Coba jalankan kembali hanya jika sumbernya memang resmi."
+          ]
+        },
+        {
+          "judul": "Solusi Kedua: Catat Pesan Kesalahan",
+          "pengantar": null,
+          "langkah": [
+            "Jalankan pemasang satu kali.",
+            "Catat pesan kesalahan yang muncul.",
+            "Perhatikan apakah pesan menyebut hak administrator atau kebijakan keamanan.",
+            "Jangan mematikan antivirus atau pengamanan komputer."
+          ]
+        },
+        {
+          "judul": "Solusi Ketiga: Minta Bantuan Engineer",
+          "pengantar": null,
+          "langkah": [
+            "Siapkan nama software dan versinya.",
+            "Catat alasan software tersebut dibutuhkan untuk pekerjaan.",
+            "Catat pesan kesalahan dari proses instalasi.",
+            "Hubungi Engineer IT untuk pemasangan atau pemberian hak yang diperlukan."
+          ]
+        }
+      ],
+      "penanganan": null
     }
   ]
 }

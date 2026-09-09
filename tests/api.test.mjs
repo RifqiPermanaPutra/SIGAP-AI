@@ -71,7 +71,7 @@ bagian('2b. Batas layanan pada halaman rekap');
 const bud = await masuk(AKUN_UJI.engineerPrinter);
 cek('engineer terbatas berhasil masuk', bud.data.success === true, bud.data);
 
-const MILIK_BUDI = AKUN_UJI.engineerPrinter.divisi;   // ['printer', 'windows']
+const MILIK_BUDI = AKUN_UJI.engineerPrinter.divisi;   // ['printer', 'end-user']
 const semuaAdmin = await json('/rekap?dari=2020-01-01', adm.kuki);
 
 const rekapBudi = await json('/rekap?dari=2020-01-01', bud.kuki);
@@ -307,7 +307,7 @@ catatan('sebelum ini jangkarnya pesan pertama — keluhan kabur yang justru tida
 bagian('8b. Kelengkapan data divisi swalayan');
 const { readFileSync } = await import('fs');
 const kb = JSON.parse(readFileSync('server/data/knowledge-base.json', 'utf8'));
-for (const divisi of ['printer', 'windows']) {
+for (const divisi of ['printer', 'end-user']) {
   const ringan = kb.masalah.filter((m) => m.divisi === divisi && m.kategori !== 'berat');
   const kurang = ringan.filter((m) => (m.solusi || []).length < 3);
   cek(`${divisi}: semua masalah ringan punya 3 solusi`,

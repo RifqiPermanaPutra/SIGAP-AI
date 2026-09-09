@@ -282,6 +282,8 @@ const DIVISION_ICONS = {
   telepon: IconPhone,
   radio: IconRadio,
   windows: IconWindows,
+  'end-user': IconWindows,
+  multimedia: IconHeadset,
   ftth: IconFtth,
   lan: IconLan,
   wan: IconWan

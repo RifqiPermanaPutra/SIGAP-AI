@@ -139,10 +139,12 @@ export default function App() {
 
   // Handle division selection
   const handleDivisionSelect = async (selectedDivision) => {
-    setShowDivisionSelector(false);
-    setDivision(selectedDivision);
-    setShowEngineerBtn(false);
-    setMenungguKonfirmasi(false);
+  setShowDivisionSelector(false);
+  setDivision(selectedDivision);
+  setShowEngineerBtn(false);
+  setMenungguKonfirmasi(false);
+  setSaranDivisi(null);
+  setSaranMasalah(null);
 
     // Cadangan bila server tidak dapat dihubungi. Sengaja tidak menjanjikan
     // panduan bertahap untuk layanan mode engineer, karena memang tidak ada.
@@ -203,9 +205,15 @@ export default function App() {
 
   // Pilih layanan langsung dari kartu di landing
   const handleLandingDivision = (selectedDivision) => {
-    setView('chat');
-    handleDivisionSelect(selectedDivision);
-  };
+  setView('chat');
+
+  if (selectedDivision.id === 'end-user') {
+    setShowDivisionSelector(true);
+    return;
+  }
+
+  handleDivisionSelect(selectedDivision);
+};
 
   // Kirim formulir pelaporan, lalu buka WhatsApp engineer
   const handleIntakeSubmit = async (data) => {

@@ -13,11 +13,11 @@
  */
 export const DIVISI_CADANGAN = [
   { id: 'printer', name: 'Printer', description: 'Masalah printer, cetak dokumen', mode: 'swalayan' },
-  { id: 'windows', name: 'Windows', description: 'Laptop, PC, sistem operasi', mode: 'swalayan' },
+  { id: 'end-user', name: 'End User', description: 'Laptop, PC, Sistem Informasi, Hardware, Software', mode: 'swalayan' },
   { id: 'cctv', name: 'CCTV', description: 'Kamera pengawas, DVR/NVR', mode: 'engineer' },
   { id: 'telepon', name: 'Telepon', description: 'Telepon kantor, extension', mode: 'engineer' },
   { id: 'radio', name: 'Radio Komunikasi', description: 'Radio HT, repeater', mode: 'engineer' },
   { id: 'ftth', name: 'FTTH', description: 'Fiber to the home, ONU/ONT', mode: 'engineer' },
   { id: 'lan', name: 'LAN', description: 'Jaringan lokal, kabel LAN', mode: 'engineer' },
-  { id: 'wan', name: 'WAN', description: 'Jaringan luas, koneksi antar site', mode: 'engineer' }
+  { id: 'multimedia', name: 'Multimedia', description: 'Sound system, tinta printer, persiapan rapat', mode: 'engineer' }
 ];

@@ -37,25 +37,25 @@ const HARUS_COCOK = [
   ['kertas hasil print kotor kena tinta', 'printer', 'Kotor'],
 
   // ── Windows ──────────────────────────────────────────────────
-  ['gabisa login ke komputer', 'windows', 'Login'],
-  ['password komputer saya ditolak terus', 'windows', 'Login'],
-  ['laptop lemot banget', 'windows', 'Lambat'],
-  ['komputer lambat sekali bukanya', 'windows', 'Lambat'],
-  ['penyimpanan komputer penuh', 'windows', 'Penuh'],
-  ['muncul peringatan low disk space', 'windows', 'Penuh'],
-  ['aplikasi not responding terus', 'windows', 'Membeku'],
-  ['excel saya nge-freeze', 'windows', 'Membeku'],
-  ['gabisa ngeprint ke printer jaringan', 'windows', 'Printer Jaringan'],
-  ['layar biru muncul lalu restart sendiri', 'windows', 'Layar Biru']
+  ['gabisa login ke komputer', 'end-user', 'Login'],
+  ['password komputer saya ditolak terus', 'end-user', 'Login'],
+  ['laptop lemot banget', 'end-user', 'Lambat'],
+  ['komputer lambat sekali bukanya', 'end-user', 'Lambat'],
+  ['penyimpanan komputer penuh', 'end-user', 'Penuh'],
+  ['muncul peringatan low disk space', 'end-user', 'Penuh'],
+  ['aplikasi not responding terus', 'end-user', 'Membeku'],
+  ['excel saya nge-freeze', 'end-user', 'Membeku'],
+  ['gabisa ngeprint ke printer jaringan', 'end-user', 'Printer Jaringan'],
+  ['layar biru muncul lalu restart sendiri', 'end-user', 'Layar Biru']
 ];
 
 /** Keluhan di luar cakupan SOP — sistem harus mengaku tidak mengenalinya */
 const HARUS_TIDAK_COCOK = [
   ['printer saya warnanya ungu', 'printer'],
   ['mau pesan printer baru untuk ruangan', 'printer'],
-  ['tolong ajarkan cara pakai excel', 'windows'],
-  ['kursi kantor saya rusak', 'windows'],
-  ['minta tambah jatah kuota internet', 'windows']
+  ['tolong ajarkan cara pakai excel', 'end-user'],
+  ['kursi kantor saya rusak', 'end-user'],
+  ['minta tambah jatah kuota internet', 'end-user']
 ];
 
 /* ──────────────────────────────────────────────────────────── */
@@ -110,9 +110,9 @@ catatan('dipakai saat pelapor memilih "Saya tidak yakin"');
 /** [keluhan, divisi yang diharapkan] */
 const DIVISI_OTOMATIS = [
   ['kertas nyangkut di printer ruang admin', 'printer'],
-  ['laptop saya lemot banget', 'windows'],
-  ['layar biru muncul lalu restart sendiri', 'windows'],
-  ['gabisa ngeprint ke printer jaringan', 'windows'],
+  ['laptop saya lemot banget', 'end-user'],
+  ['layar biru muncul lalu restart sendiri', 'end-user'],
+  ['gabisa ngeprint ke printer jaringan', 'end-user'],
   ['kamera gudang tidak tampil di monitor', 'cctv'],
   ['telepon saya tidak ada nada', 'telepon']
 ];
@@ -174,7 +174,7 @@ const BERKETERANGAN = [
   ['kertas nyangkut di printer ruang admin lantai 2', 'printer', 'Kertas Macet'],
   ['kertas nyangkut di printer ruang admin lantai 2 gedung utama pagi tadi', 'printer', 'Kertas Macet'],
   ['mohon bantuannya pak printer di ruangan saya kertasnya macet terus dari kemarin', 'printer', 'Kertas Macet'],
-  ['laptop saya lemot sekali sejak kemarin sore di ruangan produksi lantai dua', 'windows', 'Lambat']
+  ['laptop saya lemot sekali sejak kemarin sore di ruangan produksi lantai dua', 'end-user', 'Lambat']
 ];
 
 const rusakOlehKeterangan = [];
@@ -200,7 +200,7 @@ catatan('sebelumnya keluhan "printer" saja berskor 1,000 — rasio sempurna dari
 
 // Pengecualian yang disengaja: bila hanya itu yang ditulis, kata itulah
 // seluruh keterangan yang ada.
-const pendek = cariMasalah('bluescreen', 'windows');
+const pendek = cariMasalah('bluescreen', 'end-user');
 cek('keluhan satu kata yang khas tetap dikenali', pendek !== null, 'ditolak juga');
 
 bagian('5. Ketahanan terhadap masukan aneh');

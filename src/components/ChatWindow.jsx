@@ -103,6 +103,7 @@ export default function ChatWindow({
           {showSuggestions && (
             <QuickReplies
               divisionId={division.id}
+              categoryId={division.categoryId}
               onPick={onQuickReply}
               disabled={isLoading}
             />

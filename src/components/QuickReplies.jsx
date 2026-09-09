@@ -1,9 +1,8 @@
 import React from 'react';
 
 /**
- * Saran keluhan yang paling sering muncul per divisi.
- * Diambil dari daftar "Masalah RINGAN" pada system prompt di ragService,
- * agar saran yang ditawarkan memang tercakup knowledge base.
+ * Saran kendala singkat yang paling sering dilaporkan.
+ * End User dibagi lagi berdasarkan kategori yang dipilih pengguna.
  */
 const SUGGESTIONS = {
   printer: [
@@ -26,11 +25,33 @@ const SUGGESTIONS = {
     'Sinyal radio lemah',
     'Baterai HT cepat habis'
   ],
-  windows: [
-    'Laptop tidak bisa login',
-    'Komputer terasa sangat lambat',
-    'Tidak bisa connect ke printer jaringan'
-  ],
+  endUser: {
+    laptop: [
+      'Laptop tidak bisa menyala',
+      'Laptop tidak bisa login',
+      'Laptop terasa sangat lambat'
+    ],
+    pc: [
+      'PC tidak bisa menyala',
+      'Monitor PC tidak menampilkan gambar',
+      'PC terasa sangat lambat'
+    ],
+    'sistem-informasi': [
+      'Sistem Informasi tidak bisa login',
+      'Sistem Informasi tidak bisa dibuka',
+      'Data pada Sistem Informasi tidak tampil'
+    ],
+    hardware: [
+      'Keyboard atau mouse tidak berfungsi',
+      'Perangkat USB tidak terdeteksi',
+      'Monitor tidak menampilkan gambar'
+    ],
+    software: [
+      'Aplikasi tidak bisa dibuka',
+      'Aplikasi sering error',
+      'Software tidak bisa diinstal'
+    ]
+  },
   ftth: [
     'Lampu LOS pada ONU menyala merah',
     'ONU tidak menyala sama sekali',
@@ -41,15 +62,18 @@ const SUGGESTIONS = {
     'Kabel LAN terlepas atau longgar',
     'Lampu port switch tidak menyala'
   ],
-  wan: [
-    'Koneksi antar site putus sesaat',
-    'Akses ke kantor pusat lambat',
-    'VPN tidak bisa tersambung'
+  multimedia: [
+    'Sound system tidak mengeluarkan suara',
+    'Tinta printer habis atau tidak keluar',
+    'Persiapan rapat bermasalah'
   ]
 };
 
-export default function QuickReplies({ divisionId, onPick, disabled }) {
-  const items = SUGGESTIONS[divisionId];
+export default function QuickReplies({ divisionId, categoryId, onPick, disabled }) {
+  const items = divisionId === 'end-user'
+    ? SUGGESTIONS.endUser[categoryId]
+    : SUGGESTIONS[divisionId];
+
   if (!items || items.length === 0) return null;
 
   return (
@@ -57,13 +81,8 @@ export default function QuickReplies({ divisionId, onPick, disabled }) {
       <p className="quick-replies-label">Kendala yang sering dilaporkan</p>
       <div className="quick-replies-list">
         {items.map((text) => (
-          <button
-            key={text}
-            type="button"
-            className="quick-reply"
-            onClick={() => onPick(text)}
-            disabled={disabled}
-          >
+          <button key={text} type="button" className="quick-reply"
+            onClick={() => onPick(text)} disabled={disabled}>
             {text}
           </button>
         ))}

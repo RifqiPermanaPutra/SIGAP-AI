@@ -1,0 +1,47 @@
+{
+  "$schema": "../server/data/sop.schema.json",
+  "divisi": "multimedia",
+  "nama": "Multimedia",
+  "catatanKonfirmasi": [],
+  "masalah": [
+    {
+      "id": "multimedia-sound-system-tidak-ada-suara",
+      "judul": "Sound System Tidak Mengeluarkan Suara",
+      "gejala": "Sound system untuk kegiatan atau rapat tidak mengeluarkan suara dari speaker.",
+      "kategori": "berat",
+      "penyebab": [
+        "Kabel audio belum terhubung dengan benar",
+        "Perangkat mixer atau amplifier bermasalah",
+        "Sumber audio atau speaker mengalami gangguan"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah sound system memerlukan pemeriksaan langsung oleh Engineer IT. Silakan hubungi Engineer melalui tombol WhatsApp dan sebutkan lokasi, perangkat yang digunakan, serta waktu kegiatan."
+    },
+    {
+      "id": "multimedia-tinta-printer-habis",
+      "judul": "Tinta Printer Habis atau Tidak Keluar",
+      "gejala": "Printer tidak menghasilkan cetakan karena tinta habis, tidak keluar, atau hasil cetak sangat pucat.",
+      "kategori": "berat",
+      "penyebab": [
+        "Tinta habis",
+        "Cartridge atau sistem tinta bermasalah",
+        "Perangkat membutuhkan penggantian atau pemeriksaan"
+      ],
+      "solusi": [],
+      "penanganan": "Permasalahan tinta printer ditangani langsung oleh Engineer IT agar jenis tinta atau cartridge yang digunakan sesuai. Silakan hubungi Engineer melalui tombol WhatsApp dan sebutkan lokasi serta jenis printer."
+    },
+    {
+      "id": "multimedia-persiapan-rapat-bermasalah",
+      "judul": "Persiapan Rapat Mengalami Kendala",
+      "gejala": "Peralatan yang diperlukan untuk rapat seperti layar, audio, atau perangkat presentasi belum siap digunakan.",
+      "kategori": "berat",
+      "penyebab": [
+        "Peralatan rapat belum terpasang",
+        "Koneksi perangkat belum sesuai",
+        "Perangkat multimedia mengalami gangguan"
+      ],
+      "solusi": [],
+      "penanganan": "Persiapan rapat memerlukan penanganan langsung oleh Engineer IT. Silakan hubungi Engineer melalui tombol WhatsApp dan sebutkan lokasi ruang rapat serta waktu kegiatan."
+    }
+  ]
+}

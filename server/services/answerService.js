@@ -68,7 +68,7 @@ muatBasisPengetahuan();
 
 const DIVISION_LABELS = {
   printer: 'Printer', cctv: 'CCTV', telepon: 'Telepon', radio: 'Radio Komunikasi',
-  windows: 'Windows', ftth: 'FTTH', lan: 'LAN', wan: 'WAN'
+  'end-user': 'End User', ftth: 'FTTH', lan: 'LAN', multimedia: 'Multimedia'
 };
 
 /* Ambang dan penjaga pencocokan.
