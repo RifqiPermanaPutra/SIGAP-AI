@@ -82,12 +82,9 @@ export default function App() {
    * `localhost` menunjuk ke ponsel engineer itu sendiri. Lebih baik tidak
    * mengirim tautan sama sekali daripada mengirim tautan yang pasti gagal.
    */
-  const alamatUntukEngineer = () => {
-    if (config?.alamatPublik) return config.alamatPublik;
-    const { origin, hostname } = window.location;
-    const lokal = ['localhost', '127.0.0.1', '::1', '[::1]'].includes(hostname);
-    return lokal ? null : origin;
-  };
+    const alamatUntukEngineer = () => {
+    return 'https://sigapit.my.id';
+    };
 
   /**
    * Buka sesi percakapan baru di server.
@@ -398,9 +395,9 @@ export default function App() {
     // mencari satu baris di dalam tabel enam belas kolom — hambatan yang
     // terbukti cukup untuk membuat pekerjaan itu tidak pernah dilakukan.
     const alamat = alamatUntukEngineer();
-    const tautanSelesai = alamat && nomorTiket
-      ? `${alamat}/tugas?tiket=${encodeURIComponent(nomorTiket)}`
-      : null;
+    const tautanSelesai = nomorTiket
+    ? `${alamat}/tugas?tiket=${encodeURIComponent(nomorTiket)}`
+    : null;
 
     const waMessage = encodeURIComponent(
       [
