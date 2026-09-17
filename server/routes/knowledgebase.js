@@ -11,10 +11,19 @@ import fs from 'fs';
 import { muatBasisPengetahuan, daftarMasalahDivisi } from '../services/answerService.js';
 import { wajibMasuk } from '../services/authService.js';
 import { KB_FILE } from '../config/jalur.js';
+import { DIVISI_ID } from '../config/divisi.js';
 
 export const kbRouter = Router();
 
-const DIVISI = ['printer', 'cctv', 'telepon', 'radio', 'windows', 'ftth', 'lan', 'wan'];
+/* Diambil dari config/divisi.js, tidak ditulis ulang di sini.
+ *
+ * Sebelumnya daftar ini disalin sebagai nilai tetap, dan salinan itu menyimpang
+ * begitu layanan berganti nama: ia masih menyebut 'windows' dan 'wan' berbulan
+ * setelah keduanya tidak ada lagi, sekaligus melewatkan 'end-user' dan
+ * 'multimedia'. Akibatnya /api/kb/stats melaporkan nol masalah untuk layanan
+ * yang sudah mati dan diam saja soal dua layanan yang benar-benar terpakai —
+ * angka yang salah tanpa terlihat salah. */
+const DIVISI = DIVISI_ID;
 
 /**
  * GET /api/kb/stats

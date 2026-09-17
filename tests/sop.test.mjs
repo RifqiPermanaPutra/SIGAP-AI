@@ -20,6 +20,7 @@ import fs from 'fs';
 import path from 'path';
 import { bagian, cek, catatan, selesai } from './bantu.mjs';
 import { AKUN_UJI } from './benih.mjs';
+import { DIVISIONS } from '../server/config/divisi.js';
 
 const PORT = process.env.UJI_PORT || 3999;
 const API = `http://localhost:${PORT}/api`;
@@ -82,9 +83,9 @@ cek('admin boleh membaca SOP', (await ambil('/sop/printer', adm)).status === 200
 bagian('2. Membaca SOP');
 
 const daftar = await json('/sop', adm);
-cek('seluruh delapan divisi terdaftar', daftar.divisi.length === 8, daftar.divisi.length);
+cek('seluruh tujuh divisi terdaftar', daftar.divisi.length === 7, daftar.divisi.length);
 cek('divisi swalayan ditandai disajikan ke pengguna',
-  daftar.divisi.filter((d) => d.disajikan).map((d) => d.id).join(',') === 'printer,windows',
+  daftar.divisi.filter((d) => d.disajikan).map((d) => d.id).join(',') === 'printer,end-user',
   daftar.divisi.filter((d) => d.disajikan).map((d) => d.id));
 
 const printer = await json('/sop/printer', adm);
@@ -150,7 +151,7 @@ for (const berkas of fs.readdirSync(SOP_DIR).filter((f) => f.endsWith('.json')))
   }
 }
 
-cek('kedelapan berkas sumber terbaca', berkasDiperiksa === 8, berkasDiperiksa);
+cek('ketujuh berkas sumber terbaca', berkasDiperiksa === 7, berkasDiperiksa);
 cek('seluruh masalah pada berkas sumber sah', cacatSumber.length === 0, cacatSumber.slice(0, 5));
 catatan(`${masalahDiperiksa} masalah diperiksa pada ${berkasDiperiksa} berkas sumber JSON`);
 
@@ -330,11 +331,18 @@ cek('masalah yang dihapus ikut hilang dari basis pengetahuan',
 const setelahHapus = await uji(adm, KELUHAN_BARU);
 cek('pencocokan ikut melupakannya', setelahHapus.masalah?.id !== isiTambah.masalah.id, setelahHapus);
 
-// SOP Printer & Windows yang sudah lengkap tiga solusi per masalah ringan
+// SOP Printer & End User yang sudah lengkap tiga solusi per masalah ringan
 // tidak boleh rusak oleh seluruh rangkaian penyuntingan di atas.
+//
+// Daftarnya diambil dari DIVISIONS, tidak ditulis ulang. Versi sebelumnya
+// menyebut 'windows' — id yang sudah tidak ada sejak layanannya berganti nama
+// menjadi 'end-user' — sehingga penyaringnya hanya menyisakan 'printer' dan
+// seluruh masalah End User lolos tanpa diperiksa. Pemeriksaannya tetap hijau
+// justru karena tidak lagi memeriksa apa pun.
 const akhir = JSON.parse(fs.readFileSync(process.env.KB_FILE, 'utf-8'));
+const ID_SWALAYAN = DIVISIONS.filter((d) => d.mode === 'swalayan').map((d) => d.id);
 const swalayan = akhir.masalah.filter(
-  (m) => ['printer', 'windows'].includes(m.divisi) && m.kategori === 'ringan'
+  (m) => ID_SWALAYAN.includes(m.divisi) && m.kategori === 'ringan'
 );
 cek('seluruh masalah ringan divisi swalayan tetap punya tiga solusi',
   swalayan.every((m) => m.solusi.length === 3), swalayan.filter((m) => m.solusi.length !== 3).map((m) => m.id));

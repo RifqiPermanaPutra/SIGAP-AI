@@ -16,9 +16,9 @@ import { sopRouter } from './server/routes/sop.js';
 import { tiketRouter } from './server/routes/tiket.js';
 import { tugasRouter } from './server/routes/tugas.js';
 import { initDatabase } from './server/database/init.js';
-import { siapkanAkunAwal } from './server/services/authService.js';
+import { siapkanAkunAwal, daftarPengguna, SELURUH_DIVISI } from './server/services/authService.js';
 import { mulaiPemeliharaan } from './server/services/pemeliharaan.js';
-import { DIVISIONS, nomorEngineer } from './server/config/divisi.js';
+import { DIVISIONS, DIVISI_ID, nomorEngineer } from './server/config/divisi.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -216,6 +216,40 @@ async function start() {
         console.warn('   Isi variabel terkait di berkas .env untuk mengarahkannya ke engineer masing-masing.\n');
       } else {
         console.log('✅ Seluruh divisi sudah punya nomor WhatsApp engineer sendiri.\n');
+      }
+
+      /* Akun yang wewenangnya menunjuk layanan yang sudah tidak ada.
+       *
+       * Keadaan ini pernah terjadi dan tidak menimbulkan satu pun galat: saat
+       * 'windows' menjadi 'end-user' dan 'wan' menjadi 'multimedia', kolom
+       * `pengguna.divisi` tidak ikut diselaraskan. Papan tugas engineernya
+       * kosong sepanjang hari sementara laporan terus masuk, dan halaman itu
+       * menampilkannya persis seperti hari yang memang sedang sepi.
+       *
+       * `tanpaLayanan` pada /api/tugas hanya menangkap wewenang yang KOSONG,
+       * bukan wewenang yang menunjuk id yang sudah dipensiunkan — dua-duanya
+       * berarti "tidak akan pernah dapat pekerjaan", tetapi hanya yang pertama
+       * yang terlihat. Migrasi di database/init.js membereskan penggantian yang
+       * sudah diketahui; peringatan ini yang menangkap penggantian BERIKUTNYA,
+       * termasuk id yang salah ketik saat akun dibuat manual. */
+      const idSah = new Set(DIVISI_ID);
+      const akunMenggantung = daftarPengguna()
+        .filter((p) => p.peran !== 'admin' && p.divisi && p.divisi !== SELURUH_DIVISI)
+        .map((p) => ({
+          akun: p.nama_akun,
+          asing: p.divisi.split(',').map((d) => d.trim().toLowerCase())
+            .filter((d) => d && !idSah.has(d))
+        }))
+        .filter((p) => p.asing.length > 0);
+
+      if (akunMenggantung.length > 0) {
+        console.warn(`⚠️  ${akunMenggantung.length} akun engineer menunjuk layanan yang sudah tidak ada:`);
+        for (const { akun, asing } of akunMenggantung) {
+          console.warn(`   ${akun} → ${asing.join(', ')}`);
+        }
+        console.warn('   Papan tugas akun tersebut TIDAK akan pernah menerima tiket baru,');
+        console.warn('   dan halamannya tidak menampilkan peringatan apa pun.');
+        console.warn(`   Perbaiki: npm run akun -- divisi <nama-akun> <${DIVISI_ID.join('|')}>\n`);
       }
     });
   } catch (error) {

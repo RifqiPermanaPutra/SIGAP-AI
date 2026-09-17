@@ -1,5 +1,5 @@
 {
-  "dibuatPada": "2026-09-08T04:51:17.993Z",
+  "dibuatPada": "2026-09-17T11:34:34.325Z",
   "masalah": [
     {
       "id": "printer-printer-offline-atau-tidak-terdeteksi",
@@ -1861,7 +1861,7 @@
       ]
     },
     {
-      "id": "windows-tidak-bisa-login-ke-komputer",
+      "id": "end-user-tidak-bisa-login-ke-komputer",
       "divisi": "end-user",
       "judul": "Tidak Bisa Login ke Komputer",
       "gejala": "Kata sandi selalu ditolak meski sudah diketik dengan benar, atau muncul tulisan bahwa akun terkunci.",
@@ -1949,7 +1949,7 @@
       ]
     },
     {
-      "id": "windows-komputer-atau-laptop-terasa-lambat",
+      "id": "end-user-komputer-atau-laptop-terasa-lambat",
       "divisi": "end-user",
       "judul": "Komputer atau Laptop Terasa Lambat",
       "gejala": "Komputer terasa berat, aplikasi lama sekali terbuka, dan sering muncul tulisan \"Not Responding\".",
@@ -2034,7 +2034,7 @@
       ]
     },
     {
-      "id": "windows-penyimpanan-komputer-penuh",
+      "id": "end-user-penyimpanan-komputer-penuh",
       "divisi": "end-user",
       "judul": "Penyimpanan Komputer Penuh",
       "gejala": "Muncul peringatan \"Low Disk Space\", atau penyimpanan berwarna merah, dan tidak bisa menyimpan berkas baru.",
@@ -2122,7 +2122,7 @@
       ]
     },
     {
-      "id": "windows-aplikasi-berhenti-merespons-atau-membeku",
+      "id": "end-user-aplikasi-berhenti-merespons-atau-membeku",
       "divisi": "end-user",
       "judul": "Aplikasi Berhenti Merespons atau Membeku",
       "gejala": "Aplikasi diam total, layar berubah keputihan, dan muncul tulisan \"Not Responding\" di bagian atas jendela.",
@@ -2211,7 +2211,7 @@
       ]
     },
     {
-      "id": "windows-tidak-bisa-mencetak-ke-printer",
+      "id": "end-user-tidak-bisa-mencetak-ke-printer",
       "divisi": "end-user",
       "judul": "Tidak Bisa Mencetak ke Printer Jaringan",
       "gejala": "Nama printer tidak muncul saat hendak mencetak, atau muncul tetapi dokumen tidak keluar.",
@@ -2288,7 +2288,7 @@
       ]
     },
     {
-      "id": "windows-layar-biru-atau-komputer-restart",
+      "id": "end-user-layar-biru-atau-komputer-restart",
       "divisi": "end-user",
       "judul": "Layar Biru atau Komputer Restart Sendiri",
       "gejala": "Muncul layar biru berisi tulisan dan kode kesalahan, lalu komputer mati dan menyala sendiri berulang kali.",
@@ -2325,7 +2325,7 @@
       ]
     },
     {
-      "id": "windows-komputer-gagal-masuk-ke-layar",
+      "id": "end-user-komputer-gagal-masuk-ke-layar",
       "divisi": "end-user",
       "judul": "Komputer Gagal Masuk ke Layar Utama",
       "gejala": "Komputer menyala tetapi berhenti di logo, layar hitam terus-menerus, atau tidak pernah sampai ke layar utama.",
@@ -2363,7 +2363,7 @@
       ]
     },
     {
-      "id": "windows-suara-tidak-keluar-dari-komputer",
+      "id": "end-user-suara-tidak-keluar-dari-komputer",
       "divisi": "end-user",
       "judul": "Suara Tidak Keluar dari Komputer",
       "gejala": "Tidak ada suara sama sekali saat memutar video atau mengikuti rapat daring. Ikon pengeras suara dapat bertanda silang.",
@@ -2464,7 +2464,7 @@
       ]
     },
     {
-      "id": "windows-wifi-terhubung-tetapi-tidak-bisa",
+      "id": "end-user-wifi-terhubung-tetapi-tidak-bisa",
       "divisi": "end-user",
       "judul": "WiFi Terhubung tetapi Tidak Bisa Membuka Situs",
       "gejala": "Ikon WiFi menunjukkan tersambung, tetapi peramban selalu gagal memuat halaman. Dapat muncul tanda seru pada ikon jaringan.",
@@ -2569,7 +2569,7 @@
       ]
     },
     {
-      "id": "windows-tidak-bisa-membuka-flashdisk-atau",
+      "id": "end-user-tidak-bisa-membuka-flashdisk-atau",
       "divisi": "end-user",
       "judul": "Tidak Bisa Membuka Flashdisk atau Hard Disk Eksternal",
       "gejala": "Flashdisk sudah ditancapkan tetapi tidak muncul di File Explorer. Dapat muncul permintaan memformat, yang tidak boleh dituruti.",
@@ -2669,7 +2669,7 @@
       ]
     },
     {
-      "id": "windows-berkas-atau-folder-hilang-dari",
+      "id": "end-user-berkas-atau-folder-hilang-dari",
       "divisi": "end-user",
       "judul": "Berkas atau Folder Hilang dari Komputer",
       "gejala": "Berkas yang biasa dipakai tidak lagi terlihat di tempat biasanya, padahal tidak merasa menghapusnya.",
@@ -2766,7 +2766,7 @@
       ]
     },
     {
-      "id": "windows-aplikasi-microsoft-office-meminta-aktivasi",
+      "id": "end-user-aplikasi-microsoft-office-meminta-aktivasi",
       "divisi": "end-user",
       "judul": "Aplikasi Microsoft Office Meminta Aktivasi",
       "gejala": "Saat membuka Word, Excel, atau PowerPoint muncul peringatan bahwa produk belum diaktifkan. Sebagian menu dapat terkunci sehingga dokumen hanya bisa dibaca.",
@@ -2869,7 +2869,7 @@
       ]
     },
     {
-      "id": "windows-layar-komputer-berkedip-atau-terlalu",
+      "id": "end-user-layar-komputer-berkedip-atau-terlalu",
       "divisi": "end-user",
       "judul": "Layar Komputer Berkedip atau Terlalu Redup",
       "gejala": "Tampilan layar berkedip, bergaris, atau terlalu gelap meski sudah dinaikkan kecerahannya.",
@@ -2961,7 +2961,7 @@
       ]
     },
     {
-      "id": "windows-keyboard-mengetik-huruf-atau-angka",
+      "id": "end-user-keyboard-mengetik-huruf-atau-angka",
       "divisi": "end-user",
       "judul": "Keyboard Mengetik Huruf atau Angka yang Salah",
       "gejala": "Huruf yang muncul berbeda dari tombol yang ditekan, atau tombol angka di sisi kanan tidak berfungsi.",
@@ -3060,7 +3060,7 @@
       ]
     },
     {
-      "id": "windows-mouse-atau-touchpad-tidak-bergerak",
+      "id": "end-user-mouse-atau-touchpad-tidak-bergerak",
       "divisi": "end-user",
       "judul": "Mouse atau Touchpad Tidak Bergerak",
       "gejala": "Penunjuk di layar tidak bergerak sama sekali, atau bergerak tersendat dan meloncat-loncat.",
@@ -3157,7 +3157,7 @@
       ]
     },
     {
-      "id": "windows-waktu-dan-tanggal-komputer-selalu",
+      "id": "end-user-waktu-dan-tanggal-komputer-selalu",
       "divisi": "end-user",
       "judul": "Waktu dan Tanggal Komputer Selalu Salah",
       "gejala": "Jam pada komputer meleset jauh atau tanggalnya mundur, dan kembali salah setiap kali komputer dinyalakan.",
@@ -3247,7 +3247,7 @@
       ]
     },
     {
-      "id": "windows-komputer-diduga-terkena-virus-atau",
+      "id": "end-user-komputer-diduga-terkena-virus-atau",
       "divisi": "end-user",
       "judul": "Komputer Diduga Terkena Virus atau Berkas Terkunci",
       "gejala": "Berkas tidak dapat dibuka dan namanya berubah dengan akhiran asing. Dapat muncul permintaan tebusan, jendela iklan bertubi-tubi, atau komputer bekerja sendiri tanpa disentuh.",
@@ -3306,7 +3306,7 @@
       ]
     },
     {
-      "id": "windows-wajah-dan-suara-tidak-terkirim",
+      "id": "end-user-wajah-dan-suara-tidak-terkirim",
       "divisi": "end-user",
       "judul": "Wajah dan Suara Tidak Terkirim Saat Rapat Daring",
       "gejala": "Peserta rapat daring lain tidak dapat melihat maupun mendengar Anda. Tanda mikrofon tidak bergerak ketika Anda berbicara.",
@@ -3407,7 +3407,7 @@
       ]
     },
     {
-      "id": "windows-tidak-bisa-berbagi-layar-saat",
+      "id": "end-user-tidak-bisa-berbagi-layar-saat",
       "divisi": "end-user",
       "judul": "Tidak Bisa Berbagi Layar Saat Rapat Daring",
       "gejala": "Tombol berbagi layar tidak dapat ditekan, atau peserta lain hanya melihat layar hitam saat Anda membagikan tampilan.",
@@ -3504,7 +3504,7 @@
       ]
     },
     {
-      "id": "windows-baterai-laptop-cepat-habis",
+      "id": "end-user-baterai-laptop-cepat-habis",
       "divisi": "end-user",
       "judul": "Baterai Laptop Cepat Habis",
       "gejala": "Laptop hanya bertahan satu sampai dua jam tanpa kabel pengisi daya, jauh lebih singkat dari biasanya.",
@@ -3611,7 +3611,7 @@
       ]
     },
     {
-      "id": "windows-laptop-panas-dan-kipasnya-berbunyi",
+      "id": "end-user-laptop-panas-dan-kipasnya-berbunyi",
       "divisi": "end-user",
       "judul": "Laptop Panas dan Kipasnya Berbunyi Keras",
       "gejala": "Badan laptop terasa panas terutama di bagian bawah, kipas berbunyi keras terus-menerus, dan laptop terasa melambat.",
@@ -3712,7 +3712,7 @@
       ]
     },
     {
-      "id": "windows-pembaruan-windows-berjalan-lama-atau",
+      "id": "end-user-pembaruan-windows-berjalan-lama-atau",
       "divisi": "end-user",
       "judul": "Pembaruan Windows Berjalan Lama atau Selalu Gagal",
       "gejala": "Proses pembaruan berhenti pada persentase tertentu selama berjam-jam, atau selalu berakhir dengan pesan gagal.",
@@ -3811,7 +3811,7 @@
       ]
     },
     {
-      "id": "windows-peramban-penuh-iklan-atau-halaman",
+      "id": "end-user-peramban-penuh-iklan-atau-halaman",
       "divisi": "end-user",
       "judul": "Peramban Penuh Iklan atau Halaman Awalnya Berubah Sendiri",
       "gejala": "Muncul jendela iklan bertubi-tubi saat membuka peramban, halaman awal berubah tanpa diminta, atau ada bilah alat asing yang tidak pernah dipasang.",
@@ -3917,7 +3917,7 @@
       ]
     },
     {
-      "id": "windows-tidak-bisa-membuka-lampiran-surel",
+      "id": "end-user-tidak-bisa-membuka-lampiran-surel",
       "divisi": "end-user",
       "judul": "Tidak Bisa Membuka Lampiran Surel",
       "gejala": "Lampiran surel gagal dibuka, atau muncul keterangan bahwa tidak ada aplikasi yang sesuai untuk berkas tersebut.",
@@ -4013,7 +4013,7 @@
       ]
     },
     {
-      "id": "windows-komputer-mati-sendiri-saat-sedang",
+      "id": "end-user-komputer-mati-sendiri-saat-sedang",
       "divisi": "end-user",
       "judul": "Komputer Mati Sendiri Saat Sedang Dipakai",
       "gejala": "Komputer padam seketika tanpa peringatan dan tanpa proses mematikan yang wajar, lalu dapat menyala kembali beberapa saat kemudian.",
@@ -4061,7 +4061,7 @@
       ]
     },
     {
-      "id": "windows-diminta-kunci-pemulihan-sebelum-windows",
+      "id": "end-user-diminta-kunci-pemulihan-sebelum-windows",
       "divisi": "end-user",
       "judul": "Diminta Kunci Pemulihan Sebelum Windows Terbuka",
       "gejala": "Sebelum lambang Windows muncul, layar biru meminta kunci pemulihan berupa deretan angka panjang. Komputer tidak dapat melanjutkan tanpa kunci tersebut.",
@@ -4112,7 +4112,7 @@
       ]
     },
     {
-      "id": "windows-permintaan-lisensi-atau-perpanjangan-aplikasi",
+      "id": "end-user-permintaan-lisensi-atau-perpanjangan-aplikasi",
       "divisi": "end-user",
       "judul": "Permintaan Lisensi atau Perpanjangan Aplikasi Berbayar",
       "gejala": "Memerlukan lisensi aplikasi berbayar untuk pekerjaan, atau lisensi yang lama sudah habis masa berlakunya.",
@@ -4192,7 +4192,7 @@
       ]
     },
     {
-      "id": "windows-permintaan-hak-akses-aplikasi-pertamina",
+      "id": "end-user-permintaan-hak-akses-aplikasi-pertamina",
       "divisi": "end-user",
       "judul": "Permintaan Hak Akses Aplikasi Pertamina",
       "gejala": "Aplikasi milik Pertamina menolak membuka menu tertentu, atau memberi keterangan bahwa Anda belum berwenang membukanya.",
@@ -4284,7 +4284,7 @@
       ]
     },
     {
-      "id": "windows-permintaan-pemasangan-aplikasi-baru-di",
+      "id": "end-user-permintaan-pemasangan-aplikasi-baru-di",
       "divisi": "end-user",
       "judul": "Permintaan Pemasangan Aplikasi Baru di Komputer",
       "gejala": "Memerlukan aplikasi yang belum terpasang, dan pemasangannya ditolak karena memerlukan izin administrator.",
@@ -4365,7 +4365,7 @@
       ]
     },
     {
-      "id": "windows-tidak-bisa-menyambung-ke-proyektor",
+      "id": "end-user-tidak-bisa-menyambung-ke-proyektor",
       "divisi": "end-user",
       "judul": "Tidak Bisa Menyambung ke Proyektor atau Layar Kedua",
       "gejala": "Proyektor atau layar kedua sudah tersambung dengan kabel tetapi tetap gelap, atau hanya menampilkan latar kosong tanpa isi.",
@@ -4461,7 +4461,7 @@
       ]
     },
     {
-      "id": "windows-berkas-excel-atau-word-terbuka",
+      "id": "end-user-berkas-excel-atau-word-terbuka",
       "divisi": "end-user",
       "judul": "Berkas Excel atau Word Terbuka Hanya Bisa Dibaca",
       "gejala": "Berkas terbuka tetapi tidak dapat disunting. Pada bagian atas jendela tertera keterangan hanya-baca, atau muncul pesan bahwa berkas sedang dipakai orang lain.",
@@ -4566,7 +4566,7 @@
       ]
     },
     {
-      "id": "windows-penyimpanan-onedrive-penuh-atau-berhenti",
+      "id": "end-user-penyimpanan-onedrive-penuh-atau-berhenti",
       "divisi": "end-user",
       "judul": "Penyimpanan OneDrive Penuh atau Berhenti Menyelaraskan",
       "gejala": "Ikon awan pada bilah tugas bertanda silang atau seru. Berkas baru tidak ikut tersimpan ke penyimpanan awan, dan muncul peringatan ruang habis.",
@@ -4672,7 +4672,7 @@
       ]
     },
     {
-      "id": "windows-aplikasi-terbuka-tetapi-jendelanya-tidak",
+      "id": "end-user-aplikasi-terbuka-tetapi-jendelanya-tidak",
       "divisi": "end-user",
       "judul": "Aplikasi Terbuka tetapi Jendelanya Tidak Terlihat",
       "gejala": "Nama aplikasi terlihat pada bilah tugas dan menandakan sedang berjalan, tetapi jendelanya tidak muncul di layar.",
@@ -4760,7 +4760,7 @@
       ]
     },
     {
-      "id": "windows-komputer-tidak-menyala-sama-sekali",
+      "id": "end-user-komputer-tidak-menyala-sama-sekali",
       "divisi": "end-user",
       "judul": "Komputer Tidak Menyala Sama Sekali",
       "gejala": "Menekan tombol daya tidak menghasilkan apa pun. Tidak ada lampu yang menyala, tidak terdengar bunyi kipas, dan layar tetap gelap.",
@@ -7181,699 +7181,6 @@
       ]
     },
     {
-      "id": "radio-radio-tidak-ada-suara",
-      "divisi": "radio",
-      "judul": "Radio Tidak Ada Suara",
-      "gejala": "",
-      "kategori": "ringan",
-      "penyebab": [
-        "Volume radio disetel terlalu kecil atau mute",
-        "Baterai radio habis atau lemah",
-        "Channel atau frekuensi radio tidak sesuai",
-        "Antena radio tidak terpasang dengan baik"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Penyelesaian",
-          "pengantar": null,
-          "langkah": [
-            "Periksa volume radio, pastikan tidak dalam kondisi mute dan naikkan volume ke level yang cukup",
-            "Periksa indikator baterai, jika lemah segera charge atau ganti dengan baterai yang penuh",
-            "Pastikan channel radio yang digunakan sesuai dengan channel yang digunakan rekan kerja lainnya",
-            "Periksa antena radio, pastikan terpasang erat dan tidak rusak atau bengkok",
-            "Coba restart radio dengan mematikan lalu menyalakan kembali"
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "radio",
-        "tidak",
-        "suara",
-        "volume",
-        "disetel",
-        "terlalu",
-        "kecil",
-        "mute",
-        "baterai",
-        "habis",
-        "lemah",
-        "channel",
-        "frekuensi",
-        "sesuai",
-        "antena",
-        "terpasang",
-        "baik"
-      ]
-    },
-    {
-      "id": "radio-radio-suara-tidak-jelas-atau",
-      "divisi": "radio",
-      "judul": "Radio Suara Tidak Jelas atau Ada Noise",
-      "gejala": "",
-      "kategori": "ringan",
-      "penyebab": [
-        "Jarak komunikasi terlalu jauh dari repeater",
-        "Antena tidak terpasang dengan baik",
-        "Gangguan interferensi dari perangkat lain",
-        "Squelch level tidak sesuai"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Penyelesaian",
-          "pengantar": null,
-          "langkah": [
-            "Coba pindah ke lokasi yang lebih terbuka atau lebih dekat dengan area jangkauan",
-            "Pastikan antena radio terpasang dengan benar dan dalam posisi tegak",
-            "Jauhkan radio dari perangkat elektronik yang bisa menyebabkan interferensi",
-            "Periksa pengaturan squelch, sesuaikan ke level yang tepat agar noise berkurang",
-            "Jika masih bermasalah, coba gunakan radio HT lain untuk memastikan bukan masalah perangkat"
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "radio",
-        "suara",
-        "tidak",
-        "jelas",
-        "noise",
-        "jarak",
-        "komunikasi",
-        "terlalu",
-        "jauh",
-        "repeater",
-        "antena",
-        "terpasang",
-        "baik",
-        "gangguan",
-        "interferensi",
-        "perangkat",
-        "lain",
-        "squelch",
-        "level",
-        "sesuai"
-      ]
-    },
-    {
-      "id": "radio-radio-tidak-bisa-transmit-tidak",
-      "divisi": "radio",
-      "judul": "Radio Tidak Bisa Transmit (Tidak Bisa Kirim Suara)",
-      "gejala": "",
-      "kategori": "ringan",
-      "penyebab": [
-        "Tombol PTT (Push-To-Talk) bermasalah",
-        "Baterai lemah sehingga daya transmit tidak cukup",
-        "Frekuensi terblokir atau ada gangguan"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Penyelesaian",
-          "pengantar": null,
-          "langkah": [
-            "Tekan tombol PTT dan pastikan indikator transmit menyala (biasanya lampu merah)",
-            "Periksa baterai, pastikan terisi penuh karena transmit membutuhkan daya lebih besar",
-            "Minta rekan kerja untuk mengkonfirmasi apakah suara Anda terdengar di channel yang sama",
-            "Coba restart radio dan ulangi percobaan transmit",
-            "Jika indikator transmit tidak menyala sama sekali, kemungkinan ada kerusakan hardware"
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "radio",
-        "tidak",
-        "bisa",
-        "transmit",
-        "kirim",
-        "suara",
-        "tombol",
-        "ptt",
-        "push",
-        "talk",
-        "bermasa",
-        "baterai",
-        "lemah",
-        "sehingga",
-        "daya",
-        "frekuensi",
-        "terblokir",
-        "gangguan"
-      ]
-    },
-    {
-      "id": "radio-kerusakan-perangkat-radio-repeater",
-      "divisi": "radio",
-      "judul": "Kerusakan Perangkat Radio / Repeater",
-      "gejala": "",
-      "kategori": "berat",
-      "penyebab": [
-        "Kerusakan fisik pada perangkat radio",
-        "Repeater mengalami gangguan",
-        "Antena base station rusak atau tersambar petir"
-      ],
-      "solusi": [],
-      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Silakan hubungi Engineer melalui tombol WhatsApp.",
-      "kataKunci": [
-        "kerusakan",
-        "perangkat",
-        "radio",
-        "repeater",
-        "fisik",
-        "mengalami",
-        "gangguan",
-        "antena",
-        "base",
-        "station",
-        "rusak",
-        "tersambar",
-        "petir"
-      ]
-    },
-    {
-      "id": "radio-baterai-radio-cepat-habis",
-      "divisi": "radio",
-      "judul": "Baterai Radio Cepat Habis",
-      "gejala": "Radio genggam hanya bertahan beberapa jam padahal sudah diisi penuh semalaman.",
-      "kategori": "ringan",
-      "penyebab": [
-        "Baterai sudah tua dan berkurang daya tampungnya",
-        "Titik sambungan pada baterai kotor sehingga pengisian tidak sempurna",
-        "Daya pancar disetel pada tingkat tinggi terus-menerus",
-        "Perangkat pengisi daya tidak bekerja sebagaimana mestinya"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Pengamatan dan Pelaporan",
-          "pengantar": "Yang membedakan baterai tua dari pengisi daya yang rusak adalah pengamatan saat pengisian, dan itu dapat Anda lakukan sendiri.",
-          "langkah": [
-            "Perhatikan lampu pada perangkat pengisi daya saat radio diletakkan di atasnya.",
-            "Catat warna lampunya. Umumnya merah berarti sedang mengisi dan hijau berarti sudah penuh.",
-            "Bila lampunya tidak menyala sama sekali, kemungkinan pengisi dayanya yang bermasalah.",
-            "Lepaskan baterai dari radio. Perhatikan titik logam pada baterai dan pada badan radio.",
-            "Bila titik logam itu tampak kusam atau berkerak, catat keadaannya. Jangan mengeriknya sendiri.",
-            "Perhatikan badan baterai. Bila menggelembung atau berubah bentuk, hentikan pemakaian dan segera laporkan.",
-            "Catat sejak kapan baterai itu dipakai, bila Anda mengetahuinya.",
-            "Catat berapa jam radio bertahan setelah pengisian penuh.",
-            "Laporkan kepada Engineer IT beserta nomor radio dan hasil pengamatan Anda."
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "baterai",
-        "radio",
-        "cepat",
-        "habis",
-        "genggam",
-        "bertahan",
-        "beberapa",
-        "macet",
-        "padahal",
-        "diisi",
-        "penuh",
-        "semalaman",
-        "tua",
-        "berkurang",
-        "daya",
-        "tampung",
-        "titik",
-        "sambungan",
-        "kotor",
-        "sehingga",
-        "pengisian",
-        "tidak",
-        "sempurna",
-        "pancar",
-        "disetel",
-        "tingkat",
-        "tinggi",
-        "menerus",
-        "perangkat",
-        "pengisi",
-        "bekerja",
-        "sebagaimana",
-        "mesti"
-      ]
-    },
-    {
-      "id": "radio-radio-hanya-bisa-berkomunikasi-pada",
-      "divisi": "radio",
-      "judul": "Radio Hanya Bisa Berkomunikasi pada Jarak Dekat",
-      "gejala": "Suara terdengar jelas bila lawan bicara berada di dekat, tetapi hilang begitu berpindah ke area yang agak jauh.",
-      "kategori": "ringan",
-      "penyebab": [
-        "Antena longgar atau tidak terpasang sempurna",
-        "Daya pancar disetel pada tingkat rendah",
-        "Berada di area yang terhalang bangunan atau logam",
-        "Perangkat penguat sinyal sedang terganggu"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Pengamatan dan Pelaporan",
-          "pengantar": "Batas jarak yang masih dapat dijangkau adalah keterangan penting bagi engineer, karena dari situ dapat diperkirakan apakah gangguannya pada radio atau pada penguat sinyal.",
-          "langkah": [
-            "Perhatikan antena radio. Putar searah jarum jam perlahan sampai terasa rapat, jangan dipaksa.",
-            "Perhatikan apakah antenanya tampak bengkok, retak, atau pernah patah.",
-            "Cari tombol atau tulisan bertanda \"H\" dan \"L\" pada badan radio, yang menandakan tingkat daya pancar.",
-            "Catat pada tingkat mana radio Anda sedang disetel. Jangan mengubahnya sendiri.",
-            "Perhatikan di area mana suara masih terdengar jelas dan di area mana mulai hilang.",
-            "Catat kedua area tersebut sejelas mungkin, misalnya \"jelas di kantor, hilang mulai gerbang gudang\".",
-            "Coba pada area terbuka tanpa bangunan tinggi, lalu bandingkan hasilnya.",
-            "Tanyakan kepada rekan pemakai radio lain apakah jangkauannya juga berkurang.",
-            "Laporkan kepada Engineer IT beserta nomor radio dan batas area yang Anda catat."
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "radio",
-        "bisa",
-        "berkomunikasi",
-        "jarak",
-        "dekat",
-        "suara",
-        "terdengar",
-        "jelas",
-        "lawan",
-        "bicara",
-        "berada",
-        "hilang",
-        "begitu",
-        "berpindah",
-        "area",
-        "jauh",
-        "antena",
-        "longgar",
-        "tidak",
-        "terpasang",
-        "sempurna",
-        "daya",
-        "pancar",
-        "disetel",
-        "tingkat",
-        "rendah",
-        "terhalang",
-        "bangunan",
-        "logam",
-        "perangkat",
-        "penguat",
-        "sinyal",
-        "sedang",
-        "terganggu"
-      ]
-    },
-    {
-      "id": "radio-radio-tidak-menyala-sama-sekali",
-      "divisi": "radio",
-      "judul": "Radio Tidak Menyala Sama Sekali",
-      "gejala": "Radio tidak memberi tanda apa pun saat dinyalakan. Tidak ada lampu, tidak ada bunyi, dan layarnya gelap.",
-      "kategori": "ringan",
-      "penyebab": [
-        "Baterai kosong sama sekali",
-        "Baterai tidak terpasang sampai terkunci",
-        "Titik sambungan baterai kotor",
-        "Kerusakan pada perangkat radio"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Pengamatan dan Pelaporan",
-          "pengantar": "Yang perlu dipastikan adalah apakah persoalannya pada baterai atau pada radionya, dan itu dapat diketahui dengan menukar baterai.",
-          "langkah": [
-            "Perhatikan tombol pemutar di bagian atas radio. Putar searah jarum jam sampai terdengar bunyi klik.",
-            "Bila tetap tidak ada tanda menyala, lepaskan baterai dari badan radio.",
-            "Perhatikan apakah baterai terpasang sampai terkunci sebelumnya. Sebagian baterai perlu digeser sampai berbunyi klik.",
-            "Pasang kembali baterai, pastikan terkunci, lalu coba nyalakan sekali lagi.",
-            "Letakkan radio pada perangkat pengisi daya, lalu perhatikan apakah ada lampu yang menyala.",
-            "Biarkan mengisi sekitar 30 menit, lalu coba nyalakan kembali.",
-            "Bila tersedia baterai cadangan yang sudah terisi, pasang baterai itu dan coba nyalakan.",
-            "Bila menyala dengan baterai cadangan, berarti baterai lamanya yang bermasalah.",
-            "Laporkan kepada Engineer IT beserta nomor radio dan hasil pengujian baterai cadangan tersebut."
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "radio",
-        "tidak",
-        "menyala",
-        "sama",
-        "memberi",
-        "tanda",
-        "pun",
-        "dinyalakan",
-        "lampu",
-        "bunyi",
-        "layar",
-        "gelap",
-        "baterai",
-        "kosong",
-        "terpasang",
-        "sampai",
-        "terkunci",
-        "titik",
-        "sambungan",
-        "kotor",
-        "kerusakan",
-        "perangkat"
-      ]
-    },
-    {
-      "id": "radio-radio-menerima-suara-dari-kanal",
-      "divisi": "radio",
-      "judul": "Radio Menerima Suara dari Kanal yang Salah",
-      "gejala": "Terdengar percakapan dari kelompok kerja lain, atau rekan sekelompok justru tidak terdengar sama sekali.",
-      "kategori": "ringan",
-      "penyebab": [
-        "Tombol pemutar kanal tergeser tanpa disadari",
-        "Kunci kanal tidak aktif sehingga mudah berubah",
-        "Penyetelan kanal pada radio tidak sama dengan kelompok kerja"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Pengamatan dan Pelaporan",
-          "pengantar": "Penyetelan kanal mengikuti pembagian kelompok kerja, sehingga perubahannya harus lewat engineer. Yang dapat Anda lakukan adalah mencatat keadaannya.",
-          "langkah": [
-            "Perhatikan layar radio. Catat nomor atau nama kanal yang sedang aktif.",
-            "Tanyakan kepada rekan sekelompok, kanal berapa yang seharusnya dipakai.",
-            "Catat kedua keterangan tersebut — kanal yang sedang aktif dan kanal yang seharusnya.",
-            "Perhatikan tombol pemutar kanal di bagian atas radio. Periksa apakah terasa longgar atau mudah bergeser.",
-            "Bila radio Anda memiliki tombol kunci, catat apakah kuncinya sedang aktif.",
-            "Jangan mengubah penyetelan kanal sendiri, meski Anda mengetahui caranya.",
-            "Perhatikan pula apakah rekan lain mengalami hal serupa pada hari yang sama.",
-            "Laporkan kepada Engineer IT beserta nomor radio dan kedua nomor kanal yang Anda catat."
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "radio",
-        "menerima",
-        "suara",
-        "kanal",
-        "salah",
-        "terdengar",
-        "percakapan",
-        "kelompok",
-        "kerja",
-        "lain",
-        "rekan",
-        "sekelompok",
-        "justru",
-        "tidak",
-        "sama",
-        "tombol",
-        "pemutar",
-        "tergeser",
-        "tanpa",
-        "disadari",
-        "kunci",
-        "aktif",
-        "sehingga",
-        "mudah",
-        "berubah",
-        "penyetelan"
-      ]
-    },
-    {
-      "id": "radio-seluruh-radio-di-satu-area",
-      "divisi": "radio",
-      "judul": "Seluruh Radio di Satu Area Tidak Dapat Berkomunikasi",
-      "gejala": "Beberapa pemakai radio di area yang sama tidak dapat saling terhubung bersamaan, padahal radionya menyala normal.",
-      "kategori": "berat",
-      "penyebab": [
-        "Perangkat penguat sinyal di area tersebut terganggu",
-        "Pasokan listrik pada lokasi penguat sinyal padam",
-        "Antena pada menara terganggu akibat cuaca",
-        "Gangguan gelombang dari sumber lain"
-      ],
-      "solusi": [],
-      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Gangguan yang menimpa banyak pemakai sekaligus berpangkal pada perangkat penguat sinyal, bukan pada radio genggamnya. Bila memungkinkan, catat berapa orang yang terdampak dan di area mana saja. Silakan hubungi Engineer melalui tombol WhatsApp — gunakan telepon genggam bila radio tidak dapat dipakai.",
-      "kataKunci": [
-        "seluruh",
-        "radio",
-        "satu",
-        "area",
-        "tidak",
-        "dapat",
-        "berkomunikasi",
-        "beberapa",
-        "pemakai",
-        "sama",
-        "saling",
-        "terhubung",
-        "bersamaan",
-        "padahal",
-        "menyala",
-        "normal",
-        "perangkat",
-        "penguat",
-        "sinyal",
-        "tersebut",
-        "terganggu",
-        "pasokan",
-        "listrik",
-        "lokasi",
-        "mati",
-        "antena",
-        "menara",
-        "akibat",
-        "cuaca",
-        "gangguan",
-        "gelombang",
-        "sumber",
-        "lain"
-      ]
-    },
-    {
-      "id": "radio-radio-hilang-terjatuh-atau-terkena",
-      "divisi": "radio",
-      "judul": "Radio Hilang, Terjatuh, atau Terkena Air",
-      "gejala": "Radio terjatuh dari ketinggian, tercebur air, atau tidak diketahui keberadaannya.",
-      "kategori": "berat",
-      "penyebab": [
-        "Kecelakaan saat bekerja di lapangan",
-        "Radio tertinggal di lokasi kerja",
-        "Cuaca hujan saat bertugas di luar ruangan"
-      ],
-      "solusi": [],
-      "penanganan": "Keadaan ini memerlukan penanganan Engineer IT. Radio yang terkena air jangan dinyalakan dan jangan diisi dayanya, karena justru dapat memperparah kerusakan — lepaskan baterainya lalu biarkan kering. Radio yang hilang perlu segera dilaporkan supaya kanalnya dapat ditangani agar tidak dipakai pihak yang tidak berhak. Silakan hubungi Engineer melalui tombol WhatsApp dengan menyebutkan nomor radio, waktu kejadian, dan lokasi terakhir.",
-      "kataKunci": [
-        "radio",
-        "hilang",
-        "terjatuh",
-        "terkena",
-        "air",
-        "ketinggian",
-        "tercebur",
-        "tidak",
-        "diketahui",
-        "keberadaan",
-        "kecelakaan",
-        "bekerja",
-        "lapangan",
-        "tertinggal",
-        "lokasi",
-        "kerja",
-        "cuaca",
-        "hujan",
-        "bertugas",
-        "luar",
-        "ruangan"
-      ]
-    },
-    {
-      "id": "radio-permintaan-radio-baru-atau-penambahan",
-      "divisi": "radio",
-      "judul": "Permintaan Radio Baru atau Penambahan Kanal",
-      "gejala": "Ada pegawai atau mitra kerja yang memerlukan radio, atau kelompok kerja baru memerlukan kanal tersendiri.",
-      "kategori": "berat",
-      "penyebab": [
-        "Penambahan pegawai atau mitra kerja di lapangan",
-        "Pembentukan kelompok kerja baru",
-        "Kegiatan tertentu yang memerlukan jalur komunikasi terpisah"
-      ],
-      "solusi": [],
-      "penanganan": "Permintaan ini memerlukan penanganan Engineer IT. Penomoran kanal radio terikat pada izin frekuensi dan pada pembagian kelompok kerja, sehingga penambahannya tidak dapat dikerjakan seketika. Silakan hubungi Engineer melalui tombol WhatsApp dengan menyebutkan nama pemakai, fungsinya, area kerjanya, dan sampai kapan radio itu diperlukan.",
-      "kataKunci": [
-        "permintaan",
-        "radio",
-        "baru",
-        "penambahan",
-        "kanal",
-        "pegawai",
-        "mitra",
-        "kerja",
-        "memerlukan",
-        "kelompok",
-        "tersendiri",
-        "lapangan",
-        "pembentukan",
-        "kegiatan",
-        "tertentu",
-        "jalur",
-        "komunikasi",
-        "terpisah"
-      ]
-    },
-    {
-      "id": "radio-radio-melengking-saat-dipakai-berdekatan",
-      "divisi": "radio",
-      "judul": "Radio Melengking Saat Dipakai Berdekatan",
-      "gejala": "Terdengar bunyi melengking tajam ketika dua radio dipakai berbicara dalam jarak dekat.",
-      "kategori": "ringan",
-      "penyebab": [
-        "Dua radio berada terlalu dekat pada kanal yang sama",
-        "Volume kedua radio disetel terlalu tinggi",
-        "Suara dari pengeras satu radio tertangkap mikrofon radio lainnya"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Pengamatan dan Pelaporan",
-          "pengantar": "Bunyi melengking di jarak dekat umumnya wajar dan bukan tanda kerusakan. Yang perlu dipastikan adalah apakah ia juga muncul pada jarak biasa.",
-          "langkah": [
-            "Bila Anda dan lawan bicara berada dalam satu tempat, cukup berbicara langsung tanpa radio.",
-            "Bila tetap harus memakai radio, jauhkan kedua radio paling tidak sepuluh langkah.",
-            "Turunkan volume kedua radio dengan memutar tombol pemutarnya berlawanan arah jarum jam.",
-            "Coba berbicara kembali, lalu perhatikan apakah lengkingnya hilang.",
-            "Bila hilang, berarti memang karena jaraknya terlalu dekat — bukan kerusakan.",
-            "Bila melengking juga saat dipakai berjauhan, catat pada jarak berapa mulai terdengar.",
-            "Catat pula apakah lengkingnya muncul pada seluruh kanal atau hanya kanal tertentu.",
-            "Catat nomor radio Anda dan nomor radio lawan bicara.",
-            "Laporkan kepada Engineer IT beserta hasil pengamatan tersebut."
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "radio",
-        "melengking",
-        "dipakai",
-        "berdekatan",
-        "terdengar",
-        "bunyi",
-        "tajam",
-        "dua",
-        "berbicara",
-        "jarak",
-        "dekat",
-        "berada",
-        "terlalu",
-        "kanal",
-        "sama",
-        "volume",
-        "kedua",
-        "disetel",
-        "tinggi",
-        "suara",
-        "pengeras",
-        "satu",
-        "tertangkap",
-        "mikrofon",
-        "lain"
-      ]
-    },
-    {
-      "id": "radio-antena-radio-patah-atau-bengkok",
-      "divisi": "radio",
-      "judul": "Antena Radio Patah atau Bengkok",
-      "gejala": "Antena terlihat bengkok, retak pada pangkalnya, atau patah sama sekali.",
-      "kategori": "berat",
-      "penyebab": [
-        "Radio terjatuh atau tertindih",
-        "Antena tersangkut saat bekerja di lapangan",
-        "Bahan antena getas karena lama terkena panas"
-      ],
-      "solusi": [],
-      "penanganan": "Masalah ini memerlukan penanganan Engineer IT. Jangan memakai radio yang antenanya patah, sebab memancar tanpa antena yang utuh dapat merusak bagian pemancar di dalamnya. Jangan pula mengganti dengan antena sembarangan — ukurannya harus sesuai frekuensi yang dipakai. Silakan hubungi Engineer melalui tombol WhatsApp dengan menyebutkan nomor radio dan keadaan antenanya.",
-      "kataKunci": [
-        "antena",
-        "radio",
-        "patah",
-        "bengkok",
-        "terlihat",
-        "retak",
-        "pangkal",
-        "sama",
-        "terjatuh",
-        "tertindih",
-        "macet",
-        "bekerja",
-        "lapangan",
-        "bahan",
-        "getas",
-        "lama",
-        "terkena",
-        "panas"
-      ]
-    },
-    {
-      "id": "radio-terdengar-percakapan-asing-pada-kanal",
-      "divisi": "radio",
-      "judul": "Terdengar Percakapan Asing pada Kanal Kerja",
-      "gejala": "Pada kanal kerja terdengar suara orang yang tidak dikenal, atau percakapan yang jelas bukan berasal dari lingkungan kerja Anda.",
-      "kategori": "ringan",
-      "penyebab": [
-        "Kanal yang dipakai bertumpang tindih dengan pemakai lain di sekitar",
-        "Gelombang dari luar terpantul dan tertangkap perangkat",
-        "Perangkat lain memakai frekuensi yang sama tanpa sepengetahuan",
-        "Penyetelan penyaring suara pada radio berubah"
-      ],
-      "solusi": [
-        {
-          "judul": "Langkah Pengamatan dan Pelaporan",
-          "pengantar": "Suara asing pada kanal kerja perlu dicatat dengan teliti, sebab menyangkut kerahasiaan pembicaraan kerja dan izin frekuensi yang dipakai.",
-          "langkah": [
-            "Jangan menanggapi atau membalas percakapan asing tersebut.",
-            "Perhatikan layar radio, lalu catat nomor atau nama kanal yang sedang aktif.",
-            "Catat waktu kejadiannya sejelas mungkin.",
-            "Catat di area mana Anda berada ketika mendengarnya.",
-            "Perhatikan apakah suara asing itu terdengar sesekali saja atau berlangsung terus.",
-            "Bila memungkinkan, catat pokok pembicaraannya secara umum — misalnya terdengar seperti percakapan mitra kerja luar.",
-            "Tanyakan kepada rekan sekelompok apakah mereka mendengar hal yang sama.",
-            "Hentikan pembicaraan kerja yang bersifat tertutup pada kanal itu sampai diperiksa.",
-            "Segera laporkan kepada Engineer IT beserta nomor kanal, waktu, dan area kejadian."
-          ]
-        }
-      ],
-      "penanganan": null,
-      "kataKunci": [
-        "terdengar",
-        "percakapan",
-        "asing",
-        "kanal",
-        "kerja",
-        "suara",
-        "orang",
-        "tidak",
-        "dikenal",
-        "jelas",
-        "bukan",
-        "berasal",
-        "lingkungan",
-        "dipakai",
-        "bertumpang",
-        "tindih",
-        "pemakai",
-        "lain",
-        "sekitar",
-        "gelombang",
-        "luar",
-        "terpantul",
-        "tertangkap",
-        "perangkat",
-        "memakai",
-        "frekuensi",
-        "sama",
-        "tanpa",
-        "sepengetahuan",
-        "penyetelan",
-        "penyaring",
-        "radio",
-        "berubah"
-      ]
-    },
-    {
       "id": "ftth-lampu-los-menyala-merah-pada",
       "divisi": "ftth",
       "judul": "Lampu LOS Menyala Merah pada Perangkat Internet",
@@ -9391,6 +8698,699 @@
         "sesuai",
         "multimedia",
         "gangguan"
+      ]
+    },
+    {
+      "id": "multimedia-radio-tidak-ada-suara",
+      "divisi": "multimedia",
+      "judul": "Radio Tidak Ada Suara",
+      "gejala": "",
+      "kategori": "ringan",
+      "penyebab": [
+        "Volume radio disetel terlalu kecil atau mute",
+        "Baterai radio habis atau lemah",
+        "Channel atau frekuensi radio tidak sesuai",
+        "Antena radio tidak terpasang dengan baik"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Periksa volume radio, pastikan tidak dalam kondisi mute dan naikkan volume ke level yang cukup",
+            "Periksa indikator baterai, jika lemah segera charge atau ganti dengan baterai yang penuh",
+            "Pastikan channel radio yang digunakan sesuai dengan channel yang digunakan rekan kerja lainnya",
+            "Periksa antena radio, pastikan terpasang erat dan tidak rusak atau bengkok",
+            "Coba restart radio dengan mematikan lalu menyalakan kembali"
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "radio",
+        "tidak",
+        "suara",
+        "volume",
+        "disetel",
+        "terlalu",
+        "kecil",
+        "mute",
+        "baterai",
+        "habis",
+        "lemah",
+        "channel",
+        "frekuensi",
+        "sesuai",
+        "antena",
+        "terpasang",
+        "baik"
+      ]
+    },
+    {
+      "id": "multimedia-radio-suara-tidak-jelas-atau",
+      "divisi": "multimedia",
+      "judul": "Radio Suara Tidak Jelas atau Ada Noise",
+      "gejala": "",
+      "kategori": "ringan",
+      "penyebab": [
+        "Jarak komunikasi terlalu jauh dari repeater",
+        "Antena tidak terpasang dengan baik",
+        "Gangguan interferensi dari perangkat lain",
+        "Squelch level tidak sesuai"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Coba pindah ke lokasi yang lebih terbuka atau lebih dekat dengan area jangkauan",
+            "Pastikan antena radio terpasang dengan benar dan dalam posisi tegak",
+            "Jauhkan radio dari perangkat elektronik yang bisa menyebabkan interferensi",
+            "Periksa pengaturan squelch, sesuaikan ke level yang tepat agar noise berkurang",
+            "Jika masih bermasalah, coba gunakan radio HT lain untuk memastikan bukan masalah perangkat"
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "radio",
+        "suara",
+        "tidak",
+        "jelas",
+        "noise",
+        "jarak",
+        "komunikasi",
+        "terlalu",
+        "jauh",
+        "repeater",
+        "antena",
+        "terpasang",
+        "baik",
+        "gangguan",
+        "interferensi",
+        "perangkat",
+        "lain",
+        "squelch",
+        "level",
+        "sesuai"
+      ]
+    },
+    {
+      "id": "multimedia-radio-tidak-bisa-transmit-tidak",
+      "divisi": "multimedia",
+      "judul": "Radio Tidak Bisa Transmit (Tidak Bisa Kirim Suara)",
+      "gejala": "",
+      "kategori": "ringan",
+      "penyebab": [
+        "Tombol PTT (Push-To-Talk) bermasalah",
+        "Baterai lemah sehingga daya transmit tidak cukup",
+        "Frekuensi terblokir atau ada gangguan"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Penyelesaian",
+          "pengantar": null,
+          "langkah": [
+            "Tekan tombol PTT dan pastikan indikator transmit menyala (biasanya lampu merah)",
+            "Periksa baterai, pastikan terisi penuh karena transmit membutuhkan daya lebih besar",
+            "Minta rekan kerja untuk mengkonfirmasi apakah suara Anda terdengar di channel yang sama",
+            "Coba restart radio dan ulangi percobaan transmit",
+            "Jika indikator transmit tidak menyala sama sekali, kemungkinan ada kerusakan hardware"
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "radio",
+        "tidak",
+        "bisa",
+        "transmit",
+        "kirim",
+        "suara",
+        "tombol",
+        "ptt",
+        "push",
+        "talk",
+        "bermasa",
+        "baterai",
+        "lemah",
+        "sehingga",
+        "daya",
+        "frekuensi",
+        "terblokir",
+        "gangguan"
+      ]
+    },
+    {
+      "id": "multimedia-kerusakan-perangkat-radio-repeater",
+      "divisi": "multimedia",
+      "judul": "Kerusakan Perangkat Radio / Repeater",
+      "gejala": "",
+      "kategori": "berat",
+      "penyebab": [
+        "Kerusakan fisik pada perangkat radio",
+        "Repeater mengalami gangguan",
+        "Antena base station rusak atau tersambar petir"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Silakan hubungi Engineer melalui tombol WhatsApp.",
+      "kataKunci": [
+        "kerusakan",
+        "perangkat",
+        "radio",
+        "repeater",
+        "fisik",
+        "mengalami",
+        "gangguan",
+        "antena",
+        "base",
+        "station",
+        "rusak",
+        "tersambar",
+        "petir"
+      ]
+    },
+    {
+      "id": "multimedia-baterai-radio-cepat-habis",
+      "divisi": "multimedia",
+      "judul": "Baterai Radio Cepat Habis",
+      "gejala": "Radio genggam hanya bertahan beberapa jam padahal sudah diisi penuh semalaman.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Baterai sudah tua dan berkurang daya tampungnya",
+        "Titik sambungan pada baterai kotor sehingga pengisian tidak sempurna",
+        "Daya pancar disetel pada tingkat tinggi terus-menerus",
+        "Perangkat pengisi daya tidak bekerja sebagaimana mestinya"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Yang membedakan baterai tua dari pengisi daya yang rusak adalah pengamatan saat pengisian, dan itu dapat Anda lakukan sendiri.",
+          "langkah": [
+            "Perhatikan lampu pada perangkat pengisi daya saat radio diletakkan di atasnya.",
+            "Catat warna lampunya. Umumnya merah berarti sedang mengisi dan hijau berarti sudah penuh.",
+            "Bila lampunya tidak menyala sama sekali, kemungkinan pengisi dayanya yang bermasalah.",
+            "Lepaskan baterai dari radio. Perhatikan titik logam pada baterai dan pada badan radio.",
+            "Bila titik logam itu tampak kusam atau berkerak, catat keadaannya. Jangan mengeriknya sendiri.",
+            "Perhatikan badan baterai. Bila menggelembung atau berubah bentuk, hentikan pemakaian dan segera laporkan.",
+            "Catat sejak kapan baterai itu dipakai, bila Anda mengetahuinya.",
+            "Catat berapa jam radio bertahan setelah pengisian penuh.",
+            "Laporkan kepada Engineer IT beserta nomor radio dan hasil pengamatan Anda."
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "baterai",
+        "radio",
+        "cepat",
+        "habis",
+        "genggam",
+        "bertahan",
+        "beberapa",
+        "macet",
+        "padahal",
+        "diisi",
+        "penuh",
+        "semalaman",
+        "tua",
+        "berkurang",
+        "daya",
+        "tampung",
+        "titik",
+        "sambungan",
+        "kotor",
+        "sehingga",
+        "pengisian",
+        "tidak",
+        "sempurna",
+        "pancar",
+        "disetel",
+        "tingkat",
+        "tinggi",
+        "menerus",
+        "perangkat",
+        "pengisi",
+        "bekerja",
+        "sebagaimana",
+        "mesti"
+      ]
+    },
+    {
+      "id": "multimedia-radio-hanya-bisa-berkomunikasi-pada",
+      "divisi": "multimedia",
+      "judul": "Radio Hanya Bisa Berkomunikasi pada Jarak Dekat",
+      "gejala": "Suara terdengar jelas bila lawan bicara berada di dekat, tetapi hilang begitu berpindah ke area yang agak jauh.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Antena longgar atau tidak terpasang sempurna",
+        "Daya pancar disetel pada tingkat rendah",
+        "Berada di area yang terhalang bangunan atau logam",
+        "Perangkat penguat sinyal sedang terganggu"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Batas jarak yang masih dapat dijangkau adalah keterangan penting bagi engineer, karena dari situ dapat diperkirakan apakah gangguannya pada radio atau pada penguat sinyal.",
+          "langkah": [
+            "Perhatikan antena radio. Putar searah jarum jam perlahan sampai terasa rapat, jangan dipaksa.",
+            "Perhatikan apakah antenanya tampak bengkok, retak, atau pernah patah.",
+            "Cari tombol atau tulisan bertanda \"H\" dan \"L\" pada badan radio, yang menandakan tingkat daya pancar.",
+            "Catat pada tingkat mana radio Anda sedang disetel. Jangan mengubahnya sendiri.",
+            "Perhatikan di area mana suara masih terdengar jelas dan di area mana mulai hilang.",
+            "Catat kedua area tersebut sejelas mungkin, misalnya \"jelas di kantor, hilang mulai gerbang gudang\".",
+            "Coba pada area terbuka tanpa bangunan tinggi, lalu bandingkan hasilnya.",
+            "Tanyakan kepada rekan pemakai radio lain apakah jangkauannya juga berkurang.",
+            "Laporkan kepada Engineer IT beserta nomor radio dan batas area yang Anda catat."
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "radio",
+        "bisa",
+        "berkomunikasi",
+        "jarak",
+        "dekat",
+        "suara",
+        "terdengar",
+        "jelas",
+        "lawan",
+        "bicara",
+        "berada",
+        "hilang",
+        "begitu",
+        "berpindah",
+        "area",
+        "jauh",
+        "antena",
+        "longgar",
+        "tidak",
+        "terpasang",
+        "sempurna",
+        "daya",
+        "pancar",
+        "disetel",
+        "tingkat",
+        "rendah",
+        "terhalang",
+        "bangunan",
+        "logam",
+        "perangkat",
+        "penguat",
+        "sinyal",
+        "sedang",
+        "terganggu"
+      ]
+    },
+    {
+      "id": "multimedia-radio-tidak-menyala-sama-sekali",
+      "divisi": "multimedia",
+      "judul": "Radio Tidak Menyala Sama Sekali",
+      "gejala": "Radio tidak memberi tanda apa pun saat dinyalakan. Tidak ada lampu, tidak ada bunyi, dan layarnya gelap.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Baterai kosong sama sekali",
+        "Baterai tidak terpasang sampai terkunci",
+        "Titik sambungan baterai kotor",
+        "Kerusakan pada perangkat radio"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Yang perlu dipastikan adalah apakah persoalannya pada baterai atau pada radionya, dan itu dapat diketahui dengan menukar baterai.",
+          "langkah": [
+            "Perhatikan tombol pemutar di bagian atas radio. Putar searah jarum jam sampai terdengar bunyi klik.",
+            "Bila tetap tidak ada tanda menyala, lepaskan baterai dari badan radio.",
+            "Perhatikan apakah baterai terpasang sampai terkunci sebelumnya. Sebagian baterai perlu digeser sampai berbunyi klik.",
+            "Pasang kembali baterai, pastikan terkunci, lalu coba nyalakan sekali lagi.",
+            "Letakkan radio pada perangkat pengisi daya, lalu perhatikan apakah ada lampu yang menyala.",
+            "Biarkan mengisi sekitar 30 menit, lalu coba nyalakan kembali.",
+            "Bila tersedia baterai cadangan yang sudah terisi, pasang baterai itu dan coba nyalakan.",
+            "Bila menyala dengan baterai cadangan, berarti baterai lamanya yang bermasalah.",
+            "Laporkan kepada Engineer IT beserta nomor radio dan hasil pengujian baterai cadangan tersebut."
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "radio",
+        "tidak",
+        "menyala",
+        "sama",
+        "memberi",
+        "tanda",
+        "pun",
+        "dinyalakan",
+        "lampu",
+        "bunyi",
+        "layar",
+        "gelap",
+        "baterai",
+        "kosong",
+        "terpasang",
+        "sampai",
+        "terkunci",
+        "titik",
+        "sambungan",
+        "kotor",
+        "kerusakan",
+        "perangkat"
+      ]
+    },
+    {
+      "id": "multimedia-radio-menerima-suara-dari-kanal",
+      "divisi": "multimedia",
+      "judul": "Radio Menerima Suara dari Kanal yang Salah",
+      "gejala": "Terdengar percakapan dari kelompok kerja lain, atau rekan sekelompok justru tidak terdengar sama sekali.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Tombol pemutar kanal tergeser tanpa disadari",
+        "Kunci kanal tidak aktif sehingga mudah berubah",
+        "Penyetelan kanal pada radio tidak sama dengan kelompok kerja"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Penyetelan kanal mengikuti pembagian kelompok kerja, sehingga perubahannya harus lewat engineer. Yang dapat Anda lakukan adalah mencatat keadaannya.",
+          "langkah": [
+            "Perhatikan layar radio. Catat nomor atau nama kanal yang sedang aktif.",
+            "Tanyakan kepada rekan sekelompok, kanal berapa yang seharusnya dipakai.",
+            "Catat kedua keterangan tersebut — kanal yang sedang aktif dan kanal yang seharusnya.",
+            "Perhatikan tombol pemutar kanal di bagian atas radio. Periksa apakah terasa longgar atau mudah bergeser.",
+            "Bila radio Anda memiliki tombol kunci, catat apakah kuncinya sedang aktif.",
+            "Jangan mengubah penyetelan kanal sendiri, meski Anda mengetahui caranya.",
+            "Perhatikan pula apakah rekan lain mengalami hal serupa pada hari yang sama.",
+            "Laporkan kepada Engineer IT beserta nomor radio dan kedua nomor kanal yang Anda catat."
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "radio",
+        "menerima",
+        "suara",
+        "kanal",
+        "salah",
+        "terdengar",
+        "percakapan",
+        "kelompok",
+        "kerja",
+        "lain",
+        "rekan",
+        "sekelompok",
+        "justru",
+        "tidak",
+        "sama",
+        "tombol",
+        "pemutar",
+        "tergeser",
+        "tanpa",
+        "disadari",
+        "kunci",
+        "aktif",
+        "sehingga",
+        "mudah",
+        "berubah",
+        "penyetelan"
+      ]
+    },
+    {
+      "id": "multimedia-seluruh-radio-di-satu-area",
+      "divisi": "multimedia",
+      "judul": "Seluruh Radio di Satu Area Tidak Dapat Berkomunikasi",
+      "gejala": "Beberapa pemakai radio di area yang sama tidak dapat saling terhubung bersamaan, padahal radionya menyala normal.",
+      "kategori": "berat",
+      "penyebab": [
+        "Perangkat penguat sinyal di area tersebut terganggu",
+        "Pasokan listrik pada lokasi penguat sinyal padam",
+        "Antena pada menara terganggu akibat cuaca",
+        "Gangguan gelombang dari sumber lain"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Gangguan yang menimpa banyak pemakai sekaligus berpangkal pada perangkat penguat sinyal, bukan pada radio genggamnya. Bila memungkinkan, catat berapa orang yang terdampak dan di area mana saja. Silakan hubungi Engineer melalui tombol WhatsApp — gunakan telepon genggam bila radio tidak dapat dipakai.",
+      "kataKunci": [
+        "seluruh",
+        "radio",
+        "satu",
+        "area",
+        "tidak",
+        "dapat",
+        "berkomunikasi",
+        "beberapa",
+        "pemakai",
+        "sama",
+        "saling",
+        "terhubung",
+        "bersamaan",
+        "padahal",
+        "menyala",
+        "normal",
+        "perangkat",
+        "penguat",
+        "sinyal",
+        "tersebut",
+        "terganggu",
+        "pasokan",
+        "listrik",
+        "lokasi",
+        "mati",
+        "antena",
+        "menara",
+        "akibat",
+        "cuaca",
+        "gangguan",
+        "gelombang",
+        "sumber",
+        "lain"
+      ]
+    },
+    {
+      "id": "multimedia-radio-hilang-terjatuh-atau-terkena",
+      "divisi": "multimedia",
+      "judul": "Radio Hilang, Terjatuh, atau Terkena Air",
+      "gejala": "Radio terjatuh dari ketinggian, tercebur air, atau tidak diketahui keberadaannya.",
+      "kategori": "berat",
+      "penyebab": [
+        "Kecelakaan saat bekerja di lapangan",
+        "Radio tertinggal di lokasi kerja",
+        "Cuaca hujan saat bertugas di luar ruangan"
+      ],
+      "solusi": [],
+      "penanganan": "Keadaan ini memerlukan penanganan Engineer IT. Radio yang terkena air jangan dinyalakan dan jangan diisi dayanya, karena justru dapat memperparah kerusakan — lepaskan baterainya lalu biarkan kering. Radio yang hilang perlu segera dilaporkan supaya kanalnya dapat ditangani agar tidak dipakai pihak yang tidak berhak. Silakan hubungi Engineer melalui tombol WhatsApp dengan menyebutkan nomor radio, waktu kejadian, dan lokasi terakhir.",
+      "kataKunci": [
+        "radio",
+        "hilang",
+        "terjatuh",
+        "terkena",
+        "air",
+        "ketinggian",
+        "tercebur",
+        "tidak",
+        "diketahui",
+        "keberadaan",
+        "kecelakaan",
+        "bekerja",
+        "lapangan",
+        "tertinggal",
+        "lokasi",
+        "kerja",
+        "cuaca",
+        "hujan",
+        "bertugas",
+        "luar",
+        "ruangan"
+      ]
+    },
+    {
+      "id": "multimedia-permintaan-radio-baru-atau-penambahan",
+      "divisi": "multimedia",
+      "judul": "Permintaan Radio Baru atau Penambahan Kanal",
+      "gejala": "Ada pegawai atau mitra kerja yang memerlukan radio, atau kelompok kerja baru memerlukan kanal tersendiri.",
+      "kategori": "berat",
+      "penyebab": [
+        "Penambahan pegawai atau mitra kerja di lapangan",
+        "Pembentukan kelompok kerja baru",
+        "Kegiatan tertentu yang memerlukan jalur komunikasi terpisah"
+      ],
+      "solusi": [],
+      "penanganan": "Permintaan ini memerlukan penanganan Engineer IT. Penomoran kanal radio terikat pada izin frekuensi dan pada pembagian kelompok kerja, sehingga penambahannya tidak dapat dikerjakan seketika. Silakan hubungi Engineer melalui tombol WhatsApp dengan menyebutkan nama pemakai, fungsinya, area kerjanya, dan sampai kapan radio itu diperlukan.",
+      "kataKunci": [
+        "permintaan",
+        "radio",
+        "baru",
+        "penambahan",
+        "kanal",
+        "pegawai",
+        "mitra",
+        "kerja",
+        "memerlukan",
+        "kelompok",
+        "tersendiri",
+        "lapangan",
+        "pembentukan",
+        "kegiatan",
+        "tertentu",
+        "jalur",
+        "komunikasi",
+        "terpisah"
+      ]
+    },
+    {
+      "id": "multimedia-radio-melengking-saat-dipakai-berdekatan",
+      "divisi": "multimedia",
+      "judul": "Radio Melengking Saat Dipakai Berdekatan",
+      "gejala": "Terdengar bunyi melengking tajam ketika dua radio dipakai berbicara dalam jarak dekat.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Dua radio berada terlalu dekat pada kanal yang sama",
+        "Volume kedua radio disetel terlalu tinggi",
+        "Suara dari pengeras satu radio tertangkap mikrofon radio lainnya"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Bunyi melengking di jarak dekat umumnya wajar dan bukan tanda kerusakan. Yang perlu dipastikan adalah apakah ia juga muncul pada jarak biasa.",
+          "langkah": [
+            "Bila Anda dan lawan bicara berada dalam satu tempat, cukup berbicara langsung tanpa radio.",
+            "Bila tetap harus memakai radio, jauhkan kedua radio paling tidak sepuluh langkah.",
+            "Turunkan volume kedua radio dengan memutar tombol pemutarnya berlawanan arah jarum jam.",
+            "Coba berbicara kembali, lalu perhatikan apakah lengkingnya hilang.",
+            "Bila hilang, berarti memang karena jaraknya terlalu dekat — bukan kerusakan.",
+            "Bila melengking juga saat dipakai berjauhan, catat pada jarak berapa mulai terdengar.",
+            "Catat pula apakah lengkingnya muncul pada seluruh kanal atau hanya kanal tertentu.",
+            "Catat nomor radio Anda dan nomor radio lawan bicara.",
+            "Laporkan kepada Engineer IT beserta hasil pengamatan tersebut."
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "radio",
+        "melengking",
+        "dipakai",
+        "berdekatan",
+        "terdengar",
+        "bunyi",
+        "tajam",
+        "dua",
+        "berbicara",
+        "jarak",
+        "dekat",
+        "berada",
+        "terlalu",
+        "kanal",
+        "sama",
+        "volume",
+        "kedua",
+        "disetel",
+        "tinggi",
+        "suara",
+        "pengeras",
+        "satu",
+        "tertangkap",
+        "mikrofon",
+        "lain"
+      ]
+    },
+    {
+      "id": "multimedia-antena-radio-patah-atau-bengkok",
+      "divisi": "multimedia",
+      "judul": "Antena Radio Patah atau Bengkok",
+      "gejala": "Antena terlihat bengkok, retak pada pangkalnya, atau patah sama sekali.",
+      "kategori": "berat",
+      "penyebab": [
+        "Radio terjatuh atau tertindih",
+        "Antena tersangkut saat bekerja di lapangan",
+        "Bahan antena getas karena lama terkena panas"
+      ],
+      "solusi": [],
+      "penanganan": "Masalah ini memerlukan penanganan Engineer IT. Jangan memakai radio yang antenanya patah, sebab memancar tanpa antena yang utuh dapat merusak bagian pemancar di dalamnya. Jangan pula mengganti dengan antena sembarangan — ukurannya harus sesuai frekuensi yang dipakai. Silakan hubungi Engineer melalui tombol WhatsApp dengan menyebutkan nomor radio dan keadaan antenanya.",
+      "kataKunci": [
+        "antena",
+        "radio",
+        "patah",
+        "bengkok",
+        "terlihat",
+        "retak",
+        "pangkal",
+        "sama",
+        "terjatuh",
+        "tertindih",
+        "macet",
+        "bekerja",
+        "lapangan",
+        "bahan",
+        "getas",
+        "lama",
+        "terkena",
+        "panas"
+      ]
+    },
+    {
+      "id": "multimedia-terdengar-percakapan-asing-pada-kanal",
+      "divisi": "multimedia",
+      "judul": "Terdengar Percakapan Asing pada Kanal Kerja",
+      "gejala": "Pada kanal kerja terdengar suara orang yang tidak dikenal, atau percakapan yang jelas bukan berasal dari lingkungan kerja Anda.",
+      "kategori": "ringan",
+      "penyebab": [
+        "Kanal yang dipakai bertumpang tindih dengan pemakai lain di sekitar",
+        "Gelombang dari luar terpantul dan tertangkap perangkat",
+        "Perangkat lain memakai frekuensi yang sama tanpa sepengetahuan",
+        "Penyetelan penyaring suara pada radio berubah"
+      ],
+      "solusi": [
+        {
+          "judul": "Langkah Pengamatan dan Pelaporan",
+          "pengantar": "Suara asing pada kanal kerja perlu dicatat dengan teliti, sebab menyangkut kerahasiaan pembicaraan kerja dan izin frekuensi yang dipakai.",
+          "langkah": [
+            "Jangan menanggapi atau membalas percakapan asing tersebut.",
+            "Perhatikan layar radio, lalu catat nomor atau nama kanal yang sedang aktif.",
+            "Catat waktu kejadiannya sejelas mungkin.",
+            "Catat di area mana Anda berada ketika mendengarnya.",
+            "Perhatikan apakah suara asing itu terdengar sesekali saja atau berlangsung terus.",
+            "Bila memungkinkan, catat pokok pembicaraannya secara umum — misalnya terdengar seperti percakapan mitra kerja luar.",
+            "Tanyakan kepada rekan sekelompok apakah mereka mendengar hal yang sama.",
+            "Hentikan pembicaraan kerja yang bersifat tertutup pada kanal itu sampai diperiksa.",
+            "Segera laporkan kepada Engineer IT beserta nomor kanal, waktu, dan area kejadian."
+          ]
+        }
+      ],
+      "penanganan": null,
+      "kataKunci": [
+        "terdengar",
+        "percakapan",
+        "asing",
+        "kanal",
+        "kerja",
+        "suara",
+        "orang",
+        "tidak",
+        "dikenal",
+        "jelas",
+        "bukan",
+        "berasal",
+        "lingkungan",
+        "dipakai",
+        "bertumpang",
+        "tindih",
+        "pemakai",
+        "lain",
+        "sekitar",
+        "gelombang",
+        "luar",
+        "terpantul",
+        "tertangkap",
+        "perangkat",
+        "memakai",
+        "frekuensi",
+        "sama",
+        "tanpa",
+        "sepengetahuan",
+        "penyetelan",
+        "penyaring",
+        "radio",
+        "berubah"
       ]
     }
   ]

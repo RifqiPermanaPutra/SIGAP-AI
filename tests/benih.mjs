@@ -22,7 +22,7 @@ export const AKUN_UJI = {
   // Engineer yang hanya menangani dua layanan. Dipakai memastikan
   // pembatasannya benar-benar berlaku di sisi server, bukan sekadar
   // menyembunyikan baris di antarmuka.
-  engineerPrinter: { namaAkun: 'budi', sandi: 'ujicoba123', divisi: ['printer', 'windows'] }
+  engineerPrinter: { namaAkun: 'budi', sandi: 'ujicoba123', divisi: ['printer', 'end-user'] }
 };
 
 const KELUHAN = {
@@ -32,7 +32,7 @@ const KELUHAN = {
     ['hasil cetakan bergaris garis', 'Hasil Cetak Bergaris', 0.72],
     ['printer warnanya jadi ungu semua', null, 0.19]
   ],
-  windows: [
+  'end-user': [
     ['laptop saya lemot banget', 'Komputer Lambat', 0.69],
     ['gabisa connect wifi kantor', 'Tidak Dapat Terhubung WiFi', 0.58],
     ['layar biru terus restart sendiri', 'Blue Screen', 0.81],
@@ -41,9 +41,8 @@ const KELUHAN = {
   cctv: [['kamera gudang mati', null, 0], ['cctv area parkir buram', null, 0]],
   lan: [['internet mati di ruangan saya', null, 0], ['kabel lan lepas kayaknya', null, 0]],
   telepon: [['telepon ga ada nada', null, 0]],
-  radio: [['ht saya ga bisa nyala', null, 0]],
   ftth: [['lampu los merah di onu', null, 0]],
-  wan: [['koneksi ke ukui putus', null, 0]]
+  multimedia: [['ht saya ga bisa nyala', null, 0], ['koneksi ke ukui putus', null, 0]]
 };
 
 const NAMA = ['Budi Santoso', 'Siti Rahayu', 'Ahmad Fauzi', 'Dewi Lestari', 'Rudi Hartono',
@@ -57,7 +56,7 @@ const FUNGSI = FUNGSI_LIST;
 const LOKASI = ['Produksi Lirik', 'WS Lirik', 'Finance Lirik', 'HC Lirik', 'RAM', 'IT', 'Fire',
   'Bengkel Listrik', 'Kantor Besar Buatan', 'Pumper UKUI', 'Klinik UKUI', 'SP 2, 3, 4'];
 const URGENSI = ['Rendah', 'Sedang', 'Tinggi', 'Kritis'];
-const SWALAYAN = ['printer', 'windows'];
+const SWALAYAN = ['printer', 'end-user'];
 
 /** Nomor tiket baris cacat yang sengaja ditanam — lihat keterangan di bawah */
 export const TIKET_CACAT = 'SGP-CACAT-0001';

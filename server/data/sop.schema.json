@@ -15,13 +15,13 @@
     },
 
     "divisi": {
-      "enum": ["printer", "windows", "cctv", "telepon", "radio", "ftth", "lan", "wan"],
+      "enum": ["printer", "end-user", "cctv", "telepon", "ftth", "lan", "multimedia"],
       "description": "Id layanan. WAJIB sama dengan nama berkasnya — `printer.json` wajib berisi divisi 'printer'. Ketidakcocokan membuat masalah tersimpan di bawah layanan yang salah dan tidak pernah tercocokkan."
     },
 
     "nama": {
       "type": "string",
-      "description": "Nama layanan sebagaimana ditampilkan, mis. 'Radio Komunikasi'. Hanya untuk keterbacaan berkas; yang dipakai antarmuka adalah nama di server/config/divisi.js."
+      "description": "Nama layanan sebagaimana ditampilkan, mis. 'End User'. Hanya untuk keterbacaan berkas; yang dipakai antarmuka adalah nama di server/config/divisi.js."
     },
 
     "catatanKonfirmasi": {

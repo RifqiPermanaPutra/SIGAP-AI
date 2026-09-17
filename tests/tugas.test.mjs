@@ -206,14 +206,14 @@ catatan('token 30 hari di atas HTTP berarti sesi yang tercuri berlaku sebulan pe
 
 bagian('6. Wewenang per layanan');
 
-// budi hanya menangani printer & windows; eka tidak dibatasi; admin melihat semua.
+// budi hanya menangani printer & end-user; eka tidak dibatasi; admin melihat semua.
 const budi = (await masuk(AKUN_UJI.engineerPrinter)).kuki;
 
 const punyaBudi = await json('/tugas', budi);
 const punyaEka = await json('/tugas', eng);
 
 cek('engineer terbatas hanya menerima layanan yang ditanganinya',
-  punyaBudi.tugas.every((t) => ['printer', 'windows'].includes(t.divisi_id)),
+  punyaBudi.tugas.every((t) => ['printer', 'end-user'].includes(t.divisi_id)),
   [...new Set(punyaBudi.tugas.map((t) => t.divisi_id))]);
 
 cek('engineer tanpa batas tetap menerima seluruh layanan',
@@ -225,7 +225,7 @@ cek('penyaringan dikerjakan server, bukan disembunyikan antarmuka',
   [punyaBudi.tugas.length, punyaEka.tugas.length]);
 
 cek('pilihan saringan ikut mengikuti wewenang',
-  punyaBudi.pilihanDivisi.map((d) => d.id).join(',') === 'printer,windows',
+  punyaBudi.pilihanDivisi.map((d) => d.id).join(',') === 'printer,end-user',
   punyaBudi.pilihanDivisi.map((d) => d.id));
 
 cek('cakupan wewenang dilaporkan ke antarmuka',

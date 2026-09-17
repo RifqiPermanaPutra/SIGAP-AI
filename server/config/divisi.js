@@ -25,7 +25,7 @@ if (!(process.env.WHATSAPP_FTTH || '').trim() && (process.env[ENV_FTTH_SEBELUMNY
  *
  * Pembagian ini berasal dari masukan Engineer IT (Eka Maulana): keluhan yang
  * cukup umum untuk dipandu sendiri hanya ada pada End User dan printer.
- * Selebihnya — CCTV, jaringan, multimedia, HT, telepon — memang harus ditangani
+ * Selebihnya — CCTV, jaringan, multimedia (termasuk HT), telepon — harus ditangani
  * engineer, dan SOP-nya tidak boleh disusun dari sumber umum karena sangat
  * spesifik lapangan.
  *
@@ -39,7 +39,12 @@ export const DIVISIONS = [
   { id: 'telepon', name: 'Telepon', description: 'Telepon kantor, extension', env: 'WHATSAPP_TELEPON', mode: 'engineer' },
   { id: 'ftth', name: 'FTTH', description: 'Fiber to the home, ONU/ONT', env: 'WHATSAPP_FTTH', mode: 'engineer' },
   { id: 'lan', name: 'LAN', description: 'Jaringan lokal, kabel LAN', env: 'WHATSAPP_LAN', mode: 'engineer' },
-  { id: 'multimedia', name: 'Multimedia', description: 'Sound system, tinta printer, persiapan rapat', env: 'WHATSAPP_MULTIMEDIA', mode: 'engineer' }
+  // Menyerap layanan WAN dan Radio Komunikasi yang dilebur ke sini pada
+  // September 2026. Deskripsinya WAJIB menyebut keduanya: kartu layanan inilah
+  // satu-satunya petunjuk pelapor tentang kendala mana yang dilaporkan ke mana,
+  // dan gangguan HT tidak akan pernah ditebak orang berada di balik kata
+  // "Multimedia".
+  { id: 'multimedia', name: 'Multimedia', description: 'Sound system, radio HT, koneksi antar site, persiapan rapat', env: 'WHATSAPP_MULTIMEDIA', mode: 'engineer' }
 ];
 
 /** Peta id → divisi, untuk pencarian cepat */

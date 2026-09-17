@@ -317,6 +317,116 @@ function selaraskanDataFtth() {
 }
 
 /**
+ * Selaraskan data lama dengan id layanan yang sudah berganti nama.
+ *
+ * Pada 9 September 2026 dua layanan berganti nama sekaligus — `windows`
+ * menjadi `end-user`, dan `wan` menjadi `multimedia`. Yang ikut berganti hanya
+ * daftar di `server/config/divisi.js` — isi basis data dibiarkan, dan itu
+ * memutus dua hal sekaligus tanpa satu pun pesan galat:
+ *
+ *   1. AKUN ENGINEER-nya berhenti menerima pekerjaan. Wewenang akun disimpan
+ *      sebagai id layanan pada `pengguna.divisi`; akun yang masih tertulis
+ *      'windows' tidak pernah cocok dengan tiket baru yang kini ber-id
+ *      'end-user'. Papan tugasnya kosong sepanjang hari meski laporan terus
+ *      masuk — dan halaman itu memang tidak punya cara membedakan "tidak ada
+ *      pekerjaan" dari "wewenangnya menunjuk layanan yang sudah tidak ada".
+ *
+ *   2. TIKET LAMA-nya terputus dari layanannya. Sesi lama masih ber-id
+ *      'windows' dan 'wan', sehingga rekap menampilkannya sebagai layanan
+ *      tersendiri di samping 'End User' dan 'Multimedia' — dua baris untuk satu
+ *      layanan yang sama.
+ *
+ * Sama seperti penyelarasan FTTH di atas: SEKALI seumur basis data, dijaga
+ * penanda pada tabel `migrasi`. Berjalan sendiri saat server dimutakhirkan,
+ * karena perbaikan yang menuntut seseorang ingat menjalankan perintah adalah
+ * perbaikan yang terlewat di mesin yang tidak sedang diperhatikan.
+ *
+ * Yang SENGAJA tidak disentuh:
+ *
+ *   - `sesi.masalah_cocok` dan `pesan.isi` — "Windows" di sana adalah nama
+ *     sistem operasi pada judul masalah dan kalimat pelapor, bukan id layanan.
+ *     Mengganti kata itu menghasilkan judul "Tidak Bisa Login ke End-User".
+ *   - `log_akses.keterangan` — teks bebas, dengan bahaya yang sama.
+ *
+ * Perbedaan dengan penyelarasan FTTH: di sana istilahnya memang dipensiunkan
+ * dari seluruh kosakata, sedangkan di sini kata "windows" tetap sah dipakai
+ * manusia. Karena itu yang diubah hanya kolom yang isinya BENAR-BENAR id.
+ *
+ * Penggantian nama berikutnya cukup ditambahkan satu baris ke PENGGANTIAN di
+ * bawah, DISERTAI penanda baru. Ditulis sebagai daftar justru karena dua
+ * penggantian pertama dikerjakan dalam satu commit dan KEDUANYA terlewat —
+ * yang kedua baru ketahuan setelah yang pertama diperbaiki.
+ */
+const PENGGANTIAN_NAMA_LAYANAN = [
+  ['windows', 'end-user'],
+  // 'wan' dan 'radio' keduanya melebur ke 'multimedia'. Peleburan dua layanan
+  // menjadi satu ditangani daftar ini apa adanya — tidak ada yang perlu
+  // dibedakan dari penggantian nama biasa, karena yang dikerjakan sama: id
+  // lama pada tiket dan pada wewenang akun ditulis ulang menjadi id baru.
+  ['wan', 'multimedia'],
+  ['radio', 'multimedia']
+];
+
+function selaraskanNamaLayanan() {
+  const PENANDA = 'nama-layanan-2026-09';
+  const sudah = db.prepare('SELECT 1 FROM migrasi WHERE nama = ?').get(PENANDA);
+  if (sudah) return;
+
+  const menjadi = new Map(PENGGANTIAN_NAMA_LAYANAN);
+
+  let perubahan = 0;
+  db.exec('BEGIN IMMEDIATE');
+  try {
+    const perbaruiSesi = db.prepare('UPDATE sesi SET divisi_id = ? WHERE lower(divisi_id) = ?');
+    for (const [sebelumnya, sekarang] of PENGGANTIAN_NAMA_LAYANAN) {
+      perubahan += perbaruiSesi.run(sekarang, sebelumnya).changes;
+    }
+
+    /* `pengguna.divisi` diperiksa per potongan, bukan dengan replace() pada
+     * seluruh teksnya. Kolom ini berisi daftar id dipisah koma, dan penggantian
+     * teks apa adanya akan ikut mengenai id lain yang MEMUAT id lama sebagai
+     * penggalan — 'wan' ada di dalam 'wan-cadangan' maupun di dalam kata lain
+     * yang mungkin dipakai kelak. Satu akun di lapangan memang bernilai
+     * 'wan,radio', dan itu persis bentuk yang paling mudah dirusak replace(). */
+    const perbaruiAkun = db.prepare('UPDATE pengguna SET divisi = ? WHERE id = ?');
+    const akun = db.prepare(
+      "SELECT id, divisi FROM pengguna WHERE divisi IS NOT NULL AND divisi != ''"
+    ).all();
+
+    for (const { id, divisi } of akun) {
+      /* Set, bukan sekadar map: dua layanan dapat melebur menjadi satu, dan
+       * akun yang memegang KEDUANYA akan menghasilkan 'multimedia,multimedia'.
+       * Satu akun di lapangan memang bernilai 'wan,radio' — persis bentuk itu.
+       * Nilai kembar tidak membuat kueri salah, tetapi ia tampil dua kali pada
+       * `npm run akun -- daftar` dan membuat yang membacanya mengira ada yang
+       * rusak. Urutan aslinya dipertahankan supaya perubahannya mudah dibaca. */
+      const baru = [...new Set(
+        divisi
+          .split(',')
+          .map((d) => d.trim().toLowerCase())
+          .filter(Boolean)
+          .map((d) => menjadi.get(d) || d)
+      )].join(',');
+
+      if (baru !== divisi) {
+        perbaruiAkun.run(baru, id);
+        perubahan++;
+      }
+    }
+
+    db.prepare('INSERT INTO migrasi (nama, dijalankan_pada) VALUES (?, ?)')
+      .run(PENANDA, sekarang());
+
+    db.exec('COMMIT');
+  } catch (error) {
+    db.exec('ROLLBACK');
+    throw error;
+  }
+
+  console.log(`🔧 Penyelarasan nama layanan dijalankan — ${perubahan} nilai diperbarui`);
+}
+
+/**
  * Siapkan berkas basis data dan tabelnya.
  * @returns {Promise<DatabaseSync>}
  */
@@ -334,6 +444,7 @@ export async function initDatabase() {
   db.exec(SKEMA);
   terapkanMigrasi();
   selaraskanDataFtth();
+  selaraskanNamaLayanan();
 
   const { jumlah } = db.prepare('SELECT COUNT(*) AS jumlah FROM sesi').get();
   console.log(`📦 Basis data siap — ${jumlah} sesi tersimpan (${DB_FILE})`);

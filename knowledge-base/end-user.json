@@ -12,7 +12,7 @@
   ],
   "masalah": [
     {
-      "id": "windows-tidak-bisa-login-ke-komputer",
+      "id": "end-user-tidak-bisa-login-ke-komputer",
       "judul": "Tidak Bisa Login ke Komputer",
       "gejala": "Kata sandi selalu ditolak meski sudah diketik dengan benar, atau muncul tulisan bahwa akun terkunci.",
       "kategori": "ringan",
@@ -65,7 +65,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-komputer-atau-laptop-terasa-lambat",
+      "id": "end-user-komputer-atau-laptop-terasa-lambat",
       "judul": "Komputer atau Laptop Terasa Lambat",
       "gejala": "Komputer terasa berat, aplikasi lama sekali terbuka, dan sering muncul tulisan \"Not Responding\".",
       "kategori": "ringan",
@@ -122,7 +122,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-penyimpanan-komputer-penuh",
+      "id": "end-user-penyimpanan-komputer-penuh",
       "judul": "Penyimpanan Komputer Penuh",
       "gejala": "Muncul peringatan \"Low Disk Space\", atau penyimpanan berwarna merah, dan tidak bisa menyimpan berkas baru.",
       "kategori": "ringan",
@@ -182,7 +182,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-aplikasi-berhenti-merespons-atau-membeku",
+      "id": "end-user-aplikasi-berhenti-merespons-atau-membeku",
       "judul": "Aplikasi Berhenti Merespons atau Membeku",
       "gejala": "Aplikasi diam total, layar berubah keputihan, dan muncul tulisan \"Not Responding\" di bagian atas jendela.",
       "kategori": "ringan",
@@ -240,7 +240,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-tidak-bisa-mencetak-ke-printer",
+      "id": "end-user-tidak-bisa-mencetak-ke-printer",
       "judul": "Tidak Bisa Mencetak ke Printer Jaringan",
       "gejala": "Nama printer tidak muncul saat hendak mencetak, atau muncul tetapi dokumen tidak keluar.",
       "kategori": "ringan",
@@ -297,7 +297,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-layar-biru-atau-komputer-restart",
+      "id": "end-user-layar-biru-atau-komputer-restart",
       "judul": "Layar Biru atau Komputer Restart Sendiri",
       "gejala": "Muncul layar biru berisi tulisan dan kode kesalahan, lalu komputer mati dan menyala sendiri berulang kali.",
       "kategori": "berat",
@@ -310,7 +310,7 @@
       "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Bila memungkinkan, foto layar biru tersebut terlebih dahulu memakai ponsel, karena kode yang tertera membantu engineer menemukan penyebabnya. Silakan hubungi Engineer melalui tombol WhatsApp."
     },
     {
-      "id": "windows-komputer-gagal-masuk-ke-layar",
+      "id": "end-user-komputer-gagal-masuk-ke-layar",
       "judul": "Komputer Gagal Masuk ke Layar Utama",
       "gejala": "Komputer menyala tetapi berhenti di logo, layar hitam terus-menerus, atau tidak pernah sampai ke layar utama.",
       "kategori": "berat",
@@ -323,7 +323,7 @@
       "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Jangan mematikan paksa berulang kali karena berpotensi menambah kerusakan. Silakan hubungi Engineer melalui tombol WhatsApp."
     },
     {
-      "id": "windows-suara-tidak-keluar-dari-komputer",
+      "id": "end-user-suara-tidak-keluar-dari-komputer",
       "judul": "Suara Tidak Keluar dari Komputer",
       "gejala": "Tidak ada suara sama sekali saat memutar video atau mengikuti rapat daring. Ikon pengeras suara dapat bertanda silang.",
       "kategori": "ringan",
@@ -384,7 +384,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-wifi-terhubung-tetapi-tidak-bisa",
+      "id": "end-user-wifi-terhubung-tetapi-tidak-bisa",
       "judul": "WiFi Terhubung tetapi Tidak Bisa Membuka Situs",
       "gejala": "Ikon WiFi menunjukkan tersambung, tetapi peramban selalu gagal memuat halaman. Dapat muncul tanda seru pada ikon jaringan.",
       "kategori": "ringan",
@@ -448,7 +448,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-tidak-bisa-membuka-flashdisk-atau",
+      "id": "end-user-tidak-bisa-membuka-flashdisk-atau",
       "judul": "Tidak Bisa Membuka Flashdisk atau Hard Disk Eksternal",
       "gejala": "Flashdisk sudah ditancapkan tetapi tidak muncul di File Explorer. Dapat muncul permintaan memformat, yang tidak boleh dituruti.",
       "kategori": "ringan",
@@ -511,7 +511,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-berkas-atau-folder-hilang-dari",
+      "id": "end-user-berkas-atau-folder-hilang-dari",
       "judul": "Berkas atau Folder Hilang dari Komputer",
       "gejala": "Berkas yang biasa dipakai tidak lagi terlihat di tempat biasanya, padahal tidak merasa menghapusnya.",
       "kategori": "ringan",
@@ -575,7 +575,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-aplikasi-microsoft-office-meminta-aktivasi",
+      "id": "end-user-aplikasi-microsoft-office-meminta-aktivasi",
       "judul": "Aplikasi Microsoft Office Meminta Aktivasi",
       "gejala": "Saat membuka Word, Excel, atau PowerPoint muncul peringatan bahwa produk belum diaktifkan. Sebagian menu dapat terkunci sehingga dokumen hanya bisa dibaca.",
       "kategori": "ringan",
@@ -637,7 +637,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-layar-komputer-berkedip-atau-terlalu",
+      "id": "end-user-layar-komputer-berkedip-atau-terlalu",
       "judul": "Layar Komputer Berkedip atau Terlalu Redup",
       "gejala": "Tampilan layar berkedip, bergaris, atau terlalu gelap meski sudah dinaikkan kecerahannya.",
       "kategori": "ringan",
@@ -700,7 +700,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-keyboard-mengetik-huruf-atau-angka",
+      "id": "end-user-keyboard-mengetik-huruf-atau-angka",
       "judul": "Keyboard Mengetik Huruf atau Angka yang Salah",
       "gejala": "Huruf yang muncul berbeda dari tombol yang ditekan, atau tombol angka di sisi kanan tidak berfungsi.",
       "kategori": "ringan",
@@ -762,7 +762,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-mouse-atau-touchpad-tidak-bergerak",
+      "id": "end-user-mouse-atau-touchpad-tidak-bergerak",
       "judul": "Mouse atau Touchpad Tidak Bergerak",
       "gejala": "Penunjuk di layar tidak bergerak sama sekali, atau bergerak tersendat dan meloncat-loncat.",
       "kategori": "ringan",
@@ -826,7 +826,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-waktu-dan-tanggal-komputer-selalu",
+      "id": "end-user-waktu-dan-tanggal-komputer-selalu",
       "judul": "Waktu dan Tanggal Komputer Selalu Salah",
       "gejala": "Jam pada komputer meleset jauh atau tanggalnya mundur, dan kembali salah setiap kali komputer dinyalakan.",
       "kategori": "ringan",
@@ -887,7 +887,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-komputer-diduga-terkena-virus-atau",
+      "id": "end-user-komputer-diduga-terkena-virus-atau",
       "judul": "Komputer Diduga Terkena Virus atau Berkas Terkunci",
       "gejala": "Berkas tidak dapat dibuka dan namanya berubah dengan akhiran asing. Dapat muncul permintaan tebusan, jendela iklan bertubi-tubi, atau komputer bekerja sendiri tanpa disentuh.",
       "kategori": "berat",
@@ -901,7 +901,7 @@
       "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. SEGERA cabut kabel jaringan dari komputer dan matikan WiFi-nya, supaya gangguan tidak menyebar ke komputer lain maupun ke berkas bersama. Jangan mematikan komputer dan jangan menyalakannya ulang, karena keterangan yang diperlukan engineer dapat hilang. Jangan membayar tebusan apa pun yang diminta di layar, dan jangan mencoba memasang aplikasi pembersih dari internet. Bila memungkinkan, potret layar dengan telepon genggam Anda. Silakan hubungi Engineer melalui tombol WhatsApp dan sebutkan bahwa komputer diduga terkena virus, beserta lokasi komputernya."
     },
     {
-      "id": "windows-wajah-dan-suara-tidak-terkirim",
+      "id": "end-user-wajah-dan-suara-tidak-terkirim",
       "judul": "Wajah dan Suara Tidak Terkirim Saat Rapat Daring",
       "gejala": "Peserta rapat daring lain tidak dapat melihat maupun mendengar Anda. Tanda mikrofon tidak bergerak ketika Anda berbicara.",
       "kategori": "ringan",
@@ -967,7 +967,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-tidak-bisa-berbagi-layar-saat",
+      "id": "end-user-tidak-bisa-berbagi-layar-saat",
       "judul": "Tidak Bisa Berbagi Layar Saat Rapat Daring",
       "gejala": "Tombol berbagi layar tidak dapat ditekan, atau peserta lain hanya melihat layar hitam saat Anda membagikan tampilan.",
       "kategori": "ringan",
@@ -1029,7 +1029,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-baterai-laptop-cepat-habis",
+      "id": "end-user-baterai-laptop-cepat-habis",
       "judul": "Baterai Laptop Cepat Habis",
       "gejala": "Laptop hanya bertahan satu sampai dua jam tanpa kabel pengisi daya, jauh lebih singkat dari biasanya.",
       "kategori": "ringan",
@@ -1096,7 +1096,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-laptop-panas-dan-kipasnya-berbunyi",
+      "id": "end-user-laptop-panas-dan-kipasnya-berbunyi",
       "judul": "Laptop Panas dan Kipasnya Berbunyi Keras",
       "gejala": "Badan laptop terasa panas terutama di bagian bawah, kipas berbunyi keras terus-menerus, dan laptop terasa melambat.",
       "kategori": "ringan",
@@ -1161,7 +1161,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-pembaruan-windows-berjalan-lama-atau",
+      "id": "end-user-pembaruan-windows-berjalan-lama-atau",
       "judul": "Pembaruan Windows Berjalan Lama atau Selalu Gagal",
       "gejala": "Proses pembaruan berhenti pada persentase tertentu selama berjam-jam, atau selalu berakhir dengan pesan gagal.",
       "kategori": "ringan",
@@ -1228,7 +1228,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-peramban-penuh-iklan-atau-halaman",
+      "id": "end-user-peramban-penuh-iklan-atau-halaman",
       "judul": "Peramban Penuh Iklan atau Halaman Awalnya Berubah Sendiri",
       "gejala": "Muncul jendela iklan bertubi-tubi saat membuka peramban, halaman awal berubah tanpa diminta, atau ada bilah alat asing yang tidak pernah dipasang.",
       "kategori": "ringan",
@@ -1294,7 +1294,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-tidak-bisa-membuka-lampiran-surel",
+      "id": "end-user-tidak-bisa-membuka-lampiran-surel",
       "judul": "Tidak Bisa Membuka Lampiran Surel",
       "gejala": "Lampiran surel gagal dibuka, atau muncul keterangan bahwa tidak ada aplikasi yang sesuai untuk berkas tersebut.",
       "kategori": "ringan",
@@ -1358,7 +1358,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-komputer-mati-sendiri-saat-sedang",
+      "id": "end-user-komputer-mati-sendiri-saat-sedang",
       "judul": "Komputer Mati Sendiri Saat Sedang Dipakai",
       "gejala": "Komputer padam seketika tanpa peringatan dan tanpa proses mematikan yang wajar, lalu dapat menyala kembali beberapa saat kemudian.",
       "kategori": "berat",
@@ -1372,7 +1372,7 @@
       "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Komputer yang mati mendadak berulang kali berisiko merusak berkas pekerjaan yang sedang terbuka, jadi sebaiknya jangan dipakai untuk pekerjaan penting sampai diperiksa. Bila memungkinkan, catat apakah matinya terjadi saat sedang mengerjakan hal berat, dan apakah badan komputer terasa panas sebelum mati. Silakan hubungi Engineer melalui tombol WhatsApp beserta catatan tersebut."
     },
     {
-      "id": "windows-diminta-kunci-pemulihan-sebelum-windows",
+      "id": "end-user-diminta-kunci-pemulihan-sebelum-windows",
       "judul": "Diminta Kunci Pemulihan Sebelum Windows Terbuka",
       "gejala": "Sebelum lambang Windows muncul, layar biru meminta kunci pemulihan berupa deretan angka panjang. Komputer tidak dapat melanjutkan tanpa kunci tersebut.",
       "kategori": "berat",
@@ -1386,7 +1386,7 @@
       "penanganan": "Masalah ini termasuk kategori BERAT dan memerlukan penanganan langsung oleh Engineer IT. Kunci pemulihan tersimpan pada catatan Fungsi IT, bukan pada komputernya, sehingga tidak ada yang dapat Anda kerjakan sendiri. Jangan menebak-nebak deretan angkanya. Potret layar biru tersebut dengan telepon genggam Anda — pada layar itu tertera nomor pengenal kunci yang diperlukan engineer untuk mencarinya. Silakan hubungi Engineer melalui tombol WhatsApp dengan menyertakan foto tersebut dan lokasi komputernya."
     },
     {
-      "id": "windows-permintaan-lisensi-atau-perpanjangan-aplikasi",
+      "id": "end-user-permintaan-lisensi-atau-perpanjangan-aplikasi",
       "judul": "Permintaan Lisensi atau Perpanjangan Aplikasi Berbayar",
       "gejala": "Memerlukan lisensi aplikasi berbayar untuk pekerjaan, atau lisensi yang lama sudah habis masa berlakunya.",
       "kategori": "ringan",
@@ -1444,7 +1444,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-permintaan-hak-akses-aplikasi-pertamina",
+      "id": "end-user-permintaan-hak-akses-aplikasi-pertamina",
       "judul": "Permintaan Hak Akses Aplikasi Pertamina",
       "gejala": "Aplikasi milik Pertamina menolak membuka menu tertentu, atau memberi keterangan bahwa Anda belum berwenang membukanya.",
       "kategori": "ringan",
@@ -1505,7 +1505,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-permintaan-pemasangan-aplikasi-baru-di",
+      "id": "end-user-permintaan-pemasangan-aplikasi-baru-di",
       "judul": "Permintaan Pemasangan Aplikasi Baru di Komputer",
       "gejala": "Memerlukan aplikasi yang belum terpasang, dan pemasangannya ditolak karena memerlukan izin administrator.",
       "kategori": "ringan",
@@ -1563,7 +1563,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-tidak-bisa-menyambung-ke-proyektor",
+      "id": "end-user-tidak-bisa-menyambung-ke-proyektor",
       "judul": "Tidak Bisa Menyambung ke Proyektor atau Layar Kedua",
       "gejala": "Proyektor atau layar kedua sudah tersambung dengan kabel tetapi tetap gelap, atau hanya menampilkan latar kosong tanpa isi.",
       "kategori": "ringan",
@@ -1625,7 +1625,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-berkas-excel-atau-word-terbuka",
+      "id": "end-user-berkas-excel-atau-word-terbuka",
       "judul": "Berkas Excel atau Word Terbuka Hanya Bisa Dibaca",
       "gejala": "Berkas terbuka tetapi tidak dapat disunting. Pada bagian atas jendela tertera keterangan hanya-baca, atau muncul pesan bahwa berkas sedang dipakai orang lain.",
       "kategori": "ringan",
@@ -1687,7 +1687,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-penyimpanan-onedrive-penuh-atau-berhenti",
+      "id": "end-user-penyimpanan-onedrive-penuh-atau-berhenti",
       "judul": "Penyimpanan OneDrive Penuh atau Berhenti Menyelaraskan",
       "gejala": "Ikon awan pada bilah tugas bertanda silang atau seru. Berkas baru tidak ikut tersimpan ke penyimpanan awan, dan muncul peringatan ruang habis.",
       "kategori": "ringan",
@@ -1750,7 +1750,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-aplikasi-terbuka-tetapi-jendelanya-tidak",
+      "id": "end-user-aplikasi-terbuka-tetapi-jendelanya-tidak",
       "judul": "Aplikasi Terbuka tetapi Jendelanya Tidak Terlihat",
       "gejala": "Nama aplikasi terlihat pada bilah tugas dan menandakan sedang berjalan, tetapi jendelanya tidak muncul di layar.",
       "kategori": "ringan",
@@ -1809,7 +1809,7 @@
       "penanganan": null
     },
     {
-      "id": "windows-komputer-tidak-menyala-sama-sekali",
+      "id": "end-user-komputer-tidak-menyala-sama-sekali",
       "judul": "Komputer Tidak Menyala Sama Sekali",
       "gejala": "Menekan tombol daya tidak menghasilkan apa pun. Tidak ada lampu yang menyala, tidak terdengar bunyi kipas, dan layar tetap gelap.",
       "kategori": "berat",
