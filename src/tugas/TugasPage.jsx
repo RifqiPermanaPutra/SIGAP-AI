@@ -383,7 +383,7 @@ export default function TugasPage() {
                 <span className="tg-cakupan">
                   {data.seluruhDivisi
                     ? 'Seluruh layanan ditampilkan'
-                    : `Menangani ${data.pilihanDivisi.map((d) => d.name).join(', ')}`}
+                    : `Menangani ${data.pilihanDivisi.map((d) => d.nama).join(', ')}`}
                 </span>
               )}
             </span>
