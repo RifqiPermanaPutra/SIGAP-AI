@@ -35,6 +35,7 @@ export const LOKASI_GROUPS = [
       'RDP (Rumah Dinas Perusahaan)',
       'HSSE Demo Room Lirik',
       'Produksi Lirik',
+      'P3 Lirik',
       'WS Lirik',
       'PE Lirik',
       'Finance Lirik',
@@ -55,7 +56,8 @@ export const LOKASI_GROUPS = [
       'Pos Camp 1 Lirik',
       'Security Industrial Lirik',
       'Security Japura Lirik',
-      'SP 2, 3, 4 Lirik'
+      'SP 2, 3, 4 Lirik',
+      'SPU Seikaras Lirik'
     ]
   }
 ];
