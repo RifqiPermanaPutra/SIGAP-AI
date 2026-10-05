@@ -33,20 +33,18 @@ if (!(process.env.WHATSAPP_FTTH || '').trim() && (process.env[ENV_FTTH_SEBELUMNY
  * berisiko lebih besar daripada manfaatnya; lihat KONTEKS-PROYEK.md §6a.
  */
 export const DIVISIONS = [
-  { id: 'printer', name: 'Printer', description: 'Masalah printer, cetak dokumen', env: 'WHATSAPP_PRINTER', mode: 'swalayan' },
+  { id: 'printer', name: 'Printer', description: 'Masalah Printer, Cetak Dokumen', env: 'WHATSAPP_PRINTER', mode: 'swalayan' },
   { id: 'end-user', name: 'End User', description: 'Laptop, PC, Sistem Informasi, Hardware, Software', env: 'WHATSAPP_END_USER', mode: 'swalayan' },
   { id: 'cctv', name: 'CCTV', description: 'Kamera pengawas, DVR/NVR', env: 'WHATSAPP_CCTV', mode: 'engineer' },
-  { id: 'telepon', name: 'Telepon', description: 'Telepon kantor, extension', env: 'WHATSAPP_TELEPON', mode: 'engineer' },
+  { id: 'telepon', name: 'Radio HT', description: 'Radio HT, Radio Mobile', env: 'WHATSAPP_TELEPON', mode: 'engineer' },
   { id: 'ftth', name: 'FTTH', description: 'Fiber to the home, ONU/ONT', env: 'WHATSAPP_FTTH', mode: 'engineer' },
-  { id: 'lan', name: 'LAN', description: 'Jaringan lokal, kabel LAN', env: 'WHATSAPP_LAN', mode: 'engineer' },
-  // Menyerap layanan WAN dan Radio Komunikasi yang dilebur ke sini pada
+  { id: 'lan', name: 'LAN', description: 'Jaringan lokal, kabel LAN, WIFI Kantor', env: 'WHATSAPP_LAN', mode: 'engineer' },
+  { id: 'multimedia', name: 'Multimedia', description: 'Sound System, Persiapan Rapat', env: 'WHATSAPP_MULTIMEDIA', mode: 'engineer' },];
+   // Menyerap layanan WAN dan Radio Komunikasi yang dilebur ke sini pada
   // September 2026. Deskripsinya WAJIB menyebut keduanya: kartu layanan inilah
   // satu-satunya petunjuk pelapor tentang kendala mana yang dilaporkan ke mana,
   // dan gangguan HT tidak akan pernah ditebak orang berada di balik kata
   // "Multimedia".
-  { id: 'multimedia', name: 'Multimedia', description: 'Sound system, radio HT, koneksi antar site, persiapan rapat', env: 'WHATSAPP_MULTIMEDIA', mode: 'engineer' }
-];
-
 /** Peta id → divisi, untuk pencarian cepat */
 export const DIVISI_MAP = new Map(DIVISIONS.map((d) => [d.id, d]));
 

@@ -12,11 +12,11 @@
  * `tests/api.test.mjs`.
  */
 export const DIVISI_CADANGAN = [
-  { id: 'printer', name: 'Printer', description: 'Masalah printer, cetak dokumen', mode: 'swalayan' },
+  { id: 'printer', name: 'Printer', description: 'Masalah Printer, Cetak Dokumen', mode: 'swalayan' },
   { id: 'end-user', name: 'End User', description: 'Laptop, PC, Sistem Informasi, Hardware, Software', mode: 'swalayan' },
   { id: 'cctv', name: 'CCTV', description: 'Kamera pengawas, DVR/NVR', mode: 'engineer' },
-  { id: 'telepon', name: 'Telepon', description: 'Telepon kantor, extension', mode: 'engineer' },
+  { id: 'telepon', name: 'Radio HT', description: 'Radio HT, Radio Mobile', mode: 'engineer' },
   { id: 'ftth', name: 'FTTH', description: 'Fiber to the home, ONU/ONT', mode: 'engineer' },
-  { id: 'lan', name: 'LAN', description: 'Jaringan lokal, kabel LAN', mode: 'engineer' },
-  { id: 'multimedia', name: 'Multimedia', description: 'Sound system, radio HT, koneksi antar site, persiapan rapat', mode: 'engineer' }
+  { id: 'lan', name: 'LAN', description: 'Jaringan lokal, WIFI Kantor, Kabel LAN', mode: 'engineer' },
+  { id: 'multimedia', name: 'Multimedia', description: 'Sound system, Persiapan Rapat', mode: 'engineer' }
 ];

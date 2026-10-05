@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { DivisionIcon, IconCctv, IconArrowRight, IconMenu, IconClose, IconHeadset } from './Icons.jsx';
+import { DivisionIcon, IconCctv, IconArrowRight, IconMenu, IconClose } from './Icons.jsx';
 import { LAYANAN_OTOMATIS } from '../data/layananOtomatis.js';
 
 // Tiga tautan pertama menggulir di halaman ini; 'Cek Status' berpindah halaman.
@@ -246,7 +246,7 @@ export default function Landing({ divisions = [], onStart, onPickDivision }) {
             onClick={() => onPickDivision(LAYANAN_OTOMATIS)}
             id="lp-service-auto"
           >
-            <span className="lp-service-ico"><IconHeadset size={21} /></span>
+            <span className="lp-service-ico">?</span>
             <span className="lp-service-name">{LAYANAN_OTOMATIS.name}</span>
             <span className="lp-service-desc">{LAYANAN_OTOMATIS.description}</span>
             <span className="lp-service-go"><IconArrowRight size={17} /></span>

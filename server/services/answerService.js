@@ -67,7 +67,7 @@ export function muatBasisPengetahuan() {
 muatBasisPengetahuan();
 
 const DIVISION_LABELS = {
-  printer: 'Printer', cctv: 'CCTV', telepon: 'Telepon', radio: 'Radio Komunikasi',
+printer: 'Printer', cctv: 'CCTV', 'radio ht': 'Radio HT', radio: 'Radio Komunikasi',
   'end-user': 'End User', ftth: 'FTTH', lan: 'LAN', multimedia: 'Multimedia'
 };
 

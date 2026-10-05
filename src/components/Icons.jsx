@@ -279,7 +279,7 @@ export const IconWhatsapp = ({ size = 24, ...rest }) => (
 const DIVISION_ICONS = {
   printer: IconPrinter,
   cctv: IconCctv,
-  telepon: IconPhone,
+  telepon: IconRadio,
   radio: IconRadio,
   windows: IconWindows,
   'end-user': IconWindows,

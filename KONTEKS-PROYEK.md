@@ -201,7 +201,7 @@ semua pengguna demi sebagian kecil yang benar-benar memerlukan engineer.
 
 ## 8. Data Lapangan
 
-**8 divisi layanan:** Printer, CCTV, Telepon, Radio Komunikasi, Windows, FTTH, LAN, WAN
+**8 divisi layanan:** Printer, CCTV, Radio HT, Radio Komunikasi, Windows, FTTH, LAN, WAN
 
 **5 nomor WhatsApp engineer** (di `.env`, tidak ikut ke repositori):
 
@@ -209,7 +209,7 @@ semua pengguna demi sebagian kecil yang benar-benar memerlukan engineer.
 |---|---|
 | 1 | Printer, Windows |
 | 2 | CCTV, Radio |
-| 3 | Telepon |
+| 3 | Radio HT |
 | 4 | LAN, WAN |
 | 5 | FTTH |
 

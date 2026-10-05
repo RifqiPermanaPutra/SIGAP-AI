@@ -1,5 +1,5 @@
 import React from 'react';
-import { DivisionIcon, IconClose, IconHeadset } from './Icons.jsx';
+import { DivisionIcon, IconClose } from './Icons.jsx';
 import { LAYANAN_OTOMATIS } from '../data/layananOtomatis.js';
 
 export default function DivisionSelector({
@@ -87,8 +87,8 @@ export default function DivisionSelector({
           aria-label="Saya tidak yakin layanan mana"
           id="division-auto"
         >
-          <span className="division-icon">
-            <IconHeadset size={20} />
+          <span className="division-icon division-question-icon">
+            ?
           </span>
 
           <div>

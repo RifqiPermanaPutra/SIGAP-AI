@@ -19,15 +19,9 @@ const SUGGESTIONS = {
   ],
 
   telepon: [
-    'Telepon tidak ada nada sama sekali',
-    'Tidak bisa telepon keluar',
-    'Suara putus-putus saat bicara'
-  ],
-
-  radio: [
-    'Radio HT tidak ada suara',
-    'Sinyal radio lemah',
-    'Baterai HT cepat habis'
+  'Radio HT tidak bisa menyala',
+  'Radio HT tidak bisa menerima atau mengirim suara',
+  'Radio Mobile mengalami gangguan komunikasi'
   ],
 
   endUser: [
@@ -51,9 +45,9 @@ const SUGGESTIONS = {
   ],
 
   multimedia: [
-    'Sound system tidak mengeluarkan suara',
-    'Tinta printer habis atau tidak keluar',
-    'Persiapan rapat bermasalah'
+  'Sound system tidak mengeluarkan suara',
+  'Sound system mengalami gangguan',
+  'Persiapan rapat bermasalah'
   ]
 };
 
